@@ -1,8 +1,8 @@
 {
-	"DESCRIPTION": "Receive random advice in the chat.",
-	"EXTENDED": "$t(advice:EXTENDED_LINE_1)\n$t(advice:EXTENDED_LINE_2)",
-	"EXTENDED_LINE_1": "**{{prefix}}advice** ~ G4M3R posts advice in the chat.",
-	"EXTENDED_LINE_2": "**{{prefix}}advice @member** ~ Send some advice to a friend.",
-	"USAGE": "{{prefix}}advice *[@User | User ID]*",
-	"ALIASES": "{{prefix}}ad"
+  "DESCRIPTION": "Receive random advice in the chat.",
+  "EXTENDED": "$t(fun/advice:EXTENDED_LINE_1)\n$t(fun/advice:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}advice** ~ G4M3R posts advice in the chat.",
+  "EXTENDED_LINE_2": "**{{prefix}}advice @member** ~ Send some advice to a friend.",
+  "USAGE": "{{prefix}}advice *[@User | User ID]*",
+  "ALIASES": "{{prefix}}ad"
 }
