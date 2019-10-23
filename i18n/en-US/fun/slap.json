@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Slaps the mentioned user/role and sends an image in chat.",
+	"EXTENDED": "**{{prefix}}slap [user]** ~ Slaps the user, in the face, with a chai~ I mean sends a slap gif to the user.",
+	"USAGE": "{{prefix}}slap [user]",
+	"ALIASES": "Slap does not have any aliases.",
+	"REPLY": "***{{mention}} was slapped by {{author}}!***",
+	"SELF": "Slapping oneself is a great way to keep yourself sharp. But don't do it too hard, it can hurt."
+}
