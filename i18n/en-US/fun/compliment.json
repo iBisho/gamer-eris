@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Make anyones day better with a random positive gif!",
+  "EXTENDED": "$t(compliment:EXTENDED_LINE_1)\n$t(compliment:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}comp [User]** ~ Compliment the user.",
+  "EXTENDED_LINE_2": "**{{prefix}}comp [Role]** ~ Compliment the role.",
+  "USAGE": "{{prefix}}compliment [User or Role]",
+  "ALIASES": "{{prefix}}comp",
+  "REPLY": "***{{author}} sent this just for you {{memberOrRole}} :heart:***"
+}
