@@ -3,7 +3,7 @@ import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TextChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
-export default new Command([`ping`, `patreon`, `donate`, `pong`, `info`], (message, _args, context) => {
+export default new Command([`ping`, `pong`], (message, _args, context) => {
   const ping = Date.now() - message.timestamp
 
   const language = (context.client as GamerClient).i18n.get('en-US')

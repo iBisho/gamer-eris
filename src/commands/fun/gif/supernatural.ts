@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import GamerEmbed from '../../../lib/structures/GamerEmbed'
 
 const gifs = [
   `https://media.giphy.com/media/MU3YUgsJONTzzIT9wd/giphy.gif`,

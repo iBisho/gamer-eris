@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
-import GamerClient from '../lib/structures/GamerClient'
+import GamerEmbed from '../../lib/structures/GamerEmbed'
+import GamerClient from '../../lib/structures/GamerClient'
 
 const inviteGifs = [
   `https://i.gifer.com/9lCY.gif`,
@@ -32,7 +32,7 @@ export default new Command([`invite`, `join`], (message, _args, context) => {
 
   const embed = new GamerEmbed()
     .setDescription(
-      language('invite:LINKS', {
+      language('basic/invite:LINKS', {
         invite: `https://discordapp.com/oauth2/authorize?client_id=${context.client.user.id}&scope=bot&permissions=336067670`
       })
     )
