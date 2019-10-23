@@ -1,3 +1,7 @@
+# Custom Ignores
+config.ts
+production/
+
 # Logs
 logs
 *.log

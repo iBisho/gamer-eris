@@ -1,0 +1,4 @@
+export default {
+	token: "Bot_Token_Here",
+	defaultPrefix: "!"
+}
