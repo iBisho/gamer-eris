@@ -1,7 +1,7 @@
-import { Client } from 'yuuko'
 import config from '../config'
+import GamerClient from './lib/structures/GamerClient'
 
-const Gamer = new Client({
+const Gamer = new GamerClient({
   token: config.token,
   prefix: config.defaultPrefix,
   maxShards: `auto`
