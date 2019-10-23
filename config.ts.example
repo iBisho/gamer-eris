@@ -1,4 +1,7 @@
 export default {
 	token: "Bot_Token_Here",
-	defaultPrefix: "!"
+	defaultPrefix: "!",
+	apiKeys: {
+    tenor: 'Tenor_API_KEY'
+  }
 }
