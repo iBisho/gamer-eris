@@ -132,7 +132,7 @@ export default new Command([`puppy`, `dog`, `doggo`], (message, _args, context) 
   const embed = new GamerEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.defaultAvatarURL
+      message.author.avatarURL
     )
     .setDescription(language(`fun/puppy:FACT`, { fact: facts[Math.floor(Math.random() * facts.length)] }))
     .setImage(randomGif)

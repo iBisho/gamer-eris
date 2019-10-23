@@ -38,7 +38,7 @@ export default new Command(`advice`, message => {
     .setDescription(advice)
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.defaultAvatarURL
+      message.author.avatarURL
     )
 
   return message.channel.createMessage({ embed: embed.code })

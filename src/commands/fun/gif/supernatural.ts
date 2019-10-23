@@ -159,7 +159,7 @@ export default new Command([`supernatural`, `sn`], message => {
   const embed = new GamerEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.defaultAvatarURL
+      message.author.avatarURL
     )
     .setImage(randomGif)
 

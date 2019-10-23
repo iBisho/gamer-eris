@@ -38,7 +38,7 @@ export default new Command([`invite`, `join`], (message, _args, context) => {
     )
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.defaultAvatarURL
+      message.author.avatarURL
     )
     .setImage(inviteGifs[Math.floor(Math.random() * inviteGifs.length)])
 

@@ -51,7 +51,7 @@ export default new Command([`cat`, `kitten`], async (message, _args, context) =>
   const embed = new GamerEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.defaultAvatarURL
+      message.author.avatarURL
     )
     .setDescription(data ? language(`fun/kitten:FACT`, { fact: data.fact }) : '')
     .setImage(randomGif)

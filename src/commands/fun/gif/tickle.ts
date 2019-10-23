@@ -21,7 +21,7 @@ export default new Command(`tickle`, async (message, _args, context) => {
   const embed = new GamerEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.defaultAvatarURL
+      message.author.avatarURL
     )
     .setDescription(
       language(user.id === message.author.id ? `fun/tickle:SELF` : `fun/tickle:REPLY`, {

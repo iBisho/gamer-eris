@@ -1,0 +1,6 @@
+{
+	"DESCRIPTION": "View the avatar of a user on the server.",
+	"EXTENDED": "This command only shows the raw image. To see a customized version of the avatar, please use the {{prefix}}logo command.",
+	"USAGE": "{{prefix}}userimage",
+	"ALIASES": "Userimage does not have any aliases."
+}

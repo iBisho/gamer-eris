@@ -44,7 +44,7 @@ export default new Command(`baka`, (message, _args, context) => {
   const embed = new GamerEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.defaultAvatarURL
+      message.author.avatarURL
     )
     .setImage(randomGif)
     .setDescription(

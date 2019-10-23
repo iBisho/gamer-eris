@@ -21,7 +21,7 @@ export default new Command(`kiss`, async (message, _args, context) => {
   const embed = new GamerEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.defaultAvatarURL
+      message.author.avatarURL
     )
     .setDescription(
       language(user.id === message.author.id ? `fun/kiss:SELF` : `fun/kiss:REPLY`, {
