@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Random Puppy GIF or Image!",
+	"EXTENDED": "**{{prefix}}puppy** ~ Get the most adorable, cute and great doggo gifs / images.",
+	"USAGE": "{{prefix}}puppy",
+	"ALIASES": "{{prefix}}doggo",
+	"FACT": "**Random Fact** 🐶: {{fact}}"
+}
