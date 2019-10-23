@@ -47,7 +47,12 @@ export default new Command(`baka`, (message, _args, context) => {
       message.author.defaultAvatarURL
     )
     .setImage(randomGif)
-    .setDescription(language(`fun/baka:REPLY`, { mention: user.mention, author: message.author.mention }))
+    .setDescription(
+      language(user.id === message.author.id ? `fun/baka:SELF` : `fun/baka:REPLY`, {
+        mention: user.mention,
+        author: message.author.mention
+      })
+    )
 
   return message.channel.createMessage({ embed: embed.code })
 })
