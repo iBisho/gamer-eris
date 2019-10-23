@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Cuddles the mentioned user/role and sends an image in chat.",
+	"EXTENDED": "$t(cuddle:EXTENDED_LINE_1)\n$t(cuddle:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}cuddle [User]** ~ Cuddles the user.",
+	"EXTENDED_LINE_2": "**{{prefix}}cuddle [Role]** ~ Cuddles the role.",
+	"USAGE": "{{prefix}}cuddle [User Or Role]",
+	"ALIASES": "Cuddle does not have any aliases.",
+	"REPLY": "***{{mention}} was cuddled by {{author}}!***",
+	"SELF": "If you have no one else to cuddle with, I will cuddle with you anytime day or night."
+}
