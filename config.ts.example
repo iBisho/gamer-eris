@@ -1,7 +1,15 @@
 export default {
 	token: "Bot_Token_Here",
 	defaultPrefix: "!",
+	staff: {
+    mods: [],
+    developers: []
+  },
 	apiKeys: {
-    tenor: 'Tenor_API_KEY'
+    tenor: 'Tenor_API_KEY',
+		imgur: {
+      id: `IMGUR_ID`,
+      secret: `IMGUR_SECRET`
+    }
   }
 }
