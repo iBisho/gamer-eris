@@ -2,6 +2,8 @@ import * as mongoose from 'mongoose'
 import GuildSchema from './schemas/guild'
 import TradingCardSchema from './schemas/tradingCards'
 import UserSchema from './schemas/user'
+import MemberSchema from './schemas/member'
+import ClientSchema from './schemas/client'
 
 // Connect to the db
 mongoose.connect(`mongodb://localhost/:27017/test`, { useNewUrlParser: true })
@@ -10,8 +12,9 @@ const db = mongoose.connection
 db.on(`error`, () => console.error(`MongoDB connection error`))
 db.once(`open`, () => {
   console.log(`MongoDB Connected!`)
-	const GuildModel = mongoose.model('Guild', GuildSchema)
-	const TradingCardModel = mongoose.model('TradingCards', TradingCardSchema)
-	const UserModel = mongoose.model('User', UserSchema)
-	
+  const GuildModel = mongoose.model('Guild', GuildSchema)
+  const TradingCardModel = mongoose.model('TradingCards', TradingCardSchema)
+  const UserModel = mongoose.model('User', UserSchema)
+  const MemebrModel = mongoose.model('Member', MemberSchema)
+  const ClientModel = mongoose.model('Client', ClientSchema)
 })
