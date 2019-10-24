@@ -15,10 +15,6 @@ export default new mongoose.Schema({
     // The total messages processed
     totalMessagesProcessed: Number
   },
-  vip: {
-    userIDs: [String],
-    guildIDs: [String]
-  },
   antiraid: {
     nudebotUserIDs: [String]
   }
