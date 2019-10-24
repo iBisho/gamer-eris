@@ -61,27 +61,8 @@ export default new mongoose.Schema({
     // Tags are not allowed to work in these channels
     disabledChannels: [String]
   },
-  tradingCards: {
-    // Arena of valor
-    aov: {
-      // The channel id where the cards will be sent
-      channelID: String,
-      // The name of the card that is able to be collected
-      lastItemName: String
-    },
-    // Mobile Legends Bang Bang
-    mlbb: {
-      channelID: String,
-      lastItemName: String
-    },
-    // Rules of Survival
-    ros: {
-      channelID: String,
-      lastItemName: String
-    }
-  },
   // The modules that have been enabled in this guild.
-  modules: [String],
+  modules: { type: [String], lowercase: true },
   moderation: {
     roleIDs: {
       // The role to be automatically assigned once the user finished verifying.
@@ -98,9 +79,9 @@ export default new mongoose.Schema({
     filters: {
       profanity: {
         // The words that must match the exact string to be triggered.
-        words: [String],
+        words: { type: [String], lowercase: true },
         // Any form of the word will check strictly.
-        strictWords: [String],
+        strictWords: { type: [String], lowercase: true },
         // Whether the filter should be enabled
         enabled: Boolean
       },
