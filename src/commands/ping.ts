@@ -2,6 +2,7 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TextChannel, PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
+import { GuildSettings } from '../lib/types/settings'
 
 export default new Command([`ping`, `pong`], async (message, _args, context) => {
   const ping = Date.now() - message.timestamp
@@ -10,11 +11,9 @@ export default new Command([`ping`, `pong`], async (message, _args, context) => 
   const settings =
     message.channel instanceof PrivateChannel
       ? null
-      : await Gamer.database.models.guild.findOne({ id: message.channel.guild.id }).select('language').exec()
+      : ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings)
 
-  console.log(settings)
-
-  const language = (context.client as GamerClient).i18n.get(settings ? settings.language : 'en-US')
+  const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
   if (!language) return null
 
   const embed = new GamerEmbed()

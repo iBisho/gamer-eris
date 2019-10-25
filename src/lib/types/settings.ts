@@ -1,4 +1,6 @@
-export interface GuildSettings {
+import * as mongoose from 'mongoose'
+
+export interface GuildSettings extends mongoose.Document {
   id: string
   language: string
   menutime: number
