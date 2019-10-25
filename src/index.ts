@@ -13,7 +13,6 @@ Gamer.globalCommandRequirements = {
   async custom(message: Message, _args, context) {
     if (!(message.channel as TextChannel).guild) return true
     let allowCommands = true
-    console.log(Gamer.monitors.size)
     await Promise.all(
       [...Gamer.monitors.values()].map(async monitor => {
         if (monitor.ignoreBots && message.author.bot) return

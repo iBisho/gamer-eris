@@ -4,6 +4,7 @@ import i18n from '../../i18next'
 import { Collector } from '../types/gamer'
 import * as glob from 'glob'
 import Monitor from './Monitor'
+import Database from '../../database/mongodb'
 
 export default class GamerClient extends Client {
   // i18n solution
@@ -11,6 +12,8 @@ export default class GamerClient extends Client {
 
   // Message collectors
   collectors: Map<string, Collector> = new Map()
+
+  database = new Database()
 
   // All our stores to store files which we can reload easily.
   monitors: Map<string, Monitor> = new Map()

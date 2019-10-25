@@ -16,29 +16,59 @@ import SurveySchema from './schemas/survey'
 import TagSchema from './schemas/tag'
 import TradingCardSchema from './schemas/tradingCard'
 import UserSchema from './schemas/user'
+import GuildDefaults from '../constants/settings/guild'
+import MemberDefaults from '../constants/settings/member'
+import UserDefaults from '../constants/settings/user'
 
-// Connect to the db
-mongoose.connect(`mongodb://localhost/:27017/test`, { useNewUrlParser: true })
+const connectionString = `mongodb://localhost:27017/test`
+export default class {
+  connection: mongoose.Connection
+  models = {
+    client: mongoose.model('Client', ClientSchema),
+    emoji: mongoose.model('Emoji', EmojiSchema),
+    event: mongoose.model('Event', EventSchema),
+    feedback: mongoose.model('Feedback', FeedbackSchema),
+    guild: mongoose.model('Guild', GuildSchema),
+    label: mongoose.model('Label', LabelSchema),
+    level: mongoose.model('Level', LevelSchema),
+    mail: mongoose.model('Mail', MailSchema),
+    member: mongoose.model('Member', MemberSchema),
+    modlog: mongoose.model('Modlog', ModlogSchema),
+    reactionRole: mongoose.model('ReactionRole', ReactionRoleSchema),
+    shortcut: mongoose.model('Shortcut', ShortcutSchema),
+    // subscription: mongoose.model('Subscription', SubscriptionSchema),
+    survey: mongoose.model('Survey', SurveySchema),
+    tag: mongoose.model('Tag', TagSchema),
+    tradingCard: mongoose.model('TradingCards', TradingCardSchema),
+    user: mongoose.model('User', UserSchema)
+  }
 
-const db = mongoose.connection
-db.on(`error`, () => console.error(`MongoDB connection error`))
-db.once(`open`, () => {
-  console.log(`MongoDB Connected!`)
-  const ClientModel = mongoose.model('Client', ClientSchema)
-  const EmojiModel = mongoose.model('Emoji', EmojiSchema)
-  const EventModel = mongoose.model('Event', EventSchema)
-  const FeedbackModel = mongoose.model('Feedback', FeedbackSchema)
-  const GuildModel = mongoose.model('Guild', GuildSchema)
-  const LabelModel = mongoose.model('Label', LabelSchema)
-  const LevelModel = mongoose.model('Level', LevelSchema)
-  const MailModel = mongoose.model('Mail', MailSchema)
-  const MemberModel = mongoose.model('Member', MemberSchema)
-  const ModlogModel = mongoose.model('Modlog', ModlogSchema)
-  const ReactionRoleModel = mongoose.model('ReactionRole', ReactionRoleSchema)
-  const ShortcutModel = mongoose.model('Shortcut', ShortcutSchema)
-  // const SubscriptionModel = mongoose.model('Subscription', SubscriptionSchema)
-  const SurveyModel = mongoose.model('Survey', SurveySchema)
-  const TagModel = mongoose.model('Tag', TagSchema)
-  const TradingCardModel = mongoose.model('TradingCards', TradingCardSchema)
-  const UserModel = mongoose.model('User', UserSchema)
-})
+  constants = {
+    guild: GuildDefaults,
+    member: MemberDefaults,
+    user: UserDefaults
+  }
+
+  constructor() {
+    // Connect to the db
+    mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
+    this.connection = mongoose.connection
+    this.connection.on(`error`, error => console.error(`MongoDB connection error`, error))
+    this.connection.once(`open`, () => {
+      console.log(`MongoDB Connected!`)
+    })
+  }
+
+  init() {
+    // Create all tables needed for the bot
+  }
+
+  async fetchGuildSettings(id?: string) {
+    // if no guild usually means DM so default
+    if (!id) return this.constants.guild
+    // Find a guild document
+    const settings = await this.models.guild.findOne({ id })
+    // If the document was found return it or give the default values
+    return settings || this.constants.guild
+  }
+}

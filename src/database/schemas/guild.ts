@@ -148,89 +148,89 @@ export default new mongoose.Schema({
           updatePublicEnabled: Boolean
         }
       }
-    },
-    hibye: {
-      welcome: {
-        // The channel id where the welcome message will be sent
-        channelID: String,
-        // Whether or not to also send the welcome message in DM
-        dmEnabled: Boolean,
-        // Whether the message should ONLY be sent in DM
-        dmOnly: Boolean,
-        // The message that will be sent. Usually JSON string to use for embeds
-        message: String
-      },
-      goodbye: {
-        // The channel id where the goodbye message will be sent
-        channelID: String,
-        // Whether or not to also send the goodbye message in DM
-        dmEnabled: Boolean,
-        // Whether the message should ONLY be sent in DM
-        dmOnly: Boolean,
-        // The message that will be sent. Usually JSON string to use for embeds
-        message: String
-      }
-    },
-    feedback: {
-      // Where all feedback sent are logged. Usually private channel.
-      logChannelID: String,
-      // Where all feedback once a mod/admin marks it as solved.
-      solvedChannelID: String,
-      // Where all feedback once a mod/admin marks it as rejected.
-      rejectedChannelID: String,
-      // The message that is sent to the user when their feedback is solved.
-      solvedMessage: String,
-      // The message that is sent to the user when their feedback is rejected.
-      rejectedMessage: String,
-      idea: {
-        // The channel to send the feedback to.
-        channelID: String,
-        emojis: {
-          // Emoji for downvoting
-          down: { type: String, default: '<:g4m3rhug:458994471712063499>' },
-          // Emoji for upvoting
-          up: { type: String, default: '<:g4m3rangry:458758779312275476>' },
-          // The list of questions that the user answers in their feedback
-          questions: [String]
-        }
-      },
-      bugs: {
-        channelID: String,
-        emojis: {
-          down: { type: String, default: '<:g4m3rhug:458994471712063499>' },
-          up: { type: String, default: '<:g4m3rangry:458758779312275476>' },
-          questions: [String]
-        }
-      }
-    },
-    // The channel that new event advertisements are sent to.
-    eventsAdvertiseChannelID: String,
-    twitch: {
-      current: { type: Number, default: 0 },
-      // The max amount of subscriptions one server can use up. Twitch has rate limits.
-      max: { type: Number, default: 30 },
-      // Whether or not to send offline alerts.
-      offlineAlertsEnabled: Boolean
-    },
-    xp: {
-      // How much xp to give per message that is sent.
-      perMessage: { type: Number, default: 1 },
-      // How much xp to give per minute spent in a voice channel.
-      perMinutesInVoice: { type: Number, default: 1 },
-      // The channel id to send level up notifications
+    }
+  },
+  hibye: {
+    welcome: {
+      // The channel id where the welcome message will be sent
       channelID: String,
-      // The max amount of days u can be inactive on a server before losing XP
-      inactiveDaysAllowed: { type: Number, default: 0 },
-      // The amount of xp u gain by typing daily in this server.
-      daily: { type: Number, default: 10 },
-      prizes: {
-        // url image for the first place prize
-        first: String,
-        // url image for the second place prize
-        second: String,
-        // url image for the third place prize
-        third: String
+      // Whether or not to also send the welcome message in DM
+      dmEnabled: Boolean,
+      // Whether the message should ONLY be sent in DM
+      dmOnly: Boolean,
+      // The message that will be sent. Usually JSON string to use for embeds
+      message: String
+    },
+    goodbye: {
+      // The channel id where the goodbye message will be sent
+      channelID: String,
+      // Whether or not to also send the goodbye message in DM
+      dmEnabled: Boolean,
+      // Whether the message should ONLY be sent in DM
+      dmOnly: Boolean,
+      // The message that will be sent. Usually JSON string to use for embeds
+      message: String
+    }
+  },
+  feedback: {
+    // Where all feedback sent are logged. Usually private channel.
+    logChannelID: String,
+    // Where all feedback once a mod/admin marks it as solved.
+    solvedChannelID: String,
+    // Where all feedback once a mod/admin marks it as rejected.
+    rejectedChannelID: String,
+    // The message that is sent to the user when their feedback is solved.
+    solvedMessage: String,
+    // The message that is sent to the user when their feedback is rejected.
+    rejectedMessage: String,
+    idea: {
+      // The channel to send the feedback to.
+      channelID: String,
+      emojis: {
+        // Emoji for downvoting
+        down: { type: String, default: '<:g4m3rhug:458994471712063499>' },
+        // Emoji for upvoting
+        up: { type: String, default: '<:g4m3rangry:458758779312275476>' },
+        // The list of questions that the user answers in their feedback
+        questions: [String]
       }
+    },
+    bugs: {
+      channelID: String,
+      emojis: {
+        down: { type: String, default: '<:g4m3rhug:458994471712063499>' },
+        up: { type: String, default: '<:g4m3rangry:458758779312275476>' },
+        questions: [String]
+      }
+    }
+  },
+  // The channel that new event advertisements are sent to.
+  eventsAdvertiseChannelID: String,
+  twitch: {
+    current: { type: Number, default: 0 },
+    // The max amount of subscriptions one server can use up. Twitch has rate limits.
+    max: { type: Number, default: 30 },
+    // Whether or not to send offline alerts.
+    offlineAlertsEnabled: Boolean
+  },
+  xp: {
+    // How much xp to give per message that is sent.
+    perMessage: { type: Number, default: 1 },
+    // How much xp to give per minute spent in a voice channel.
+    perMinutesInVoice: { type: Number, default: 1 },
+    // The channel id to send level up notifications
+    channelID: String,
+    // The max amount of days u can be inactive on a server before losing XP
+    inactiveDaysAllowed: { type: Number, default: 0 },
+    // The amount of xp u gain by typing daily in this server.
+    daily: { type: Number, default: 10 },
+    prizes: {
+      // url image for the first place prize
+      first: String,
+      // url image for the second place prize
+      second: String,
+      // url image for the third place prize
+      third: String
     }
   }
 })
