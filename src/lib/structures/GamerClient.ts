@@ -7,6 +7,10 @@ import Monitor from './Monitor'
 import Database from '../../database/mongodb'
 import ProfileHelper from '../utils/profiles'
 import DiscordHelper from '../utils/discord'
+import TransformHelper from '../utils/transform'
+import LoggerHelper from '../utils/logger'
+import { PrivateChannel, Message } from 'eris'
+import Event from './Event'
 
 export default class GamerClient extends Client {
   // i18n solution
@@ -19,16 +23,40 @@ export default class GamerClient extends Client {
 
   helpers = {
     profiles: new ProfileHelper(),
-    discord: new DiscordHelper()
+    discord: new DiscordHelper(),
+    transform: new TransformHelper(),
+    logger: new LoggerHelper()
   }
 
   // All our stores to store files which we can reload easily.
+  events: Map<string, Event> = new Map()
   monitors: Map<string, Monitor> = new Map()
   // inhibitors: Map<string, Inhibitor> = new Map()
   // finalizers: Map<string, Finalizer> = new Map()
   // functions: Map<string, HelperFunctions> = new Map()
   constructor(options: ClientOptions) {
     super(options)
+
+    this.on('messageCreate', this.runMonitors)
+  }
+
+  async runMonitors(message: Message) {
+    if (message.channel instanceof PrivateChannel) return true
+    let allowCommands = true
+    await Promise.all(
+      [...this.monitors.values()].map(async monitor => {
+        if (monitor.ignoreBots && message.author.bot) return
+        if (monitor.ignoreDM && message.channel instanceof PrivateChannel) return
+        if (monitor.ignoreEdits && message.editedTimestamp) return
+        if (monitor.ignoreOthers && message.author.id !== this.user.id) return
+
+        const result = await monitor.execute(message, this)
+        // If the result is truthy from the monitors cancel the commands for this message
+        if (result) allowCommands = false
+      })
+    )
+
+    return allowCommands
   }
 
   async connect() {
@@ -54,9 +82,10 @@ export default class GamerClient extends Client {
       delete file.default
       file.filename = filename
 
-      const name = filename.substring(filename.lastIndexOf('/') + 1)
+      const name = filename.substring(filename.lastIndexOf('/') + 1, filename.lastIndexOf('.'))
       // Add to the proper map based on the name of the directory
       if (dirname.endsWith('monitors/')) this.monitors.set(name, new file())
+      if (dirname.endsWith('events/')) this.events.set(name, new file(name))
       // else if (dirname.endsWith('inhibitors/')) this.inhibitors.set(name, new file())
       // else if (dirname.endsWith('finalizers/')) this.finalizers.set(name, new file())
       // else if (dirname.endsWith('functions/')) this.functions.set(name, new file())
