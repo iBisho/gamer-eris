@@ -7,6 +7,8 @@ export default new mongoose.Schema({
   language: { type: String, default: `en-US` },
   // How many minutes to wait for a response from a user. ONLY VIP GUILDS CAN MODIFY.
   menutime: { type: Number, min: 2, max: 5, default: 2 },
+  // The custom guild prefix
+  prefix: { type: String, default: '.', lowercase: true, maxlength: 3, minlength: 1 },
   // Server Security options
   antiraid: {
     // Automatically ban nude bots when detected on any server

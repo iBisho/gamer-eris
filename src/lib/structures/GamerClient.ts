@@ -5,6 +5,8 @@ import { Collector } from '../types/gamer'
 import * as glob from 'glob'
 import Monitor from './Monitor'
 import Database from '../../database/mongodb'
+import ProfileHelper from '../utils/profiles'
+import DiscordHelper from '../utils/discord'
 
 export default class GamerClient extends Client {
   // i18n solution
@@ -14,6 +16,11 @@ export default class GamerClient extends Client {
   collectors: Map<string, Collector> = new Map()
 
   database = new Database()
+
+  helpers = {
+    profiles: new ProfileHelper(),
+    discord: new DiscordHelper()
+  }
 
   // All our stores to store files which we can reload easily.
   monitors: Map<string, Monitor> = new Map()

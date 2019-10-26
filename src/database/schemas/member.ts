@@ -1,19 +1,20 @@
 import * as mongoose from 'mongoose'
 
 export default new mongoose.Schema({
+  id: String,
   nickname: String,
   leveling: {
     // The current XP
-    xp: Number,
+    xp: { type: Number, default: 0 },
     // The current Level
-    level: Number,
+    level: { type: Number, default: 0 },
     // The current Voice XP
-    voicexp: Number,
+    voicexp: { type: Number, default: 0 },
     // The current Voice Level
-    voicelevel: Number,
+    voicelevel: { type: Number, default: 0 },
     // Timestamp when the member joined the voice channel
-    joinedVoiceAt: Number,
+    joinedVoiceAt: { type: Number, default: 0 },
     // Used to determine when the last time the user was active in the server. (Used for Inactive XP Removal)
-    lastUpdatedAt: Number
+    lastUpdatedAt: { type: Number, default: 0 }
   }
 })

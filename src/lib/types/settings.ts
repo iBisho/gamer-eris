@@ -1,9 +1,52 @@
 import * as mongoose from 'mongoose'
 
+export interface UserSettings extends mongoose.Document {
+  id: string
+  profile: {
+    backgroundID: number
+    theme: string
+  }
+  afk: {
+    enabled: boolean
+    message: string
+  }
+  moderationNetworkEnabled: boolean
+  vip: {
+    isVIP: boolean
+    guildsRegistered: string[]
+    openTickets: number
+  }
+  leveling: {
+    xp: number
+    level: number
+    currency: number
+    backgrounds: number[]
+    badges: {
+      bought: number[]
+      equipped: number[]
+    }
+    badgesUnlocked: number
+  }
+}
+
+export interface MemberSettings extends mongoose.Document {
+  id: string
+  nickname: string
+  leveling: {
+    xp: number
+    level: number
+    voicexp: number
+    voicelevel: number
+    joinedVoiceAt: number
+    lastUpdatedAt: number
+  }
+}
+
 export interface GuildSettings extends mongoose.Document {
   id: string
   language: string
   menutime: number
+  prefix: string
   antiraid: {
     autoBanNudeBotsEnabled: boolean
     alertsEnabled: boolean

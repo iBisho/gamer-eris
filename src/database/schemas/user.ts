@@ -1,9 +1,10 @@
 import * as mongoose from 'mongoose'
 
 export default new mongoose.Schema({
+  id: String,
   profile: {
     // The id number of the background that the user has equipped
-    backgroundID: { type: Number, default: 52 },
+    backgroundID: { type: { type: Number, default: 52 }, default: 0 },
     // The theme color of the profile card
     theme: { type: String, default: `white` }
   },
@@ -21,15 +22,15 @@ export default new mongoose.Schema({
     // The guilds this user has registered as VIP
     guildsRegistered: [String],
     // The amount of tickets the user has remaining
-    openTickets: Number
+    openTickets: { type: Number, default: 0 }
   },
   leveling: {
     // The current XP
-    xp: Number,
+    xp: { type: Number, default: 0 },
     // The current Level
-    level: Number,
+    level: { type: Number, default: 0 },
     // The currency the user has. Used to buy backgrounds/badges
-    currency: Number,
+    currency: { type: Number, default: 0 },
     // The backgrounds the user has bought.
     backgrounds: [Number],
     badges: {

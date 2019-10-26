@@ -1,9 +1,9 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import GamerEmbed from '../../lib/structures/GamerEmbed'
 import { PrivateChannel } from 'eris'
-import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
-import Constants from '../constants/index'
+import GamerClient from '../../lib/structures/GamerClient'
+import { GuildSettings } from '../../lib/types/settings'
+import Constants from '../../constants/index'
 
 export default new Command(
   [`server`, `si`, `sinfo`, `serverinfo`, `gi`, `ginfo`, `guildinfo`],
@@ -12,10 +12,10 @@ export default new Command(
     if (message.channel instanceof PrivateChannel) return
 
     const guild = message.channel.guild
-    const settings = (await Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings
+    const settings = (await Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null
 
     const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
-    if (!language) return null
+    if (!language || !settings) return null
 
     const owner = Gamer.users.get(guild.ownerID)
     const relevantPersonality = Constants.personalities.find(
@@ -36,7 +36,6 @@ export default new Command(
       roleCount: guild.roles.size
     })
 
-    console.log(settings.feedback.idea.channelID, ENABLED, DISABLED)
     const serverSettings = {
       language: languageName,
       modRoles: settings.staff.modRoleIDs.length

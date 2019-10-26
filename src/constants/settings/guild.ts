@@ -1,6 +1,7 @@
 export default {
   language: `en-US`,
   menutime: 2,
+  prefix: '.',
   antiraid: {
     autoBanNudeBotsEnabled: false,
     alertsEnabled: true

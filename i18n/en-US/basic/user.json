@@ -1,0 +1,19 @@
+{
+	"DESCRIPTION": "View another members information.",
+	"EXTENDED": "$t(basic/user:EXTENDED_LINE_1)\n$t(basic/user:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}user** ~ Shows your own information.",
+	"EXTENDED_LINE_2": "**{{prefix}}user @user** ~ Shows another members information",
+	"USAGE": "{{prefix}}user *[@user]*",
+	"ALIASES": "{{prefix}}ui {{prefix}}userinfo",
+	"LOADING": "Loading member information...",
+	"NICKNAME": "**Nickname:** {{nickname}}\n",
+	"ID": "**User ID:** {{id}}",
+	"JOINED": "Join Dates",
+	"JOINED_VALUE": "**Joined Discord:** {{memberDate}}\n**Joined {{guildName}}:** {{guildDate}}",
+	"SETTINGS": "User Settings",
+	"SETTINGS_VALUES": "$t(basic/user:SETTINGS_VALUES_LINE_1)\n$t(basic/user:SETTINGS_VALUES_LINE_2)",
+	"SETTINGS_VALUES_LINE_1": "**AFK Status:** {{afk}}",
+	"SETTINGS_VALUES_LINE_2": "**AFK Message:** {{afkMessage}}",
+	"PERMISSIONS": "Permissions",
+	"ROLES": "Roles"
+}
