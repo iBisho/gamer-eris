@@ -6,7 +6,8 @@ const Gamer = new GamerClient({
   token: config.token,
   prefix: config.defaultPrefix,
   maxShards: `auto`,
-  ignoreGlobalRequirements: false
+  ignoreGlobalRequirements: false,
+  getAllUsers: true
 })
 
 Gamer.globalCommandRequirements = {
