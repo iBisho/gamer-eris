@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../../../lib/structures/GamerEmbed'
-import GamerClient from '../../../lib/structures/GamerClient'
+import GamerEmbed from '../lib/structures/GamerEmbed'
+import GamerClient from '../lib/structures/GamerClient'
 
 const facts = [
   `Puppies have 28 teeth and adult dogs have 42.`,

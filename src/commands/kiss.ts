@@ -1,14 +1,14 @@
 import { Command } from 'yuuko'
 import fetch from 'node-fetch'
-import GamerClient from '../../../lib/structures/GamerClient'
-import GamerEmbed from '../../../lib/structures/GamerEmbed'
-import { TenorGif } from '../../../lib/types/tenor'
+import GamerClient from '../lib/structures/GamerClient'
+import GamerEmbed from '../lib/structures/GamerEmbed'
+import { TenorGif } from '../lib/types/tenor'
 
-export default new Command(`pat`, async (message, _args, context) => {
+export default new Command(`kiss`, async (message, _args, context) => {
   const language = (context.client as GamerClient).i18n.get('en-US')
   if (!language) return null
 
-  const data: TenorGif | null = await fetch(`https://api.tenor.com/v1/search?q=pat&key=LIVDSRZULELA&limit=50`)
+  const data: TenorGif | null = await fetch(`https://api.tenor.com/v1/search?q=kiss&key=LIVDSRZULELA&limit=50`)
     .then(res => res.json())
     .catch(() => null)
 
@@ -24,7 +24,7 @@ export default new Command(`pat`, async (message, _args, context) => {
       message.author.avatarURL
     )
     .setDescription(
-      language(user.id === message.author.id ? `fun/pat:SELF` : `fun/pat:REPLY`, {
+      language(user.id === message.author.id ? `fun/kiss:SELF` : `fun/kiss:REPLY`, {
         mention: user.mention,
         author: message.author.mention
       })

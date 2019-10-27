@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../../../lib/structures/GamerEmbed'
-import GamerClient from '../../../lib/structures/GamerClient'
+import GamerEmbed from '../lib/structures/GamerEmbed'
+import GamerClient from '../lib/structures/GamerClient'
 import fetch from 'node-fetch'
 
 const gifs = [

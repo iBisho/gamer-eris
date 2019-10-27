@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import fetch from 'node-fetch'
-import GamerClient from '../../lib/structures/GamerClient'
-import GamerEmbed from '../../lib/structures/GamerEmbed'
+import GamerClient from '../lib/structures/GamerClient'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command(`wisdom`, async (message, _args, context) => {
   const language = (context.client as GamerClient).i18n.get('en-US')

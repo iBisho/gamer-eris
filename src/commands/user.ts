@@ -1,14 +1,8 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../../lib/structures/GamerEmbed'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel, Role } from 'eris'
-import GamerClient from '../../lib/structures/GamerClient'
-import { GuildSettings, UserSettings } from '../../lib/types/settings'
-
-const splitCamelCase = (s: string) =>
-  s
-    .replace(/([A-Z][a-z]|[A-Z]+(?=[A-Z]|$))/g, ' $1')
-    .replace(/./, m => m.toUpperCase())
-    .trim()
+import GamerClient from '../lib/structures/GamerClient'
+import { GuildSettings, UserSettings } from '../lib/types/settings'
 
 export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, _args, context) => {
   const user = message.mentions.length ? message.mentions[0] : message.author
@@ -35,7 +29,7 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   // If the key is enabled then keep it because the user has this permission
   const permOverview = Object.keys(member.permission.json)
     .filter(key => member.permission.json[key])
-    .map(key => splitCamelCase(key))
+    .map(key => Gamer.helpers.transform.splitCamelCase(key))
 
   const JOINED_VALUE = language(`basic/user:JOINED_VALUE`, {
     memberDate: new Date(user.createdAt).toISOString().substr(0, 10),

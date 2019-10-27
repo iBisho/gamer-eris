@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import { PrivateChannel } from 'eris'
-import GamerClient from '../../../lib/structures/GamerClient'
-import { GuildSettings, UserSettings } from '../../../lib/types/settings'
+import GamerClient from '../lib/structures/GamerClient'
+import { GuildSettings, UserSettings } from '../lib/types/settings'
 
 export default new Command(`afk`, async (message, args, context) => {
   const Gamer = context.client as GamerClient

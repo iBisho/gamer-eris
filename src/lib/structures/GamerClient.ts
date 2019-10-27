@@ -1,7 +1,6 @@
 import { Client, ClientOptions } from 'yuuko'
 import * as i18next from 'i18next'
 import i18n from '../../i18next'
-import { Collector } from '../types/gamer'
 import * as glob from 'glob'
 import Monitor from './Monitor'
 import Database from '../../database/mongodb'
@@ -17,7 +16,7 @@ export default class GamerClient extends Client {
   i18n: Map<string, i18next.TFunction> = new Map()
 
   // Message collectors
-  collectors: Map<string, Collector> = new Map()
+  // collectors: Map<string, Collector> = new Map()
 
   database = new Database()
 

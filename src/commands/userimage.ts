@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../../lib/structures/GamerEmbed'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command(`userimage`, message => {
   const user = message.mentions.length ? message.mentions[0] : message.author

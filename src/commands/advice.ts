@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../../lib/structures/GamerEmbed'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 
 const allAdvice = [
   `**Take time to know yourself.** "Know thyself" said Aristotle. When you know who you are, you can be wise about your goals, your dreams, your standards, your convictions. Knowing who you are allows you to live your life with purpose and meaning.`,

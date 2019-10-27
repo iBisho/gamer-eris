@@ -1,6 +1,8 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../../lib/structures/GamerEmbed'
-import GamerClient from '../../lib/structures/GamerClient'
+import GamerEmbed from '../lib/structures/GamerEmbed'
+import GamerClient from '../lib/structures/GamerClient'
+import { PrivateChannel } from 'eris'
+import { GuildSettings } from '../lib/types/settings'
 
 const inviteGifs = [
   `https://i.gifer.com/9lCY.gif`,
@@ -26,8 +28,14 @@ const inviteGifs = [
   `https://media.giphy.com/media/l2SpQeWGHB9S8pXuo/giphy.gif`
 ]
 
-export default new Command([`invite`, `join`], (message, _args, context) => {
-  const language = (context.client as GamerClient).i18n.get('en-US')
+export default new Command([`invite`, `join`], async (message, _args, context) => {
+  const Gamer = context.client as GamerClient
+  const settings =
+    message.channel instanceof PrivateChannel
+      ? null
+      : ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings)
+
+  const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
   if (!language) return null
 
   const embed = new GamerEmbed()
@@ -44,3 +52,6 @@ export default new Command([`invite`, `join`], (message, _args, context) => {
 
   return message.channel.createMessage({ embed: embed.code })
 })
+export const help = {
+  category: `basic`
+}

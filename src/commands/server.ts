@@ -1,9 +1,9 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../../lib/structures/GamerEmbed'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel } from 'eris'
-import GamerClient from '../../lib/structures/GamerClient'
-import { GuildSettings } from '../../lib/types/settings'
-import Constants from '../../constants/index'
+import GamerClient from '../lib/structures/GamerClient'
+import { GuildSettings } from '../lib/types/settings'
+import Constants from '../constants/index'
 
 export default new Command(
   [`server`, `si`, `sinfo`, `serverinfo`, `gi`, `ginfo`, `guildinfo`],

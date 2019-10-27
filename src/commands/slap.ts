@@ -1,8 +1,8 @@
 import { Command } from 'yuuko'
 import fetch from 'node-fetch'
-import GamerClient from '../../../lib/structures/GamerClient'
-import GamerEmbed from '../../../lib/structures/GamerEmbed'
-import { TenorGif } from '../../../lib/types/tenor'
+import GamerClient from '../lib/structures/GamerClient'
+import GamerEmbed from '../lib/structures/GamerEmbed'
+import { TenorGif } from '../lib/types/tenor'
 
 export default new Command(`slap`, async (message, _args, context) => {
   const language = (context.client as GamerClient).i18n.get('en-US')

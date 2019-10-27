@@ -6,7 +6,7 @@
 	"EXTENDED_LINE_3": "**{{prefix}}help details** ~ List of all command names..",
 	"EXTENDED_LINE_4": "**{{prefix}}help [commandname]** ~ Displays detailed help for the command.",
 	"EXTENDED_LINE_5": "**{{prefix}}help [categoryname]** ~ Displays the category, its commands and the details.",
-	"USAGE": "{{prefix}}help *[all | details | Command Name | Category Name]*",
+	"USAGE": "{{prefix}}help *[all | Command Name | Category Name]*",
 	"ALIASES": "*Be super fast with these short aliases.*",
 	"DM": "📥 | The list of commands you have access to has been sent to your DMs.",
 	"NO_DM": "❌ | You have DMs disabled, I couldn't send you the commands in DMs.",
@@ -39,5 +39,6 @@
 	"LINKS_VALUE": "$t(basic/help:LINKS_VALUE_LINE_1)\n$t(basic/help:LINKS_VALUE_LINE_2)\n$t(basic/help:LINKS_VALUE_LINE_3)",
 	"LINKS_VALUE_LINE_1": "**»** 🌐 **Wiki:** Type {{prefix}}help or check out our wiki: <https://g4m3r.info>.",
 	"LINKS_VALUE_LINE_2": "**»** {{patreon}} **Patreon**: <https://www.patreon.com/g4m3r>",
-	"LINKS_VALUE_LINE_3": "**»** <:g4m3rblue:443416157597466636> **Support Server**: <https://discord.gg/J4NqJ72>"
+	"LINKS_VALUE_LINE_3": "**»** <:g4m3rblue:443416157597466636> **Support Server**: <https://discord.gg/J4NqJ72>",
+	"UNKNOWN": "Unable to find any command named **{{name}}**."
 }
