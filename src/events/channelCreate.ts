@@ -4,14 +4,15 @@ import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import * as i18next from 'i18next'
 import GamerEmbed from '../lib/structures/GamerEmbed'
+import GuildDefaults from '../constants/settings/guild'
 
 export default class extends Event {
   async execute(channel: PrivateChannel | TextChannel | VoiceChannel | CategoryChannel) {
     if (channel instanceof PrivateChannel) return
 
     const Gamer = channel.guild.shard.client as GamerClient
-    const guildSettings = (await Gamer.database.models.guild.findOne({ id: channel.guild.id })) as GuildSettings | null
-    if (!guildSettings) return
+    const guildSettings =
+      ((await Gamer.database.models.guild.findOne({ id: channel.guild.id })) as GuildSettings | null) || GuildDefaults
 
     const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
     if (!language) return
@@ -35,17 +36,26 @@ export default class extends Event {
         )
     }
 
-    this.handleServerlog(channel, guildSettings, language, Gamer)
+    this.handleServerlog(
+      channel,
+      guildSettings.moderation.logs.serverlogs.channels.channelID,
+      guildSettings.moderation.logs.serverlogs.channels.createPublicEnabled,
+      guildSettings.moderation.logs.publiclogsChannelID,
+      language,
+      Gamer
+    )
   }
 
   private async handleServerlog(
     channel: TextChannel | VoiceChannel | CategoryChannel,
-    guildSettings: GuildSettings,
+    channelID: string | undefined,
+    createPublicEnabled: boolean,
+    publiclogsChannelID: string | undefined,
     language: i18next.TFunction,
     Gamer: GamerClient
   ) {
     // First make sure that we even need to send the logs here
-    if (!guildSettings.moderation.logs.serverlogs.channels.channelID) return
+    if (!channelID) return
 
     const NONE = language(`common:NONE`)
     // Create the base embed that first can be sent to public logs
@@ -66,8 +76,8 @@ export default class extends Event {
       .setTimestamp()
 
     // If public logs are enabled properly then send the embed there
-    if (guildSettings.moderation.logs.serverlogs.channels.createPublicEnabled) {
-      const publicLogChannel = channel.guild.channels.get(guildSettings.moderation.logs.publiclogsChannelID)
+    if (createPublicEnabled && publiclogsChannelID) {
+      const publicLogChannel = channel.guild.channels.get(publiclogsChannelID)
       if (publicLogChannel instanceof TextChannel) {
         const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
         if (publicLogChannel && botPerms.has('embedLinks')) publicLogChannel.createMessage({ embed: embed.code })
@@ -77,7 +87,6 @@ export default class extends Event {
     // Fetch the auditlogs and add the author to the embed of the one who made the role and the reason it was made.
     const auditlogs = await channel.guild.getAuditLogs(undefined, undefined, 10)
     if (auditlogs) {
-      // TODO: as unknown cause d.js typings are so bad
       const auditLogEntry = auditlogs.entries.find(e => (e.target as AnyGuildChannel).id === channel.id)
       if (auditLogEntry) {
         embed
@@ -87,7 +96,7 @@ export default class extends Event {
     }
 
     // Send the finalized embed to the log channel
-    const logChannel = channel.guild.channels.get(guildSettings.moderation.logs.serverlogs.channels.channelID)
+    const logChannel = channel.guild.channels.get(channelID)
     if (logChannel instanceof TextChannel) {
       const botPerms = logChannel.permissionsOf(Gamer.user.id)
       if (botPerms.has(`embedLinks`)) logChannel.createMessage({ embed: embed.code })

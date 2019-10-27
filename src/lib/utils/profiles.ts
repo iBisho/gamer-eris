@@ -6,6 +6,8 @@ import { Message, Member, PrivateChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import { MemberSettings, UserSettings } from '../types/settings'
 import Constants from '../../constants/index'
+import MemberDefaults from '../../constants/settings/member'
+import UserDefaults from '../../constants/settings/user'
 
 const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
 const assetsFolder = join(rootFolder, `assets`)
@@ -38,8 +40,10 @@ export default class {
   public async makeCanvas(message: Message, member: Member, Gamer: GamerClient, options?: ProfileCanvasOptions) {
     if (message.channel instanceof PrivateChannel) return
 
-    const memberSettings = (await Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings
-    const userSettings = (await Gamer.database.models.user.findOne({ id: member.id })) as UserSettings
+    const memberSettings =
+      ((await Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings | null) || MemberDefaults
+    const userSettings =
+      ((await Gamer.database.models.user.findOne({ id: member.id })) as UserSettings | null) || UserDefaults
     // Select the background theme & id from their settings if no override options were provided
     const style = (options && options.style) || userSettings.profile.theme
     const backgroundID = (options && options.backgroundID) || userSettings.profile.backgroundID

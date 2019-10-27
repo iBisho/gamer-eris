@@ -4,6 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { UserSettings, GuildSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { GamerEmoji } from '../lib/types/gamer'
+import GuildDefaults from '../constants/settings/guild'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -22,10 +23,10 @@ export default class extends Monitor {
       return []
     })) as GamerEmoji[]
 
-    const settings = (await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
-    })) as GuildSettings | null
-    if (!settings) return
+    const settings =
+      ((await Gamer.database.models.guild.findOne({
+        id: message.channel.guild.id
+      })) as GuildSettings | null) || GuildDefaults
 
     const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
     if (!language) return

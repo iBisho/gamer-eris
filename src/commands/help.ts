@@ -4,6 +4,7 @@ import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import Constants from '../constants/index'
+import GuildDefaults from '../constants/settings/guild'
 
 const categories = [
   { name: `basic`, commands: [`help`, `ping`, `invite`, `server`, `user`] },
@@ -36,7 +37,9 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
     return message.channel.createMessage(`Please use this command on a guild. Thank you!`)
 
   const Gamer = context.client as GamerClient
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings =
+    ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null) ||
+    GuildDefaults
   if (!settings) return
 
   const language = Gamer.i18n.get(settings ? settings.language : 'en-US')

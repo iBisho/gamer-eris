@@ -3,6 +3,8 @@ import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel, Role } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings, UserSettings } from '../lib/types/settings'
+import GuildDefaults from '../constants/settings/guild'
+import UserDefaults from '../constants/settings/user'
 
 export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, _args, context) => {
   const user = message.mentions.length ? message.mentions[0] : message.author
@@ -11,9 +13,10 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   const Gamer = context.client as GamerClient
 
   const guild = message.channel.guild
-  const guildSettings = (await Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null
-  const userSettings = (await Gamer.database.models.user.findOne({ id: user.id })) as UserSettings | null
-  if (!guildSettings || !userSettings) return
+  const guildSettings =
+    ((await Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null) || GuildDefaults
+  const userSettings =
+    ((await Gamer.database.models.user.findOne({ id: user.id })) as UserSettings | null) || UserDefaults
 
   const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
   if (!language) return null

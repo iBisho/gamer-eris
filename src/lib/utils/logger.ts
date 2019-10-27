@@ -5,6 +5,10 @@ export default class {
     console.log(chalk.blueBright(`[${this.getTime()}] => ${text}`))
   }
 
+  green(text: string) {
+    console.log(chalk.greenBright(`[${this.getTime()}] => ${text}`))
+  }
+
   getTime() {
     const now = new Date()
     const hours = now.getHours()

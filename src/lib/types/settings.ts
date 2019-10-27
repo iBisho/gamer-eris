@@ -202,3 +202,163 @@ export interface GuildSettings extends mongoose.Document {
     }
   }
 }
+
+export interface GuildSettingsDefault {
+  language: `en-US`
+  menutime: 2
+  prefix: '.'
+  antiraid: {
+    autoBanNudeBotsEnabled: false
+    alertsEnabled: true
+  }
+  verify: {
+    categoryID: undefined
+    firstMessageJSON: undefined
+    roleID: undefined
+    channelIDs: string[]
+    enabled: false
+    discordVerificationStrictnessEnabled: true
+  }
+  mails: {
+    alertRoleIDs: string[]
+    blockedUserIDs: string[]
+    categoryID: undefined
+    enabled: false
+    supportChannelID: undefined
+  }
+  staff: {
+    adminRoleID: undefined
+    modRoleIDs: string[]
+  }
+  vip: {
+    isVIP: false
+    registeredAt: undefined
+    userID: undefined
+    logoURLs: string[]
+  }
+  tags: {
+    disabledChannels: string[]
+  }
+  modules: string[]
+  moderation: {
+    roleIDs: {
+      autorole: undefined
+      public: string[]
+      mute: undefined
+    }
+    users: {
+      mutedUserIDs: string[]
+    }
+    filters: {
+      profanity: {
+        words: string[]
+        strictWords: string[]
+        enabled: false
+      }
+      capital: 100
+      url: {
+        enabled: false
+        roleIDs: string[]
+        channelIDs: string[]
+        userIDs: string[]
+        urls: string[]
+      }
+    }
+    logs: {
+      modlogsChannelID: undefined
+      publiclogsChannelID: undefined
+      serverlogs: {
+        ignoredRoleIDs: string[]
+        ignoredChannelIDs: string[]
+        roles: {
+          channelID: undefined
+          createPublicEnabled: true
+          deletePublicEnabled: true
+          updatePublicEnabled: true
+          memberPublicEnabled: true
+        }
+        members: {
+          channelID: undefined
+          addPublicEnabled: true
+          removePublicEnabled: false
+          nicknamePublicEnabled: true
+        }
+        bot: {
+          channelID: undefined
+        }
+        messages: {
+          channelID: undefined
+          deletedPublicEnabled: true
+          editedPublicEnabled: true
+        }
+        emojis: {
+          channelID: undefined
+          createPublicEnabled: true
+          deletePublicEnabled: true
+          updatePublicEnabled: true
+        }
+        channels: {
+          channelID: undefined
+          createPublicEnabled: true
+          deletePublicEnabled: true
+          updatePublicEnabled: true
+        }
+      }
+    }
+  }
+  hibye: {
+    welcome: {
+      channelID: undefined
+      dmEnabled: false
+      dmOnly: false
+      message: undefined
+    }
+    goodbye: {
+      channelID: undefined
+      dmEnabled: false
+      dmOnly: false
+      message: undefined
+    }
+  }
+  feedback: {
+    logChannelID: undefined
+    solvedChannelID: undefined
+    rejectedChannelID: undefined
+    solvedMessage: undefined
+    rejectedMessage: undefined
+    idea: {
+      channelID: undefined
+      emojis: {
+        down: '<:g4m3rhug:458994471712063499>'
+        up: '<:g4m3rangry:458758779312275476>'
+        questions: string[]
+      }
+    }
+    bugs: {
+      channelID: undefined
+      emojis: {
+        down: '<:g4m3rhug:458994471712063499>'
+        up: '<:g4m3rangry:458758779312275476>'
+        questions: string[]
+      }
+    }
+  }
+  eventsAdvertiseChannelID: undefined
+  twitch: {
+    current: 0
+    max: 30
+    offlineAlertsEnabled: false
+  }
+  xp: {
+    perMessage: 1
+    perMinutesInVoice: 1
+    channelID: undefined
+    inactiveDaysAllowed: 0
+    daily: 10
+    prizes: {
+      first: undefined
+      second: undefined
+      third: undefined
+    }
+  }
+}

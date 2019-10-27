@@ -3,13 +3,15 @@ import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
 import { GuildSettings } from '../lib/types/settings'
+import GuildDefaults from '../constants/settings/guild'
 
 export default new Command([`invite`, `join`], async (message, _args, context) => {
   const Gamer = context.client as GamerClient
   const settings =
     message.channel instanceof PrivateChannel
-      ? null
-      : ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings)
+      ? GuildDefaults
+      : ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null) ||
+        GuildDefaults
 
   const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
   if (!language) return null

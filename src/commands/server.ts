@@ -2,8 +2,9 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
+import { GuildSettings, GuildSettingsDefault } from '../lib/types/settings'
 import Constants from '../constants/index'
+import GuildDefaults from '../constants/settings/guild'
 
 export default new Command(
   [`server`, `si`, `sinfo`, `serverinfo`, `gi`, `ginfo`, `guildinfo`],
@@ -12,7 +13,9 @@ export default new Command(
     if (message.channel instanceof PrivateChannel) return
 
     const guild = message.channel.guild
-    const settings = (await Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null
+    const settings =
+      ((await Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null) ||
+      (GuildDefaults as GuildSettingsDefault)
 
     const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
     if (!language || !settings) return null
@@ -22,8 +25,8 @@ export default new Command(
       personality => personality.id === (settings ? settings.language : 'en-US')
     )
     const languageName = relevantPersonality ? relevantPersonality.name : `Unknown`
-    const verifyCategory = guild.channels.get(settings.verify.categoryID)
-    const mailCategory = guild.channels.get(settings.mails.categoryID)
+    const verifyCategory = settings.verify.categoryID ? guild.channels.get(settings.verify.categoryID) : undefined
+    const mailCategory = settings.mails.categoryID ? guild.channels.get(settings.mails.categoryID) : undefined
 
     const NONE = language(`common:NONE`)
     const ENABLED = language(`common:ENABLED`)
