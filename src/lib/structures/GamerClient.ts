@@ -16,7 +16,6 @@ import TransformHelper from '../utils/transform'
 import LoggerHelper from '../utils/logger'
 import ScriptsHelper from '../utils/scripts'
 
-
 export default class GamerClient extends Client {
   // i18n solution
   i18n: Map<string, i18next.TFunction> = new Map()
@@ -31,7 +30,7 @@ export default class GamerClient extends Client {
     discord: new DiscordHelper(),
     logger: new LoggerHelper(),
     scripts: new ScriptsHelper(),
-    transform: new TransformHelper(),
+    transform: new TransformHelper()
   }
 
   // All our stores to store files which we can reload easily.

@@ -22,5 +22,6 @@
 	"MAXED": "Discord does not allow more than 50 channels to be created in a category. Please contact a moderator/admin for help.",
 	"VERIFY_CHANNEL": "Creating channel because a user has used the verify command.",
 	"MISSING_CATEGORY": "The verification system category channel has not been set up properly. Please contact a moderator/admin for help.",
-	"TRIGGER_DELETE": "The message was deleted to prevent spam from users using verify command."
+	"TRIGGER_DELETE": "The message was deleted to prevent spam from users using verify command.",
+	"AUTOROLE_ASSIGNED": "Auto-assign role assigned to member."
 }
