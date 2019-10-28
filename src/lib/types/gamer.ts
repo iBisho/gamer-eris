@@ -1,11 +1,4 @@
-export interface GamerEmoji {
-  authorID: string
-  emojiID: string
-  fullCode: string
-  guildID: string
-  id: string
-  name: string
-}
+import { Message } from 'eris'
 
 export interface GamerEmbedObject {
   title?: string
@@ -33,4 +26,12 @@ export interface GamerEmbedObject {
   plaintext?: string
   plainText?: string
   color?: string
+}
+
+export interface Collector {
+  authorID: string
+  createdAt: number
+  channelID: string
+  guildID: string
+  callback(message: Message): Promise<void>
 }

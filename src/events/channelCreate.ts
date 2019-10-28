@@ -46,7 +46,7 @@ export default class extends Event {
     )
   }
 
-  private async handleServerlog(
+  async handleServerlog(
     channel: TextChannel | VoiceChannel | CategoryChannel,
     channelID: string | undefined,
     createPublicEnabled: boolean,

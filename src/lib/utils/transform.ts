@@ -1,5 +1,5 @@
 import { User, Guild } from 'eris'
-import { GamerEmoji } from '../types/gamer'
+import { GamerEmoji } from '../types/database'
 
 const REGEXP = /%AUTHOR%|%AUTHORMENTION%|%USER%|%GUILD%|%USERMENTION%|%USERCOUNT%|%MEMBERCOUNT%|%AUTHORIMAGE%|%USERIMAGE%|%GUILDIMAGE%/gi
 

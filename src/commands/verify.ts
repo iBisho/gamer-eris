@@ -1,26 +1,17 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, Message } from 'eris'
+import { PrivateChannel, Message, TextChannel, CategoryChannel } from 'eris'
 import { GuildSettings } from '../lib/types/settings'
 import GamerClient from '../lib/structures/GamerClient'
-// import * as i18next from 'i18next'
 import { Canvas } from 'canvas-constructor'
-import GuildDefaults from '../constants/settings/guild'
+import { GamerEmoji } from '../lib/types/database'
 
-const end = async (message: Message) => {
-  if (message.channel instanceof PrivateChannel) return
-  // // Check if this is a valid verify channel
-  // const foundChannel = guildSettings.verify.channelIDs.includes(message.channel.id)
-  // if (!foundChannel)
-  //   return message.channel
-  //     .createMessage(language(`verify:INVALID_CHANNEL`))
-  //     .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
-  // // Make sure the role exists
-  // const role = message.channel.guild.roles.get(guildSettings.verify.roleID)
-  // if (!guildSettings.verify.roleID || !role)
-  //   return message.channel
-  //     .createMessage(language(`verify:NO_ROLE`))
-  //     .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
-
+const end = async (
+  message: Message,
+  Gamer: GamerClient,
+  verifyRoleID: string,
+  enforceDiscordVerification: boolean,
+  autoroleID: string | undefined
+) => {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
   const characters = [...alphabet, ...alphabet.toUpperCase(), ...'0123456789']
   const getRandomCharacters = (amount: number) => {
@@ -30,14 +21,8 @@ const end = async (message: Message) => {
     }
     return text
   }
-  console.log(getRandomCharacters(15))
-  const text = []
-  const random = []
-  for (let i = 0; text.length < 6 || random.length < 6; i++) {
-    if (text.length < 6) text.push(characters[Math.floor(Math.random() * characters.length)])
-    else random.push(characters[Math.floor(Math.random() * characters.length)])
-  }
-  console.log(text, random)
+
+  const text = getRandomCharacters(6)
 
   const buffer = new Canvas(400, 100)
     .setColor('#eeeeee')
@@ -48,32 +33,44 @@ const end = async (message: Message) => {
     .setTextFont('60px Arial')
     .rotate(0.01)
     .setStroke('#0088cc')
-    .addStrokeText(random.join(''), 115, 70)
+    .addStrokeText(getRandomCharacters(6), 115, 70)
     .beginPath()
     .setTextFont('60px Arial')
     .rotate(0.03)
     .setStroke('#0088cc')
-    .addStrokeText(random.join(''), 115, 70)
+    .addStrokeText(getRandomCharacters(6), 115, 70)
     .setColor('#0088cc')
     .setTextFont(`56px LatoBold`)
-    .addText(text.join(''), 115, 70)
+    .addText(text, 115, 70)
     .toBuffer()
 
   //to buffer
-  return message.channel.createMessage('Please type the text in the Captcha to unlock access to the server.', {
+  await message.channel.createMessage('Please type the text in the Captcha to unlock access to the server.', {
     file: buffer,
     name: 'captcha.jpg'
   })
-  // remove verify role after successful verification process
-  // await message.member.roles.remove(roleID)
-  // // If the server disabled the discord internal verification add the auto role
-  // if (!enforceDiscordVerification && autoAssignRoleID) {
-  //   await message.member.roles.add(autoAssignRoleID, language(`verify:REASON`))
-  // }
 
-  // Delete the channel
-  // if ((message.channel as GuildChannel).deletable) await message.channel.delete()
-  // return
+  Gamer.collectors.set(message.author.id, {
+    authorID: message.author.id,
+    channelID: message.channel.id,
+    createdAt: Date.now(),
+    guildID: (message.channel as TextChannel).guild.id,
+    callback: async msg => {
+      // The text did not match so it cancel out
+      if (msg.content !== text) return
+      // Success With Captcha
+
+      if (msg.channel instanceof PrivateChannel || !msg.member) return
+      const bot = msg.channel.guild.members.get(Gamer.user.id)
+      if (!bot) return
+      // Remove the verify role
+      msg.member.addRole(verifyRoleID)
+      if (!enforceDiscordVerification && autoroleID) msg.member.addRole(autoroleID)
+
+      // Delete the channel
+      if (bot.permission.has('manageChannels')) await msg.channel.delete()
+    }
+  })
 }
 
 export default new Command(`verify`, async (message, args, context) => {
@@ -83,7 +80,7 @@ export default new Command(`verify`, async (message, args, context) => {
   const guildSettings =
     ((await Gamer.database.models.guild.findOne({
       id: message.channel.guild.id
-    })) as GuildSettings | null) || GuildDefaults
+    })) as GuildSettings | null) || (new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings)
 
   const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
   if (!language) return
@@ -91,8 +88,109 @@ export default new Command(`verify`, async (message, args, context) => {
   const content = args.join(` `)
   switch (content) {
     case `end`:
-      return end(message)
+      // Check if this is a valid verify channel
+      const foundChannel = guildSettings.verify.channelIDs.includes(message.channel.id)
+      if (!foundChannel)
+        return message.channel
+          .createMessage(language(`basic/verify:INVALID_CHANNEL`))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+      // Make sure the role exists
+      const role = guildSettings.verify.roleID
+        ? message.channel.guild.roles.get(guildSettings.verify.roleID)
+        : undefined
+      if (!guildSettings.verify.roleID || !role)
+        return message.channel
+          .createMessage(language(`basic/verify:NO_ROLE`))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+      return end(
+        message,
+        Gamer,
+        role.id,
+        guildSettings.verify.discordVerificationStrictnessEnabled,
+        guildSettings.moderation.roleIDs.autorole
+      )
+    default:
+      // Check if welcome is enabled
+      if (!guildSettings.verify.enabled)
+        return message.channel
+          .createMessage(language(`basic/verify:DISABLED`))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+      // Check if a first message is saved
+      const firstMessageJSON = guildSettings.verify.firstMessageJSON
+
+      if (!firstMessageJSON)
+        return message.channel
+          .createMessage(language(`basic/verify:FIRST_MISSING`))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+
+      // Make a channels name from the users name and removes any invalid characters since discord doesnt support all characters in channel names.
+      const channelName = Gamer.helpers.discord.userToChannelName(message.author.username, message.author.discriminator)
+      // Check if another channels with that name exists in the verify channels category
+      const channelExists = message.channel.guild.channels.find(
+        channel =>
+          channel.name === channelName.toLowerCase() &&
+          channel.parentID === guildSettings.verify.categoryID &&
+          channel instanceof TextChannel
+      ) as TextChannel
+
+      if (channelExists) {
+        // If the channel exists send error
+        if (channelExists.id !== message.channel.id)
+          message.channel
+            .createMessage(language(`basic/verify:ALREADY_STARTED`))
+            .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+        // Send a message in the existing channel to let user know
+        return channelExists.createMessage(
+          language(message.channel.id === channelExists.id ? `basic/verify:INCORRECT_USAGE` : `basic/verify:USE_THIS`, {
+            mention: message.author.mention
+          })
+        )
+      }
+
+      const categoryChannel = guildSettings.verify.categoryID
+        ? message.channel.guild.channels.get(guildSettings.verify.categoryID)
+        : undefined
+      if (!categoryChannel)
+        return message.channel
+          .createMessage(language(`basic/verify:MISSING_CATEGORY`))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+
+      if (
+        categoryChannel &&
+        categoryChannel instanceof CategoryChannel &&
+        categoryChannel.channels &&
+        categoryChannel.channels.size === 50
+      )
+        return message.channel
+          .createMessage(language(`basic/verify:MAXED`))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+
+      const newChannel = await message.channel.guild.createChannel(
+        channelName,
+        0,
+        language(`basic/verify:VERIFY_CHANNEL`),
+        categoryChannel.id
+      )
+
+      // Convert all the %variables%
+      const emojis = (await Gamer.database.models.emoji.find()) as GamerEmoji[]
+      const transformed = Gamer.helpers.transform.variables(
+        guildSettings.verify.firstMessageJSON,
+        message.author,
+        message.channel.guild,
+        message.author,
+        emojis
+      )
+      // Save the channel so if it becomes inactive we will delete it
+      guildSettings.verify.channelIDs.push(newChannel.id)
+      guildSettings.save()
+
+      // Delete the command trigger if possible
+      const bot = message.channel.guild.members.get(Gamer.user.id)
+      if (bot && bot.permission.has(`manageMessages`)) {
+        message.delete(language(`basic/verify:TRIGGER_DELETE`))
+      }
+      // send a message to the new channel
+      return newChannel.createMessage({ content: message.author.mention, embed: JSON.parse(transformed) })
   }
-  return
-  // return message.channel.createMessage({ embed: embed.code })
 })

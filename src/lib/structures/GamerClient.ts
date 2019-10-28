@@ -2,29 +2,36 @@ import { Client, ClientOptions } from 'yuuko'
 import * as i18next from 'i18next'
 import i18n from '../../i18next'
 import * as glob from 'glob'
+import { PrivateChannel, Message } from 'eris'
+import { Collector } from '../types/gamer'
+
 import Monitor from './Monitor'
+import Event from './Event'
+
 import Database from '../../database/mongodb'
+
 import ProfileHelper from '../utils/profiles'
 import DiscordHelper from '../utils/discord'
 import TransformHelper from '../utils/transform'
 import LoggerHelper from '../utils/logger'
-import { PrivateChannel, Message } from 'eris'
-import Event from './Event'
+import ScriptsHelper from '../utils/scripts'
+
 
 export default class GamerClient extends Client {
   // i18n solution
   i18n: Map<string, i18next.TFunction> = new Map()
 
   // Message collectors
-  // collectors: Map<string, Collector> = new Map()
+  collectors: Map<string, Collector> = new Map()
 
   database = new Database()
 
   helpers = {
     profiles: new ProfileHelper(),
     discord: new DiscordHelper(),
+    logger: new LoggerHelper(),
+    scripts: new ScriptsHelper(),
     transform: new TransformHelper(),
-    logger: new LoggerHelper()
   }
 
   // All our stores to store files which we can reload easily.

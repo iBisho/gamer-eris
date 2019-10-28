@@ -3,12 +3,13 @@ import { Message, PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { UserSettings, GuildSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { GamerEmoji } from '../lib/types/gamer'
 import GuildDefaults from '../constants/settings/guild'
+import { GamerEmoji } from '../lib/types/database'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
     if (message.channel instanceof PrivateChannel) return
+
     const authorSettings = (await Gamer.database.models.user.findOne({ id: message.author.id })) as UserSettings | null
     if (authorSettings && authorSettings.afk.enabled) {
       // If this user had the afk enabled, disable it now that they are back since they sent a message

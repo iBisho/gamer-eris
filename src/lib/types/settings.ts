@@ -52,9 +52,9 @@ export interface GuildSettings extends mongoose.Document {
     alertsEnabled: boolean
   }
   verify: {
-    categoryID: string
+    categoryID: string | undefined
     firstMessageJSON: string
-    roleID: string
+    roleID: string | undefined
     channelIDs: string[]
     enabled: boolean
     discordVerificationStrictnessEnabled: boolean
@@ -62,18 +62,18 @@ export interface GuildSettings extends mongoose.Document {
   mails: {
     alertRoleIDs: string[]
     blockedUserIDs: string[]
-    categoryID: string
+    categoryID: string | undefined
     enabled: boolean
-    supportChannelID: string
+    supportChannelID: string | undefined
   }
   staff: {
-    adminRoleID: string
+    adminRoleID: string | undefined
     modRoleIDs: string[]
   }
   vip: {
     isVIP: boolean
     registeredAt: Date
-    userID: string
+    userID: string | undefined
     logoURLs: string[]
   }
   tags: {
@@ -105,40 +105,40 @@ export interface GuildSettings extends mongoose.Document {
       }
     }
     logs: {
-      modlogsChannelID: string
-      publiclogsChannelID: string
+      modlogsChannelID: string | undefined
+      publiclogsChannelID: string | undefined
       serverlogs: {
         ignoredRoleIDs: string[]
         ignoredChannelIDs: string[]
         roles: {
-          channelID: string
+          channelID: string | undefined
           createPublicEnabled: boolean
           deletePublicEnabled: boolean
           updatePublicEnabled: boolean
           memberPublicEnabled: boolean
         }
         members: {
-          channelID: string
+          channelID: string | undefined
           addPublicEnabled: boolean
           removePublicEnabled: boolean
           nicknamePublicEnabled: boolean
         }
         bot: {
-          channelID: string
+          channelID: string | undefined
         }
         messages: {
-          channelID: string
+          channelID: string | undefined
           deletedPublicEnabled: boolean
           editedPublicEnabled: boolean
         }
         emojis: {
-          channelID: string
+          channelID: string | undefined
           createPublicEnabled: boolean
           deletePublicEnabled: boolean
           updatePublicEnabled: boolean
         }
         channels: {
-          channelID: string
+          channelID: string | undefined
           createPublicEnabled: boolean
           deletePublicEnabled: boolean
           updatePublicEnabled: boolean
@@ -148,26 +148,26 @@ export interface GuildSettings extends mongoose.Document {
   }
   hibye: {
     welcome: {
-      channelID: string
+      channelID: string | undefined
       dmEnabled: boolean
       dmOnly: boolean
       message: string
     }
     goodbye: {
-      channelID: string
+      channelID: string | undefined
       dmEnabled: boolean
       dmOnly: boolean
       message: string
     }
   }
   feedback: {
-    logChannelID: string
-    solvedChannelID: string
-    rejectedChannelID: string
+    logChannelID: string | undefined
+    solvedChannelID: string | undefined
+    rejectedChannelID: string | undefined
     solvedMessage: string
     rejectedMessage: string
     idea: {
-      channelID: string
+      channelID: string | undefined
       emojis: {
         down: string
         up: string
@@ -175,7 +175,7 @@ export interface GuildSettings extends mongoose.Document {
       }
     }
     bugs: {
-      channelID: string
+      channelID: string | undefined
       emojis: {
         down: string
         up: string
@@ -183,7 +183,7 @@ export interface GuildSettings extends mongoose.Document {
       }
     }
   }
-  eventsAdvertiseChannelID: string
+  eventsAdvertiseChannelID: string | undefined
   twitch: {
     current: number
     max: number
@@ -192,7 +192,7 @@ export interface GuildSettings extends mongoose.Document {
   xp: {
     perMessage: number
     perMinutesInVoice: number
-    channelID: string
+    channelID: string | undefined
     inactiveDaysAllowed: number
     daily: number
     prizes: {

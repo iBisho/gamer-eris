@@ -15,10 +15,11 @@ export default new Command(`afk`, async (message, args, context) => {
   const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
   if (!language) return null
 
-  const userSettings = (await Gamer.database.models.user.findOne({
+  let userSettings = (await Gamer.database.models.user.findOne({
     id: message.author.id
   })) as UserSettings | null
-  if (!userSettings) return
+  if (!userSettings) userSettings = new Gamer.database.models.user({ id: message.author.id }) as UserSettings
+
   // If no message is provided then toggle the afk status
   if (!args.length) {
     userSettings.afk.enabled = !userSettings.afk.enabled

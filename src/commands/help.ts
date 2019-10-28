@@ -28,7 +28,7 @@ const categories = [
       `userimage`
     ]
   },
-  { name: `settings`, commands: [`afk`] }
+  { name: `settings`, commands: [`afk`, `setverify`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
