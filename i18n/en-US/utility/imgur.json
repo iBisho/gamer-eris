@@ -1,0 +1,19 @@
+{
+	"DESCRIPTION": "Upload an image to imgur and receive a link.",
+	"EXTENDED": "$t(imgur:EXTENDED_LINE_1)\n$t(imgur:EXTENDED_LINE_2)\n$t(imgur:EXTENDED_LINE_3)\n$t(imgur:EXTENDED_LINE_4)\n$t(imgur:EXTENDED_LINE_5)\n$t(imgur:EXTENDED_LINE_6)",
+	"EXTENDED_LINE_1": "**{{prefix}}imgur** ~ uploads the attached image to imgur.",
+	"EXTENDED_LINE_2": "There are two ways to use this command, with a URL or direct image upload through discord.",
+	"EXTENDED_LINE_3": "If you're using URL, it needs to be a proper link to the image.",
+	"EXTENDED_LINE_4": "**» Examples:**",
+	"EXTENDED_LINE_5": "**{{prefix}}imgur https://goo.gl/XY5vbq** will **not** work.",
+	"EXTENDED_LINE_6": "**{{prefix}}imgur http://i.imgur.com/z0LoCtz.png** will work.",
+	"USAGE": "{{prefix}}imgur [url|Discordimage]",
+	"ALIASES": "Imgur does not have any aliases.",
+	"INVALID_URL": "The URL you provided is not a valid URL.",
+	"FAILED": "Failed to upload the file to imgur, please try again.",
+	"LINK": "ℹ » This is your imgur link!: **{{link}}**",
+	"MISSING_PERMISSION": "You do not have any permission to post images in this channel.",
+	"NO_INPUT": "You did not upload any image. Please try again.",
+	"ALREADY_IMGUR": "The url you gave appears to be an imgur link already? 😕 <{{url}}>",
+	"MISSING_URL": "You did not provide a valid URL or a image attachment."
+}
