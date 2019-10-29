@@ -1,11 +1,13 @@
 {
   "DESCRIPTION": "Set the verification settings for your server.",
-  "EXTENDED": "$t(settings/setverify:EXTENDED_LINE_1)\n$t(settings/setverify:EXTENDED_LINE_2)\n\n$t(settings/setverify:EXTENDED_LINE_3)\n$t(settings/setverify:EXTENDED_LINE_4)",
+  "EXTENDED": "$t(settings/setverify:EXTENDED_LINE_1)\n$t(settings/setverify:EXTENDED_LINE_2)\n\n$t(settings/setverify:EXTENDED_LINE_3)\n$t(settings/setverify:EXTENDED_LINE_4)\n$t(settings/setverify:EXTENDED_LINE_5)\n$t(settings/setverify:EXTENDED_LINE_6)",
   "EXTENDED_LINE_1": "**{{prefix}}setverify enable** ~ Enables the verification system on your server.",
   "EXTENDED_LINE_2": "**{{prefix}}setverify disable** ~ Disables the verification system on your server.",
   "EXTENDED_LINE_3": "**{{prefix}}setverify role [@Role]** ~ Sets a role to be used as your main verify channel.",
-  "EXTENDED_LINE_4": "**{{prefix}}setverify setup** ~ ALWAYS USE THIS FIRST TO AUTOMATICALLY SETUP THE SYSTEM BEFORE ALTERING ANY SETTINGS.",
-  "USAGE": "{{prefix}}setverify [enable | disable | channel | role | message] *[#Channel | @Role | JSON Code]*",
+  "EXTENDED_LINE_4": "**{{prefix}}setverify message [JSON Code]** ~ Sets the first message to be sent in the private user channel when they start the process. Use the embed command to perfect your JSON code.",
+  "EXTENDED_LINE_5": "**{{prefix}}setverify internal** ~ Enables/Disables the enforcement of discord internal verification system. **ADVANCED USE**: Avoid disabling this as much as possible.",
+  "EXTENDED_LINE_6": "**{{prefix}}setverify setup** ~ ALWAYS USE THIS FIRST TO AUTOMATICALLY SETUP THE SYSTEM BEFORE ALTERING ANY SETTINGS.",
+  "USAGE": "{{prefix}}setverify [enable | disable | channel | role | message | internal] *[#Channel | @Role | JSON Code]*",
   "ALIASES": "Setverify does not have any aliases",
   "ALREADY_ENABLED": "The verification system is already enabled.",
   "ALREADY_DISABLED": "The verification system is already disabled.",
@@ -22,5 +24,9 @@
   "AMAZING": "Amazing!",
   "PROCESS": "Verification Process",
   "HELP": "If you need help, tag any moderator online.",
-  "REASON": "Channel created for .setverify setup usage."
+  "REASON": "Channel created for setverify setup usage.",
+  "INVALID_JSON_MESSAGE": "The message you provided does not appear to be a valid JSON code. Please make sure you use the embed builder. Use **help embed** shown below to make sure your embed works.",
+  "JSON_MESSAGE_SET": "The JSON message that is sent when a user begins the verification process has been updated.",
+  "INTERNAL_ENABLED": "The internal discord verification will now be enforced by gamer.",
+  "INTERNAL_DISABLED": "WARNING! The internal discord verification has been disabled. Disabling this will automatically assign the autorole to the user once they complete the verification. However, this lets users bypass the internal discord verification which checks if they have their email/phone verification. Disabling this option opens your server up to easy access for alt accounts of muted/banned users to cause trouble in your server. **If you did not mean to do this, please type **{{prefix}}setverify internal**"
 }

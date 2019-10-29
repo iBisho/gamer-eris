@@ -6,7 +6,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 
 export default class extends Monitor {
-  async run(message: Message, Gamer: GamerClient) {
+  async execute(message: Message, Gamer: GamerClient) {
     // If has roles then this monitor is useless. Every user has everyone role so must be more than 1.
     // This will also end up checking if they have the auto role already
     // The message type helps ignore other messages like discord default welcome messages

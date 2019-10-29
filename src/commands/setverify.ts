@@ -14,8 +14,17 @@ export default new Command(`setverify`, async (message, args, context) => {
 
   const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
   if (!language) return
+  // If the user is not an admin cancel out
+  if (
+    !message.member ||
+    !message.member.permission.has('administrator') ||
+    (guildSettings.staff.adminRoleID && !message.member.roles.includes(guildSettings.staff.adminRoleID))
+  )
+    return
 
   const [action] = args
+
+  const helpCommand = Gamer.commandForName('help')
 
   switch (action.toLowerCase()) {
     case 'enable':
@@ -36,6 +45,21 @@ export default new Command(`setverify`, async (message, args, context) => {
       guildSettings.verify.enabled = false
       guildSettings.save()
       return message.channel.createMessage(language(`settings/setverify:DISABLED`))
+    case 'internal':
+      guildSettings.verify.discordVerificationStrictnessEnabled = !guildSettings.verify
+        .discordVerificationStrictnessEnabled
+      guildSettings.save()
+
+      return message.channel.createMessage(
+        language(
+          guildSettings.verify.discordVerificationStrictnessEnabled
+            ? `settings/setverify:INTERNAL_ENABLED`
+            : `settings/setverify:INTERNAL_DISABLED`,
+          {
+            prefix: guildSettings.prefix
+          }
+        )
+      )
     case 'role':
       const [roleID] = message.roleMentions
       const role = message.channel.guild.roles.get(roleID)
@@ -46,6 +70,27 @@ export default new Command(`setverify`, async (message, args, context) => {
 
       guildSettings.verify.roleID = roleID
       return message.channel.createMessage(language(`settings/setverify:ROLE_SET`, { role: role.name }))
+    case 'message':
+      args.shift()
+      const jsonString = args.join(` `)
+      let json: unknown
+      try {
+        json = JSON.parse(jsonString)
+      } catch {
+        json = null
+      }
+      if (!json) {
+        message.channel
+          .createMessage(language(`settings/setverify:INVALID_JSON_MESSAGE`))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+
+        if (!helpCommand) return
+        return helpCommand.execute(message, [`embed`], context)
+      }
+
+      guildSettings.verify.firstMessageJSON = jsonString
+      guildSettings.save()
+      return message.channel.createMessage(language(`settings/setverify:JSON_MESSAGE_SET`))
     case 'setup':
       if (guildSettings.verify.enabled)
         return message.channel
@@ -65,7 +110,6 @@ export default new Command(`setverify`, async (message, args, context) => {
 
   await message.channel.createMessage(language(`settings/setverify:INVALID_USE`))
 
-  const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
   return helpCommand.execute(message, [`setverify`], context)
 })
