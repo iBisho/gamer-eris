@@ -3,24 +3,24 @@ import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel } from 'eris'
+import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`urban`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
 
-  const language = Gamer.i18n.get('en-US')
+  const guildSettings =
+    message.channel instanceof PrivateChannel
+      ? null
+      : ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null)
+  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
   if (!language) return null
 
   // Check all permissions before running command
   if (!(message.channel instanceof PrivateChannel)) {
-    const botPerms = message.channel.permissionsOf(Gamer.user.id)
-    if (!botPerms.has('sendMessages')) return
-
     if (!message.channel.nsfw)
       return message.channel
         .createMessage(language(`fun/urban:NSFW`))
         .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
-
-    if (!botPerms.has('embedLinks')) return message.channel.createMessage(language(`common:NEED_EMBED_PERMS`))
   }
 
   const term = args.join(` `)

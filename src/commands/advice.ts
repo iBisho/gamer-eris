@@ -35,11 +35,11 @@ const allAdvice = [
 export default new Command(`advice`, message => {
   const advice = allAdvice[Math.floor(Math.random() * (allAdvice.length - 1))]
   const embed = new GamerEmbed()
-    .setDescription(advice)
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
       message.author.avatarURL
     )
+    .setDescription(advice)
 
   return message.channel.createMessage({ embed: embed.code })
 })
