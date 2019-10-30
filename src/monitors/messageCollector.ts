@@ -14,6 +14,6 @@ export default class extends Monitor {
     // Delete the collector first
     Gamer.collectors.delete(message.author.id)
     // Run the callback for that collector
-    callback(message)
+    callback(message, collector)
   }
 }
