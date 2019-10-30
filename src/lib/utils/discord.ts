@@ -12,6 +12,18 @@ export default class {
     return botOwners.includes(message.author.id) || botMods.includes(message.author.id)
   }
 
+  isModerator(message: Message, roleIDs: string[]) {
+    return roleIDs.some(id => message.member && message.member.roles.includes(id))
+  }
+
+  // If the roleid is undefined its to also check the admin perm
+  isAdmin(message: Message, roleID?: string) {
+    return (
+      message.member &&
+      (message.member.permission.has('administrator') || (roleID && message.member.roles.includes(roleID)))
+    )
+  }
+
   userToChannelName(username: string, discriminator: string) {
     const tag = `${username}#${discriminator}`
     return tag.replace(/^-+|[^\w-]|-+$/g, ``).toLowerCase()
