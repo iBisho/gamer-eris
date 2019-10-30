@@ -121,20 +121,21 @@ export default {
     rejectedChannelID: undefined,
     solvedMessage: undefined,
     rejectedMessage: undefined,
+    feedbacksSent: 0,
     idea: {
       channelID: undefined,
+      questions: [],
       emojis: {
         down: '<:g4m3rhug:458994471712063499>',
-        up: '<:g4m3rangry:458758779312275476>',
-        questions: []
+        up: '<:g4m3rangry:458758779312275476>'
       }
     },
     bugs: {
       channelID: undefined,
+      questions: [],
       emojis: {
         down: '<:g4m3rhug:458994471712063499>',
-        up: '<:g4m3rangry:458758779312275476>',
-        questions: []
+        up: '<:g4m3rangry:458758779312275476>'
       }
     }
   },

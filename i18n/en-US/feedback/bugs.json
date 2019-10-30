@@ -1,0 +1,19 @@
+{
+  "DESCRIPTION": "Send a bug report to your server staff.",
+  "EXTENDED": "$t(feedback/bugs:EXTENDED_LINE_1)\n$t(feedback/bugs:EXTENDED_LINE_2)\n$t(feedback/bugs:EXTENDED_LINE_3)\n$t(feedback/bugs:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}bugs Your bug report** ~ Begins a series of questions to get all the necessary information to complete a bug report.",
+  "EXTENDED_LINE_4": "**ADVANCED:** If you know all the questions for that servers bug report. Split your answers with | and it will work as well.",
+  "USAGE": "{{prefix}}bugs [Your bug report]",
+  "ALIASES": "{{prefix}}bug",
+  "NOT_ACTIVATED": "The server has not enabled the option to send bug reports. Please contact a server moderator or admin to enable this feature on your server.",
+  "NO_QUESTIONS": "The server has not added any questions for the bug reports. Please contact a server moderator or admin to enable this feature on your server.",
+	"NO_CONTENT": "You did not provide any feedback to send. Please try again and include the message that you would like to send.",
+	"FROM": "Bug Report From {{user}}",
+	"INVALID_CHANNEL": "The channel that is set for receiving bug reports is not valid. Please contact a server moderator or admin to set a valid channel before bug reports can be sent.",
+	"MISSING_SEND": "I am missing the **Send Messages** permission in the bug reports channel.",
+	"MISSING_EMBED": "I am missing the **Embed Links** permission in the bug reports channel.",
+	"MISSING_REACT": "I am missing the **Add Reactions** permission in the bug reports channel.",
+	"MISSING_EXTERNAL": "I am missing the **External Emojis** permission in the bug reports channel.",
+	"MISSING_HISTORY": "I am missing the **Read Message History** permission in the bug reports channel. This permission is needed to add reactions.",
+	"SENT": "Your bug report has been sent, thank you!"
+}

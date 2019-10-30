@@ -166,20 +166,21 @@ export interface GuildSettings extends mongoose.Document {
     rejectedChannelID: string | undefined
     solvedMessage: string
     rejectedMessage: string
+    feedbacksSent: number
     idea: {
       channelID: string | undefined
+      questions: string[]
       emojis: {
         down: string
         up: string
-        questions: string[]
       }
     }
     bugs: {
       channelID: string | undefined
+      questions: string[]
       emojis: {
         down: string
         up: string
-        questions: string[]
       }
     }
   }
@@ -328,18 +329,18 @@ export interface GuildSettingsDefault {
     rejectedMessage: undefined
     idea: {
       channelID: undefined
+      questions: string[]
       emojis: {
         down: '<:g4m3rhug:458994471712063499>'
         up: '<:g4m3rangry:458758779312275476>'
-        questions: string[]
       }
     }
     bugs: {
       channelID: undefined
+      questions: string[]
       emojis: {
         down: '<:g4m3rhug:458994471712063499>'
         up: '<:g4m3rangry:458758779312275476>'
-        questions: string[]
       }
     }
   }

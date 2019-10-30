@@ -1,4 +1,7 @@
 import { Message } from 'eris'
+import GamerEmbed from '../structures/GamerEmbed';
+import { GuildSettings } from './settings';
+import * as i18next from 'i18next';
 
 export interface GamerEmbedObject {
   title?: string
@@ -33,5 +36,14 @@ export interface Collector {
   createdAt: number
   channelID: string
   guildID: string
-  callback(message: Message): Promise<void>
+  data: unknown
+  callback(message: Message, collector: Collector): Promise<void>
+}
+
+
+export interface FeedbackCollectorData {
+  language: i18next.TFunction
+  settings: GuildSettings
+  embed: GamerEmbed
+  question: string
 }

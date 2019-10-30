@@ -185,24 +185,26 @@ export default new mongoose.Schema({
     solvedMessage: String,
     // The message that is sent to the user when their feedback is rejected.
     rejectedMessage: String,
+    // The amount of feedback sent. This is used for users to edit feedback with their specific id number.
+    feedbacksSent: Number,
     idea: {
       // The channel to send the feedback to.
       channelID: String,
+      // The list of questions that the user answers in their feedback
+      questions: [String],
       emojis: {
         // Emoji for downvoting
         down: { type: String, default: '<:g4m3rhug:458994471712063499>' },
         // Emoji for upvoting
-        up: { type: String, default: '<:g4m3rangry:458758779312275476>' },
-        // The list of questions that the user answers in their feedback
-        questions: [String]
+        up: { type: String, default: '<:g4m3rangry:458758779312275476>' }
       }
     },
     bugs: {
       channelID: String,
+      questions: [String],
       emojis: {
         down: { type: String, default: '<:g4m3rhug:458994471712063499>' },
-        up: { type: String, default: '<:g4m3rangry:458758779312275476>' },
-        questions: [String]
+        up: { type: String, default: '<:g4m3rangry:458758779312275476>' }
       }
     }
   },

@@ -29,18 +29,14 @@ export default new Command(`setverify`, async (message, args, context) => {
   switch (action.toLowerCase()) {
     case 'enable':
       if (guildSettings.verify.enabled)
-        return message.channel
-          .createMessage(language(`settings/setverify:ALREADY_ENABLED`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+        return message.channel.createMessage(language(`settings/setverify:ALREADY_ENABLED`))
 
       guildSettings.verify.enabled = true
       guildSettings.save()
       return message.channel.createMessage(language(`settings/setverify:ENABLED`))
     case 'disable':
       if (!guildSettings.verify.enabled)
-        return message.channel
-          .createMessage(language(`settings/setverify:ALREADY_DISABLED`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+        return message.channel.createMessage(language(`settings/setverify:ALREADY_DISABLED`))
 
       guildSettings.verify.enabled = false
       guildSettings.save()
@@ -63,10 +59,7 @@ export default new Command(`setverify`, async (message, args, context) => {
     case 'role':
       const [roleID] = message.roleMentions
       const role = message.channel.guild.roles.get(roleID)
-      if (!role)
-        return message.channel
-          .createMessage(language(`settings/setverify:NEED_ROLE`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+      if (!role) return message.channel.createMessage(language(`settings/setverify:NEED_ROLE`))
 
       guildSettings.verify.roleID = roleID
       return message.channel.createMessage(language(`settings/setverify:ROLE_SET`, { role: role.name }))
@@ -80,9 +73,7 @@ export default new Command(`setverify`, async (message, args, context) => {
         json = null
       }
       if (!json) {
-        message.channel
-          .createMessage(language(`settings/setverify:INVALID_JSON_MESSAGE`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+        message.channel.createMessage(language(`settings/setverify:INVALID_JSON_MESSAGE`))
 
         if (!helpCommand) return
         return helpCommand.execute(message, [`embed`], context)
@@ -93,17 +84,13 @@ export default new Command(`setverify`, async (message, args, context) => {
       return message.channel.createMessage(language(`settings/setverify:JSON_MESSAGE_SET`))
     case 'setup':
       if (guildSettings.verify.enabled)
-        return message.channel
-          .createMessage(language(`settings/setverify:ALREADY_ENABLED`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+        return message.channel.createMessage(language(`settings/setverify:ALREADY_ENABLED`))
 
       const bot = message.channel.guild.members.get(Gamer.user.id)
       if (!bot) return
 
       if (!bot.permission.has('manageRoles') || !bot.permission.has('manageChannels'))
-        return message.channel
-          .createMessage(language(`settings/setverify:MISSING_PERMS`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+        return message.channel.createMessage(language(`settings/setverify:MISSING_PERMS`))
 
       return Gamer.helpers.scripts.createVerificationSystem(Gamer, language, message.channel.guild, guildSettings)
   }

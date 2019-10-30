@@ -12,9 +12,10 @@ import Database from '../../database/mongodb'
 
 import ProfileHelper from '../utils/profiles'
 import DiscordHelper from '../utils/discord'
-import TransformHelper from '../utils/transform'
+import FeedbackHelper from '../utils/feedback'
 import LoggerHelper from '../utils/logger'
 import ScriptsHelper from '../utils/scripts'
+import TransformHelper from '../utils/transform'
 
 export default class GamerClient extends Client {
   // i18n solution
@@ -28,6 +29,7 @@ export default class GamerClient extends Client {
   helpers = {
     profiles: new ProfileHelper(),
     discord: new DiscordHelper(),
+    feedback: new FeedbackHelper(),
     logger: new LoggerHelper(),
     scripts: new ScriptsHelper(),
     transform: new TransformHelper()

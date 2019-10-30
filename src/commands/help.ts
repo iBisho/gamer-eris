@@ -11,6 +11,7 @@ const categories = [
   {
     name: `fun`,
     commands: [
+      `avatar`,
       `baka`,
       `compliment`,
       `cuddle`,
@@ -25,10 +26,12 @@ const categories = [
       `tickle`,
       `advice`,
       `wisdom`,
-      `userimage`
+      `urban`
     ]
   },
-  { name: `settings`, commands: [`afk`, `setverify`] }
+  { name: `settings`, commands: [`afk`, `setverify`] },
+  { name: `utility`, commands: [`imgur`] },
+  { name: `feedback`, commands: [`bugs`, `idea`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {

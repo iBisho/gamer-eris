@@ -3,6 +3,7 @@ import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import i18next = require('i18next')
 import GamerEmbed from '../structures/GamerEmbed'
+import constants from '../../constants'
 
 export default class {
   async createVerificationSystem(
@@ -80,5 +81,75 @@ export default class {
     await verifyChannel.createMessage({ embed: embed.code })
 
     return true
+  }
+
+  async createFeedbackSystem(
+    Gamer: GamerClient,
+    language: i18next.TFunction,
+    guild: Guild,
+    guildSettings: GuildSettings
+  ) {
+    const REASON = language(`settings/setfeedback:SETUP_REASON`)
+    // Create the category first and edit its permissions so that the other two channels can be syned easily
+    const category = await guild.createChannel(`Feedback`, 4, REASON)
+    // Disable send and add reactions for all
+    await category.editPermission(guild.id, 0, 2112, `role`)
+    // Allow the bot to be able to all necessary perms
+    await category.editPermission(Gamer.user.id, 347200, 0, `user`)
+
+    const ideaChannel = await guild.createChannel(
+      language(`settings/setfeedback:IDEA_CHANNEL_NAME`),
+      0,
+      REASON,
+      category.id
+    )
+    const bugsChannel = await guild.createChannel(
+      language(`settings/setfeedback:BUGS_CHANNEL_NAME`),
+      0,
+      REASON,
+      category.id
+    )
+
+    // Update all the feedback settings
+    guildSettings.feedback.idea.channelID = ideaChannel.id
+    guildSettings.feedback.bugs.channelID = bugsChannel.id
+    guildSettings.feedback.idea.emojis.up = constants.emojis.gamerHug
+    guildSettings.feedback.bugs.emojis.up = constants.emojis.gamerHeart
+    guildSettings.feedback.idea.emojis.down = constants.emojis.gamerCry
+    guildSettings.feedback.bugs.emojis.down = constants.emojis.gamerSick
+    guildSettings.feedback.idea.questions = [
+      language(`settings/setfeedback:IDEA_QUESTION_1`),
+      language(`settings/setfeedback:IDEA_QUESTION_2`),
+      language(`settings/setfeedback:IDEA_QUESTION_3`)
+    ]
+    guildSettings.feedback.bugs.questions = [
+      language(`settings/setfeedback:BUGS_QUESTION_1`),
+      language(`settings/setfeedback:BUGS_QUESTION_2`),
+      language(`settings/setfeedback:BUGS_QUESTION_3`)
+    ]
+    guildSettings.save()
+
+    const gamertag = `${Gamer.user.username}#${Gamer.user.discriminator}`
+
+    const embed = new GamerEmbed()
+      .setAuthor(language(`settings/setfeedback:IDEA_FROM`, { user: gamertag }), Gamer.user.avatarURL)
+      .setThumbnail(Gamer.user.avatarURL)
+      .addField(language(`settings/setfeedback:IDEA_QUESTION_1`), language(`settings/setfeedback:IDEA_ANSWER_1`))
+      .addField(language(`settings/setfeedback:IDEA_QUESTION_2`), language(`settings/setfeedback:IDEA_ANSWER_2`))
+      .setImage('https://i.imgur.com/2L9ePkb.png')
+      .setTimestamp()
+
+    const bugsEmbed = new GamerEmbed()
+      .setAuthor(language(`settings/setfeedback:BUGS_FROM`, { user: gamertag }), Gamer.user.avatarURL)
+      .setColor(`#F44A41`)
+      .setThumbnail(Gamer.user.avatarURL)
+      .addField(language(`settings/setfeedback:BUGS_QUESTION_1`), language(`settings/setfeedback:BUGS_ANSWER_1`))
+      .addField(language(`settings/setfeedback:BUGS_QUESTION_2`), language(`settings/setfeedback:BUGS_ANSWER_2`))
+      .setImage(`https://i.imgur.com/lQr66JV.png`)
+      .setTimestamp()
+    // Send example idea
+    ideaChannel.createMessage({ embed: embed.code })
+    // Send example bug
+    bugsChannel.createMessage({ embed: bugsEmbed.code })
   }
 }

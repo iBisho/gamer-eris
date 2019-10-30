@@ -25,14 +25,15 @@ Gamer.globalCommandRequirements = {
     // DM should have necessary perms already
     if (message.channel instanceof PrivateChannel) return true
 
+    // Check if have send messages perms. Check before fetching guild data to potentially save a fetch
+    const botPerms = message.channel.permissionsOf(Gamer.user.id)
+    if (!botPerms.has('readMessages') || !botPerms.has('sendMessages')) return false
+
     const guildSettings = (await Gamer.database.models.guild.findOne({
       id: message.channel.guild.id
     })) as GuildSettings | null
     const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
     if (!language) return false
-    // Check if have send messages perms
-    const botPerms = message.channel.permissionsOf(Gamer.user.id)
-    if (!botPerms.has('sendMessages')) return false
 
     // Check if bot has embed links perms
     if (!botPerms.has('embedLinks')) {

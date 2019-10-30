@@ -5,13 +5,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { Canvas } from 'canvas-constructor'
 import { GamerEmoji } from '../lib/types/database'
 
-const end = async (
-  message: Message,
-  Gamer: GamerClient,
-  verifyRoleID: string,
-  enforceDiscordVerification: boolean,
-  autoroleID: string | undefined
-) => {
+const createCaptcha = async (message: Message) => {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
   const characters = [...alphabet, ...alphabet.toUpperCase(), ...'0123456789']
   const getRandomCharacters = (amount: number) => {
@@ -50,27 +44,7 @@ const end = async (
     name: 'captcha.jpg'
   })
 
-  Gamer.collectors.set(message.author.id, {
-    authorID: message.author.id,
-    channelID: message.channel.id,
-    createdAt: Date.now(),
-    guildID: (message.channel as TextChannel).guild.id,
-    callback: async msg => {
-      // The text did not match so it cancel out
-      if (msg.content !== text) return
-      // Success With Captcha
-
-      if (msg.channel instanceof PrivateChannel || !msg.member) return
-      const bot = msg.channel.guild.members.get(Gamer.user.id)
-      if (!bot) return
-      // Remove the verify role
-      msg.member.addRole(verifyRoleID)
-      if (!enforceDiscordVerification && autoroleID) msg.member.addRole(autoroleID)
-
-      // Delete the channel
-      if (bot.permission.has('manageChannels')) await msg.channel.delete()
-    }
-  })
+  return text
 }
 
 export default new Command(`verify`, async (message, args, context) => {
@@ -102,13 +76,40 @@ export default new Command(`verify`, async (message, args, context) => {
         return message.channel
           .createMessage(language(`basic/verify:NO_ROLE`))
           .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
-      return end(
-        message,
-        Gamer,
-        role.id,
-        guildSettings.verify.discordVerificationStrictnessEnabled,
-        guildSettings.moderation.roleIDs.autorole
-      )
+
+      // Generate and ask the user for the captcha code
+      const captchaCode = await createCaptcha(message)
+      // Create a collector listening for the users response
+      return Gamer.collectors.set(message.author.id, {
+        authorID: message.author.id,
+        channelID: message.channel.id,
+        createdAt: Date.now(),
+        guildID: (message.channel as TextChannel).guild.id,
+        data: {},
+        callback: async msg => {
+          // The text did not match so it cancel out
+          if (msg.content !== captchaCode) {
+            await msg.channel.createMessage(language(`verify:INVALID_CAPTCHA_CODE`, { code: captchaCode }))
+            // Run the command again for them to generate a new captcha code
+            const verifyCommand = Gamer.commandForName(`verify`)
+            if (!verifyCommand) return
+            verifyCommand.execute(msg, [`end`], context)
+            return
+          }
+          // Success With Captcha
+
+          if (msg.channel instanceof PrivateChannel || !msg.member) return
+          const bot = msg.channel.guild.members.get(Gamer.user.id)
+          if (!bot) return
+          // Remove the verify role
+          msg.member.removeRole(role.id)
+          if (!guildSettings.verify.discordVerificationStrictnessEnabled && guildSettings.moderation.roleIDs.autorole)
+            msg.member.addRole(guildSettings.moderation.roleIDs.autorole)
+
+          // Delete the channel
+          if (bot.permission.has('manageChannels')) msg.channel.delete()
+        }
+      })
     default:
       // Check if welcome is enabled
       if (!guildSettings.verify.enabled)
@@ -190,7 +191,10 @@ export default new Command(`verify`, async (message, args, context) => {
       if (bot && bot.permission.has(`manageMessages`)) {
         message.delete(language(`basic/verify:TRIGGER_DELETE`))
       }
+      const embedCode = JSON.parse(transformed)
+      if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
+      embedCode.color = 0x41ebf4
       // send a message to the new channel
-      return newChannel.createMessage({ content: message.author.mention, embed: JSON.parse(transformed) })
+      return newChannel.createMessage({ content: message.author.mention, embed: embedCode })
   }
 })

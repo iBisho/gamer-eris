@@ -73,7 +73,7 @@ export default class GamerEmbed {
     return this
   }
 
-  addField(name: string, value: string | number, inline = false) {
+  addField(name: string, value: string, inline = false) {
     if (this.code.fields.length >= 25) return this
 
     this.code.fields.push({
