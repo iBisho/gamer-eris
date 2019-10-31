@@ -13,6 +13,7 @@ import Database from '../../database/mongodb'
 import ProfileHelper from '../utils/profiles'
 import DiscordHelper from '../utils/discord'
 import FeedbackHelper from '../utils/feedback'
+import LevelsHelper from '../utils/levels'
 import LoggerHelper from '../utils/logger'
 import ScriptsHelper from '../utils/scripts'
 import TransformHelper from '../utils/transform'
@@ -30,6 +31,7 @@ export default class GamerClient extends Client {
     profiles: new ProfileHelper(),
     discord: new DiscordHelper(),
     feedback: new FeedbackHelper(),
+    levels: new LevelsHelper(),
     logger: new LoggerHelper(),
     scripts: new ScriptsHelper(),
     transform: new TransformHelper()
