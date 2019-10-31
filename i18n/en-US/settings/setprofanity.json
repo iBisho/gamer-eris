@@ -1,0 +1,21 @@
+{
+  "DESCRIPTION": "Set the verification settings for your server.",
+  "EXTENDED": "$t(settings/setprofanity:EXTENDED_LINE_1)\n$t(settings/setprofanity:EXTENDED_LINE_2)\n\n$t(settings/setprofanity:EXTENDED_LINE_3)\n$t(settings/setprofanity:EXTENDED_LINE_4)\n$t(settings/setprofanity:EXTENDED_LINE_5)\n$t(settings/setprofanity:EXTENDED_LINE_6)\n$t(settings/setprofanity:EXTENDED_LINE_7)\n$t(settings/setprofanity:EXTENDED_LINE_8)",
+  "EXTENDED_LINE_1": "**{{prefix}}setprofanity enable** ~ Enables the profaity filter on your server.",
+  "EXTENDED_LINE_2": "**{{prefix}}setprofanity disable** ~ Disables the profanity filter on your server.",
+  "EXTENDED_LINE_3": "**{{prefix}}setprofanity add [word]** ~ Adds a word to be filtered.",
+  "EXTENDED_LINE_4": "**{{prefix}}setprofanity remove [word]** ~ Removes a word from being filtered.",
+  "EXTENDED_LINE_5": "**{{prefix}}setprofanity strict add [word]** ~ Adds the word to the filter under the **STRICT** filter.",
+  "EXTENDED_LINE_6": "**{{prefix}}setprofanity strict remove [word]** ~ Removes the word from the filter under the **STRICT** filter.",
+  "EXTENDED_LINE_7": "**{{prefix}}setprofanity setup** ~ Automatically enable and add hundreds of words to the filter.",
+  "EXTENDED_LINE_8": "NOTE: The strict filter will filter out any form of that word.",
+  "USAGE": "{{prefix}}setprofanity [enable | disable | add | remove | strict | setup] *[add | remove] [word]*",
+  "ALIASES": "Setprofanity does not have any aliases",
+  "NO_WORDS": "You did not provide any words to add or remove from the profanity filter.",
+  "ALREADY_ENABLED": "The profanity filter is already enabled.",
+  "ENABLED": "The profanity filter is now enabled.",
+  "ALREADY_DISABLED": "The profanity filter is already disabled.",
+  "DISABLED": "The profanity filter is now disabled.",
+  "ADDED": "The words have been successfully saved into the database. I will make sure to clean out all of these words when anyone types them.",
+  "REMOVED": "The words have been removed from the database. I will no longer filter these words."
+}

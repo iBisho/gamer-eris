@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Set the verification settings for your server.",
+  "EXTENDED": "$t(settings/setcapital:EXTENDED_LINE_1)\n$t(settings/setcapital:EXTENDED_LINE_2)\n\n$t(settings/setcapital:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}setcapital enable** ~ Enables the capital spam filter at 50%.",
+  "EXTENDED_LINE_2": "**{{prefix}}setcapital disable** ~ Disables the capital spam filter on your server.",
+  "EXTENDED_LINE_3": "**{{prefix}}setcapital [# Amount]** ~ Sets the % of capitals that are allowed in a message. Must be between 40-100.",
+  "USAGE": "{{prefix}}setcapital [enable | disable | channel | role | message | internal] *[#Channel | @Role | JSON Code]*",
+  "ALIASES": "Setcapital does not have any aliases"
+}

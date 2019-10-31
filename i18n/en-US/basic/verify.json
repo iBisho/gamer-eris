@@ -24,5 +24,6 @@
 	"MISSING_CATEGORY": "The verification system category channel has not been set up properly. Please contact a moderator/admin for help.",
 	"TRIGGER_DELETE": "The message was deleted to prevent spam from users using verify command.",
 	"AUTOROLE_ASSIGNED": "Auto-assign role assigned to member.",
-	"CHANNEL_DELETE_REASON": "Verify channel went beyond 10 minutes inactive."
+	"CHANNEL_DELETE_REASON": "Verify channel went beyond 10 minutes inactive.",
+	"INVALID_CAPTCHA_CODE": "The code you entered does not match **{{code}}**. Generating a brand new captcha for you..."
 }
