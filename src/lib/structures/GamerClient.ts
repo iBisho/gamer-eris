@@ -54,7 +54,7 @@ export default class GamerClient extends Client {
     profiles: new ProfileHelper(),
     discord: new DiscordHelper(),
     feedback: new FeedbackHelper(),
-    levels: new LevelsHelper(),
+    levels: new LevelsHelper(this),
     logger: new LoggerHelper(),
     scripts: new ScriptsHelper(),
     transform: new TransformHelper()
