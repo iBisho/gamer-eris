@@ -39,8 +39,8 @@ export default new Command(`urban`, async (message, args, context) => {
     .addField(language(`fun/urban:DEFINITION`), highestRated.definition)
     .addField(language(`fun/urban:EXAMPLE`), highestRated.example)
     .addField(language(`fun/urban:AUTHOR`), highestRated.author)
-    .addField(`:thumbsup:`, highestRated.thumbs_up, true)
-    .addField(`:thumbsdown:`, highestRated.thumbs_down, true)
+    .addField(`:thumbsup:`, highestRated.thumbs_up.toString(), true)
+    .addField(`:thumbsdown:`, highestRated.thumbs_down.toString(), true)
     .setFooter(language(`fun/urban:CREDITS`))
 
   return message.channel.createMessage({ embed: embed.code })

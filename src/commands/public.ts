@@ -3,7 +3,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, Role } from 'eris'
 import { GuildSettings } from '../lib/types/settings'
 
-export default new Command(`take`, async (message, args, context) => {
+export default new Command(`public`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 

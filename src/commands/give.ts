@@ -39,19 +39,18 @@ export default new Command(`give`, async (message, args, context) => {
   if (!role) return message.channel.createMessage(language(`roles/give:NEED_ROLE`))
 
   // Check if the bots role is high enough to manage the role
-  const botsRoles = bot.roles.sort(
-    (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
+  const botsHighestRoleID = bot.roles.reduce((prev, next) =>
+    (bot.guild.roles.get(next) as Role).position > (bot.guild.roles.get(prev) as Role).position ? next : prev
   )
-  const [botsHighestRoleID] = botsRoles
   const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
   if (!botsHighestRole) return
   if (botsHighestRole.position < role.position) return message.channel.createMessage(language(`roles/give:BOT_TOO_LOW`))
   // Check if the authors role is high enough to grant this role
   if (!message.member) return
-  const memberRoles = message.member.roles.sort(
-    (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
+
+  const memberHighestRoleID = message.member.roles.reduce((prev, next) =>
+    (bot.guild.roles.get(next) as Role).position > (bot.guild.roles.get(prev) as Role).position ? next : prev
   )
-  const [memberHighestRoleID] = memberRoles
   const memberHighestRole = bot.guild.roles.get(memberHighestRoleID)
   if (!memberHighestRole) return
   if (memberHighestRole.position < role.position)

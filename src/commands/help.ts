@@ -29,9 +29,10 @@ const categories = [
       `urban`
     ]
   },
-  { name: `settings`, commands: [`afk`, `setverify`] },
+  { name: `settings`, commands: [`afk`, `setverify`, `setfeedback`, `setprofanity`, `setcapital`, `setwhitelisted`] },
   { name: `utility`, commands: [`imgur`] },
-  { name: `feedback`, commands: [`bugs`, `idea`] }
+  { name: `feedback`, commands: [`bugs`, `idea`, `feedback`] },
+  { name: `roles`, commands: [`give`, `public`, `role`, `take`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {

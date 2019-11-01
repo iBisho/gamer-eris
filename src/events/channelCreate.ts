@@ -64,7 +64,7 @@ export default class extends Event {
       .addField(language(`moderation/logs:CHANNEL`), channel.mention, true)
       .addField(language(`moderation/logs:CHANNEL_ID`), channel.id, true)
       .addField(language(`moderation/logs:TOTAL_CHANNELS`), channel.guild.channels.size.toString(), true)
-      .addField(language(`moderation/logs:CHANNEL_TYPE`), channel.type, true)
+      .addField(language(`moderation/logs:CHANNEL_TYPE`), channel.type.toString(), true)
       .addField(
         language(`moderation/logs:CHANNEL_CATEGORY`),
         channel.parentID ? (channel.guild.channels.get(channel.parentID) as CategoryChannel).name : NONE,

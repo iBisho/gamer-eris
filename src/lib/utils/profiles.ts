@@ -1,6 +1,4 @@
 import { Canvas } from 'canvas-constructor'
-import { readFile } from 'fs-nextra'
-import { join } from 'path'
 import fetch from 'node-fetch'
 import { Message, Member, PrivateChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
@@ -9,27 +7,7 @@ import Constants from '../../constants/index'
 import MemberDefaults from '../../constants/settings/member'
 import UserDefaults from '../../constants/settings/user'
 
-const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
-const assetsFolder = join(rootFolder, `assets`)
-const profileFolder = join(assetsFolder, `profile`)
-const badgesFolder = join(profileFolder, `badges`)
 const backgroundsURL = `http://cdn.g4m3r.xyz/img/backgrounds/`
-
-const defaults = {
-  whiteRectangle: join(profileFolder, `left_rectangle_white.png`),
-  blackRectangle: join(profileFolder, `left_rectangle_black.png`),
-  blueCircle: join(profileFolder, `blue_circle.png`),
-  xpbar: join(profileFolder, `xp_bar_empty.png`)
-}
-
-const badges = {
-  vip: join(badgesFolder, `vip.png`),
-  nintendo: join(badgesFolder, `nintendo.png`),
-  playstation: join(badgesFolder, `playstation.png`),
-  xbox: join(badgesFolder, `xbox.png`),
-  mobile: join(badgesFolder, `mobile.png`),
-  steam: join(badgesFolder, `steam.png`)
-}
 
 interface ProfileCanvasOptions {
   style?: string
@@ -98,7 +76,8 @@ export default class {
     const darkMode = Constants.profiles.darkMode
 
     const mode = style === `black` ? darkMode : whiteMode
-    const leftBackground = style === `black` ? defaults.blackRectangle : defaults.whiteRectangle
+    const leftBackground =
+      style === `black` ? Gamer.buffers.profiles.blackRectangle : Gamer.buffers.profiles.whiteRectangle
 
     const canvasWidth = backgroundData.type === `premium` ? 952 : 852
     const rectangleStartHeight = 50
@@ -119,10 +98,10 @@ export default class {
     }
 
     // set left background (white or black)
-    canvas.setAntialiasing(`subpixel`).addImage(await readFile(leftBackground), 2, rectangleStartHeight)
+    canvas.setAntialiasing(`subpixel`).addImage(leftBackground, 2, rectangleStartHeight)
 
     // user avatar pic + blue circle
-    canvas.addImage(await readFile(defaults.blueCircle), 40, 80)
+    canvas.addImage(Gamer.buffers.profiles.blueCircle, 40, 80)
 
     const avatarUrl = member.user.dynamicAvatarURL(`png`, 2048)
     try {
@@ -225,17 +204,17 @@ export default class {
 
     // user badges
     if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings.vip.isVIP) {
-      canvas.addRoundImage(await readFile(badges.vip), 45, 455, 50, 50, 25, true)
+      canvas.addRoundImage(Gamer.buffers.profiles.badges.vip, 45, 455, 50, 50, 25, true)
     }
-    // canvas.addRoundImage(await readFile(badges.nintendo), 117, 457, 46, 46, 23, true);
-    // canvas.addRoundImage(await readFile(badges.playstation), 187, 457, 46, 46, 23, true);
-    // canvas.addRoundImage(await readFile(badges.xbox), 257, 457, 46, 46, 23, true);
-    // canvas.addRoundImage(await readFile(badges.mobile), 327, 457, 46, 46, 23, true);
-    // canvas.addRoundImage(await readFile(badges.steam), 397, 457, 46, 46, 23, true);
+    // canvas.addRoundImage(Gamer.buffers.profiles.badges.nintendo, 117, 457, 46, 46, 23, true);
+    // canvas.addRoundImage(Gamer.buffers.profiles.badges.playstation, 187, 457, 46, 46, 23, true);
+    // canvas.addRoundImage(Gamer.buffers.profiles.badges.xbox, 257, 457, 46, 46, 23, true);
+    // canvas.addRoundImage(Gamer.buffers.profiles.badges.mobile, 327, 457, 46, 46, 23, true);
+    // canvas.addRoundImage(Gamer.buffers.profiles.badges.steam, 397, 457, 46, 46, 23, true);
 
     // clan info (logo, text)
     canvas
-      .addCircularImage(await readFile(Constants.profiles.clanDefaults.logo), 555, 480, 50, true)
+      .addCircularImage(Gamer.buffers.botLogo, 555, 480, 50, true)
       .setColor(mode.clanRectFilling)
       .addBeveledRect(590, 435, 200, 90)
       .save()

@@ -30,7 +30,6 @@
     "chalk": "^2.4.2",
     "confusables": "^0.3.1",
     "eris": "^0.10.1",
-    "fs-nextra": "^0.4.5",
     "get-urls": "^9.2.0",
     "i18next": "^17.3.0",
     "i18next-node-fs-backend": "^2.1.3",

@@ -4,6 +4,8 @@ import i18n from '../../i18next'
 import * as glob from 'glob'
 import { PrivateChannel, Message } from 'eris'
 import { Collector } from '../types/gamer'
+import * as fs from 'fs'
+import { join } from 'path'
 
 import Monitor from './Monitor'
 import Event from './Event'
@@ -17,7 +19,28 @@ import LevelsHelper from '../utils/levels'
 import LoggerHelper from '../utils/logger'
 import ScriptsHelper from '../utils/scripts'
 import TransformHelper from '../utils/transform'
+import constants from '../../constants'
 
+const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
+const assetsFolder = join(rootFolder, `assets`)
+const profileFolder = join(assetsFolder, `profile`)
+const badgesFolder = join(profileFolder, `badges`)
+
+const defaults = {
+  whiteRectangle: join(profileFolder, `left_rectangle_white.png`),
+  blackRectangle: join(profileFolder, `left_rectangle_black.png`),
+  blueCircle: join(profileFolder, `blue_circle.png`),
+  xpbar: join(profileFolder, `xp_bar_empty.png`)
+}
+
+const badges = {
+  vip: join(badgesFolder, `vip.png`),
+  nintendo: join(badgesFolder, `nintendo.png`),
+  playstation: join(badgesFolder, `playstation.png`),
+  xbox: join(badgesFolder, `xbox.png`),
+  mobile: join(badgesFolder, `mobile.png`),
+  steam: join(badgesFolder, `steam.png`)
+}
 export default class GamerClient extends Client {
   // i18n solution
   i18n: Map<string, i18next.TFunction> = new Map()
@@ -37,12 +60,28 @@ export default class GamerClient extends Client {
     transform: new TransformHelper()
   }
 
+  buffers = {
+    botLogo: fs.readFileSync(constants.profiles.clanDefaults.logo),
+    profiles: {
+      blackRectangle: fs.readFileSync(defaults.blackRectangle),
+      whiteRectangle: fs.readFileSync(defaults.whiteRectangle),
+      blueCircle: fs.readFileSync(defaults.blueCircle),
+      xpbar: fs.readFileSync(defaults.xpbar),
+      badges: {
+        vip: fs.readFileSync(badges.vip),
+        nintendo: fs.readFileSync(badges.nintendo),
+        playstation: fs.readFileSync(badges.playstation),
+        xbox: fs.readFileSync(badges.xbox),
+        mobile: fs.readFileSync(badges.mobile),
+        steam: fs.readFileSync(badges.steam)
+      }
+    }
+  }
+
   // All our stores to store files which we can reload easily.
   events: Map<string, Event> = new Map()
   monitors: Map<string, Monitor> = new Map()
-  // inhibitors: Map<string, Inhibitor> = new Map()
-  // finalizers: Map<string, Finalizer> = new Map()
-  // functions: Map<string, HelperFunctions> = new Map()
+
   constructor(options: ClientOptions) {
     super(options)
 
