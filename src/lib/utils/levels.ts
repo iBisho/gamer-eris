@@ -7,90 +7,112 @@ import * as i18next from 'i18next'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
-  memberCooldowns = new Set()
+  memberCooldowns = new Map<string, number>()
   // Holds the userID for those that are in cooldown in global xp system
-  userCooldowns = new Set()
+  userCooldowns = new Map<string, number>()
 
-  // async addXP(guild: Guild, member: Member, xpAmountToAdd: number, isGlobal = false, overrideCooldown = false) {
-  //   // The override cooldown is useful for XP command when you want to force add XP
-  //   if (!overrideCooldown) {
-  //     // If the member is in cooldown cancel out
-  //     const isInCooldown = this.checkCooldown(member, isGlobal)
-  //     if (isInCooldown) return null
-  //   }
+  Gamer: GamerClient
 
-  //   // Sync settings first so we can pluck the latest values
-  //   if (isGlobal) await member.user.settings.sync()
-  //   else await member.settings.sync()
+  constructor(client: GamerClient) {
+    this.Gamer = client
+  }
 
-  //   // Get the relevant values
-  //   const [currentXP, currentLevel] = (isGlobal
-  //     ? member.user.settings.pluck(UserSettings.Leveling.XP, UserSettings.Leveling.Level)
-  //     : member.settings.pluck(MemberSettings.Leveling.XP, MemberSettings.Leveling.Level)) as [number, number]
+  // The override cooldown is useful for XP command when you want to force add XP like daily command
+  async addLocalXP(member: Member, reason: string, xpAmountToAdd = 1, overrideCooldown = false) {
+    // If the member is in cooldown cancel out
+    if (!overrideCooldown && this.checkCooldown(member)) return
 
-  //   const totalXP = currentXP + xpAmountToAdd
+    const memberSettings = ((await this.Gamer.database.models.member.findOne({ id: member.id })) ||
+      new this.Gamer.database.models.member({ id: member.id })) as MemberSettings
 
-  //   // Update his relevant XP
-  //   if (isGlobal) await member.user.settings.update(UserSettings.Leveling.XP, totalXP)
-  //   else await member.settings.update(MemberSettings.Leveling.XP, totalXP)
+    const totalXP = memberSettings.leveling.xp + xpAmountToAdd
+    memberSettings.leveling.xp = totalXP
 
-  //   // Update Level for the member locally
-  //   const nextLevelInfo = this.client.helpers.constants.levels.find(lvl => lvl.level === currentLevel + 1)
-  //   if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) return null
-  //   const newLevel = this.client.helpers.constants.levels.find(level => level.xpNeeded > totalXP)
-  //   // Past max xp for highest level so just no more levelups needed
-  //   if (!newLevel) return null
-  //   // Add one level and set the XP to whatever is left
-  //   if (isGlobal) {
-  //     const userCurrency = member.user.settings.get(UserSettings.Leveling.Currency) as number
-  //     await member.user.settings.update([
-  //       [UserSettings.Leveling.Level, newLevel.level],
-  //       [UserSettings.Leveling.XP, totalXP],
-  //       [UserSettings.Leveling.Currency, userCurrency + 25 + newLevel.level]
-  //     ])
-  //   } else {
-  //     await member.settings.update([
-  //       [MemberSettings.Leveling.Level, newLevel.level],
-  //       [MemberSettings.Leveling.XP, totalXP]
-  //     ])
-  //   }
+    // Get the details on the users next level
+    const nextLevelInfo = constants.levels.find(lvl => lvl.level === memberSettings.leveling.level + 1)
+    // User did not level up
+    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) {
+      memberSettings.save()
+      return
+    }
 
-  //   return isGlobal ? null : this.handleGuildLevelUp(guild, member, newLevel)
-  // }
+    // User did level up
 
-  // async handleGuildLevelUp(guild: Guild, member: Member, newLevel: GamerLevel) {
-  //   if (member.manageable) {
-  //     // Fetch all custom guild levels data
-  //     const allGuildLevels = (await this.client.providers.default
-  //       .getAllIndex(`levels`, guild.id, `guildID`)
-  //       .catch(() => [])) as Level[]
+    const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
+    // Past max xp for highest level so just no more levelups needed
+    if (!newLevel) {
+      memberSettings.save()
+      return
+    }
 
-  //     if (allGuildLevels) {
-  //       // Find if this level has any custom data
-  //       const levelData = allGuildLevels.find(data => data.level === newLevel.level)
+    // Add one level and set the XP to whatever is left
+    memberSettings.leveling.level = newLevel.level
+    memberSettings.save()
 
-  //       // If it has roles to give then give them to the user
-  //       if (levelData && levelData.roleIDs.length)
-  //         await this.client.helpers.discord.addRoles(member, levelData.roleIDs, `Level up role rewarded.`)
-  //     }
-  //   }
+    // Now we need to check if the user went up a level
 
-  //   // Now see if there is a valid channel in the settings
-  //   const [levelUpChannel] = (await guild.settings.resolve(GuildSettings.Leveling.LevelUpChannelID)) as [TextChannel]
-  //   if (!levelUpChannel || !levelUpChannel.postEmbedable) return null
+    // Fetch all custom guild levels data
+    const allGuildLevels = (await this.Gamer.database.models.level.find({ guildID: member.guild.id })) as GamerLevel[]
+    if (!allGuildLevels) return
+    // Find if this level has any custom data
+    const levelData = allGuildLevels.find(data => data.level === newLevel.level)
+    // If it has roles to give then give them to the user
+    if (!levelData || !levelData.roleIDs.length) return
 
-  //   // Create a embed to tell the user they leveled up
-  //   const embed = new GamerEmbed()
-  //     .setAuthor(member.displayName, member.user.displayAvatarURL())
-  //     .setDescription(guild.language.get(`LEVEL_DEFAULT_LEVEL_MESSAGE`))
-  //   // Send the embed to the level up channel
-  //   return levelUpChannel.send(embed)
-  // }
+    const bot = member.guild.members.get(this.Gamer.user.id)
+    if (!bot) return
+    // Check if the bots role is high enough to manage the role
+    const botsRoles = bot.roles.sort(
+      (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
+    )
+    const [botsHighestRoleID] = botsRoles
+    const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
+    if (!botsHighestRole) return
 
-  async removeXP(Gamer: GamerClient, member: Member, xpAmountToRemove: number, language: i18next.TFunction) {
+    for (const roleID of levelData.roleIDs) {
+      const role = member.guild.roles.get(roleID)
+      // If the role is too high for the bot to manage skip
+      if (!role || botsHighestRole.position <= role.position) continue
+
+      member.addRole(roleID, reason)
+    }
+  }
+
+  async addGlobalXP(member: Member, xpAmountToAdd = 1) {
+    if (this.checkCooldown(member)) return
+
+    const userSettings = ((await this.Gamer.database.models.user.findOne({ id: member.id })) ||
+      new this.Gamer.database.models.user({ id: member.id })) as MemberSettings
+
+    const totalXP = userSettings.leveling.xp + xpAmountToAdd
+    userSettings.leveling.xp = totalXP
+
+    // Get the details on the users next level
+    const nextLevelInfo = constants.levels.find(lvl => lvl.level === userSettings.leveling.level + 1)
+    // User did not level up
+    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) {
+      userSettings.save()
+      return
+    }
+
+    // User did level up
+
+    const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
+    // Past max xp for highest level so just no more levelups needed
+    if (!newLevel) {
+      userSettings.save()
+      return
+    }
+
+    // Add one level
+    userSettings.leveling.level = newLevel.level
+    userSettings.save()
+  }
+
+  async removeXP(member: Member, xpAmountToRemove: number, language: i18next.TFunction) {
     if (xpAmountToRemove < 1) return
 
-    const settings = (await Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings | null
+    const settings = (await this.Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings | null
     if (!settings) return
 
     // If the XP is less than 0 after removing then set it to 0
@@ -113,11 +135,11 @@ export default class {
 
     // Need to check if roles need to be updated now for level rewards
     const oldLevel = constants.levels.find(level => level.level === settings.leveling.level)
-    const bot = member.guild.members.get(Gamer.user.id)
+    const bot = member.guild.members.get(this.Gamer.user.id)
     if (!oldLevel || !bot || !bot.permission.has('manageRoles')) return
 
     // Fetch all custom guild levels data
-    const allGuildLevels = (await Gamer.database.models.level.find({ guildID: member.guild.id })) as GamerLevel[] | null
+    const allGuildLevels = (await this.Gamer.database.models.level.find({ guildID: member.guild.id })) as GamerLevel[]
     if (!allGuildLevels) return
     // Find if this level has any custom data
     const levelData = allGuildLevels.find(data => data.level === oldLevel.level)
@@ -141,27 +163,27 @@ export default class {
     }
   }
 
-  // checkCooldown(member: Member, isGlobal: boolean) {
-  //   if (isGlobal) {
-  //     // If the user is on cooldown return true
-  //     if (this.userCooldowns.has(member.id)) return true
-  //     // If the member is not on cooldown we need to add them
-  //     this.userCooldowns.add(member.id)
-  //     // After one minute remove them from the cooldowns
-  //     setTimeout(() => this.userCooldowns.delete(member.id), 60000)
-  //     // Return false because user is not on cooldown
-  //     return false
-  //   }
+  checkCooldown(member: Member, isGlobal = false) {
+    const now = Date.now()
+    if (isGlobal) {
+      // If the user is on cooldown return true
+      const userCooldown = this.userCooldowns.get(member.id)
+      if (userCooldown && now - userCooldown < 60000) return true
+      // If the member is not on cooldown we need to add them or is older than 1 minute
+      this.userCooldowns.set(member.id, now)
+      // Return false because user is not on cooldown
+      return false
+    }
 
-  //   // This is for a SERVER XP system
+    // This is for a SERVER XP system
 
-  //   // Since the member id are not unique per guild we add guild id to make it unique
-  //   const uniqueMemberID = member.uniqueMemberID
-  //   // If the member is on cooldown return true.
-  //   if (this.memberCooldowns.has(uniqueMemberID)) return true
-  //   // If the member is not on cooldown we need to add them
-  //   this.memberCooldowns.add(uniqueMemberID)
-  //   // After 1 minute we can remove this members cooldown
-  //   setTimeout(() => this.memberCooldowns.delete(uniqueMemberID), 60000)
-  // }
+    // Since the member id are not unique per guild we add guild id to make it unique
+    const uniqueMemberID = `${member.guild.id}.${member.id}`
+    // If the member is on cooldown return true
+    const memberCooldown = this.memberCooldowns.get(uniqueMemberID)
+    if (memberCooldown && now - memberCooldown < 60000) return true
+    // If the member is not on cooldown we need to add them
+    this.memberCooldowns.set(uniqueMemberID, now)
+    return false
+  }
 }
