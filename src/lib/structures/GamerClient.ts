@@ -26,21 +26,21 @@ const assetsFolder = join(rootFolder, `assets`)
 const profileFolder = join(assetsFolder, `profile`)
 const badgesFolder = join(profileFolder, `badges`)
 
-const defaults = {
+const assetsPaths = {
   whiteRectangle: join(profileFolder, `left_rectangle_white.png`),
   blackRectangle: join(profileFolder, `left_rectangle_black.png`),
   blueCircle: join(profileFolder, `blue_circle.png`),
-  xpbar: join(profileFolder, `xp_bar_empty.png`)
+  xpbar: join(profileFolder, `xp_bar_empty.png`),
+  badges: {
+    vip: join(badgesFolder, `vip.png`),
+    nintendo: join(badgesFolder, `nintendo.png`),
+    playstation: join(badgesFolder, `playstation.png`),
+    xbox: join(badgesFolder, `xbox.png`),
+    mobile: join(badgesFolder, `mobile.png`),
+    steam: join(badgesFolder, `steam.png`)
+  }
 }
 
-const badges = {
-  vip: join(badgesFolder, `vip.png`),
-  nintendo: join(badgesFolder, `nintendo.png`),
-  playstation: join(badgesFolder, `playstation.png`),
-  xbox: join(badgesFolder, `xbox.png`),
-  mobile: join(badgesFolder, `mobile.png`),
-  steam: join(badgesFolder, `steam.png`)
-}
 export default class GamerClient extends Client {
   // i18n solution
   i18n: Map<string, i18next.TFunction> = new Map()
@@ -63,17 +63,17 @@ export default class GamerClient extends Client {
   buffers = {
     botLogo: fs.readFileSync(constants.profiles.clanDefaults.logo),
     profiles: {
-      blackRectangle: fs.readFileSync(defaults.blackRectangle),
-      whiteRectangle: fs.readFileSync(defaults.whiteRectangle),
-      blueCircle: fs.readFileSync(defaults.blueCircle),
-      xpbar: fs.readFileSync(defaults.xpbar),
+      blackRectangle: fs.readFileSync(assetsPaths.blackRectangle),
+      whiteRectangle: fs.readFileSync(assetsPaths.whiteRectangle),
+      blueCircle: fs.readFileSync(assetsPaths.blueCircle),
+      xpbar: fs.readFileSync(assetsPaths.xpbar),
       badges: {
-        vip: fs.readFileSync(badges.vip),
-        nintendo: fs.readFileSync(badges.nintendo),
-        playstation: fs.readFileSync(badges.playstation),
-        xbox: fs.readFileSync(badges.xbox),
-        mobile: fs.readFileSync(badges.mobile),
-        steam: fs.readFileSync(badges.steam)
+        vip: fs.readFileSync(assetsPaths.badges.vip),
+        nintendo: fs.readFileSync(assetsPaths.badges.nintendo),
+        playstation: fs.readFileSync(assetsPaths.badges.playstation),
+        xbox: fs.readFileSync(assetsPaths.badges.xbox),
+        mobile: fs.readFileSync(assetsPaths.badges.mobile),
+        steam: fs.readFileSync(assetsPaths.badges.steam)
       }
     }
   }

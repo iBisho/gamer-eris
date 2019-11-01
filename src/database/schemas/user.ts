@@ -4,7 +4,7 @@ export default new mongoose.Schema({
   id: String,
   profile: {
     // The id number of the background that the user has equipped
-    backgroundID: { type: { type: Number, default: 52 }, default: 0 },
+    backgroundID: { type: Number, default: 52 },
     // The theme color of the profile card
     theme: { type: String, default: `white` }
   },

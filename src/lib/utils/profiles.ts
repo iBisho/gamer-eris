@@ -206,11 +206,11 @@ export default class {
     if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings.vip.isVIP) {
       canvas.addRoundImage(Gamer.buffers.profiles.badges.vip, 45, 455, 50, 50, 25, true)
     }
-    // canvas.addRoundImage(Gamer.buffers.profiles.badges.nintendo, 117, 457, 46, 46, 23, true);
-    // canvas.addRoundImage(Gamer.buffers.profiles.badges.playstation, 187, 457, 46, 46, 23, true);
-    // canvas.addRoundImage(Gamer.buffers.profiles.badges.xbox, 257, 457, 46, 46, 23, true);
-    // canvas.addRoundImage(Gamer.buffers.profiles.badges.mobile, 327, 457, 46, 46, 23, true);
-    // canvas.addRoundImage(Gamer.buffers.profiles.badges.steam, 397, 457, 46, 46, 23, true);
+    canvas.addRoundImage(Gamer.buffers.profiles.badges.nintendo, 120, 455, 50, 50, 25, true)
+    canvas.addRoundImage(Gamer.buffers.profiles.badges.playstation, 195, 455, 50, 50, 25, true)
+    canvas.addRoundImage(Gamer.buffers.profiles.badges.xbox, 270, 455, 50, 50, 25, true)
+    canvas.addRoundImage(Gamer.buffers.profiles.badges.mobile, 345, 455, 50, 50, 25, true)
+    canvas.addRoundImage(Gamer.buffers.profiles.badges.steam, 420, 455, 50, 50, 25, true)
 
     // clan info (logo, text)
     canvas
