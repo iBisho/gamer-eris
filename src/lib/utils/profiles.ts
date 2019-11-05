@@ -7,8 +7,6 @@ import Constants from '../../constants/index'
 import MemberDefaults from '../../constants/settings/member'
 import UserDefaults from '../../constants/settings/user'
 
-const backgroundsURL = `http://cdn.g4m3r.xyz/img/backgrounds/`
-
 interface ProfileCanvasOptions {
   style?: string
   backgroundID?: number
@@ -19,7 +17,9 @@ export default class {
     if (message.channel instanceof PrivateChannel) return
 
     const memberSettings =
-      ((await Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings | null) || MemberDefaults
+      ((await Gamer.database.models.member.findOne({
+        id: `${member.guild.id}.${member.id}`
+      })) as MemberSettings | null) || MemberDefaults
     const userSettings =
       ((await Gamer.database.models.user.findOne({ id: member.id })) as UserSettings | null) || UserDefaults
     // Select the background theme & id from their settings if no override options were provided
@@ -31,8 +31,6 @@ export default class {
       Constants.profiles.backgrounds.find(b => b.id === backgroundID) ||
       Constants.profiles.backgrounds.find(b => b.id === 1)
     if (!backgroundData) return
-
-    const backgroundBuffer = await fetch(`${backgroundsURL}${backgroundData.url}`).then(res => res.buffer())
 
     // SERVER XP DATA
     const serverLevelDetails = Constants.levels.find(lev => lev.level === (memberSettings.leveling.level || 1))
@@ -79,22 +77,21 @@ export default class {
     const leftBackground =
       style === `black` ? Gamer.buffers.profiles.blackRectangle : Gamer.buffers.profiles.whiteRectangle
 
-    const canvasWidth = backgroundData.type === `premium` ? 952 : 852
+    const canvasWidth = backgroundData.vipNeeded ? 952 : 852
     const rectangleStartHeight = 50
 
     const canvas = new Canvas(canvasWidth, 581)
 
     // SET USER OR DEFAULT BACKGROUND
-    if (backgroundData.type === `premium`) {
-      canvas.setAntialiasing(`subpixel`).addImage(backgroundBuffer, 345, 0)
+    if (backgroundData.vipNeeded) {
+      canvas.setAntialiasing(`subpixel`).addImage(backgroundData.buffer, 345, 0)
     } else {
-      canvas.setAntialiasing(`subpixel`).addBeveledImage(backgroundBuffer, 345, 50, 457, 481, 25, true)
+      canvas.setAntialiasing(`subpixel`).addBeveledImage(backgroundData.buffer, 345, 50, 457, 481, 25, true)
     }
 
     if (backgroundData.url.match(`aov`)) {
       // implementation to put aov logo on the aov backgrounds
-      const aovLogo = await fetch(`${backgroundsURL}${Constants.profiles.aovLogo}`).then(res => res.buffer())
-      canvas.setAntialiasing(`subpixel`).addImage(aovLogo, 670, 65)
+      canvas.setAntialiasing(`subpixel`).addImage(backgroundData.buffer, 670, 65)
     }
 
     // set left background (white or black)
