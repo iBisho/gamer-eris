@@ -81,18 +81,9 @@ export default class {
     const rectangleStartHeight = 50
 
     const canvas = new Canvas(canvasWidth, 581)
-
     // SET USER OR DEFAULT BACKGROUND
-    if (backgroundData.vipNeeded) {
-      canvas.setAntialiasing(`subpixel`).addImage(backgroundData.buffer, 345, 0)
-    } else {
-      canvas.setAntialiasing(`subpixel`).addBeveledImage(backgroundData.buffer, 345, 50, 457, 481, 25, true)
-    }
-
-    if (backgroundData.url.match(`aov`)) {
-      // implementation to put aov logo on the aov backgrounds
-      canvas.setAntialiasing(`subpixel`).addImage(backgroundData.buffer, 670, 65)
-    }
+    if (backgroundData.vipNeeded) canvas.setAntialiasing(`subpixel`).addImage(backgroundData.buffer, 345, 0)
+    else canvas.setAntialiasing(`subpixel`).addBeveledImage(backgroundData.buffer, 345, 50, 457, 481, 25, true)
 
     // set left background (white or black)
     canvas.setAntialiasing(`subpixel`).addImage(leftBackground, 2, rectangleStartHeight)
@@ -203,11 +194,12 @@ export default class {
     if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings.vip.isVIP) {
       canvas.addRoundImage(Gamer.buffers.profiles.badges.vip, 45, 455, 50, 50, 25, true)
     }
-    canvas.addRoundImage(Gamer.buffers.profiles.badges.nintendo, 120, 455, 50, 50, 25, true)
-    canvas.addRoundImage(Gamer.buffers.profiles.badges.playstation, 195, 455, 50, 50, 25, true)
-    canvas.addRoundImage(Gamer.buffers.profiles.badges.xbox, 270, 455, 50, 50, 25, true)
-    canvas.addRoundImage(Gamer.buffers.profiles.badges.mobile, 345, 455, 50, 50, 25, true)
-    canvas.addRoundImage(Gamer.buffers.profiles.badges.steam, 420, 455, 50, 50, 25, true)
+    // Spots to add user custom badges
+    //   .addRoundImage(Gamer.buffers.profiles.badges.nintendo, 120, 455, 50, 50, 25, true)
+    //   .addRoundImage(Gamer.buffers.profiles.badges.playstation, 195, 455, 50, 50, 25, true)
+    //   .addRoundImage(Gamer.buffers.profiles.badges.xbox, 270, 455, 50, 50, 25, true)
+    //   .addRoundImage(Gamer.buffers.profiles.badges.mobile, 345, 455, 50, 50, 25, true)
+    //   .addRoundImage(Gamer.buffers.profiles.badges.steam, 420, 455, 50, 50, 25, true)
 
     // clan info (logo, text)
     canvas
@@ -215,7 +207,6 @@ export default class {
       .setColor(mode.clanRectFilling)
       .addBeveledRect(590, 435, 200, 90)
       .save()
-
       .restore()
       .setTextAlign(`left`)
       .setColor(mode.clanName)
