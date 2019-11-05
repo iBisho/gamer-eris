@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose'
 
 export default new mongoose.Schema({
   id: String,
+  userID: { type: String, required: true },
   profile: {
     // The id number of the background that the user has equipped
     backgroundID: { type: Number, default: 52 },

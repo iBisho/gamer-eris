@@ -1,7 +1,9 @@
 import * as mongoose from 'mongoose'
 
 export default new mongoose.Schema({
-  id: String,
+  id: { type: String, required: true },
+  guildID: { type: String, required: true },
+  memberID: { type: String, required: true },
   nickname: String,
   leveling: {
     // The current XP

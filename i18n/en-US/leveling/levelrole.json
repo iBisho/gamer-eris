@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Manage role rewards for your servers leveling system.",
+	"EXTENDED": "$t(levelrole:EXTENDED_LINE_1)\n$t(levelrole:EXTENDED_LINE_2)\n\n$t(levelrole:EXTENDED_LINE_3)",
+	"EXTENDED_LINE_1": "**{{prefix}}levelrole [#] [role]** ~ Gives a role when the user achieves this level.",
+	"EXTENDED_LINE_2": "**{{prefix}}levelrole [#] [role] [role2]** ~ Gives multiple roles to a user when they achieve a level.",
+	"EXTENDED_LINE_3": "• Advanced: You can use the unique rolesets to make sure that a user only has 1 level role at any time.",
+	"USAGE": "{{prefix}}levelrole [Level Number] [Roles]",
+	"ALIASES": "Levelrole does not have any aliases.",
+	"SUCCESS": "The role rewards for level #{{level}} have been updated to {{roles}}."
+}

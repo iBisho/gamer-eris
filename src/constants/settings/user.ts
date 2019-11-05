@@ -1,4 +1,5 @@
 export default {
+  userID: '',
   profile: {
     backgroundID: 52,
     theme: `white`

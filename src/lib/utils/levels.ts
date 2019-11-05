@@ -3,7 +3,6 @@ import { MemberSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { GamerLevel } from '../types/gamer'
-import * as i18next from 'i18next'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -23,7 +22,7 @@ export default class {
     if (!overrideCooldown && this.checkCooldown(member)) return
 
     const memberSettings = ((await this.Gamer.database.models.member.findOne({ id: member.id })) ||
-      new this.Gamer.database.models.member({ id: member.id })) as MemberSettings
+      new this.Gamer.database.models.member({ id: member.id, guildID: member.guild.id })) as MemberSettings
 
     const totalXP = memberSettings.leveling.xp + xpAmountToAdd
     memberSettings.leveling.xp = totalXP
@@ -109,7 +108,7 @@ export default class {
     userSettings.save()
   }
 
-  async removeXP(member: Member, xpAmountToRemove: number, language: i18next.TFunction) {
+  async removeXP(member: Member, reason: string, xpAmountToRemove = 1) {
     if (xpAmountToRemove < 1) return
 
     const settings = (await this.Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings | null
@@ -159,7 +158,7 @@ export default class {
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
 
-      member.removeRole(roleID, language(`leveling/xp:ROLE_REMOVE_REASON`))
+      member.removeRole(roleID, reason)
     }
   }
 

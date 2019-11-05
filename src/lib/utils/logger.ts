@@ -1,6 +1,10 @@
 import chalk from 'chalk'
 
 export default class {
+  yellow(text: string) {
+    console.log(chalk.yellowBright(`[${this.getTime()}] => ${text}`))
+  }
+
   blue(text: string) {
     console.log(chalk.blueBright(`[${this.getTime()}] => ${text}`))
   }

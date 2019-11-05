@@ -1,0 +1,13 @@
+{
+	"DESCRIPTION": "View the profile card of yourself or a user with a certain background.",
+	"EXTENDED": "$t(profile:EXTENDED_LINE_1)\n$t(profile:EXTENDED_LINE_2)\n$t(profile:EXTENDED_LINE_3)\n$t(profile:EXTENDED_LINE_4)\n$t(profile:EXTENDED_LINE_5)\n$t(profile:EXTENDED_LINE_6)\n$t(profile:EXTENDED_LINE_7)",
+	"EXTENDED_LINE_1": "» The profile card shows all your:",
+	"EXTENDED_LINE_2": "  • Global & server XP level.",
+	"EXTENDED_LINE_3": "  • XP status of your current global & server XP level.",
+	"EXTENDED_LINE_4": "  • Badges you earned.",
+	"EXTENDED_LINE_5": "  • Custom background selected by you.",
+	"EXTENDED_LINE_6": "» Use the **{{prefix}}leaderboard** command to check the leaderboard info.",
+	"EXTENDED_LINE_7": "» Use the **{{prefix}}background** command to select your custom background.",
+	"USAGE": "{{prefix}}profile *[User]*",
+	"ALIASES": "{{prefix}}p"
+}

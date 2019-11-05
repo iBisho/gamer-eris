@@ -15,6 +15,7 @@ import Database from '../../database/mongodb'
 import ProfileHelper from '../utils/profiles'
 import DiscordHelper from '../utils/discord'
 import FeedbackHelper from '../utils/feedback'
+import LeaderboardHelper from '../utils/leaderboards'
 import LevelsHelper from '../utils/levels'
 import LoggerHelper from '../utils/logger'
 import ScriptsHelper from '../utils/scripts'
@@ -23,22 +24,23 @@ import constants from '../../constants'
 
 const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
 const assetsFolder = join(rootFolder, `assets`)
-const profileFolder = join(assetsFolder, `profile`)
-const badgesFolder = join(profileFolder, `badges`)
 
 const assetsPaths = {
-  whiteRectangle: join(profileFolder, `left_rectangle_white.png`),
-  blackRectangle: join(profileFolder, `left_rectangle_black.png`),
-  blueCircle: join(profileFolder, `blue_circle.png`),
-  xpbar: join(profileFolder, `xp_bar_empty.png`),
+  whiteRectangle: join(assetsFolder, `profile/left_rectangle_white.png`),
+  blackRectangle: join(assetsFolder, `profile/left_rectangle_black.png`),
+  blueCircle: join(assetsFolder, `profile/blue_circle.png`),
+  xpbar: join(assetsFolder, `profile/xp_bar_empty.png`),
   badges: {
-    vip: join(badgesFolder, `vip.png`),
-    nintendo: join(badgesFolder, `nintendo.png`),
-    playstation: join(badgesFolder, `playstation.png`),
-    xbox: join(badgesFolder, `xbox.png`),
-    mobile: join(badgesFolder, `mobile.png`),
-    steam: join(badgesFolder, `steam.png`)
-  }
+    vip: join(assetsFolder, `profile/badges/vip.png`),
+    nintendo: join(assetsFolder, `profile/badges/nintendo.png`),
+    playstation: join(assetsFolder, `profile/badges/playstation.png`),
+    xbox: join(assetsFolder, `profile/badges/xbox.png`),
+    mobile: join(assetsFolder, `profile/badges/mobile.png`),
+    steam: join(assetsFolder, `profile/badges/steam.png`)
+  },
+  background: join(assetsFolder, `leaderboard/background.png`),
+  circle: join(assetsFolder, `leaderboard/circle.png`),
+  rectangle: join(assetsFolder, `leaderboard/rectangle.png`)
 }
 
 export default class GamerClient extends Client {
@@ -54,6 +56,7 @@ export default class GamerClient extends Client {
     profiles: new ProfileHelper(),
     discord: new DiscordHelper(),
     feedback: new FeedbackHelper(),
+    leaderboards: new LeaderboardHelper(this),
     levels: new LevelsHelper(this),
     logger: new LoggerHelper(),
     scripts: new ScriptsHelper(),
@@ -75,6 +78,11 @@ export default class GamerClient extends Client {
         mobile: fs.readFileSync(assetsPaths.badges.mobile),
         steam: fs.readFileSync(assetsPaths.badges.steam)
       }
+    },
+    leaderboards: {
+      background: fs.readFileSync(join(assetsFolder, `leaderboard/background.png`)),
+      circle: fs.readFileSync(join(assetsFolder, `leaderboard/circle.png`)),
+      rectangle: fs.readFileSync(join(assetsFolder, `leaderboard/rectangle.png`))
     }
   }
 

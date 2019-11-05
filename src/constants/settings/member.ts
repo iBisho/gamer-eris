@@ -1,5 +1,8 @@
 export default {
+  id: '',
   nickname: undefined,
+  guildID: '',
+  memberID: '',
   leveling: {
     // The current XP
     xp: 0,

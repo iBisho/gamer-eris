@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose'
 
 export interface UserSettings extends mongoose.Document {
   id: string
+  userID: string
   profile: {
     backgroundID: number
     theme: string
@@ -31,6 +32,8 @@ export interface UserSettings extends mongoose.Document {
 
 export interface MemberSettings extends mongoose.Document {
   id: string
+  guildID: string
+  memberID: string
   nickname: string
   leveling: {
     xp: number

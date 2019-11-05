@@ -1,0 +1,23 @@
+{
+	"DESCRIPTION": "Select a custom background picture for your profile.",
+	"EXTENDED": "$t(background:EXTENDED_LINE_1)\n$t(background:EXTENDED_LINE_2)\n$t(background:EXTENDED_LINE_3)\n\n$t(background:EXTENDED_LINE_4)",
+	"EXTENDED_LINE_1": "**{{prefix}}background** ~ Opens interactive menu with all available backgrounds.",
+	"EXTENDED_LINE_2": "**{{prefix}}background [CategoryName]** ~ Opens menu with all available backgrounds of that category.",
+	"EXTENDED_LINE_3": "**{{prefix}}background [BackgroundID]** ~ Quick selects the background with that ID.",
+	"EXTENDED_LINE_4": "» Valid category names are **anime**, **animals**, **art**, **games** and **space**.",
+	"USAGE": "{{prefix}}background *[Category Name Or Background ID]*",
+	"ALIASES": "{{prefix}}bg",
+	"SELECTION_TITLE": "Type the number for your custom background selection.",
+	"SELECTION_FOOTER": "Please select a background by number or cancel with [q]uit.",
+	"INVALID": "There is no background with the ID {{id}}!",
+	"PREVIEW_TITLE": "Selected background [{{id}}] ({{name}})",
+	"PREVIEW_DESCRIPTION": "Do you really want to select that background? Please use one of the reactions to take action:",
+	"PREVIEW_BASIC": "{{greenTick}} Yes\n{{redX}} No",
+	"PREVIEW_VIP": "{{sunglasses}} **Dark** theme\n{{flashlight}} **Light** theme.",
+	"SAVED": "You have successfully changed your background. Loading your profile now...",
+	"VIP_THEME": "Sorry, but the dark theme is only for VIP subscribers. If you want to become VIP, please pledge to our [Patreon](https://www.patreon.com/g4m3r).",
+	"VIP_BACKGROUND": "⭐ That background is only for VIP subscribers. If you want to become VIP please pledge to our [Patreon](https://www.patreon.com/g4m3r).",
+	"UNLOCKABLE": "Background #{{id}} is not unlockable with currency.",
+	"NEED_MONEY": "You do not have enough Gamer Gold to buy this background. This background costs {{cost}} and you only have {{currency}}. You need {{needed}} more Gamer Gold.",
+	"BOUGHT": "You just bought the #{{name}} background pack. You can now use the background command to equip your backgrounds."
+}
