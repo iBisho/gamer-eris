@@ -1,7 +1,7 @@
 export default {
   userID: '',
   profile: {
-    backgroundID: 52,
+    backgroundID: 1,
     theme: `white`
   },
   afk: {

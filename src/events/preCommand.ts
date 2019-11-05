@@ -15,5 +15,15 @@ export default class extends Event {
       `${command.name.toUpperCase()} Command Ran by ${message.author.username} (${message.author.id}) in ${guildInfo}`
     )
     Gamer.helpers.logger.blue(`Args: ${args.length ? args : 'No args provided.'}`)
+
+    if (message.channel instanceof PrivateChannel || !message.member) return
+
+    // Return a random number between 2 and 10 points for special commands
+    const xpForCommand = [`eventsjoin`, `profile`, `background`, `capture`].includes(command.name)
+      ? Math.floor(Math.random() * (10 - 2 + 1) + 2)
+      : 1
+
+    Gamer.helpers.levels.addLocalXP(message.member, 'Earned role reward.', xpForCommand)
+    Gamer.helpers.levels.addGlobalXP(message.member, xpForCommand)
   }
 }
