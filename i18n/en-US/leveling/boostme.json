@@ -1,0 +1,11 @@
+{
+	"DESCRIPTION": "Activate your first available XP Booster.",
+	"EXTENDED": "**{{prefix}}boostme** ~ Activates the first available XP Booster that you have. In order to get more XP Boosters, use the **{{prefix}}boost** command.",
+	"USAGE": "{{prefix}}boostme",
+	"ALIASES": "{{prefix}}iamboosted {{prefix}}amiboosted {{prefix}}boostme",
+	"NO_BOOSTS": "Are you sure you have any XP booster? I was unable to find any boosts that can be activated at this time. Try to buy an booster before activating it.",
+	"BOOSTED": "You are boosted now! The **{{name}}** boost has been activated to give you {{multiplier}}x XP starting now. To check the time, you have left with this boost, use the **{{prefix}}profile** command.",
+	"NEED_XP": "You need more than 100 XP in order to automatically buy and activate a booster with this command.",
+	"SMALL_BOOSTER": "Small 5x XP Booster",
+	"ALREADY_BOOSTED": "You can only have 1 active booster at any given time. Trying to be sneaky tsk tsk tsk. To check the status of your boost use the profile command."
+}

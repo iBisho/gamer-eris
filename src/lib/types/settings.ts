@@ -18,6 +18,7 @@ export interface UserSettings extends mongoose.Document {
     openTickets: number
   }
   leveling: {
+    boosts: Boost[]
     xp: number
     level: number
     currency: number
@@ -28,6 +29,14 @@ export interface UserSettings extends mongoose.Document {
     }
     badgesUnlocked: number
   }
+}
+
+export interface Boost {
+  name: string
+  timestamp?: number
+  multiplier: number
+  active: boolean
+  activatedAt?: number
 }
 
 export interface MemberSettings extends mongoose.Document {

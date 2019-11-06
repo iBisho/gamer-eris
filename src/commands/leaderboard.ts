@@ -1,9 +1,7 @@
 import { Command } from 'yuuko'
-import { GuildSettings, UserSettings } from '../lib/types/settings'
+import { GuildSettings } from '../lib/types/settings'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import constants from '../constants'
-import UserDefaults from '../constants/settings/user'
 
 export default new Command([`leaderboard`, `lb`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -39,17 +37,5 @@ export default new Command([`leaderboard`, `lb`], async (message, args, context)
 
   if (!buffer) return
 
-  const response = await message.channel.createMessage('', { file: buffer, name: `profile.jpg` })
-
-  const userSettings =
-    ((await Gamer.database.models.user.findOne({
-      id: member.id
-    })) as UserSettings) || UserDefaults
-
-  const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === userSettings.profile.backgroundID)
-
-  const isDefaultBackground = backgroundData && backgroundData.url === constants.profiles.defaultBackground
-
-  const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.discord, `reaction`)
-  if (isDefaultBackground && reaction) response.addReaction(reaction)
+  message.channel.createMessage('', { file: buffer, name: `leaderboard.jpg` })
 })

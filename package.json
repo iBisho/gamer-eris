@@ -35,7 +35,7 @@
     "i18next-node-fs-backend": "^2.1.3",
     "mongoose": "^5.7.6",
     "node-fetch": "^2.6.0",
-    "typescript": "^3.6.4",
+    "typescript": "^3.7.2",
     "yuuko": "^1.0.1"
   },
   "devDependencies": {
@@ -49,7 +49,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "husky": "^3.0.9",
     "lint-staged": "^9.4.2",
-    "prettier": "^1.18.2"
+    "prettier": "github:prettier/prettier"
   },
   "husky": {
     "hooks": {

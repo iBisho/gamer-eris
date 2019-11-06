@@ -1,5 +1,5 @@
 import { Member, Role } from 'eris'
-import { MemberSettings } from '../types/settings'
+import { MemberSettings, UserSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { GamerLevel } from '../types/gamer'
@@ -21,10 +21,15 @@ export default class {
     // If the member is in cooldown cancel out
     if (!overrideCooldown && this.checkCooldown(member)) return
 
-    const memberSettings = ((await this.Gamer.database.models.member.findOne({ id: member.id })) ||
-      new this.Gamer.database.models.member({ id: member.id, guildID: member.guild.id })) as MemberSettings
+    const memberSettings = ((await this.Gamer.database.models.member.findOne({ memberID: member.id })) ||
+      new this.Gamer.database.models.member({ memberID: member.id, guildID: member.guild.id })) as MemberSettings
 
-    const totalXP = memberSettings.leveling.xp + xpAmountToAdd
+    const userSettings = (await this.Gamer.database.models.user.findOne({ userID: member.id })) as UserSettings | null
+
+    let multiplier = 1
+    if (userSettings) for (const boost of userSettings.leveling.boosts) multiplier += boost.multiplier
+
+    const totalXP = xpAmountToAdd * multiplier + memberSettings.leveling.xp
     memberSettings.leveling.xp = totalXP
 
     // Get the details on the users next level
@@ -81,9 +86,12 @@ export default class {
     if (this.checkCooldown(member)) return
 
     const userSettings = ((await this.Gamer.database.models.user.findOne({ id: member.id })) ||
-      new this.Gamer.database.models.user({ id: member.id })) as MemberSettings
+      new this.Gamer.database.models.user({ userID: member.id })) as UserSettings
 
-    const totalXP = userSettings.leveling.xp + xpAmountToAdd
+    let multiplier = 1
+    if (userSettings) for (const boost of userSettings.leveling.boosts) multiplier += boost.multiplier
+
+    const totalXP = xpAmountToAdd * multiplier + userSettings.leveling.xp
     userSettings.leveling.xp = totalXP
 
     // Get the details on the users next level

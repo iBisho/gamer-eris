@@ -34,7 +34,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
 
   const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === userSettings.profile.backgroundID)
 
-  const isDefaultBackground = backgroundData && backgroundData.url === constants.profiles.defaultBackground
+  const isDefaultBackground = backgroundData && backgroundData.name === constants.profiles.defaultBackground
 
   const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.discord, `reaction`)
   if (isDefaultBackground && reaction) response.addReaction(reaction)

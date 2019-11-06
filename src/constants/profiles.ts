@@ -42,14 +42,18 @@ export default {
     clanText: `#fff`,
     clanURL: `#fff`
   },
-  defaultBackground: `ros-rules_of_survival.png`,
-  defaultLogo: `vgpro-logo.png`,
-  aovLogo: `aov-logo.png`,
+  defaultBackground: `Rules Of Survival - 300 Player BR Game`,
   backgrounds: [
     {
       id: 1,
       name: ``,
       buffer: fs.readFileSync(join(backgroundsFolder, ``))
+    },
+    {
+      id: 2,
+      name: ``,
+      buffer: fs.readFileSync(''),
+      vipNeeded: true
     }
   ],
   backgroundPackages: [],

@@ -15,6 +15,7 @@ export default {
     openTickets: 0
   },
   leveling: {
+    boosts: [],
     xp: 0,
     level: 0,
     currency: 0,

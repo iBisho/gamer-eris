@@ -26,6 +26,20 @@ export default new mongoose.Schema({
     openTickets: { type: Number, default: 0 }
   },
   leveling: {
+    boosts: [
+      {
+        // Whether or not this boost is currently active.
+        active: Boolean,
+        // The timestamp when it was activated. Used to filter our old expired boosts
+        activatedAt: Number,
+        // The name of the boost. Used for when users see what boosts they have
+        name: { type: String, required: true },
+        // The multiplier amount.
+        multiplier: { type: Number, default: 0 },
+        // The timestamp to show how long a boost should last.
+        timestamp: { type: Number }
+      }
+    ],
     // The current XP
     xp: { type: Number, default: 0 },
     // The current Level

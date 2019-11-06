@@ -35,7 +35,7 @@ export default class extends Monitor {
       Gamer.helpers.logger.green(
         `Deleted a Capital Spam message on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
       )
-      Gamer.helpers.levels.removeXP(Gamer, message.member, 3, language)
+      Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 3)
     }
 
     // Run the filter and get back either null or cleaned string
@@ -47,7 +47,7 @@ export default class extends Monitor {
           `Deleted a [${word}] naughty word on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
         )
         // Remove 5 XP per word used
-        Gamer.helpers.levels.removeXP(Gamer, message.member, 5, language)
+        Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 5)
       }
       // If a cleaned string is returned set the content to the string
       content = naughtyWordCleanup.cleanString
@@ -63,7 +63,7 @@ export default class extends Monitor {
         Gamer.helpers.logger.green(
           `Deleted a blacklisted URL ${url} on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
         )
-        Gamer.helpers.levels.removeXP(Gamer, message.member, 5, language)
+        Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 5)
       }
     }
 

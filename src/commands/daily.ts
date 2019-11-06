@@ -16,7 +16,7 @@ export default new Command(`daily`, async (message, _args, context) => {
     GuildDefaults
 
   const userSettings = ((await Gamer.database.models.user.findOne({ id: message.author.id })) ||
-    new Gamer.database.models.user({ id: message.author.id })) as UserSettings
+    new Gamer.database.models.user({ userID: message.author.id })) as UserSettings
 
   userSettings.leveling.currency = userSettings.leveling.currency + 10
   userSettings.save()
