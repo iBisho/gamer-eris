@@ -3,14 +3,24 @@ import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TenorGif } from '../lib/types/tenor'
+import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel } from 'eris'
 
 export default new Command(`kiss`, async (message, _args, context) => {
-  const language = (context.client as GamerClient).i18n.get('en-US')
-  if (!language) return null
+  if (message.channel instanceof PrivateChannel) return
 
-  const data: TenorGif | null = await fetch(`https://api.tenor.com/v1/search?q=kiss&key=LIVDSRZULELA&limit=50`)
+  const Gamer = context.client as GamerClient
+
+  const guildSettings = (await Gamer.database.models.guild.findOne({
+    id: message.channel.guild.id
+  })) as GuildSettings | null
+
+  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
+  if (!language) return
+
+  const data: TenorGif | undefined = await fetch(`https://api.tenor.com/v1/search?q=kiss&key=LIVDSRZULELA&limit=50`)
     .then(res => res.json())
-    .catch(() => null)
+    .catch(() => undefined)
 
   if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
   const randomResult = data.results[Math.floor(Math.random() * (data.results.length - 1))]

@@ -7,7 +7,7 @@ import GuildDefaults from '../constants/settings/guild'
 export default class extends Event {
   async execute(message: Message, Gamer: GamerClient) {
     // If a bot or in dm, no XP we want to encourage activity in servers not dms
-    if (message.channel instanceof PrivateChannel || message.author.bot) return
+    if (message.channel instanceof PrivateChannel || message.author.bot || !message.member) return
 
     const guildSettings =
       ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null) ||
