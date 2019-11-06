@@ -3,7 +3,6 @@ import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
 import { GuildSettings } from '../lib/types/settings'
-import GuildDefaults from '../constants/settings/guild'
 
 const gifs = [
   `https://media.giphy.com/media/ThndUIbw1Znbi/giphy.gif`,
@@ -38,23 +37,17 @@ const gifs = [
 
 export default new Command(`baka`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
-  const settings =
-    message.channel instanceof PrivateChannel
-      ? GuildDefaults
-      : ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null) ||
-        GuildDefaults
+  if (message.channel instanceof PrivateChannel) return
+  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
 
   const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
-  if (!language) return null
+  if (!language) return
 
   const user = message.mentions.length ? message.mentions[0] : message.author
 
   const randomGif = gifs[Math.floor(Math.random() * (gifs.length - 1))]
   const embed = new GamerEmbed()
-    .setAuthor(
-      message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.avatarURL
-    )
+    .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
     .setImage(randomGif)
     .setDescription(
       language(user.id === message.author.id ? `fun/baka:SELF` : `fun/baka:REPLY`, {

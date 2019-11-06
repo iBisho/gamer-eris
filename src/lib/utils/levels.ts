@@ -27,7 +27,12 @@ export default class {
     const userSettings = (await this.Gamer.database.models.user.findOne({ userID: member.id })) as UserSettings | null
 
     let multiplier = 1
-    if (userSettings) for (const boost of userSettings.leveling.boosts) multiplier += boost.multiplier
+    if (userSettings)
+      for (const boost of userSettings.leveling.boosts) {
+        if (!boost.active || !boost.activatedAt) continue
+        if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
+        multiplier += boost.multiplier
+      }
 
     const totalXP = xpAmountToAdd * multiplier + memberSettings.leveling.xp
     memberSettings.leveling.xp = totalXP
@@ -89,7 +94,12 @@ export default class {
       new this.Gamer.database.models.user({ userID: member.id })) as UserSettings
 
     let multiplier = 1
-    if (userSettings) for (const boost of userSettings.leveling.boosts) multiplier += boost.multiplier
+    if (userSettings)
+      for (const boost of userSettings.leveling.boosts) {
+        if (!boost.active || !boost.activatedAt) continue
+        if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
+        multiplier += boost.multiplier
+      }
 
     const totalXP = xpAmountToAdd * multiplier + userSettings.leveling.xp
     userSettings.leveling.xp = totalXP
