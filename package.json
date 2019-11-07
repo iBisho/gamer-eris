@@ -41,7 +41,7 @@
   "devDependencies": {
     "@types/i18next-node-fs-backend": "^2.1.0",
     "@types/mongoose": "^5.5.23",
-    "@types/node": "^12.11.3",
+    "@types/node": "^12.12.6",
     "@typescript-eslint/eslint-plugin": "^2.5.0",
     "@typescript-eslint/parser": "^2.5.0",
     "eslint": "^6.5.1",
