@@ -8,6 +8,7 @@ import LabelSchema from './schemas/label'
 import LevelSchema from './schemas/level'
 import MailSchema from './schemas/mail'
 import MemberSchema from './schemas/member'
+import MissionSchema from './schemas/mission'
 import ModlogSchema from './schemas/modlog'
 import ReactionRoleSchema from './schemas/reactionrole'
 import ShortcutSchema from './schemas/shortcut'
@@ -33,6 +34,7 @@ export default class {
     level: mongoose.model('Level', LevelSchema),
     mail: mongoose.model('Mail', MailSchema),
     member: mongoose.model('Member', MemberSchema),
+    mission: mongoose.model('Mission', MissionSchema),
     modlog: mongoose.model('Modlog', ModlogSchema),
     reactionRole: mongoose.model('ReactionRole', ReactionRoleSchema),
     shortcut: mongoose.model('Shortcut', ShortcutSchema),
@@ -57,18 +59,5 @@ export default class {
     this.connection.once(`open`, () => {
       console.log(`MongoDB Connected!`)
     })
-  }
-
-  init() {
-    // Create all tables needed for the bot
-  }
-
-  async fetchGuildSettings(id?: string) {
-    // if no guild usually means DM so default
-    if (!id) return this.constants.guild
-    // Find a guild document
-    const settings = await this.models.guild.findOne({ id })
-    // If the document was found return it or give the default values
-    return settings || this.constants.guild
   }
 }

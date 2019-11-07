@@ -2,7 +2,7 @@ import { Member, Role } from 'eris'
 import { MemberSettings, UserSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
-import { GamerLevel } from '../types/gamer'
+import { GamerLevel, GamerMission } from '../types/gamer'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -202,5 +202,38 @@ export default class {
     // If the member is not on cooldown we need to add them
     this.memberCooldowns.set(uniqueMemberID, now)
     return false
+  }
+
+  async completeMission(member: Member, commandName: string, guildID: string, reason: string) {
+    // Check if this is a daily mission from today
+    const mission = this.Gamer.missions.find(m => m.commandName === commandName)
+    if (!mission) return
+
+    // Find the data for this user regarding this mission or make it for them
+    const missionData = ((await this.Gamer.database.models.mission.findOne({
+      userID: member.id,
+      commandName: commandName
+    })) ||
+      new this.Gamer.database.models.mission({
+        userID: member.id,
+        commandName,
+        guildID
+      })) as GamerMission
+
+    // If the user already got the rewards for this mission
+    if (missionData.completed) return
+
+    // The mission has not been completed so just increment by 1
+    if (missionData.amount + 1 < mission.amount) {
+      missionData.amount += 1
+      missionData.save()
+      return
+    }
+
+    missionData.completed = true
+    missionData.save()
+    // The mission should be completed now so need to give XP.
+    this.addLocalXP(member, reason, mission.reward, true)
+    this.addGlobalXP(member, mission.reward)
   }
 }

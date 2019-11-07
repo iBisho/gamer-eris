@@ -3,10 +3,11 @@ import Event from '../lib/structures/Event'
 import Gamer from '../index'
 import { GuildSettings } from '../lib/types/settings'
 import { TextChannel } from 'eris'
+import constants from '../constants'
 
 // 10 minutes
 const maxInactiveTime = 600000
-
+const DAILY = 1000 * 60 * 60 * 24
 export default class extends Event {
   async execute() {
     // Clean out message collectors after 2 minutes of no response
@@ -64,7 +65,18 @@ export default class extends Event {
       })
 
       Promise.all(promises)
-    })
+    }, maxInactiveTime)
+
+    // Randomly select 3 new missions to use every day
+    setInterval(() => {
+      // Remove all missions first before creating any new missions
+      Gamer.database.models.mission.deleteMany({})
+
+      // Find 3 new random missions to use for today
+      Gamer.missions = []
+      for (let i = 0; i < 3; i++)
+        Gamer.missions.push(constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))])
+    }, DAILY)
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }

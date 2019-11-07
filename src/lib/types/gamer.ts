@@ -55,3 +55,18 @@ export interface GamerLevel extends Document {
   level: number
   roleIDs: string[]
 }
+
+export interface Mission {
+  amount: number
+  commandName: string
+  title: string
+  reward: number
+}
+
+export interface GamerMission extends Document {
+  amount: number
+  commandName: string
+  completed: boolean
+  guildID: string
+  userID: string
+}

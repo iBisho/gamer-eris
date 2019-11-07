@@ -3,7 +3,7 @@ import * as i18next from 'i18next'
 import i18n from '../../i18next'
 import * as glob from 'glob'
 import { PrivateChannel, Message } from 'eris'
-import { Collector } from '../types/gamer'
+import { Collector, Mission } from '../types/gamer'
 import * as fs from 'fs'
 import { join } from 'path'
 
@@ -85,6 +85,8 @@ export default class GamerClient extends Client {
       rectangle: fs.readFileSync(join(assetsFolder, `leaderboard/rectangle.png`))
     }
   }
+
+  missions: Mission[] = []
 
   // All our stores to store files which we can reload easily.
   events: Map<string, Event> = new Map()
