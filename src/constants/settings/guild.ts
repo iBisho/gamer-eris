@@ -146,9 +146,6 @@ export default {
     offlineAlertsEnabled: false
   },
   xp: {
-    perMessage: 1,
-    perMinutesInVoice: 1,
-    channelID: undefined,
     inactiveDaysAllowed: 0,
     daily: 10,
     prizes: {

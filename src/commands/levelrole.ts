@@ -4,7 +4,7 @@ import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GamerLevel } from '../lib/types/gamer'
 
-export default new Command([`background`, `bg`], async (message, args, context) => {
+export default new Command(`levelrole`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || !message.member) return
 

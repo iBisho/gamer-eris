@@ -218,12 +218,6 @@ export default new mongoose.Schema({
     offlineAlertsEnabled: Boolean
   },
   xp: {
-    // How much xp to give per message that is sent.
-    perMessage: { type: Number, default: 1 },
-    // How much xp to give per minute spent in a voice channel.
-    perMinutesInVoice: { type: Number, default: 1 },
-    // The channel id to send level up notifications
-    channelID: String,
     // The max amount of days u can be inactive on a server before losing XP
     inactiveDaysAllowed: { type: Number, default: 0 },
     // The amount of xp u gain by typing daily in this server.

@@ -3,7 +3,7 @@ import { UserSettings, GuildSettings, Boost } from '../lib/types/settings'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
-export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (message, args, context) => {
+export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (message, _args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || !message.member) return
 
@@ -17,7 +17,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
   const userSettings = (await Gamer.database.models.user.findOne({ userID: message.author.id })) as UserSettings | null
   if (!userSettings) return
 
-  const [type] = args
+  // const [type] = args
 
   let availableBoost: Boost | undefined = undefined
   for (const boost of userSettings.leveling.boosts) {
@@ -31,7 +31,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
   if (availableBoost) availableBoost.active = true
   else {
     // If the user did not want to force
-    if (type.toLowerCase() !== 'buy') return message.channel.createMessage(language(`leveling/boostme:NO_BOOSTS`))
+    // if (type.toLowerCase() !== 'buy') return message.channel.createMessage(language(`leveling/boostme:NO_BOOSTS`))
 
     // Buy a boost for the user using XP
     // If the user does not have enough xp to buy a boost cancel out

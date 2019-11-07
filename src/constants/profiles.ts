@@ -3,7 +3,7 @@ import * as fs from 'fs'
 
 const rootFolder = join(__dirname, `..`, `..`, `..`)
 const assetsFolder = join(rootFolder, `assets`)
-const backgroundsFolder = join(rootFolder, `profile/Backgrounds`)
+// const backgroundsFolder = join(assetsFolder, `profile/Backgrounds`)
 
 export default {
   clanDefaults: {
@@ -46,13 +46,13 @@ export default {
   backgrounds: [
     {
       id: 1,
-      name: ``,
-      buffer: fs.readFileSync(join(backgroundsFolder, ``))
+      name: `BF1 Pilot`,
+      buffer: fs.readFileSync(join(assetsFolder, `statsImages/bf1pilot.jpg`))
     },
     {
       id: 2,
-      name: ``,
-      buffer: fs.readFileSync(''),
+      name: `BF1 Assault`,
+      buffer: fs.readFileSync(join(assetsFolder, `statsImages/bf1assault.jpg`)),
       vipNeeded: true
     }
   ],

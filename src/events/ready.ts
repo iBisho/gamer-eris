@@ -1,7 +1,7 @@
 // This event is triggered once the bot is ready and online.
 import Event from '../lib/structures/Event'
 import Gamer from '../index'
-import { GuildSettings } from '../lib/types/settings'
+import { GuildSettings, MemberSettings } from '../lib/types/settings'
 import { TextChannel } from 'eris'
 import constants from '../constants'
 
@@ -76,6 +76,43 @@ export default class extends Event {
       Gamer.missions = []
       for (let i = 0; i < 3; i++)
         Gamer.missions.push(constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))])
+    }, DAILY)
+
+    // Checks if a member is inactive to begin losing XP every day
+    setInterval(async () => {
+      // Fetch all guilds from db as anything with default settings wont need to be checked
+      const allGuildSettings = (await Gamer.database.models.guild.find()) as GuildSettings[]
+
+      for (const guildSettings of allGuildSettings) {
+        // If the inactive days allowed has not been enabled then skip
+        if (!guildSettings.xp.inactiveDaysAllowed) continue
+
+        const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+        if (!language) continue
+
+        // Get all members from the database as anyone with default settings dont need to be checked
+        const allMemberSettings = (await Gamer.database.models.member.find()) as MemberSettings[]
+
+        for (const memberSettings of allMemberSettings) {
+          // If they have never been updated skip. Or if their XP is below 100 the minimum threshold
+          if (!memberSettings.leveling.lastUpdatedAt || memberSettings.leveling.xp < 100) continue
+          // Get the member object
+          const guild = Gamer.guilds.get(guildSettings.id)
+          const member = guild?.members.get(memberSettings.memberID)
+          if (!member) continue
+
+          // Calculate how many days it has been since this user was last updated
+          const daysSinceLastUpdated = (Date.now() - memberSettings.leveling.lastUpdatedAt) / 1000 / 60 / 60 / 24
+          if (daysSinceLastUpdated < guildSettings.xp.inactiveDaysAllowed) continue
+
+          // Remove 1% of XP from the user for being inactive today.
+          await Gamer.helpers.levels.removeXP(
+            member,
+            language(`leveling/xp:ROLE_REMOVE_REASON`),
+            Math.floor(memberSettings.leveling.xp * 0.01)
+          )
+        }
+      }
     }, DAILY)
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)

@@ -5,7 +5,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "incremental": true,
-    "lib": ["esnext"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -23,8 +22,8 @@
     "strictBindCallApply": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "target": "esnext",
     "types": ["node"],
+    "target": "es6",
     "useDefineForClassFields": true
   },
   "compileOnSave": true,

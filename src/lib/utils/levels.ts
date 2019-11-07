@@ -22,7 +22,11 @@ export default class {
     if (!overrideCooldown && this.checkCooldown(member)) return
 
     const memberSettings = ((await this.Gamer.database.models.member.findOne({ memberID: member.id })) ||
-      new this.Gamer.database.models.member({ memberID: member.id, guildID: member.guild.id })) as MemberSettings
+      new this.Gamer.database.models.member({
+        memberID: member.id,
+        guildID: member.guild.id,
+        id: `${member.guild.id}.${member.id}`
+      })) as MemberSettings
 
     const userSettings = (await this.Gamer.database.models.user.findOne({ userID: member.id })) as UserSettings | null
 
@@ -36,6 +40,7 @@ export default class {
 
     const totalXP = xpAmountToAdd * multiplier + memberSettings.leveling.xp
     memberSettings.leveling.xp = totalXP
+    memberSettings.leveling.lastUpdatedAt = Date.now()
 
     // Get the details on the users next level
     const nextLevelInfo = constants.levels.find(lvl => lvl.level === memberSettings.leveling.level + 1)

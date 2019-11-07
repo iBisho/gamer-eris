@@ -203,9 +203,6 @@ export interface GuildSettings extends mongoose.Document {
     offlineAlertsEnabled: boolean
   }
   xp: {
-    perMessage: number
-    perMinutesInVoice: number
-    channelID: string | undefined
     inactiveDaysAllowed: number
     daily: number
     prizes: {
@@ -363,9 +360,6 @@ export interface GuildSettingsDefault {
     offlineAlertsEnabled: false
   }
   xp: {
-    perMessage: 1
-    perMinutesInVoice: 1
-    channelID: undefined
     inactiveDaysAllowed: 0
     daily: 10
     prizes: {

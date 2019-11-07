@@ -75,7 +75,8 @@ export default new Command(
     })
 
     const embed = new GamerEmbed()
-      .setTitle(language(`basic/server:TITLE`, { guildName: guild.name }))
+      .setAuthor(language(`basic/server:TITLE`))
+      .setTitle(guild.name)
       .setThumbnail(guild.iconURL || ``)
       .setFooter(guild.id)
       .addField(language(`basic/server:STATSNAME`), STATSVALUE)

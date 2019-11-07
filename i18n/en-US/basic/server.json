@@ -24,5 +24,5 @@
 	"SETTINGSVALUE_LINE_2": "Moderator Roles: {{modRoles}}",
 	"SETTINGSVALUE_LINE_3": "Admin Users: {{admins}}",
 	"SETTINGSVALUE_LINE_4": "Feedback: **Idea:** {{ideaEnabled}} | **Bug Reports**: {{bugEnabled}}",
-	"TITLE": "Server Stats For « {{guildName}} »"
+	"TITLE": "Server Stats For »"
 }
