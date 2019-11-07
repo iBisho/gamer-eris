@@ -44,8 +44,13 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     afkMessage: userSettings.afk.message
   })
 
-  const nickname = member && member.nick ? language(`basic/user:NICKNAME`, { nickname: member.nick }) : ``
-  const userID = language(`basic/user:ID`, { id: user.id })
+  const nickname = member?.nick ? language(`basic/user:NICKNAME`, { nickname: member.nick }) : ``
+  const userID = language(`basic/user:ID`, { id: user.id, url: user.avatarURL })
+
+  const roles = member.roles
+    .sort((a, b) => (member.guild.roles.get(b) as Role).position - (member.guild.roles.get(a) as Role).position)
+    .map(id => `<@&${id}>`)
+    .join(`, `)
 
   const embed = new GamerEmbed()
     .setAuthor(user.username, user.avatarURL)
@@ -54,16 +59,9 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     .addField(language(`basic/user:JOINED`), JOINED_VALUE)
     .addField(language(`basic/user:SETTINGS`), SETTINGS_VALUE)
     .addField(language(`basic/user:PERMISSIONS`), permOverview.sort().join(`, `))
-    .addField(
-      language(`basic/user:ROLES`),
-      member.roles
-        .sort((a, b) => (member.guild.roles.get(b) as Role).position - (member.guild.roles.get(a) as Role).position)
-        .map(id => `<@&${id}>`)
-        .slice(0, -1)
-        .join(`, `)
-    )
     .attachFile(buffer, fileName)
     .setImage(`attachment://${fileName}`)
+  if (roles) embed.addField(language(`basic/user:ROLES`), roles)
 
   message.channel.createMessage({ embed: embed.code }, embed.file)
   return Gamer.helpers.levels.completeMission(message.member, `user`, message.channel.guild.id)

@@ -7,7 +7,7 @@
 	"ALIASES": "{{prefix}}ui {{prefix}}userinfo",
 	"LOADING": "Loading member information...",
 	"NICKNAME": "**Nickname:** {{nickname}}\n",
-	"ID": "**User ID:** {{id}}",
+	"ID": "**User ID:** [{{id}}]({{url}})",
 	"JOINED": "Join Dates",
 	"JOINED_VALUE": "**Joined Discord:** {{memberDate}}\n**Joined {{guildName}}:** {{guildDate}}",
 	"SETTINGS": "User Settings",
