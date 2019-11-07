@@ -10,6 +10,6 @@
   "MESSAGE_UPDATED": "You have successfully updated your AFK message! AFK status not automatically activated, please make sure it is enabled.",
   "STATUS_ISENABLED": "You have successfully **ENABLED** your AFK message.",
   "STATUS_ISDISABLED": "You have successfully **DISABLED** your AFK message.",
-	"INVALID_JSON": "The message you provided for your AFK message, was not valid JSON code. There is some error in the code. Please try and use the embed builder to generate valid JSON code. https://leovoel.github.io/embed-visualizer/",
-	"REASON": "AFK message self-delete."
+  "INVALID_JSON": "The message you provided for your AFK message, was not valid JSON code. There is some error in the code. Please try and use the embed builder to generate valid JSON code. https://leovoel.github.io/embed-visualizer/",
+  "REASON": "AFK message self-delete."
 }
