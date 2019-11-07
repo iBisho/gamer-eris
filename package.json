@@ -28,7 +28,7 @@
     "canvas": "^2.6.0",
     "canvas-constructor": "^3.1.0",
     "chalk": "^2.4.2",
-    "confusables": "^0.3.1",
+    "confusables": "^0.3.3",
     "eris": "^0.10.1",
     "get-urls": "^9.2.0",
     "i18next": "^17.3.0",
