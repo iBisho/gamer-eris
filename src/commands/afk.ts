@@ -4,7 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings, UserSettings } from '../lib/types/settings'
 
 export default new Command(`afk`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
   const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
@@ -42,5 +42,6 @@ export default new Command(`afk`, async (message, args, context) => {
   // Update the message
   userSettings.afk.message = content
   userSettings.save()
-  return message.channel.createMessage(language(`settings/afk:MESSAGE_UPDATED`))
+  message.channel.createMessage(language(`settings/afk:MESSAGE_UPDATED`))
+  return Gamer.helpers.levels.completeMission(message.member, `afk`, message.channel.guild.id)
 })

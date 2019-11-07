@@ -23,7 +23,7 @@ export default class extends Event {
       ? Math.floor(Math.random() * (10 - 2 + 1) + 2)
       : 1
 
-    Gamer.helpers.levels.addLocalXP(message.member, 'Earned role reward.', xpForCommand)
+    Gamer.helpers.levels.addLocalXP(message.member, xpForCommand)
     Gamer.helpers.levels.addGlobalXP(message.member, xpForCommand)
   }
 }

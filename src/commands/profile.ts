@@ -38,4 +38,6 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
 
   const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.discord, `reaction`)
   if (isDefaultBackground && reaction) response.addReaction(reaction)
+
+  return Gamer.helpers.levels.completeMission(message.member, `profile`, message.channel.guild.id)
 })

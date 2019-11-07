@@ -46,7 +46,8 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   if (hasRole) message.member.removeRole(role.id, language(`roles/role:SELF_REMOVE`, { user: tag }))
   else message.member.addRole(role.id, language(`roles/role:SELF_ASSIGN`, { user: tag }))
 
-  return message.channel.createMessage(
+  message.channel.createMessage(
     language(hasRole ? `roles/role:REMOVED` : `roles/role:ADDED`, { user: message.member.username, role: role.name })
   )
+  return Gamer.helpers.levels.completeMission(message.member, `role`, message.channel.guild.id)
 })

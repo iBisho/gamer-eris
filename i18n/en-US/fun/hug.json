@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Hugs the mentioned user/role and sends a gif into the chat.",
+	"EXTENDED": "**{{prefix}}hug user** ~ Hugs the mentioned user with a gif.",
+	"USAGE": "{{prefix}}hug [user]",
+	"ALIASES": "Hug does not have any aliases.",
+	"REPLY": "***{{mention}} was hugged by {{user}}***",
+	"SELF": "If you have no one to hug, you can always hug me. :cry:"
+}

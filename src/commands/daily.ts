@@ -25,7 +25,7 @@ export default new Command(`daily`, async (message, _args, context) => {
   if (!language) return
 
   // Add XP to the member for the daily amount
-  Gamer.helpers.levels.addLocalXP(message.member, language(`leveling/xp:ROLE_ADD_REASON`), guildSettings.xp.daily, true)
+  Gamer.helpers.levels.addLocalXP(message.member, guildSettings.xp.daily, true, language(`leveling/xp:ROLE_ADD_REASON`))
   // Add XP to the user for the global amount
   Gamer.helpers.levels.addGlobalXP(message.member, dailyXPGlobalAmount)
 

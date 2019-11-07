@@ -7,7 +7,7 @@ import { FeedbackCollectorData } from '../lib/types/gamer'
 
 export default new Command(`idea`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || !message.member) return
 
   const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
 
@@ -81,6 +81,7 @@ export default new Command(`idea`, async (message, args, context) => {
         question
       },
       callback: async (msg, collector) => {
+        if (msg.channel instanceof PrivateChannel || !msg.member) return
         const CANCEL_OPTIONS = language(`common:CANCEL_OPTIONS`)
         // If the user wants to cancel quit out and delete the collector
         if (CANCEL_OPTIONS.includes(msg.content.toLowerCase())) {
@@ -110,9 +111,11 @@ export default new Command(`idea`, async (message, args, context) => {
 
         // This was the final question so now we need to post the feedback
         Gamer.helpers.feedback.sendFeedback(message, channel, embed, settings, Gamer, language)
+        return Gamer.helpers.levels.completeMission(msg.member, `baka`, msg.channel.guild.id)
       }
     })
   }
 
-  return Gamer.helpers.feedback.sendFeedback(message, channel, embed, settings, Gamer, language)
+  Gamer.helpers.feedback.sendFeedback(message, channel, embed, settings, Gamer, language)
+  return Gamer.helpers.levels.completeMission(message.member, `baka`, message.channel.guild.id)
 })

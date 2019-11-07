@@ -1,5 +1,5 @@
 import { Member, Role } from 'eris'
-import { MemberSettings, UserSettings } from '../types/settings'
+import { MemberSettings, UserSettings, GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { GamerLevel, GamerMission } from '../types/gamer'
@@ -17,7 +17,7 @@ export default class {
   }
 
   // The override cooldown is useful for XP command when you want to force add XP like daily command
-  async addLocalXP(member: Member, reason: string, xpAmountToAdd = 1, overrideCooldown = false) {
+  async addLocalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false, reason?: string) {
     // If the member is in cooldown cancel out
     if (!overrideCooldown && this.checkCooldown(member)) return
 
@@ -78,13 +78,21 @@ export default class {
     const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
     if (!botsHighestRole) return
 
+    const rolesToAdd = []
     for (const roleID of levelData.roleIDs) {
       const role = member.guild.roles.get(roleID)
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
-
-      member.addRole(roleID, reason)
+      if (reason) member.addRole(roleID, reason)
+      else rolesToAdd.push(roleID)
     }
+    if (!rolesToAdd.length) return
+
+    const guildSettings = (await this.Gamer.database.models.guild.findOne({
+      id: member.guild.id
+    })) as GuildSettings | null
+    const language = this.Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+    for (const roleID of rolesToAdd) member.addRole(roleID, language?.(`leveling/xp:ROLE_ADD_REASON`))
   }
 
   async addGlobalXP(member: Member, xpAmountToAdd = 1) {
@@ -204,7 +212,7 @@ export default class {
     return false
   }
 
-  async completeMission(member: Member, commandName: string, guildID: string, reason: string) {
+  async completeMission(member: Member, commandName: string, guildID: string) {
     // Check if this is a daily mission from today
     const mission = this.Gamer.missions.find(m => m.commandName === commandName)
     if (!mission) return
@@ -233,7 +241,7 @@ export default class {
     missionData.completed = true
     missionData.save()
     // The mission should be completed now so need to give XP.
-    this.addLocalXP(member, reason, mission.reward, true)
+    this.addLocalXP(member, mission.reward, true)
     this.addGlobalXP(member, mission.reward)
   }
 }

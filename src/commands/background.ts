@@ -46,14 +46,16 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       userSettings.profile.backgroundID = backgroundID
       userSettings.profile.theme = theme
       userSettings.save()
-      return message.channel.createMessage(language(`leveling/background:SAVED`))
+      message.channel.createMessage(language(`leveling/background:SAVED`))
+      return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
     case `view`:
       const buffer = await Gamer.helpers.profiles.makeCanvas(message, message.member, Gamer, {
         backgroundID,
         style: theme
       })
       if (!buffer) return
-      return message.channel.createMessage(``, { file: buffer, name: `profile.jpg` })
+      message.channel.createMessage(``, { file: buffer, name: `profile.jpg` })
+      return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
   }
 
   const helpCommand = Gamer.commandForName(`help`)

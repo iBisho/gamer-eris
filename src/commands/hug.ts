@@ -44,10 +44,5 @@ export default new Command(`hug`, async (message, _args, context) => {
 
   message.channel.createMessage({ embed: embed.code })
 
-  return Gamer.helpers.levels.completeMission(
-    message.member,
-    `hug`,
-    message.channel.guild.id,
-    language(`leveling/xp:ROLE_ADD_REASON`)
-  )
+  return Gamer.helpers.levels.completeMission(message.member, `hug`, message.channel.guild.id)
 })

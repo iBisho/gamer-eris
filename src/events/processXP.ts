@@ -19,8 +19,9 @@ export default class extends Event {
     // Update XP for the member locally
     Gamer.helpers.levels.addLocalXP(
       message.member,
-      language(`leveling/xp:ROLE_ADD_REASON`),
-      guildSettings.xp.perMessage
+      guildSettings.xp.perMessage,
+      false,
+      language(`leveling/xp:ROLE_ADD_REASON`)
     )
     // Update XP for the member globally
     Gamer.helpers.levels.addGlobalXP(message.member, 1)

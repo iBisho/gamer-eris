@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
+import { PrivateChannel } from 'eris'
 
 const gifs = [
   `https://media.giphy.com/media/MU3YUgsJONTzzIT9wd/giphy.gif`,
@@ -43,6 +44,8 @@ const gifs = [
 ]
 
 export default new Command([`compliment`, `comp`], (message, _args, context) => {
+  if (message.channel instanceof PrivateChannel || !message.member) return
+
   const Gamer = context.client as GamerClient
   const language = Gamer.i18n.get('en-US')
   if (!language) return null
@@ -58,5 +61,6 @@ export default new Command([`compliment`, `comp`], (message, _args, context) => 
     .setImage(randomGif)
     .setDescription(language(`fun/compliment:REPLY`, { mention: user.mention, author: message.author.mention }))
 
-  return message.channel.createMessage({ embed: embed.code })
+  message.channel.createMessage({ embed: embed.code })
+  return Gamer.helpers.levels.completeMission(message.member, `compliment`, message.channel.guild.id)
 })

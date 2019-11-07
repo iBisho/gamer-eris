@@ -2,10 +2,15 @@ import { Command } from 'yuuko'
 import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
+import { PrivateChannel } from 'eris'
 
 export default new Command(`wisdom`, async (message, _args, context) => {
-  const language = (context.client as GamerClient).i18n.get('en-US')
-  if (!language) return null
+  if (message.channel instanceof PrivateChannel || !message.member) return
+
+  const Gamer = context.client as GamerClient
+  const language = Gamer.i18n.get('en-US')
+
+  if (!language) return
 
   const data: Wisdom | null = await fetch(`https://favqs.com/api/qotd`)
     .then(res => res.json())
@@ -20,7 +25,8 @@ export default new Command(`wisdom`, async (message, _args, context) => {
       message.author.avatarURL
     )
 
-  return message.channel.createMessage({ embed: embed.code })
+  message.channel.createMessage({ embed: embed.code })
+  return Gamer.helpers.levels.completeMission(message.member, `wisdom`, message.channel.guild.id)
 })
 
 export interface Wisdom {

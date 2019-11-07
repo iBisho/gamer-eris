@@ -8,7 +8,7 @@ import UserDefaults from '../constants/settings/user'
 
 export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, _args, context) => {
   const user = message.mentions.length ? message.mentions[0] : message.author
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
@@ -65,5 +65,6 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     .attachFile(buffer, fileName)
     .setImage(`attachment://${fileName}`)
 
-  return message.channel.createMessage({ embed: embed.code }, embed.file)
+  message.channel.createMessage({ embed: embed.code }, embed.file)
+  return Gamer.helpers.levels.completeMission(message.member, `user`, message.channel.guild.id)
 })

@@ -37,7 +37,7 @@ const gifs = [
 
 export default new Command(`baka`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || !message.member) return
   const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
 
   const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
@@ -56,5 +56,6 @@ export default new Command(`baka`, async (message, _args, context) => {
       })
     )
 
-  return message.channel.createMessage({ embed: embed.code })
+  message.channel.createMessage({ embed: embed.code })
+  return Gamer.helpers.levels.completeMission(message.member, `baka`, message.channel.guild.id)
 })

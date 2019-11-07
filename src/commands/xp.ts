@@ -25,8 +25,8 @@ export default new Command(`xp`, async (message, args, context) => {
   const member = message.channel.guild.members.get(memberID)
   if (!member) return
 
-  if (isAdding) Gamer.helpers.levels.addLocalXP(message.member, language(`leveling/xp:ROLE_ADD_REASON`), amount, true)
-  else Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_ADD_REASON`), amount)
+  if (isAdding) Gamer.helpers.levels.addLocalXP(message.member, amount, true, language(`leveling/xp:ROLE_ADD_REASON`))
+  else Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), amount)
   // Respond telling the user how much they gained
   return message.channel.createMessage(
     language(isAdding ? `leveling/xp:ADDED` : `leveling/xp:REMOVED`, {
