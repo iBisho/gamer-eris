@@ -6,5 +6,5 @@
   "EMBED_DESCRIPTION": "Visit our website at **https://g4m3r.xyz** to add the bot to your server!",
   "LINKS": "$t(basic/invite:LINKS_LINE_1)\n$t(basic/invite:LINKS_LINE_2)",
   "LINKS_LINE_1": "**»** <:g4m3rwhite:443416083874054145> **Invite The Bot**: [Click Here To Invite Bot]({{invite}})",
-  "LINKS_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Support Server**: <https://discord.gg/J4NqJ72>"
+  "LINKS_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Need Help?**: [Support Server](https://discord.gg/J4NqJ72)"
 }
