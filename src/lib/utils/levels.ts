@@ -101,7 +101,7 @@ export default class {
   }
 
   async addGlobalXP(member: Member, xpAmountToAdd = 1) {
-    if (this.checkCooldown(member)) return
+    if (this.checkCooldown(member, true)) return
 
     const userSettings = ((await this.Gamer.database.models.user.findOne({ id: member.id })) ||
       new this.Gamer.database.models.user({ userID: member.id })) as UserSettings

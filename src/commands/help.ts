@@ -29,6 +29,10 @@ const categories = [
       `urban`
     ]
   },
+  {
+    name: `leveling`,
+    commands: [`background`, `boostme`, `daily`, `leaderboard`, `levelrole`, `profile`, `xp`, `xpreset`]
+  },
   { name: `settings`, commands: [`afk`, `setverify`, `setfeedback`, `setprofanity`, `setcapital`, `setwhitelisted`] },
   { name: `utility`, commands: [`imgur`] },
   { name: `feedback`, commands: [`bugs`, `idea`, `feedback`] },
