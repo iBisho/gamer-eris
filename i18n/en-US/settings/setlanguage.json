@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Set a language/personality for your server.",
+  "EXTENDED": "**{{prefix}}setlanguage french** ~ Sets a language/personality.",
+  "USAGE": "{{prefix}}setlanguage [Language Name]",
+  "ALIASES": "Setlanguage does not have any aliases.",
+  "INVALID_NAME": "There was no language/personality found for **{{name}}**. If you are looking to create this language please contact us on our support server using the invite command.",
+  "ALREADY_ACTIVE": "The {{name}} language/personality is already set on this server.",
+  "SET": "The {{name}} has been set on this server."
+}
