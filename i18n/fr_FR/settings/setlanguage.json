@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Définit une langue pour votre serveur.",
+  "EXTENDED": "**{{prefix}}setlanguage french** ~ Définit la langue choisie.",
+  "USAGE": "{{prefix}}setlanguage [Langue]",
+  "ALIASES": "La commande \"Setlanguage\" n'a pas d'alias.",
+  "INVALID_NAME": "Il n'y a aucune langue correspondant à **{{name}}**, si vous souhaitez créer cette langue sur le bot, merci de nous contacter sur notre serveur de support en utilisant la commande d'invitation.",
+  "ALREADY_ACTIVE": "La lange {{name}} est déjà définie sur votre serveur.",
+  "SET": "La langue {{name}} à bien été définie sur ce serveur."
+}
