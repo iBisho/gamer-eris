@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Zeigt Informationen für Nerds über den Bot an.",
+  "EXTENDED": "$t(basic/ping:EXTENDED_LINE_1)\n$t(basic/ping:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}ping** ~ Zeigt wichtige Informationen wie den Herzschlag des G4M3R (Ping) an.",
+  "EXTENDED_LINE_2": "Allgemeine Botstatistiken: Shard | Discord Gilden | Benutzeranzahl",
+  "USAGE": "{{prefix}}ping",
+  "ALIASES": "{{prefix}}pong",
+  "TIME": "Reaktionszeit: {{time}} Sekunden",
+  "STATS": "**__ Allgemeine Botstatistiken__**",
+  "STATS_VALUE": "🆔 {{id}} {{discord}} {{guilds}} 👥 {{users}}"
+}
