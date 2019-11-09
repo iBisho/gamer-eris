@@ -1,6 +1,8 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
+  // The ID number of the event that users will use to run commands with
+  id: { type: Number, required: true },
   // A custom spot for the user to write the activity of the event
   activity: String,
   // The channel id where the advertisement will be.

@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import ClientSchema from './schemas/client'
 import EmojiSchema from './schemas/emoji'
 import EventSchema from './schemas/event'

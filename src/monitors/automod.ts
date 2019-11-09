@@ -4,7 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import * as confusables from 'confusables'
-import * as getURLs from 'get-urls'
+import getURLs from 'get-urls'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -36,6 +36,14 @@ export default class extends Monitor {
         `Deleted a Capital Spam message on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
       )
       Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 3)
+      Gamer.amplitude.push({
+        authorID: message.author.id,
+        channelID: message.channel.id,
+        guildID: message.channel.guild.id,
+        messageID: message.id,
+        timestamp: message.timestamp,
+        type: 'CAPITAL_SPAM_DELETED'
+      })
     }
 
     // Run the filter and get back either null or cleaned string
@@ -48,6 +56,14 @@ export default class extends Monitor {
         )
         // Remove 5 XP per word used
         Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 5)
+        Gamer.amplitude.push({
+          authorID: message.author.id,
+          channelID: message.channel.id,
+          guildID: message.channel.guild.id,
+          messageID: message.id,
+          timestamp: message.timestamp,
+          type: 'PROFANITY_DELETED'
+        })
       }
       // If a cleaned string is returned set the content to the string
       content = naughtyWordCleanup.cleanString
@@ -64,6 +80,14 @@ export default class extends Monitor {
           `Deleted a blacklisted URL ${url} on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
         )
         Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 5)
+        Gamer.amplitude.push({
+          authorID: message.author.id,
+          channelID: message.channel.id,
+          guildID: message.channel.guild.id,
+          messageID: message.id,
+          timestamp: message.timestamp,
+          type: 'URLS_DELETED'
+        })
       }
     }
 

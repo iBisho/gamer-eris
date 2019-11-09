@@ -1,7 +1,7 @@
 import { Message } from 'eris'
 import GamerEmbed from '../structures/GamerEmbed'
 import { GuildSettings } from './settings'
-import * as i18next from 'i18next'
+import { TFunction } from 'i18next'
 import { Document } from 'mongoose'
 
 export interface GamerEmbedObject {
@@ -42,7 +42,7 @@ export interface Collector {
 }
 
 export interface FeedbackCollectorData {
-  language: i18next.TFunction
+  language: TFunction
   settings: GuildSettings
   embed: GamerEmbed
   question: string
@@ -69,4 +69,38 @@ export interface GamerMission extends Document {
   completed: boolean
   guildID: string
   userID: string
+}
+
+export interface GamerEvent extends Document {
+  id: number
+  authorID: string
+  backgroundURL?: string
+  guildID: string
+  start: number
+  end: number
+  duration: number
+  attendees: string[]
+  denials: string[]
+  waitingList: string[]
+  reminders: number[]
+  executedReminders: number[]
+  title: string
+  tags: string[]
+  description: string
+  maxAttendees: number
+  hasStarted: boolean
+  isRecurring: boolean
+  frequency: number
+  adMessageID?: string
+  adChannelID?: string
+  createdAt: number
+  platform: string
+  game: string
+  activity: string
+  removeRecurringAttendees: boolean
+  allowedRoleIDs: string[]
+  alertRoleIDs: string[]
+  dmReminders: boolean
+  templateName?: string
+  minutesFromNow: number
 }

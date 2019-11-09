@@ -1,6 +1,6 @@
 {
 	"DESCRIPTION": "The Kanna command sends a random gif in the chat to increase your daily good-vibes-intake.",
-	"EXTENDED": "Random Kana!",
+	"EXTENDED": "Random Kanna!",
 	"USAGE": "{{prefix}}kanna",
 	"ALIASES": "Kanna does not have any aliases.",
 	"REPLY_NUMBER0": "Kanna Kamui (aka. Kanna Kobayashi) is one of the main characters in Kobayashi-san Chi no Maid Dragon.",

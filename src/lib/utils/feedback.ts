@@ -3,7 +3,7 @@ import constants from '../../constants'
 import GamerEmbed from '../structures/GamerEmbed'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import * as i18next from 'i18next'
+import { TFunction } from 'i18next'
 
 export default class {
   async sendFeedback(
@@ -12,7 +12,7 @@ export default class {
     embed: GamerEmbed,
     settings: GuildSettings,
     Gamer: GamerClient,
-    language: i18next.TFunction
+    language: TFunction
   ) {
     // All questions are answered so send the feedback
     const feedback = await channel.createMessage({ embed: embed.code })

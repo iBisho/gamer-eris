@@ -49,5 +49,15 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   message.channel.createMessage(
     language(hasRole ? `roles/role:REMOVED` : `roles/role:ADDED`, { user: message.member.username, role: role.name })
   )
+
+  Gamer.amplitude.push({
+    authorID: message.author.id,
+    channelID: message.channel.id,
+    guildID: message.channel.guild.id,
+    messageID: message.id,
+    timestamp: message.timestamp,
+    memberID: message.member.id,
+    type: hasRole ? 'ROLE_REMOVED' : 'ROLE_ADDED'
+  })
   return Gamer.helpers.levels.completeMission(message.member, `role`, message.channel.guild.id)
 })

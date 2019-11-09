@@ -62,4 +62,17 @@ export default class {
       .replace(/./, m => m.toUpperCase())
       .trim()
   }
+
+  humanizeMilliseconds(value: number) {
+    // Gets ms into seconds
+    const time = value / 1000
+
+    const days = Math.floor(time / 86400)
+    const hours = Math.floor((time % 86400) / 3600)
+    const minutes = Math.floor(((time % 86400) % 3600) / 60)
+    const seconds = Math.floor(((time % 86400) % 3600) % 60)
+    return `${days ? `${days}d ` : ''}${hours ? `${hours}h ` : ''}${minutes ? `${minutes}m ` : ''}${
+      seconds ? `${seconds}s ` : ''
+    }`
+  }
 }

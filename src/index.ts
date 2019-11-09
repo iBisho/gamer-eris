@@ -2,6 +2,17 @@ import config from '../config'
 import GamerClient from './lib/structures/GamerClient'
 import { Message, PrivateChannel } from 'eris'
 import { GuildSettings } from './lib/types/settings'
+import { Canvas } from 'canvas-constructor'
+import { join } from 'path'
+
+// Register the assets
+const rootFolder = join(__dirname, `..`, `..`)
+const fontsFolder = join(rootFolder, `assets/fonts`)
+Canvas.registerFont(join(fontsFolder, `sft_heavy.ttf`), `SFTHeavy`)
+  .registerFont(join(fontsFolder, `lato_heavy.ttf`), `LatoHeavy`)
+  .registerFont(join(fontsFolder, `lato_bold.ttf`), `LatoBold`)
+  .registerFont(join(fontsFolder, `NotoEmoji.ttf`), `LatoBold`)
+  .registerFont(join(fontsFolder, `NotoSans-Regular.ttf`), `LatoBold`)
 
 const Gamer = new GamerClient({
   token: config.token,
@@ -52,4 +63,5 @@ Gamer.addCommandDir(`${__dirname}/commands`)
 
 // bind so the `this` is relevent to the event
 for (const [name, event] of Gamer.events) Gamer.on(name, event.execute.bind(event))
+
 export default Gamer

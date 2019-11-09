@@ -1,0 +1,20 @@
+{
+	"DESCRIPTION": "Shows the details of an event.",
+	"EXTENDED": "This command helps views all the details like RSVP information. Majority of the events information is already available on the event cards.",
+	"USAGE": "{{prefix}}eventshow [#]",
+	"ALIASES": "{{prefix}}es",
+	"BASIC": "$t(events/eventshow:BASIC_1)\n$t(events/eventshow:BASIC_2)",
+	"BASIC_1": "**Title:** {{title}}",
+	"BASIC_2": "**Tags:** {{tags}}",
+	"TIME": "**Duration:** {{duration}}",
+	"RSVP": "$t(events/eventshow:RSVP_1)\n$t(events/eventshow:RSVP_2)\n$t(events/eventshow:RSVP_3)\n$t(events/eventshow:RSVP_4)",
+	"RSVP_1": "**Joined:** {{stats}}",
+	"RSVP_2": "**Attendees:** {{attendees}}",
+	"RSVP_3": "**Waiting:** {{waitingList}}",
+	"RSVP_4": "**Denials:** {{denials}}",
+	"GAMING": "$t(events/eventshow:GAMING_1)\n$t(events/eventshow:GAMING_2)\n$t(events/eventshow:GAMING_3)",
+	"GAMING_1": "**Platform:** {{platform}}",
+	"GAMING_2": "**Game:** {{game}}",
+	"GAMING_3": "**Activity:** {{activity}}",
+	"STARTS_AT": "Event Starts At:"
+}

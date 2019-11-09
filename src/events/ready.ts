@@ -4,6 +4,8 @@ import Gamer from '../index'
 import { GuildSettings, MemberSettings } from '../lib/types/settings'
 import { TextChannel } from 'eris'
 import constants from '../constants'
+import config from '../../config'
+import fetch from 'node-fetch'
 
 // 10 minutes
 const maxInactiveTime = 600000
@@ -114,6 +116,21 @@ export default class extends Event {
         }
       }
     }, DAILY)
+
+    // Create product analytics for the bot
+    setInterval(() => {
+      // Send a post request to amplitude url of the first 10 events from the amplitude cache. Rate limit is 10/s
+      fetch(config.apiKeys.amplitude.url, {
+        method: `POST`,
+        headers: { 'Content-Type': `application/json` },
+        body: JSON.stringify({
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          api_key: config.apiKeys.amplitude.key,
+          // Splice will return the deleted items from the array
+          events: Gamer.amplitude.splice(0, 10)
+        })
+      })
+    }, 1000)
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }

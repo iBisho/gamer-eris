@@ -13,7 +13,8 @@ export default class extends Monitor {
     if (
       message.channel instanceof PrivateChannel ||
       message.type !== 0 ||
-      (message.member && message.member.roles.length > 1)
+      !message.member ||
+      message.member.roles.length > 1
     )
       return
 
@@ -33,9 +34,15 @@ export default class extends Monitor {
     const bot = message.channel.guild.members.get(Gamer.user.id)
     if (!bot || !bot.permission.has('manageRoles')) return
 
-    return (
-      message.member &&
-      message.member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
-    )
+    Gamer.amplitude.push({
+      authorID: message.author.id,
+      channelID: message.channel.id,
+      guildID: message.channel.guild.id,
+      messageID: message.id,
+      timestamp: message.timestamp,
+      memberID: message.member.id,
+      type: 'ROLE_ADDED'
+    })
+    return message.member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
   }
 }

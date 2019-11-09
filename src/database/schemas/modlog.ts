@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
   // The action that was taken for this modlog

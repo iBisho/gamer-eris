@@ -88,8 +88,16 @@ export default class {
       const role = member.guild.roles.get(roleID)
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
-      if (reason) member.addRole(roleID, reason)
-      else rolesToAdd.push(roleID)
+      if (reason) {
+        member.addRole(roleID, reason)
+        this.Gamer.amplitude.push({
+          authorID: member.id,
+          guildID: member.guild.id,
+          timestamp: Date.now(),
+          memberID: member.id,
+          type: 'ROLE_ADDED'
+        })
+      } else rolesToAdd.push(roleID)
     }
     if (!rolesToAdd.length) return
 
@@ -97,7 +105,16 @@ export default class {
       id: member.guild.id
     })) as GuildSettings | null
     const language = this.Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
-    for (const roleID of rolesToAdd) member.addRole(roleID, language?.(`leveling/xp:ROLE_ADD_REASON`))
+    for (const roleID of rolesToAdd) {
+      member.addRole(roleID, language?.(`leveling/xp:ROLE_ADD_REASON`))
+      this.Gamer.amplitude.push({
+        authorID: member.id,
+        guildID: member.guild.id,
+        timestamp: Date.now(),
+        memberID: member.id,
+        type: 'ROLE_ADDED'
+      })
+    }
   }
 
   async addGlobalXP(member: Member, xpAmountToAdd = 1) {
@@ -190,6 +207,13 @@ export default class {
       if (!role || botsHighestRole.position <= role.position) continue
 
       member.removeRole(roleID, reason)
+      this.Gamer.amplitude.push({
+        authorID: member.id,
+        guildID: member.guild.id,
+        timestamp: Date.now(),
+        memberID: member.id,
+        type: 'ROLE_REMOVED'
+      })
     }
   }
 

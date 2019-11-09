@@ -103,8 +103,28 @@ export default new Command(`verify`, async (message, args, context) => {
           if (!bot) return
           // Remove the verify role
           msg.member.removeRole(role.id)
-          if (!guildSettings.verify.discordVerificationStrictnessEnabled && guildSettings.moderation.roleIDs.autorole)
+          Gamer.amplitude.push({
+            authorID: msg.author.id,
+            channelID: msg.channel.id,
+            guildID: msg.channel.guild.id,
+            messageID: msg.id,
+            timestamp: msg.timestamp,
+            memberID: msg.member.id,
+            type: 'ROLE_REMOVED'
+          })
+
+          if (!guildSettings.verify.discordVerificationStrictnessEnabled && guildSettings.moderation.roleIDs.autorole) {
             msg.member.addRole(guildSettings.moderation.roleIDs.autorole)
+            Gamer.amplitude.push({
+              authorID: msg.author.id,
+              channelID: msg.channel.id,
+              guildID: msg.channel.guild.id,
+              messageID: msg.id,
+              timestamp: msg.timestamp,
+              memberID: msg.member.id,
+              type: 'ROLE_ADDED'
+            })
+          }
 
           // Delete the channel
           if (bot.permission.has('manageChannels')) msg.channel.delete()

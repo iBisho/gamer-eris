@@ -1,7 +1,7 @@
-import * as i18next from 'i18next'
-import * as Backend from 'i18next-node-fs-backend'
+import Backend from 'i18next-node-fs-backend'
 import * as path from 'path'
 import { promises as fs } from 'fs'
+import i18next, { TFunction } from 'i18next'
 
 async function walkDirectory(dir: string, namespaces: string[] = [], folderName = '') {
   const files = await fs.readdir(dir)
@@ -25,7 +25,7 @@ async function walkDirectory(dir: string, namespaces: string[] = [], folderName 
   return { namespaces: [...new Set(namespaces)], languages }
 }
 
-export default async (): Promise<Map<string, i18next.TFunction>> => {
+export default async (): Promise<Map<string, TFunction>> => {
   const options = {
     jsonIndent: 2,
     loadPath: path.resolve(__dirname, '../../i18n/{{lng}}/{{ns}}.json')

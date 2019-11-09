@@ -35,7 +35,7 @@ export default class {
     validEmoji.shift()
     const [animated, name, id] = validEmoji
     // TODO: remove the animated if not needed
-    console.log(animated)
+    console.log('ignore this for now please', animated)
 
     switch (type) {
       case `id`:
@@ -49,5 +49,9 @@ export default class {
 
   checkPermissions(channel: AnyGuildChannel, userID: string, permissions: string[]) {
     return !!permissions.some(permission => !channel.permissionsOf(userID).has(permission))
+  }
+
+  idsToUserTag(ids: string[]) {
+    return ids.map(id => `<@!${id}>`).join(`, `)
   }
 }

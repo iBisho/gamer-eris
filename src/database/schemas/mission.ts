@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose'
+import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
   userID: { type: String, required: true },

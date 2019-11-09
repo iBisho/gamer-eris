@@ -63,5 +63,15 @@ export default new Command(`take`, async (message, args, context) => {
     language(`roles/take:GIVEN_BY`, { user: `${message.author.username}-${message.author.discriminator}` })
   )
 
+  Gamer.amplitude.push({
+    authorID: message.author.id,
+    channelID: message.channel.id,
+    guildID: message.channel.guild.id,
+    messageID: message.id,
+    timestamp: message.timestamp,
+    memberID: member.id,
+    type: 'ROLE_REMOVED'
+  })
+
   return message.channel.createMessage(language(`roles/take:SUCCESS`, { user: member.username, role: role.name }))
 })

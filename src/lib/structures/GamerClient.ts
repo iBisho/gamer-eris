@@ -1,6 +1,6 @@
 import { Client, ClientOptions } from 'yuuko'
-import * as i18next from 'i18next'
 import i18n from '../../i18next'
+import { TFunction } from 'i18next'
 import * as glob from 'glob'
 import { PrivateChannel, Message } from 'eris'
 import { Collector, Mission } from '../types/gamer'
@@ -14,6 +14,7 @@ import Database from '../../database/mongodb'
 
 import ProfileHelper from '../utils/profiles'
 import DiscordHelper from '../utils/discord'
+import EventsHelper from '../utils/events'
 import FeedbackHelper from '../utils/feedback'
 import LeaderboardHelper from '../utils/leaderboards'
 import LevelsHelper from '../utils/levels'
@@ -21,6 +22,7 @@ import LoggerHelper from '../utils/logger'
 import ScriptsHelper from '../utils/scripts'
 import TransformHelper from '../utils/transform'
 import constants from '../../constants'
+import { AmplitudeEvent } from '../types/amplitude'
 
 const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
 const assetsFolder = join(rootFolder, `assets`)
@@ -44,8 +46,10 @@ const assetsPaths = {
 }
 
 export default class GamerClient extends Client {
+  // Used for bot statistics. Events are stored in cache and every second 10 events are uploaded to amplitude.
+  amplitude: AmplitudeEvent[] = []
   // i18n solution
-  i18n: Map<string, i18next.TFunction> = new Map()
+  i18n: Map<string, TFunction> = new Map()
 
   // Message collectors
   collectors: Map<string, Collector> = new Map()
@@ -53,18 +57,38 @@ export default class GamerClient extends Client {
   database = new Database()
 
   helpers = {
-    profiles: new ProfileHelper(),
     discord: new DiscordHelper(),
+    events: new EventsHelper(this),
     feedback: new FeedbackHelper(),
     leaderboards: new LeaderboardHelper(this),
     levels: new LevelsHelper(this),
     logger: new LoggerHelper(),
+    profiles: new ProfileHelper(),
     scripts: new ScriptsHelper(),
     transform: new TransformHelper()
   }
 
   buffers = {
     botLogo: fs.readFileSync(constants.profiles.clanDefaults.logo),
+    events: {
+      background: fs.readFileSync(join(assetsFolder, `eventCard/background.png`)),
+      rectangle: fs.readFileSync(join(assetsFolder, `eventCard/rectangle.png`)),
+      calendar: fs.readFileSync(join(assetsFolder, `eventCard/calendar.png`)),
+      gaming: fs.readFileSync(join(assetsFolder, `eventCard/gaming.png`)),
+      private: fs.readFileSync(join(assetsFolder, `eventCard/private.png`)),
+      recurring: fs.readFileSync(join(assetsFolder, `eventCard/recurring.png`)),
+      members: fs.readFileSync(join(assetsFolder, `eventCard/members.png`)),
+      waiting: fs.readFileSync(join(assetsFolder, `eventCard/waiting.png`)),
+      denials: fs.readFileSync(join(assetsFolder, `eventCard/denials.png`)),
+      clock: fs.readFileSync(join(assetsFolder, `eventCard/clock.png`)),
+      community: fs.readFileSync(join(assetsFolder, `eventCard/community.png`)),
+      tag: fs.readFileSync(join(assetsFolder, `eventCard/tag.png`))
+    },
+    leaderboards: {
+      background: fs.readFileSync(join(assetsFolder, `leaderboard/background.png`)),
+      circle: fs.readFileSync(join(assetsFolder, `leaderboard/circle.png`)),
+      rectangle: fs.readFileSync(join(assetsFolder, `leaderboard/rectangle.png`))
+    },
     profiles: {
       blackRectangle: fs.readFileSync(assetsPaths.blackRectangle),
       whiteRectangle: fs.readFileSync(assetsPaths.whiteRectangle),
@@ -78,11 +102,6 @@ export default class GamerClient extends Client {
         mobile: fs.readFileSync(assetsPaths.badges.mobile),
         steam: fs.readFileSync(assetsPaths.badges.steam)
       }
-    },
-    leaderboards: {
-      background: fs.readFileSync(join(assetsFolder, `leaderboard/background.png`)),
-      circle: fs.readFileSync(join(assetsFolder, `leaderboard/circle.png`)),
-      rectangle: fs.readFileSync(join(assetsFolder, `leaderboard/rectangle.png`))
     }
   }
 

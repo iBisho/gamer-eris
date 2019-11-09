@@ -111,8 +111,8 @@ export default class GamerEmbed {
     return this
   }
 
-  setTimestamp(time: Date | number = new Date()) {
-    this.code.timestamp = typeof time === 'number' ? time.toString() : time.getTime().toString()
+  setTimestamp(time = Date.now()) {
+    this.code.timestamp = new Date(time).toISOString()
 
     return this
   }

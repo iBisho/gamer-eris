@@ -36,7 +36,7 @@ const gifs = [
   `https://media.giphy.com/media/2z0OViv5TdAGs/giphy.gif`
 ]
 
-export default new Command([`cat`, `kitten`], async (message, _args, context) => {
+export default new Command([`kitten`, `cat`], async (message, _args, context) => {
   // Fetching a random fact
   const data: Kitten | null = await fetch(`https://catfact.ninja/fact`)
     .then(res => res.json())

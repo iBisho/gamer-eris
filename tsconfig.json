@@ -24,7 +24,8 @@
     "strictPropertyInitialization": true,
     "types": ["node"],
     "target": "es6",
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "esModuleInterop": true
   },
   "compileOnSave": true,
   "include": ["./src/**/*.ts", "config.ts"]
