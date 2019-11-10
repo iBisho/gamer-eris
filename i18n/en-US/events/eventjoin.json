@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Join an event so you can be alerted when it starts!",
+  "EXTENDED": "**{{prefix}}eventjoin [Event ID]** ~ Joins the event if there is space and you have the necessary roles to join this event.",
+  "USAGE": "{{prefix}}eventjoin [Event ID]",
+  "ALIASES": "{{prefix}}ej",
+  "ALREADY_JOINED": "You are already RSVP as **Attending** this event.",
+  "MISSING_ALLOWED_ROLES": "This event can only be joined by someone who has one of the following roles: {{roles}}"
+}

@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Kick a member from the event!",
+  "EXTENDED": "**{{prefix}}eventkick [Event ID]** ~ Kicks a member out of the event.",
+  "USAGE": "{{prefix}}eventkick [Event ID] [@User]",
+  "ALIASES": "{{prefix}}ek",
+  "NEED_USER": "You did not provide a user to kick from the event.",
+  "NOT_JOINED": "This user is unable to be kicked from the event, because they are not attending the event.",
+  "KICKED": "The user has been kicked from the event.",
+}

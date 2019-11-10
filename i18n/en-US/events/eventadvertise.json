@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Advertise an event from the database.",
+	"EXTENDED": "**{{prefix}}eventadvertise [Event ID]** ~ Creates the event card advertisement for the event with the corresponding event id.",
+	"USAGE": "{{prefix}}eventadvertise [Event ID]",
+	"ALIASES": "{{prefix}}ead",
+	"DELETE": "You have successfully delete the event with an ID of {{id}}."
+}
