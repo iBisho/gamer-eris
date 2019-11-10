@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Affiche les informations concernant le bot.",
+  "EXTENDED": "$t(basic/ping:EXTENDED_LINE_1)\n$t(basic/ping:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}ping** ~ Affiche des informations importante concernant G4M3R (ping).",
+  "EXTENDED_LINE_2": "Statistiques générale du Bot : Shard | Serveur Discord | Nombre d'utilisateurs",
+  "USAGE": "{{prefix}}ping",
+  "ALIASES": "{{prefix}}pong",
+  "TIME": "Temps de réponse: {{time}} secondes",
+  "STATS": "**__Statistiques générale__**",
+  "STATS_VALUE": "🆔 {{id}} {{discord}} {{guilds}} 👥 {{users}}"
+}
