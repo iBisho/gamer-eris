@@ -7,7 +7,7 @@ import { Canvas } from 'canvas-constructor'
 import constants from '../../constants'
 import GamerEmbed from '../structures/GamerEmbed'
 import config from '../../../config'
-// import config from '../../../config'
+import { TFunction } from 'i18next'
 
 const eventCardReactions: string[] = []
 
@@ -289,4 +289,95 @@ export default class {
 
     return canvas.toBufferAsync()
   }
+
+  listEvents(events: GamerEvent[]) {
+    const now = Date.now()
+    const sortedEvents = events.sort((a, b) => a.id - b.id)
+
+    return sortedEvents
+      .map(event => {
+        let textString = `**[${event.id}] `
+
+        if (event.isRecurring)
+          textString += ` 🔁 (${this.Gamer.helpers.transform.humanizeMilliseconds(event.frequency)}) `
+
+        textString += `${event.title}**\n`
+        textString += `<:dotgreen:441301429555036160>\`[${event.attendees.length} / ${event.maxAttendees}]\`<:dotyellow:441301443337781248>\`[${event.waitingList.length}]\`<:dotred:441301715493584896>\`[${event.denials.length}]\` `
+
+        if (event.start > now) {
+          textString += `starts in \`${this.Gamer.helpers.transform.humanizeMilliseconds(event.start - now)}\``
+        } else if (event.end > now) {
+          textString += `ends in \`${this.Gamer.helpers.transform.humanizeMilliseconds(event.end - now)}\``
+        } else {
+          textString += `ended \`${this.Gamer.helpers.transform.humanizeMilliseconds(now - event.end)}\` ago.`
+        }
+
+        return textString
+      })
+      .join('\n')
+  }
+
+  joinEvent(event: GamerEvent, userID: string, language: TFunction) {
+    // If there is space to join the event
+    if (event.attendees.length < event.maxAttendees) {
+      event.denials = event.denials.filter(d => d !== userID)
+      event.waitingList = event.waitingList.filter(w => w !== userID)
+      event.attendees = [...event.attendees, userID]
+      event.save()
+
+      this.advertiseEvent(event)
+      return language(`events/eventjoin:SUCCESSFULLY_JOINED`)
+    }
+
+    // There is no space and this user is already waiting
+    if (event.waitingList.includes(userID)) return language(`events/eventjoin:ALREADY_WAITING_RESPONSE`)
+
+    // add user to waiting list
+    event.denials = event.denials.filter(d => d !== userID)
+    event.waitingList = [...event.waitingList, userID]
+    event.save()
+
+    this.advertiseEvent(event)
+
+    return language(`events/eventjoin:SUCCESSFULLY_JOINED_WAITING_LIST`)
+  }
+
+  leaveEvent(event: GamerEvent, userID: string) {
+    // Clean out this users from the lists
+    event.waitingList = event.waitingList.filter(w => w !== userID)
+    event.attendees = event.attendees.filter(a => a !== userID)
+    // Check if there is a member waiting to be added
+    this.transferFromWaitingList(event)
+    // Save all changes
+    event.save()
+    // Update the event card
+    this.advertiseEvent(event)
+  }
+
+  denyEvent(event: GamerEvent, userID: string) {
+    // Clean out the users from the lists
+    event.attendees = event.attendees.filter(a => a !== userID)
+    event.waitingList = event.waitingList.filter(w => w !== userID)
+    // Add user to denials
+    event.denials = [...event.denials, userID]
+    // Check if there is a member waiting to be added
+    this.transferFromWaitingList(event)
+    // Save all changes
+    event.save()
+    // Update the event card
+    this.advertiseEvent(event)
+  }
+
+  transferFromWaitingList(event: GamerEvent) {
+    // if there is nobody on the waiting list
+    if (!event.waitingList.length || event.attendees.length >= event.maxAttendees) return
+    // Get the first user id in the waiting list
+    const movingUserID = event.waitingList.shift()
+    if (!movingUserID) return
+
+    // The shift will remove from waiting so just add it to attending
+    event.attendees.push(movingUserID)
+  }
+
+  
 }

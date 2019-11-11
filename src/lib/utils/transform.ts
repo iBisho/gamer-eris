@@ -1,5 +1,6 @@
 import { User, Guild } from 'eris'
 import { GamerEmoji } from '../types/database'
+import { milliseconds } from '../types/enums/time'
 
 const REGEXP = /%AUTHOR%|%AUTHORMENTION%|%USER%|%GUILD%|%USERMENTION%|%USERCOUNT%|%MEMBERCOUNT%|%AUTHORIMAGE%|%USERIMAGE%|%GUILDIMAGE%/gi
 
@@ -74,5 +75,39 @@ export default class {
     return `${days ? `${days}d ` : ''}${hours ? `${hours}h ` : ''}${minutes ? `${minutes}m ` : ''}${
       seconds ? `${seconds}s ` : ''
     }`
+  }
+
+  stringToMilliseconds(text: string) {
+    // Accepts 5h or 5 h
+    const [number, letter] = text.split(text.length === 2 ? `` : ` `)
+    if (!number || !letter) return
+
+    let multiplier = milliseconds.SECOND
+    switch (letter.toLowerCase()) {
+      case `w`:
+      case `week`:
+      case `weeks`:
+        multiplier = milliseconds.WEEK
+        break
+      case `d`:
+      case `day`:
+      case `days`:
+        multiplier = milliseconds.DAY
+      case `h`:
+      case `hour`:
+      case `hours`:
+        multiplier = milliseconds.HOUR
+        break
+      case `m`:
+      case `minute`:
+      case `minutes`:
+        multiplier = milliseconds.MINUTE
+        break
+    }
+
+    const amount = parseInt(number, 10)
+    if (!parseInt) return
+
+    return amount * multiplier
   }
 }

@@ -41,19 +41,19 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
   const embed = new GamerEmbed()
     .setAuthor(message.author.username, message.author.avatarURL)
     .addField(
-      language(`events/event:EDIT_BASIC`),
+      language(`events/eventshow:BASIC_EMOJI`),
       language(`events/eventshow:BASIC`, {
         title: event.title,
         tags: event.tags.length ? event.tags.join(`, `) : language('common:NONE')
       })
     )
     .addField(
-      language(`events/event:EDIT_TIME`),
+      language(`events/eventshow:TIME_EMOJI`),
       language(`events/eventshow:TIME`, { duration: Gamer.helpers.transform.humanizeMilliseconds(event.duration) })
     )
-    .addField(language(`events/event:EDIT_DESC`), event.description)
+    .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
     .addField(
-      language(`events/event:EDIT_RSVP`),
+      language(`events/eventshow:RSVP_EMOJI`),
       language(`events/eventshow:RSVP`, {
         stats: `${event.attendees.length} / ${event.maxAttendees}`,
         attendees: attendees.length ? attendees : NONE,
@@ -62,7 +62,7 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
       })
     )
     .addField(
-      language(`events/event:EDIT_GAMING`),
+      language(`events/eventshow:GAMING_EMOJI`),
       language(`events/eventshow:GAMING`, { platform: event.platform, game: event.game, activity: event.activity })
     )
     .setFooter(language(`events/eventshow:STARTS_AT`))

@@ -119,6 +119,7 @@ export default class extends Event {
 
     // Create product analytics for the bot
     setInterval(() => {
+      if (!Gamer.amplitude.length) return
       // Send a post request to amplitude url of the first 10 events from the amplitude cache. Rate limit is 10/s
       fetch(config.apiKeys.amplitude.url, {
         method: `POST`,
