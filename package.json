@@ -26,7 +26,7 @@
   "dependencies": {
     "canvas": "^2.6.0",
     "canvas-constructor": "^3.1.0",
-    "chalk": "^2.4.2",
+    "chalk": "^3.0.0",
     "cloudinary": "github:cloudinary/cloudinary_npm#db8a192966eb0c9750b913105642873c826d1950",
     "confusables": "^0.3.3",
     "eris": "^0.10.1",
