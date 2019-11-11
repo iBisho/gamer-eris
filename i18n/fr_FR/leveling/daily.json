@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Obtenez du Gamer Gold et de l'EXP par jour.",
+	"EXTENDED": "$t(daily:EXTENDED_LINE_1)\n$t(daily:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "Cette commande ne peut être utilisée qu'une seule fois par jour et uniquement dans un seul serveur. L'expérience ne sera attribuée que sur CE serveur et au classement global. De l'EXP vous sera donné pour CE serveur ainsi qu'un certain montant d'EXP pour le classement global.",
+	"EXTENDED_LINE_2": "Note: **{{prefix}}daily** Vous donne également des Gamer Gold.",
+	"USAGE": "{{prefix}}daily",
+	"ALIASES": "Daily ne possède pas d'alias.",
+	"SUCCESS": "{{mention}}, Vous avez reçu {{amount}} Gamer Gold {{emoji}} ."
+}
+
