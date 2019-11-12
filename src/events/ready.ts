@@ -6,10 +6,8 @@ import { TextChannel } from 'eris'
 import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
+import { milliseconds } from '../lib/types/enums/time'
 
-// 10 minutes
-const maxInactiveTime = 600000
-const DAILY = 1000 * 60 * 60 * 24
 export default class extends Event {
   async execute() {
     // Clean out message collectors after 2 minutes of no response
@@ -26,7 +24,7 @@ export default class extends Event {
       })
 
       Promise.all(promises)
-    }, 120000)
+    }, milliseconds.MINUTE * 2)
 
     // Clean up inactive verification channels
     setInterval(async () => {
@@ -61,13 +59,13 @@ export default class extends Event {
           if (!language) return
 
           // If the channel has gone inactive too long delete it so there is no spam empty unused channels
-          if (Date.now() - message.timestamp > maxInactiveTime)
+          if (Date.now() - message.timestamp > milliseconds.MINUTE * 10)
             channel.delete(language(`basic/verify:CHANNEL_DELETE_REASON`))
         }
       })
 
       Promise.all(promises)
-    }, maxInactiveTime)
+    }, milliseconds.MINUTE * 10)
 
     // Randomly select 3 new missions to use every day
     setInterval(() => {
@@ -78,7 +76,7 @@ export default class extends Event {
       Gamer.missions = []
       for (let i = 0; i < 3; i++)
         Gamer.missions.push(constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))])
-    }, DAILY)
+    }, milliseconds.DAY)
 
     // Checks if a member is inactive to begin losing XP every day
     setInterval(async () => {
@@ -115,7 +113,7 @@ export default class extends Event {
           )
         }
       }
-    }, DAILY)
+    }, milliseconds.DAY)
 
     // Create product analytics for the bot
     setInterval(() => {
@@ -131,7 +129,10 @@ export default class extends Event {
           events: Gamer.amplitude.splice(0, 10)
         })
       })
-    }, 1000)
+    }, milliseconds.SECOND)
+
+    // Process all events once per minute
+    setInterval(() => Gamer.helpers.events.process(), milliseconds.MINUTE)
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }

@@ -41,6 +41,22 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `title`:
       event.title = value
       break
+    case `platform`:
+      event.platform = value
+      response = `events/eventedit:PLATFORM_UPDATED`
+      break
+    case `game`:
+      event.game = value
+      response = `events/eventedit:GAME_UPDATED`
+      break
+    case `activity`:
+      event.activity = value
+      response = `events/eventedit:ACTIVITY_UPDATED`
+      break
+    case `description`:
+      event.description = value
+      response = `events/eventedit:DESCRIPTION_UPDATED`
+      break
     case `tags`:
       const tagName = value.toLowerCase()
       const exists = event.tags.includes(tagName)
@@ -52,10 +68,6 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`events/eventedit:VIP_BACKGROUND`))
       event.backgroundURL = value
       response = `events/eventedit:BACKGROUND_UPDATED`
-      break
-    case `description`:
-      event.description = value
-      response = `events/eventedit:DESCRIPTION_UPDATED`
       break
     case `attendees`:
       const maxAttendees = parseInt(value, 10)
@@ -75,18 +87,6 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `dms`:
       event.dmReminders = !event.dmReminders
       response = `events/eventedit:DM_UPDATED`
-      break
-    case `platform`:
-      event.platform = value
-      response = `events/eventedit:PLATFORM_UPDATED`
-      break
-    case `game`:
-      event.game = value
-      response = `events/eventedit:GAME_UPDATED`
-      break
-    case `activity`:
-      event.activity = value
-      response = `events/eventedit:ACTIVITY_UPDATED`
       break
     case `reminder`:
       const reminder = Gamer.helpers.transform.stringToMilliseconds(value)
