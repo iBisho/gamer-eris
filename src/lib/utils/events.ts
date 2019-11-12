@@ -379,5 +379,155 @@ export default class {
     event.attendees.push(movingUserID)
   }
 
-  
+  async process() {
+    // First fetch all the events from the database
+    const events = (await this.Gamer.database.models.event.find()) as GamerEvent[]
+    // If there are no events or some error happened just cancel out
+    if (!events.length) return
+    // Create the timestamp for right now so we can reuse it
+    const now = Date.now()
+
+    const eventsToEnd: GamerEvent[] = []
+    const eventsToStart: GamerEvent[] = []
+    const eventsToRemind: GamerEvent[] = []
+
+    for (const event of events) {
+      if (event.end < now) eventsToEnd.push(event)
+      else if (event.start < now && !event.hasStarted && event.end > now) eventsToStart.push(event)
+      else if (event.start > now && !event.hasStarted && event.attendees.length) eventsToStart.push(event)
+    }
+
+    for (const event of eventsToEnd) this.endEvent(event)
+    for (const event of eventsToStart) this.startEvent(event)
+    for (const event of eventsToRemind) this.remindEvent(event)
+  }
+
+  async endEvent(event: GamerEvent) {
+    // If an event is not recurring delete it
+    if (!event.isRecurring) {
+      // Delete the event advertisement if it existed
+      const card =
+        event.adChannelID && event.adMessageID
+          ? await this.Gamer.getMessage(event.adChannelID, event.adMessageID)
+          : undefined
+      if (card) card.delete()
+
+      // Deletes the event from the database
+      this.Gamer.database.models.event.findOneAndDelete({ id: event.id, guildID: event.guildID })
+    }
+
+    // add new event to events array to be sent to amplitude for product analytics
+    this.Gamer.amplitude.push({
+      authorID: event.authorID,
+      channelID: event.adChannelID,
+      guildID: event.guildID,
+      messageID: event.adMessageID,
+      timestamp: Date.now(),
+      type: 'EVENT_CREATED'
+    })
+
+    // Need to recreate a new event since it was recurring
+    // Set the start time to the next available interval
+    while (event.start < Date.now()) event.start += event.frequency
+
+    event.end = event.start + event.duration
+    event.hasStarted = false
+    event.executedReminders = []
+
+    if (event.removeRecurringAttendees) {
+      event.attendees = []
+      event.waitingList = []
+      event.denials = []
+    }
+
+    event.save()
+
+    this.advertiseEvent(event)
+  }
+
+  async startEvent(event: GamerEvent) {
+    const guild = this.Gamer.guilds.get(event.guildID)
+    if (!guild) return
+
+    const guildSettings = (await this.Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null
+
+    const language = this.Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+    if (!language) return
+
+    const embed = new GamerEmbed()
+      .setAuthor(language(`events/event:STARTING_GUILD`, { number: event.id, guildName: guild.name }))
+      .setTitle(language(`events/event:STARTING_TITLE`, { title: event.title }))
+      .addField(language(`events/eventshow:RSVP_EMOJI`), `[${event.attendees.length}]/[${event.maxAttendees}]`)
+      .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
+
+    if (guild.iconURL) embed.setThumbnail(guild.iconURL)
+
+    for (const userID of event.attendees) {
+      const user = this.Gamer.users.get(userID)
+      if (!user) continue
+
+      user
+        .getDMChannel()
+        // send message or catch rejected promise if user has dms off
+        .then(channel => channel.createMessage({ embed: embed.code }).catch(() => undefined))
+        // Catch the promise from dmchannel
+        .catch(() => undefined)
+    }
+
+    event.hasStarted = true
+    event.save()
+  }
+
+  async remindEvent(event: GamerEvent) {
+    const guild = this.Gamer.guilds.get(event.guildID)
+    if (!guild) return
+
+    const reminder = event.reminders.find(
+      reminder => !event.executedReminders.includes(reminder) && event.start - Date.now() > reminder
+    )
+    if (!reminder) return
+    event.executedReminders.push(reminder)
+    event.save()
+
+    const guildSettings = (await this.Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null
+
+    const language = this.Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+    if (!language) return
+
+    const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(Date.now() - event.start)
+
+    const embed = new GamerEmbed()
+      .setAuthor(language(`events/event:REMIND`, { eventID: event.id }))
+      .setDescription(event.description)
+      .addField(language(`events/event:TITLE`), event.title, true)
+      .addField(language(`events/event:STARTS_IN`), startsIn, true)
+      .setFooter(language(`events/event:REMIND_FOOTER`, { guildName: guild.name }))
+    if (guild.iconURL) embed.setThumbnail(guild.iconURL)
+
+    if (event.dmReminders) {
+      for (const userID of event.attendees) {
+        const user = this.Gamer.users.get(userID)
+        if (!user) continue
+
+        user
+          .getDMChannel()
+          // send message or catch rejected promise if user has dms off
+          .then(channel => channel.createMessage({ embed: embed.code }).catch(() => undefined))
+          // Catch the promise from dmchannel
+          .catch(() => undefined)
+      }
+    }
+
+    const adChannel = event.adChannelID ? guild.channels.get(event.adChannelID) : undefined
+    if (!adChannel || !(adChannel instanceof TextChannel)) return
+
+    const botPerms = adChannel.permissionsOf(this.Gamer.user.id)
+
+    if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
+
+    adChannel.createMessage({
+      content: event.alertRoleIDs.map((id: string) => `<@&${id}>`).join(` `),
+      embed: embed.code
+    })
+  }
 }
