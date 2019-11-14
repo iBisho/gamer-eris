@@ -37,5 +37,4 @@ export default new Command(`setcapital`, async (message, args, context) => {
       settings.save()
       return message.channel.createMessage(language(`settings/setcapital:ENABLED`, { amount }))
   }
-  return
 })

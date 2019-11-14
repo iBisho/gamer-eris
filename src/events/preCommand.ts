@@ -18,6 +18,16 @@ export default class extends Event {
 
     if (message.channel instanceof PrivateChannel || !message.member) return
 
+    Gamer.amplitude.push({
+      authorID: message.author.id,
+      channelID: message.channel.id,
+      guildID: message.channel.guild.id,
+      messageID: message.id,
+      timestamp: message.timestamp,
+      commandName: command.name,
+      type: 'COMMAND_RAN'
+    })
+
     // Return a random number between 2 and 10 points for special commands
     const xpForCommand = [`eventsjoin`, `profile`, `background`, `capture`].includes(command.name)
       ? Math.floor(Math.random() * (10 - 2 + 1) + 2)

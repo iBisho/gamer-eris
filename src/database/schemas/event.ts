@@ -55,6 +55,8 @@ export default new mongoose.Schema({
   removeRecurringAttendees: Boolean,
   // The timestamp for when the event will start.
   start: Number,
+  // Whether to show the first few attendees on the card
+  showAttendees: Boolean,
   // A custom spot for the user to create 5 custom #tags
   tags: [String],
   // A custom spot for the user to set the title of the event

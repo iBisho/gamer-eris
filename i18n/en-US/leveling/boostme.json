@@ -1,6 +1,6 @@
 {
 	"DESCRIPTION": "Activate your first available XP Booster.",
-	"EXTENDED": "**{{prefix}}boostme** ~ Activates the first available XP Booster that you have. In order to get more XP Boosters, use the **{{prefix}}boost** command.",
+	"EXTENDED": "**{{prefix}}boostme** ~ Activates the first available XP Booster that you have.",
 	"USAGE": "{{prefix}}boostme",
 	"ALIASES": "{{prefix}}iamboosted {{prefix}}amiboosted {{prefix}}boostme",
 	"NO_BOOSTS": "Are you sure you have any XP booster? I was unable to find any boosts that can be activated at this time. Try to buy an booster before activating it.",

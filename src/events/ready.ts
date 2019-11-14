@@ -117,22 +117,28 @@ export default class extends Event {
 
     // Create product analytics for the bot
     setInterval(() => {
-      if (!Gamer.amplitude.length) return
-      // Send a post request to amplitude url of the first 10 events from the amplitude cache. Rate limit is 10/s
-      fetch(config.apiKeys.amplitude.url, {
-        method: `POST`,
-        headers: { 'Content-Type': `application/json` },
-        body: JSON.stringify({
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          api_key: config.apiKeys.amplitude.key,
-          // Splice will return the deleted items from the array
-          events: Gamer.amplitude.splice(0, 10)
+      // Rate limit is 100 batches of 10 events per second
+      for (let i = 0; i < 100; i++) {
+        if (!Gamer.amplitude.length) break
+
+        fetch(config.apiKeys.amplitude.url, {
+          method: `POST`,
+          headers: { 'Content-Type': `application/json` },
+          body: JSON.stringify({
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            api_key: config.apiKeys.amplitude.key,
+            // Splice will return the deleted items from the array
+            events: Gamer.amplitude.splice(0, 10)
+          })
         })
-      })
+      }
     }, milliseconds.SECOND)
 
     // Process all events once per minute
     setInterval(() => Gamer.helpers.events.process(), milliseconds.MINUTE)
+
+    // Process all mutes
+    setInterval(() => Gamer.helpers.moderation.processMutes(), milliseconds.MINUTE)
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }

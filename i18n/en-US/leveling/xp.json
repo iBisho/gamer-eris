@@ -1,13 +1,13 @@
 {
   "DESCRIPTION": "Add/Remove XP from a member.",
-  "EXTENDED": "$t(xp:EXTENDED_LINE_1)\n$t(xp:EXTENDED_LINE_2)\n$t(xp:EXTENDED_LINE_3)",
+  "EXTENDED": "$t(leveling/xp:EXTENDED_LINE_1)\n$t(leveling/xp:EXTENDED_LINE_2)\n$t(leveling/xp:EXTENDED_LINE_3)",
   "EXTENDED_LINE_1": "**{{prefix}}xp add @user 5:** ~ Adds 5 XP to the user.",
   "EXTENDED_LINE_2": "**{{prefix}}xp remove @user 5:** ~ Removes 5XP from the user.",
   "EXTENDED_LINE_3": "Pro Tip: By default, the command will add XP so you don't need to type add if you want to.",
   "USAGE": "{{prefix}}xp",
   "ALIASES": "XP has no aliases.",
-  "ADDED": "{{member}} has been given {{amount}} XP.",
-  "REMOVED": "{{member}} has lost {{amount}} XP.",
+  "ADDED": "{{mention}} has been given {{amount}} XP.",
+  "REMOVED": "{{mention}} has lost {{amount}} XP.",
   "ROLE_REMOVE_REASON": "Level rewards removed.",
   "ROLE_ADD_REASON": "Level rewards added."
 }

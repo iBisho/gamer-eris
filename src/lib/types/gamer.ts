@@ -103,4 +103,18 @@ export interface GamerEvent extends Document {
   dmReminders: boolean
   templateName?: string
   minutesFromNow: number
+  showAttendees?: boolean
+}
+
+export interface GamerModlog extends Document {
+  action: `ban` | `unban` | `mute` | `unmute` | `warn` | `kick`
+  duration?: number
+  guildID: string
+  messageID?: string
+  modID: string
+  modlogID: number
+  needsUnmute: boolean
+  reason: string
+  timestamp: number
+  userID: string
 }

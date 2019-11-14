@@ -1,4 +1,4 @@
-import { Message, AnyGuildChannel } from 'eris'
+import { Message, AnyGuildChannel, Member, Role } from 'eris'
 import config from '../../../config'
 
 const emojiRegex = /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/
@@ -53,5 +53,27 @@ export default class {
 
   idsToUserTag(ids: string[]) {
     return ids.map(id => `<@!${id}>`).join(`, `)
+  }
+
+  compareMemberPosition(member: Member, target: Member) {
+    let memberHighestRole: Role | undefined
+    let targetHighestRole: Role | undefined
+
+    for (const roleID of member.roles) {
+      const role = member.guild.roles.get(roleID)
+      if (!role) continue
+      if (!memberHighestRole || memberHighestRole.position < role.position) memberHighestRole = role
+    }
+
+    for (const roleID of target.roles) {
+      const role = target.guild.roles.get(roleID)
+      if (!role) continue
+      if (!targetHighestRole || targetHighestRole.position < role.position) targetHighestRole = role
+    }
+    // If the member has no role they can't be higher than anyone
+    if (!memberHighestRole) return false
+    // If the member has a role but the target doesn't they do have perms to manage
+    if (!targetHighestRole) return true
+    return memberHighestRole.position > targetHighestRole.position
   }
 }

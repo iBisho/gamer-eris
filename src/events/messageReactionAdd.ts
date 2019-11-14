@@ -19,6 +19,9 @@ export default class extends Event {
       }
     }
 
+    const user = Gamer.users.get(userID)
+    if (!user || user.bot) return
+
     // If it is an uncached message we need to fetch the message
     const message =
       rawMessage instanceof Message ? rawMessage : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id)
@@ -37,18 +40,26 @@ export default class extends Event {
     const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
     if (!language) return
 
-    const [joinEmojiID, denyEmojiID] = [constants.emojis.greenTick, constants.emojis.redX].map(emoji =>
-      Gamer.helpers.discord.convertEmoji(emoji, `id`)
+    const [joinEmojiID, denyEmojiID] = [constants.emojis.greenTick, constants.emojis.redX].map(e =>
+      Gamer.helpers.discord.convertEmoji(e, `id`)
     )
 
     switch (emoji.id) {
       case joinEmojiID:
-        if (event.denials.includes(userID)) message.reactions.get(denyEmojiID).users.remove(userID)
+        const joinReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `reaction`)
+        if (!joinReaction) return
+        const joinReactors = await message.getReaction(joinReaction).catch(() => [])
+        if (joinReactors.find(user => user.id === userID)) message.removeReaction(joinReaction)
+
         const response = Gamer.helpers.events.joinEvent(event, userID, language)
         message.channel.createMessage(response).then(msg => setTimeout(() => msg.delete(), 10000))
         break
       case denyEmojiID:
-        if (event.attendees.includes(userID)) message.reactions.get(joinEmojiID).users.remove(userID)
+        const denyReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.redX, `reaction`)
+        if (!denyReaction) return
+        const denyReactors = await message.getReaction(denyReaction).catch(() => [])
+        if (denyReactors.find(user => user.id === userID)) message.removeReaction(denyReaction)
+
         Gamer.helpers.events.denyEvent(event, userID)
         message.channel
           .createMessage(language(`events/eventdeny:DENIED`))

@@ -33,10 +33,29 @@ const categories = [
     name: `leveling`,
     commands: [`background`, `boostme`, `daily`, `leaderboard`, `levelrole`, `profile`, `xp`, `xpreset`]
   },
-  { name: `settings`, commands: [`afk`, `setverify`, `setfeedback`, `setprofanity`, `setcapital`, `setwhitelisted`] },
+  {
+    name: `settings`,
+    commands: [`afk`, `setverify`, `setfeedback`, `setprofanity`, `setcapital`, `setwhitelisted`, `setmodlogs`]
+  },
   { name: `utility`, commands: [`imgur`] },
   { name: `feedback`, commands: [`bugs`, `idea`, `feedback`] },
-  { name: `roles`, commands: [`give`, `public`, `role`, `take`] }
+  { name: `roles`, commands: [`give`, `public`, `role`, `take`] },
+  {
+    name: `events`,
+    commands: [
+      `eventadd`,
+      `eventadvertise`,
+      `eventcreate`,
+      `eventdelete`,
+      `eventdeny`,
+      `eventedit`,
+      `eventjoin`,
+      `eventkick`,
+      `eventleave`,
+      `events`,
+      `eventshow`
+    ]
+  }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
@@ -89,7 +108,6 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   const category = categories.find(c => c.commands.includes(command.name.toLowerCase())) || { name: `basic` }
 
   const EXTENDED = language(`${category.name}/${command.name}:EXTENDED`, { prefix })
-  const DESCRIPTION = language(`${category.name}/${command.name}:DESCRIPTION`, { prefix })
   const USAGE = language(`${category.name}/${command.name}:USAGE`, { prefix })
   const ALIASES = language(`${category.name}/${command.name}:ALIASES`, { prefix })
   const NO_EXTENDED = language('basic/help:NO_EXTENDED')
@@ -100,8 +118,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
       Gamer.user.avatarURL,
       Constants.general.gamerServerInvite
     )
-    .setDescription(DESCRIPTION)
-    .addField(language('basic/help:EXTENDED_NAME'), EXTENDED || NO_EXTENDED)
+    .setDescription(EXTENDED || NO_EXTENDED)
     .addField(language('basic/help:MAIN_USAGE'), USAGE, true)
     .addField(language('basic/help:MAIN_ALIASES'), ALIASES, true)
     .addField(language('basic/help:MORE'), Constants.general.gamerServerInvite)

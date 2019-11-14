@@ -38,7 +38,7 @@ export default class {
       guildID: message.channel.guild.id,
       // now + X minutes
       start: startNow,
-      end: template ? template.duration : 3600000,
+      end: startNow + (template ? template.duration : 3600000),
       duration: template ? template.duration : 3600000,
       attendees: [message.author.id],
       denials: [],
@@ -63,7 +63,8 @@ export default class {
       removeRecurringAttendees: template ? template.removeRecurringAttendees : false,
       allowedRoleIDs: template ? template.allowedRoleIDs : [],
       alertRoleIDs: template ? template.alertRoleIDs : [],
-      dmReminders: template ? template.dmReminders : true
+      dmReminders: template ? template.dmReminders : true,
+      showAttendees: true
     }
 
     this.Gamer.database.models.event.create(newEvent)
@@ -95,14 +96,7 @@ export default class {
     const buffer = await this.makeCanvas(event)
 
     if (!eventCardReactions.length) {
-      const emojis = [
-        constants.emojis.greenTick,
-        constants.emojis.redX,
-        constants.emojis.members,
-        constants.emojis.hourglass,
-        constants.emojis.denials,
-        constants.emojis.thinking
-      ]
+      const emojis = [constants.emojis.greenTick, constants.emojis.redX]
       for (const emoji of emojis) {
         const reaction = this.Gamer.helpers.discord.convertEmoji(emoji, `reaction`)
         if (reaction) eventCardReactions.push(reaction)
@@ -112,7 +106,19 @@ export default class {
     const imageChannel = this.Gamer.getChannel(config.channelIDs.imageStorage)
     if (!imageChannel || !(imageChannel instanceof TextChannel)) return
     const result = await imageChannel.createMessage('', { file: buffer, name: `gamer-event-card` })
-    const embed = new GamerEmbed().setTimestamp(event.start).setImage(result.attachments[0].proxy_url)
+    const attendees: string[] = []
+    for (const id of event.attendees) {
+      const user = this.Gamer.users.get(id)
+      if (!user) continue
+      attendees.push(`${user.username}#${user.discriminator}`)
+    }
+
+    const embed = new GamerEmbed()
+      .setTitle(`Event Description:`)
+      .setDescription(event.description)
+      .setImage(result.attachments[0].proxy_url)
+      .setTimestamp(event.start)
+    if (attendees.length) embed.setFooter(attendees.join(`, `))
 
     const adChannel = channelID
       ? this.Gamer.getChannel(channelID)
@@ -121,7 +127,8 @@ export default class {
       : undefined
     if (adChannel && adChannel instanceof TextChannel) {
       const adCardMessage = event.adMessageID
-        ? adChannel.messages.get(event.adMessageID) || (await adChannel.getMessage(event.adMessageID))
+        ? adChannel.messages.get(event.adMessageID) ||
+          (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
         : undefined
 
       if (adCardMessage) adCardMessage.edit({ embed: embed.code })
@@ -136,7 +143,7 @@ export default class {
   }
 
   async makeCanvas(event: GamerEvent) {
-    const eventAuthor = this.Gamer.users.get(event.authorID) || `Unknown User#0000`
+    const eventAuthor = this.Gamer.users.get(event.authorID)
 
     const customBackgroundBuffer = event.backgroundURL
       ? await fetch(event.backgroundURL).then(res => res.buffer())
@@ -163,107 +170,46 @@ export default class {
     canvas
       .setGlobalAlpha(1)
       .addImage(this.Gamer.buffers.events.rectangle, 0, 145)
-      .addImage(this.Gamer.buffers.events.calendar, 34, 177)
-      .addImage(this.Gamer.buffers.events.members, 34, 267)
-      .addImage(this.Gamer.buffers.events.waiting, 278, 267)
-      .addImage(this.Gamer.buffers.events.denials, 466, 267)
-      .addImage(this.Gamer.buffers.events.clock, 345, 177)
+      .addImage(this.Gamer.buffers.events.members, 34, 177)
+      .addImage(this.Gamer.buffers.events.waiting, 120, 177)
+      .addImage(this.Gamer.buffers.events.denials, 190, 177)
+      .addImage(this.Gamer.buffers.events.clock, 260, 177)
       .setAntialiasing(`subpixel`)
 
-    // #region event title
-    canvas
+      // event title
       .setTextAlign(`left`)
       .setColor(`#FFFFFF`)
       .setTextFont(`26px SFTHeavy`)
-      .addMultilineText(event.title, 30, 90)
-      // #endregion
+      .addMultilineText(event.title, 30, 70)
 
-      // #region event author
-      .setTextAlign(`left`)
+      // event author
       .setTextFont(`14px SFTHeavy`)
-      .addText(`Created by ${eventAuthor}`, 30, 145)
-      // #endregion
+      .addText(`Created by ${eventAuthor?.username || `Unknown User#0000`}`, 30, 145)
 
-      // #region event id
+      // event id
       .setTextFont(`18px SFTHeavy`)
       .setTextAlign(`center`)
       .setColor(event.backgroundURL ? `#FFFFFF` : `#4C4C4C`)
-      .addResponsiveText(`ID: ${event.id}`, 568, 48, 75)
-      // #endregion
+      .addResponsiveText(`#${event.id}`, 572, 48, 75)
 
-      // #region members
-      .setTextAlign(`left`)
-      .setTextFont(`16px SFTHeavy`)
-      .setColor(`#4C4C4C`)
-      .addText(`ATTENDING`, 64, 281)
-      // #endregion
-
-      // #region event attending amount
       .setTextAlign(`left`)
       .setColor(`#9B9B9B`)
       .setTextFont(`16px SFTHeavy`)
-      .addText(`${event.attendees.length} / ${event.maxAttendees}`, 155, 281)
-      // #endregion
-
-      // #region waiting list
-      .setColor(`#4C4C4C`)
-      .setTextAlign(`left`)
-      .setTextFont(`16px SFTHeavy`)
-      .addText(`WAITING LIST`, 300, 281)
-      // #endregion
-
-      // #region event waiting list amount
-      .setTextAlign(`left`)
-      .setColor(`#9B9B9B`)
-      .setTextFont(`16px SFTHeavy`)
-      .addText(event.waitingList.length.toString(), 414, 281)
-      // #endregion
-
-      // #region event Denials List text
-      .setColor(`#4C4C4C`)
-      .setTextAlign(`left`)
-      .setTextFont(`16px SFTHeavy`)
-      .addText(`DENIALS`, 491, 281)
-      // #endregion
-
-      // #region event denials amount
-      .setTextAlign(`left`)
-      .setColor(`#9B9B9B`)
-      .setTextFont(`16px SFTHeavy`)
-      .addText(event.denials.length.toString(), 565, 281)
-      // #endregion
-
-      // #region event Duration
-      .setTextAlign(`left`)
+      .addText(`${event.attendees.length} / ${event.maxAttendees}`, 65, 192)
+      .addText(event.waitingList.length.toString(), 150, 192)
+      .addText(event.denials.length.toString(), 220, 192)
       .setColor(`#4A4A4A`)
-      .setTextFont(`16px SFTHeavy`)
-      .addText(this.Gamer.helpers.transform.humanizeMilliseconds(event.duration), 375, 192)
-      // #endregion
-
-      // #region event Time start
-      .setTextAlign(`left`)
-      .setColor(`#4A4A4A`)
-      .setTextFont(`16px SFTHeavy`)
-      // .addText(startDate, 64, 192)
-      // #endregion
-
-      // #region event Game Name
-      .setColor(`#4A4A4A`)
-      .setTextAlign(`left`)
+      .addText(this.Gamer.helpers.transform.humanizeMilliseconds(event.duration), 290, 192)
       .setTextFont(`24px SFTHeavy`)
       .addText(event.game, 35, 241)
-    // #endregion
-
-    const gameWidth = canvas.measureText(event.game)
-    const platformStartsAt = 35 + 15 + gameWidth // 15 are the difference between game and platform
-
-    canvas
-      // #region event Platform Name
-      .setTextAlign(`left`)
       .setColor(`#7ED321`)
       .setTextFont(`18px SFTHeavy`)
-      .addText(event.platform, platformStartsAt, 241)
-    // #endregion
+      .addText(event.platform, 35, 261)
+      .setColor(`#4C4C4C`)
+      .setTextFont(`13px SFTHeavy`)
+    // .addText(event.description.substring(0, 100), 35, 286)
+
+    // if (event.showAttendees) canvas.addText(attendees.join(', ').substring(0, 100), 35, 311)
 
     if (event.isRecurring) {
       canvas
@@ -278,12 +224,12 @@ export default class {
 
     for (const t of event.tags) {
       // draw it
-      canvas.addImage(this.Gamer.buffers.events.tag, 34 + i * 115, 308)
+      canvas.addImage(this.Gamer.buffers.events.tag, 34 + i * 115, 320)
       canvas
         .setTextAlign(`center`)
         .setColor(`#4A4A4A`)
         .setTextFont(`14px SFTHeavy`)
-        .addText(`#${t}`, 86 + i * 115, 326)
+        .addText(`#${t}`, 86 + i * 115, 340)
       i++
     }
 
@@ -292,7 +238,7 @@ export default class {
 
   listEvents(events: GamerEvent[]) {
     const now = Date.now()
-    const sortedEvents = events.sort((a, b) => a.id - b.id)
+    const sortedEvents = events.sort((a, b) => a.id - b.id).slice(0, 12)
 
     return sortedEvents
       .map(event => {
@@ -408,12 +354,11 @@ export default class {
       // Delete the event advertisement if it existed
       const card =
         event.adChannelID && event.adMessageID
-          ? await this.Gamer.getMessage(event.adChannelID, event.adMessageID)
+          ? await this.Gamer.getMessage(event.adChannelID, event.adMessageID).catch(() => undefined)
           : undefined
       if (card) card.delete()
-
       // Deletes the event from the database
-      this.Gamer.database.models.event.findOneAndDelete({ id: event.id, guildID: event.guildID })
+      return this.Gamer.database.models.event.deleteOne({ id: event.id, guildID: event.guildID })
     }
 
     // add new event to events array to be sent to amplitude for product analytics
@@ -442,7 +387,7 @@ export default class {
 
     event.save()
 
-    this.advertiseEvent(event)
+    return this.advertiseEvent(event)
   }
 
   async startEvent(event: GamerEvent) {
@@ -455,9 +400,9 @@ export default class {
     if (!language) return
 
     const embed = new GamerEmbed()
-      .setAuthor(language(`events/event:STARTING_GUILD`, { number: event.id, guildName: guild.name }))
+      .setAuthor(language(`events/event:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
       .setTitle(language(`events/event:STARTING_TITLE`, { title: event.title }))
-      .addField(language(`events/eventshow:RSVP_EMOJI`), `[${event.attendees.length}]/[${event.maxAttendees}]`)
+      .addField(language(`events/eventshow:RSVP_EMOJI`), `${event.attendees.length} / ${event.maxAttendees}`)
       .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
 
     if (guild.iconURL) embed.setThumbnail(guild.iconURL)

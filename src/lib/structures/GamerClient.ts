@@ -19,6 +19,7 @@ import FeedbackHelper from '../utils/feedback'
 import LeaderboardHelper from '../utils/leaderboards'
 import LevelsHelper from '../utils/levels'
 import LoggerHelper from '../utils/logger'
+import ModerationHelper from '../utils/moderation'
 import ScriptsHelper from '../utils/scripts'
 import TransformHelper from '../utils/transform'
 import constants from '../../constants'
@@ -63,6 +64,7 @@ export default class GamerClient extends Client {
     leaderboards: new LeaderboardHelper(this),
     levels: new LevelsHelper(this),
     logger: new LoggerHelper(),
+    moderation: new ModerationHelper(this),
     profiles: new ProfileHelper(),
     scripts: new ScriptsHelper(),
     transform: new TransformHelper()
@@ -164,8 +166,6 @@ export default class GamerClient extends Client {
       if (dirname.endsWith('monitors/')) this.monitors.set(name, new file())
       if (dirname.endsWith('events/')) this.events.set(name, new file(name))
       // else if (dirname.endsWith('inhibitors/')) this.inhibitors.set(name, new file())
-      // else if (dirname.endsWith('finalizers/')) this.finalizers.set(name, new file())
-      // else if (dirname.endsWith('functions/')) this.functions.set(name, new file())
     }
     return this
   }

@@ -34,15 +34,16 @@ const allAdvice = [
   `**I make myself go out every day,** even if it’s only to walk around the block. The key to staying young is to keep moving.`
 ]
 
-export default new Command(`advice`, async (message, _args, context) => {
+export default new Command([`advice`, `ad`], async (message, _args, context) => {
   if (message.channel instanceof PrivateChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
   const advice = allAdvice[Math.floor(Math.random() * (allAdvice.length - 1))]
+  const [user] = message.mentions
   const embed = new GamerEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
-    .setDescription(advice)
+    .setDescription(`${user ? user.mention : message.author.mention}, ${advice}`)
 
   message.channel.createMessage({ embed: embed.code })
   return Gamer.helpers.levels.completeMission(message.member, `advice`, message.channel.guild.id)

@@ -64,6 +64,13 @@ export default class {
       .trim()
   }
 
+  toTitleCase(text: string) {
+    return text
+      .split(` `)
+      .map(word => `${word[0].toUpperCase()}${word.substring(1)}`)
+      .join(` `)
+  }
+
   humanizeMilliseconds(value: number) {
     // Gets ms into seconds
     const time = value / 1000

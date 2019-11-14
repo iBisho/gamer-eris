@@ -159,7 +159,7 @@ export default class extends Monitor {
       const textArray = finalString.split(` `)
 
       const result = []
-      for (let i = 0; i <= textArray.length; i++) {
+      for (let i = 0; i < textArray.length; i++) {
         const first = textArray[i]
         const second = textArray[i + 1] || ``
 

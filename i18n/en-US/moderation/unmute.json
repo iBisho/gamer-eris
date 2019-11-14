@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "Unmute a member in either voice, text or both channels.",
+  "EXTENDED": "**{{prefix}}unmute @member reason** ~ unmute the mentioned user and update the reason.",
+  "USAGE": "{{prefix}}unmute [User] [Reason]",
+  "ALIASES": "Unmute does not have any aliases.",
+  "SELF": "What naughty things have you done to got yourself muted? You can not **unmute** yourself. tsk tsk tsk :)",
+  "BOT": "I can not unmute myself. ;(",
+  "TOO_LOW": "Your highest role is not high enough to unmute this member.",
+  "BOT_TOO_LOW": "The bots role is not high enough to unmute this member.",
+  "NO_MUTE_ROLES": "You have not set any roles to be used as the muted roles on this server. You have to set a role in the **settings** command to mute a user.",
+  "NOT_MUTED": "This member does not have the **muted** roles at this time.",
+  "ERROR": "An error has occurred trying to remove this members mute roles. Please double check if it worked properly by checking the members role with the **.user** command.",
+  "DETAILS": "You are now **unmuted**.",
+  "SUCCESS": "You have successfully **unmuted** {{member}} for: {{reason}}",
+  "TASK_REASON": "The temporary mute has been removed.",
+  "TASK_SUCCESS": "The time for your mute has finished on **{{server}}**. You now have the ability to chat in the server again. With great power, comes great responsibility! Use it wisely!"
+}

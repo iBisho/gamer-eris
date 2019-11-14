@@ -18,10 +18,10 @@ export default new Command(`xpreset`, async (message, args, context) => {
 
   // Now we need to reset the entire guilds information
   await message.channel.createMessage(language(`leveling/xpreset:PATIENCE`))
-  // No user or role was provided so reset the whole server
   const [id] = args
 
-  const member = id ? message.channel.guild.members.get(id) : undefined
+  const [user] = message.mentions
+  const member = user || id ? message.channel.guild.members.get(user ? user.id : id) : undefined
   const role = id
     ? message.channel.guild.roles.get(id) ||
       // Incase the user provided a role name and not an id

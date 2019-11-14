@@ -16,7 +16,7 @@ export default new Command([`ping`, `pong`], async (message, _args, context) => 
         GuildDefaults
 
   const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
-  if (!language) return null
+  if (!language) return
 
   const embed = new GamerEmbed().setTitle(language(`basic/ping:TIME`, { time: ping / 1000 })).addField(
     language('basic/ping:STATS'),

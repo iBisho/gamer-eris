@@ -37,5 +37,6 @@ export default new Command([`eventadvertise`, `ead`], async (message, args, cont
     Gamer.deleteMessage(event.adChannelID, event.adMessageID, `Event card moved to ${message.channel.name}`)
   }
 
-  return Gamer.helpers.events.advertiseEvent(event, message.channel.id)
+  const channelID = message.channelMentions?.length ? message.channelMentions[0] : message.channel.id
+  return Gamer.helpers.events.advertiseEvent(event, channelID)
 })

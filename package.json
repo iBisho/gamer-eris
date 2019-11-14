@@ -29,14 +29,14 @@
     "chalk": "^3.0.0",
     "cloudinary": "github:cloudinary/cloudinary_npm#db8a192966eb0c9750b913105642873c826d1950",
     "confusables": "^0.3.3",
-    "eris": "^0.10.1",
+    "eris": "github:abalabahaha/eris#dev",
     "get-urls": "^9.2.0",
     "i18next": "^19.0.0",
     "i18next-node-fs-backend": "^2.1.3",
     "mongoose": "^5.7.10",
     "node-fetch": "^2.6.0",
     "typescript": "^3.7.2",
-    "yuuko": "^1.0.1"
+    "yuuko": "^1.1.0"
   },
   "devDependencies": {
     "@types/i18next-node-fs-backend": "^2.1.0",

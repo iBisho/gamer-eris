@@ -24,7 +24,6 @@
     "strictPropertyInitialization": true,
     "types": ["node"],
     "target": "es6",
-    "useDefineForClassFields": true,
     "esModuleInterop": true
   },
   "compileOnSave": true,

@@ -4,7 +4,7 @@ import { PrivateChannel } from 'eris'
 import { GuildSettings } from '../lib/types/settings'
 import { GamerEvent } from '../lib/types/gamer'
 
-export default new Command([`eventleave`, `el`], async (message, args, context) => {
+export default new Command([`eventkick`, `ek`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || !message.member) return
 
   const Gamer = context.client as GamerClient

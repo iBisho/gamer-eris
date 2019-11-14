@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Set the mod logs channel on your server.",
+  "EXTENDED": "$t(settings/setmodlogs:EXTENDED_LINE_1)\n$t(settings/setmodlogs:EXTENDED_LINE_2)\n\n$t(settings/setmodlogs:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}setmodlogs enable** ~ Enables the modlogs channel in the channel you just used this command in.",
+  "EXTENDED_LINE_2": "**{{prefix}}setmodlogs disable** ~ Disables the modlogs features in your server.",
+  "EXTENDED_LINE_3": "**{{prefix}}setmodlogs [#Channel]** ~ Sets a channel to be used for the modlogs in your server.",
+  "USAGE": "{{prefix}}setmodlogs [enable | disable | channel]",
+  "ALIASES": "modlogs does not have any aliases",
+  "ALREADY_ENABLED": "The modlogs is already enabled on this server.",
+  "ENABLED": "The modlogs has been enabled on this channel.",
+  "ALREADY_DISABLED": "The modlogs is already disabled on this server.",
+  "DISABLED": "The modlogs have been disabled.",
+  "NEED_CHANNEL": "You did not provide a channel to use for the modlogs.",
+  "CHANNEL_SET": "The {{channel}} has been set for modlogs on this server."
+}

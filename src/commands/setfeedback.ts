@@ -12,7 +12,7 @@ export default new Command(`setfeedback`, async (message, args, context) => {
   })) as GuildSettings | null
   if (!guildSettings) guildSettings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
+  const language = Gamer.i18n.get(guildSettings.language)
   if (!language) return
   // If the user is not an admin cancel out
   if (

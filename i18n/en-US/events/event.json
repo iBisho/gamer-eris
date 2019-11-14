@@ -10,5 +10,6 @@
   "TITLE": "Event Title:",
   "STARTS_IN": "Event Starts In:",
   "REMIND_FOOTER": "Server: {{guildName}}",
-  "SHOW_NONE": "Sorry, there are no members to display."
+  "SHOW_NONE": "Sorry, there are no members to display.",
+  "NEED_EVENT_ID": "I need an event ID to search for."
 }

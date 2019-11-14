@@ -5,6 +5,8 @@ export interface AmplitudeEvent {
   guildID: string
   timestamp: number
   memberID?: string
+  commandName?: string
+  args?: string[]
   type:
     | 'MESSAGE_CREATE'
     | 'EVENT_CREATED'
@@ -13,4 +15,5 @@ export interface AmplitudeEvent {
     | 'URLS_DELETED'
     | 'ROLE_ADDED'
     | 'ROLE_REMOVED'
+    | 'COMMAND_RAN'
 }

@@ -1,6 +1,6 @@
 {
 	"DESCRIPTION": "Upload an image to imgur and receive a link.",
-	"EXTENDED": "$t(imgur:EXTENDED_LINE_1)\n$t(imgur:EXTENDED_LINE_2)\n$t(imgur:EXTENDED_LINE_3)\n$t(imgur:EXTENDED_LINE_4)\n$t(imgur:EXTENDED_LINE_5)\n$t(imgur:EXTENDED_LINE_6)",
+	"EXTENDED": "$t(utility/imgur:EXTENDED_LINE_1)\n$t(utility/imgur:EXTENDED_LINE_2)\n$t(utility/imgur:EXTENDED_LINE_3)\n$t(utility/imgur:EXTENDED_LINE_4)\n$t(utility/imgur:EXTENDED_LINE_5)\n$t(utility/imgur:EXTENDED_LINE_6)",
 	"EXTENDED_LINE_1": "**{{prefix}}imgur** ~ uploads the attached image to imgur.",
 	"EXTENDED_LINE_2": "There are two ways to use this command, with a URL or direct image upload through discord.",
 	"EXTENDED_LINE_3": "If you're using URL, it needs to be a proper link to the image.",

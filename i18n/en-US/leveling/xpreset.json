@@ -1,6 +1,6 @@
 {
 	"DESCRIPTION": "Reset the XP for a member, role, or the entire server.",
-	"EXTENDED": "$t(xp:EXTENDED_LINE_1)\n$t(xp:EXTENDED_LINE_2)\n$t(xp:EXTENDED_LINE_3)\n$t(xp:EXTENDED_LINE_4)",
+	"EXTENDED": "$t(leveling/xpreset:EXTENDED_LINE_1)\n$t(leveling/xpreset:EXTENDED_LINE_2)\n$t(leveling/xpreset:EXTENDED_LINE_3)\n$t(leveling/xpreset:EXTENDED_LINE_4)",
 	"EXTENDED_LINE_1": "**{{prefix}}xpreset** ~ Resets the entire servers XP.",
 	"EXTENDED_LINE_2": "**{{prefix}}xpreset @user** ~ Reset this members XP.",
 	"EXTENDED_LINE_3": "**{{prefix}}xpreset @role** ~ Reset the XP for all members that have this role.",

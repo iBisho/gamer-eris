@@ -1,0 +1,12 @@
+{
+	"DESCRIPTION": "Unbans a user from the server.",
+	"EXTENDED": "$t(moderation/unban:EXTENDED_LINE_1)\n$t(moderation/unban:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}unban userid** ~ Unbans the mentioned user.",
+	"EXTENDED_LINE_2": "Make sure the bot has the permissions to ban on your server.",
+	"USAGE": "{{prefix}}unban [User] [Reason]",
+	"ALIASES": "{{prefix}}ub",
+	"NOT_BANNED": "Could not unban this user as they are not banned from this server at this time.",
+	"TITLE": "**{{user}}**, you have been unbanned from [**{{guildName}}**]",
+	"REASON": "{{mod}} has unbanned this user for: {{reason}}",
+	"SUCCESS": "Unbanned {{user}} from this server with reason: **{{reason}}**"
+}

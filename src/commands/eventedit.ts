@@ -143,6 +143,10 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       event.templateName = value
       response = `events/eventedit:TEMPLATE_UPDATED`
       break
+    case `showattendees`:
+      event.showAttendees = !event.showAttendees
+      response = `events/eventedit:SHOWATTENDEES_UPDATED`
+      break
     default:
       // If they used the command wrong show them the help
       return helpCommand.execute(message, [`eventedit`], context)

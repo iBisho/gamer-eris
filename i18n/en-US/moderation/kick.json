@@ -1,0 +1,11 @@
+{
+	"DESCRIPTION": "Kicks a user from the server.",
+	"EXTENDED": "$t(moderation/kick:EXTENDED_LINE_1)\n$t(moderation/kick:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}kick @user reason** ~ Kick the user and sets the reason which will be DM'd to the user + posted in the modlog (if activated).",
+	"EXTENDED_LINE_2": "The role of G4M3R needs to be above the highest role to moderate effectively. Make sure the bot has the permissions to kick on your server.",
+	"USAGE": "{{prefix}}kick [User] [Reason]",
+	"ALIASES": "{{prefix}}k",
+	"HIGHER_ROLE": "Your highest role is not high enough to ban this member.",
+	"UNKICKABLE": "Could not kick this member, make sure that my role is above the highest role of the user you want to ban and try again.",
+	"TITLE": "**{{user}}**, you have been kicked from [**{{guildName}}**]"
+}
