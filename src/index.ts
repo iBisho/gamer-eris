@@ -4,6 +4,8 @@ import { Message, PrivateChannel } from 'eris'
 import { GuildSettings } from './lib/types/settings'
 import { Canvas } from 'canvas-constructor'
 import { join } from 'path'
+import GamerEmbed from './lib/structures/GamerEmbed'
+import constants from './constants'
 
 // Register the assets
 const rootFolder = join(__dirname, `..`, `..`)
@@ -63,5 +65,22 @@ Gamer.addCommandDir(`${__dirname}/commands`)
 
 // bind so the `this` is relevent to the event
 for (const [name, event] of Gamer.events) Gamer.on(name, event.execute.bind(event))
+
+process.on('unhandledRejection', error => {
+  // Don't send errors for non production bots
+  if (Gamer.user.id !== constants.general.gamerID) return console.error(error)
+  // An unhandled error occurred on the bot in production
+  if (!error) console.error(`An unhandled rejection error occurred but error was null or undefined`)
+
+  // Log the error
+  console.error(error)
+
+  const embed = new GamerEmbed()
+    .setDescription(['```js', error, '```'].join(`\n`))
+    .setTimestamp()
+    .setFooter('Unhandled Rejection Error Occurred')
+  // Send error to the log channel on the gamerbot server
+  Gamer.createMessage(config.channelIDs.errors, { embed: embed.code })
+})
 
 export default Gamer

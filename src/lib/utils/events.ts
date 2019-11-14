@@ -106,19 +106,12 @@ export default class {
     const imageChannel = this.Gamer.getChannel(config.channelIDs.imageStorage)
     if (!imageChannel || !(imageChannel instanceof TextChannel)) return
     const result = await imageChannel.createMessage('', { file: buffer, name: `gamer-event-card` })
-    const attendees: string[] = []
-    for (const id of event.attendees) {
-      const user = this.Gamer.users.get(id)
-      if (!user) continue
-      attendees.push(`${user.username}#${user.discriminator}`)
-    }
 
     const embed = new GamerEmbed()
       .setTitle(`Event Description:`)
       .setDescription(event.description)
       .setImage(result.attachments[0].proxy_url)
       .setTimestamp(event.start)
-    if (attendees.length) embed.setFooter(attendees.join(`, `))
 
     const adChannel = channelID
       ? this.Gamer.getChannel(channelID)
@@ -148,6 +141,14 @@ export default class {
     const customBackgroundBuffer = event.backgroundURL
       ? await fetch(event.backgroundURL).then(res => res.buffer())
       : undefined
+
+      const attendees: string[] = []
+      for (const id of event.attendees) {
+        const user = this.Gamer.users.get(id)
+        if (!user) continue
+        attendees.push(`${user.username}#${user.discriminator}`)
+      }
+
 
     const canvas = new Canvas(652, 367)
     if (customBackgroundBuffer) {
@@ -209,7 +210,7 @@ export default class {
       .setTextFont(`13px SFTHeavy`)
     // .addText(event.description.substring(0, 100), 35, 286)
 
-    // if (event.showAttendees) canvas.addText(attendees.join(', ').substring(0, 100), 35, 311)
+    if (event.showAttendees) canvas.addText(attendees.join(', ').substring(0, 100), 35, 311)
 
     if (event.isRecurring) {
       canvas
