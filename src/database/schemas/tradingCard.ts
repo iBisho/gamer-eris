@@ -6,6 +6,7 @@ export default new mongoose.Schema({
   // The guild id
   guildID: String,
   // The channel id where the cards will be sent
-  channelID: String
+  channelID: String,
   // The name of the card that is able to be collected
+  lastItemName: String
 })

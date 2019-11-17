@@ -1,11 +1,12 @@
 // Logs that a command run (even if it was inhibited)
-import { PossiblyUncachedMessage, Message, PrivateChannel } from 'eris'
+import { PossiblyUncachedMessage, Message, PrivateChannel, Constants } from 'eris'
 import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
-import { GamerEvent } from '../lib/types/gamer'
+import { GamerEvent, GamerReactionRole } from '../lib/types/gamer'
 import { GuildSettings } from '../lib/types/settings'
+import reactionrole from '../database/schemas/reactionrole'
 
 const eventEmojis: string[] = []
 export default class extends Event {
@@ -27,6 +28,7 @@ export default class extends Event {
       rawMessage instanceof Message ? rawMessage : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id)
 
     if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
+    this.handleReactionRole(message, emoji, user)
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
@@ -65,6 +67,39 @@ export default class extends Event {
           .createMessage(language(`events/eventdeny:DENIED`))
           .then(msg => setTimeout(() => msg.delete(), 10000))
         break
+    }
+  }
+
+  async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
+    if (message.channel instanceof PrivateChannel) return
+
+    const guild = Gamer.guilds.get(message.channel.guild.id)
+    if (!guild) return
+
+    const member = guild.members.get(userID)
+    if (!member) return
+
+    const botMember = guild.members.get(Gamer.user.id)
+    if (!botMember || !botMember.permission.has(`manageRoles`)) return
+
+    const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
+
+    const reactionRole = (await Gamer.database.models.reactionRole.findOne({
+      messageID: message.id
+    })) as GamerReactionRole | null
+    if (!reactionRole) return
+
+    const emojiKey = `${emoji.name}:${emoji.id}`
+
+    const relevantReaction = reactionRole.reactions.find(r => r.reaction === emojiKey)
+    if (!relevantReaction || !relevantReaction.roleIDs.length) return
+
+    for (const roleID of relevantReaction.roleIDs) {
+      const role = guild.roles.get(roleID)
+      if (!role || role.position > botsHighestRole.position) continue
+
+      if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
+      else member.addRole(roleID, `Added roles for clicking a reaction role message.`)
     }
   }
 }

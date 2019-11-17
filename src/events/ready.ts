@@ -7,6 +7,8 @@ import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
+import { GamerTradingCard } from '../lib/types/gamer'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default class extends Event {
   async execute() {
@@ -139,6 +141,52 @@ export default class extends Event {
 
     // Process all mutes
     setInterval(() => Gamer.helpers.moderation.processMutes(), milliseconds.MINUTE)
+
+    // Run the Trading Card Interval every 20 minutes
+    setInterval(async () => {
+      const cardSettings = (await Gamer.database.models.tradingCard.find()) as GamerTradingCard[]
+      const embed = new GamerEmbed()
+
+      for (const setting of cardSettings) {
+        const gameName = setting.game.toLowerCase()
+        const cards =
+          gameName === `arenaofvalor`
+            ? constants.cards.arenaofvalor
+            : gameName === `mobilelegends`
+            ? constants.cards.mobilelegends
+            : gameName === `rulesofsurvival`
+            ? constants.cards.rulesofsurvival
+            : []
+
+        const guild = Gamer.guilds.get(setting.guildID)
+        if (!guild) continue
+
+        const channel = guild.channels.get(setting.channelID)
+        if (!channel || !(channel instanceof TextChannel)) continue
+
+        const botPerms = channel.permissionsOf(Gamer.user.id)
+        if (!botPerms.has(`readMessages`) || !botPerms.has(`sendMessages`) || !botPerms.has(`embedLinks`)) continue
+
+        const randomCard = cards[Math.floor(Math.random() * cards.length)]
+
+        const guildSettings = (await Gamer.database.models.guild.findOne({
+          id: guild.id
+        })) as GuildSettings | null
+
+        const language = Gamer.i18n.get(guildSettings?.language || `en-US`)
+        if (!language) continue
+
+        setting.lastItemName = randomCard.name
+        setting.save()
+
+        embed
+          .setAuthor(language(`gaming/capture:GUESS`), Gamer.user.avatarURL)
+          .setTitle(language(`gaming/capture:TITLE`, { prefix: guildSettings?.prefix || `.` }))
+          .setImage(randomCard.image)
+
+        channel.createMessage({ embed: embed.code })
+      }
+    }, milliseconds.MINUTE * 20)
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }

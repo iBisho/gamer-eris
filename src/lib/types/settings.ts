@@ -84,7 +84,7 @@ export interface GuildSettings extends mongoose.Document {
   }
   vip: {
     isVIP: boolean
-    registeredAt: Date
+    registeredAt: number
     userID: string | undefined
     logoURLs: string[]
   }

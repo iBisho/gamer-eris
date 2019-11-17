@@ -53,7 +53,7 @@ export default new mongoose.Schema({
     // Whether or not the guild is a VIP guild.
     isVIP: Boolean,
     // The timestamp when the guild was registered as a VIP.
-    registeredAt: Date,
+    registeredAt: Number,
     // The user id of the person who registered the guild as a VIP
     userID: String,
     // VIPFEATURE: The image urls to change the servers logo every so often.

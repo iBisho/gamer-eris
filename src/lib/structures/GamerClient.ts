@@ -22,6 +22,8 @@ import LoggerHelper from '../utils/logger'
 import ModerationHelper from '../utils/moderation'
 import ScriptsHelper from '../utils/scripts'
 import TransformHelper from '../utils/transform'
+import UtilsHelper from '../utils/utils'
+
 import constants from '../../constants'
 import { AmplitudeEvent } from '../types/amplitude'
 
@@ -67,7 +69,8 @@ export default class GamerClient extends Client {
     moderation: new ModerationHelper(this),
     profiles: new ProfileHelper(),
     scripts: new ScriptsHelper(),
-    transform: new TransformHelper()
+    transform: new TransformHelper(),
+    utils: new UtilsHelper(this)
   }
 
   buffers = {

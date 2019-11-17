@@ -70,17 +70,14 @@ process.on('unhandledRejection', error => {
   // Don't send errors for non production bots
   if (Gamer.user.id !== constants.general.gamerID) return console.error(error)
   // An unhandled error occurred on the bot in production
-  if (!error) console.error(`An unhandled rejection error occurred but error was null or undefined`)
-
-  // Log the error
-  console.error(error)
+  console.error(error || `An unhandled rejection error occurred but error was null or undefined`)
 
   const embed = new GamerEmbed()
     .setDescription(['```js', error, '```'].join(`\n`))
     .setTimestamp()
     .setFooter('Unhandled Rejection Error Occurred')
   // Send error to the log channel on the gamerbot server
-  Gamer.createMessage(config.channelIDs.errors, { embed: embed.code })
+  Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
 })
 
 export default Gamer

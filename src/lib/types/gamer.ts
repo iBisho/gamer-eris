@@ -118,3 +118,29 @@ export interface GamerModlog extends Document {
   timestamp: number
   userID: string
 }
+
+export interface GamerReactionRole extends Document {
+  name: string
+  reactions: {
+    reaction: string
+    roleIDs: string[]
+  }[]
+  messageID: string
+  channelID: string
+  guildID: string
+  authorID: string
+}
+
+export interface GamerTradingCard extends Document {
+  game: string
+  guildID: string
+  channelID: string
+  lastItemName?: string
+}
+
+export interface GamerTag extends Document {
+  name: string
+  type: string
+  guildID: string
+  embedCode: string
+}

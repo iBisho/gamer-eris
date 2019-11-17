@@ -1,0 +1,13 @@
+{
+  "DESCRIPTION": "Setup or update the trading card module.",
+  "EXTENDED": "$t(settings/setcapture:EXTENDED_LINE_1)\n$t(settings/setcapture:EXTENDED_LINE_2)\n\n$t(settings/setcapture:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}setcapture arenaofvalor [#Channel]** ~ Set the suggestions/ideain a channel.",
+  "EXTENDED_LINE_2": "**{{prefix}}setcapture mobilelegends [#Channel]** ~ Set the bug reports in a channel.",
+  "EXTENDED_LINE_3": "**{{prefix}}setcapture rulesofsurvival [#Channel]** ~ Disables the idea feedback system.",
+  "USAGE": "{{prefix}}setcapture [Game Name] *[#Channel]*",
+  "ALIASES": "Setcapture does not have any aliases",
+  "INVALID_GAME": "The game you entered is not a valid game. The valid games are {{validGames}}.",
+  "CHANNEL_SETUP": "The game channel has been successfully setup.",
+  "ALREADY_SET": "This channel is already set as the game channel.",
+  "CHANNEL_UPDATED": "The game channel has been successfully updated."
+}

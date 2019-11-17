@@ -142,13 +142,12 @@ export default class {
       ? await fetch(event.backgroundURL).then(res => res.buffer())
       : undefined
 
-      const attendees: string[] = []
-      for (const id of event.attendees) {
-        const user = this.Gamer.users.get(id)
-        if (!user) continue
-        attendees.push(`${user.username}#${user.discriminator}`)
-      }
-
+    const attendees: string[] = []
+    for (const id of event.attendees) {
+      const user = this.Gamer.users.get(id)
+      if (!user) continue
+      attendees.push(`${user.username}#${user.discriminator}`)
+    }
 
     const canvas = new Canvas(652, 367)
     if (customBackgroundBuffer) {

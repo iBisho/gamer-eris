@@ -18,7 +18,7 @@ export default class {
     if (guildSettings.staff.adminRoleID) roleIDs.push(guildSettings.staff.adminRoleID)
     // Grant all mod roles and gamer bot permissions to see all verify channels
     for (const id of roleIDs) category.editPermission(id, 3072, 0, 'role')
-    category.editPermission(Gamer.user.id, 3072, 0, 'user')
+    category.editPermission(Gamer.user.id, 3072, 0, 'member')
     // Remove permission from the everyone role to see verify channels
     category.editPermission(guild.id, 0, 1024, 'role')
 
@@ -95,7 +95,7 @@ export default class {
     // Disable send and add reactions for all
     await category.editPermission(guild.id, 0, 2112, `role`)
     // Allow the bot to be able to all necessary perms
-    await category.editPermission(Gamer.user.id, 347200, 0, `user`)
+    await category.editPermission(Gamer.user.id, 347200, 0, `member`)
 
     const ideaChannel = await guild.createChannel(
       language(`settings/setfeedback:IDEA_CHANNEL_NAME`),

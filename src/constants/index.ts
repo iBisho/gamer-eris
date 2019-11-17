@@ -4,6 +4,9 @@ import levels from './levels'
 import personalities from './personalities'
 import profiles from './profiles'
 import missions from './missions'
+import arenaofvalor from './cards/arenaofvalor'
+import mobilelegends from './cards/mobilelegends'
+import rulesofsurvival from './cards/rulesofsurvival'
 
 export default {
   emojis,
@@ -11,5 +14,10 @@ export default {
   levels,
   personalities,
   profiles,
-  missions
+  missions,
+  cards: {
+    arenaofvalor,
+    mobilelegends,
+    rulesofsurvival
+  }
 }

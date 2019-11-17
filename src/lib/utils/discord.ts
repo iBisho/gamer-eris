@@ -29,19 +29,29 @@ export default class {
     return tag.replace(/^-+|[^\w-]|-+$/g, ``).toLowerCase()
   }
 
-  convertEmoji(emoji: string, type: `id` | `reaction`) {
+  convertEmoji(
+    emoji: string,
+    type: `data`
+  ): undefined | { animated: string; name: string; id: string; fullCode: string }
+  convertEmoji(emoji: string, type: `id` | `reaction`): undefined | string
+  convertEmoji(emoji: string, type: `id` | `reaction` | `data`) {
     const validEmoji = emoji.match(emojiRegex)
     if (!validEmoji) return
     validEmoji.shift()
     const [animated, name, id] = validEmoji
-    // TODO: remove the animated if not needed
-    console.log('ignore this for now please', animated)
 
     switch (type) {
       case `id`:
         return id ? id : undefined
       case `reaction`:
         return name && id ? `${name}:${id}` : undefined
+      case `data`:
+        return {
+          animated,
+          name,
+          id,
+          fullCode: `<${animated ? `a` : ``}:${name}:${id}>`
+        }
       default:
         return emoji
     }
@@ -75,5 +85,19 @@ export default class {
     // If the member has a role but the target doesn't they do have perms to manage
     if (!targetHighestRole) return true
     return memberHighestRole.position > targetHighestRole.position
+  }
+
+  highestRole(member: Member) {
+    let memberHighestRole: Role | undefined
+
+    for (const roleID of member.roles) {
+      const role = member.guild.roles.get(roleID)
+      if (!role) continue
+      if (!memberHighestRole || memberHighestRole.position < role.position) memberHighestRole = role
+    }
+
+    const everyoneRole = member.guild.roles.get(member.guild.id) as Role
+
+    return memberHighestRole || everyoneRole
   }
 }
