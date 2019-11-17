@@ -1,0 +1,23 @@
+{
+	"DESCRIPTION": "Sélectionnez une image d'arrière-plan personnalisé pour votre profil.",
+	"EXTENDED": "$t(leveling/background:EXTENDED_LINE_1)\n$t(leveling/background:EXTENDED_LINE_2)\n$t(leveling/background:EXTENDED_LINE_3)\n\n$t(leveling/background:EXTENDED_LINE_4)",
+	"EXTENDED_LINE_1": "**{{prefix}}background set [ID Arrière-plan] [black ou white]** ~ Définir un arrière-plan et un thème.",
+	"EXTENDED_LINE_2": "**{{prefix}}background view [ID Arrière-plan] [black ou white]** ~ Prévisualiser un arrière-plan + le thème avant de le valider.",
+	"EXTENDED_LINE_3": "» Pour pouvoir mettre un arrière-plan personnalisé, vous devez être un Nitro Booster sur le serveur de support G4M3R. Veuillez utiliser la commande invite pour rejoindre le serveur pour plus de détails",
+	"EXTENDED_LINE_4": "» Pour voir tous les arrières-plan disponible, veuillez consulter notre Wiki.",
+	"USAGE": "{{prefix}}background *[Nom de catégorie OU ID d'arrière-plan]*",
+	"ALIASES": "{{prefix}}bg",
+	"SELECTION_TITLE": "Veuillez écrire le numéro correspondant à l'arrière-plan souhaité.",
+	"SELECTION_FOOTER": "Veuillez sélectionner un arrière-plan via le numéro correspondant ou annuler avec [q]uitter.",
+	"INVALID": "Il n'y a pas d'arrière-plan avec l'identifiant {{id}}!",
+	"PREVIEW_TITLE": "Arrière-plan [{{id}}] ({{name}}) sélectionné",
+	"PREVIEW_DESCRIPTION": "Voulez-vous vraiment utiliser cet arrière-plan ? Veuillez réagir avec un des émojis ci-dessous pour confirmer ou annuler:",
+	"PREVIEW_BASIC": "{{greenTick}} Oui\n{{redX}} Non",
+	"PREVIEW_VIP": "{{sunglasses}} Thème **sombre**\n{{flashlight}} Thème **clair**.",
+	"SAVED": "L'arrière-plan a bien été changé. Chargement de votre profil en cours...",
+	"VIP_THEME": "Désolé, mais le thème sombre est réservé aux VIP. Si vous souhaitez devenir VIP, veuillez booster notre serveur de support [](https://www.patreon.com/g4m3r).",
+	"VIP_BACKGROUND": "⭐ Cet arrière-plan est réservé aux VIP. Si vous souhaitez devenir VIP, rendez-vous sur notre page [Patreon](https://www.patreon.com/g4m3r).",
+	"UNLOCKABLE": "L'arrière-plan #{{id}} n'est pas débloquable avec cette devise.",
+	"NEED_MONEY": "Vous n'avez pas assez de Gamer Gold pour acheter cet arrière-plan. Cet arrière-plan coûte {{cost}} et vous n'avez que {{currency}} Gamer Gold. Vous avez donc besoin de {{needed}} Gamer Gold supplémentaire.",
+	"BOUGHT": "Vous venez d'acheter l'arrière-plan #{{name}}. Vous pouvez maintenant utiliser la commande background pour l'équiper."
+}
