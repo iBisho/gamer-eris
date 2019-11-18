@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Gérer les récompenses de niveaux pour votre système de niveau.",
+	"EXTENDED": "$t(leveling/levelrole:EXTENDED_LINE_1)\n$t(leveling/levelrole:EXTENDED_LINE_2)\n\n$t(leveling/levelrole:EXTENDED_LINE_3)",
+	"EXTENDED_LINE_1": "**{{prefix}}levelrole [#] [rôle]** ~ Donne un rôle quand un utilisateur atteint le niveau **#**.",
+	"EXTENDED_LINE_2": "**{{prefix}}levelrole [#] [rôle] [rôle2]** ~ Donne plusieurs rôles à un utilisateur quand ils atteignent le niveau **#** .",
+	"EXTENDED_LINE_3": "• Avancé: Vous pouvez utiliser les sets de rôle pour que vos utilisateurs n'ai qu'1 seul rôle à la fois.",
+	"USAGE": "{{prefix}}levelrole [Nombre du niveau] [Rôles]",
+	"ALIASES": "Levelrole n'a pas d'alias.",
+	"SUCCESS": "La récompense de niveau pour le niveau #{{level}} a bien été mise à jour et donnera désormais le rôle {{roles}}."
+}
