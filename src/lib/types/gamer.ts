@@ -153,7 +153,7 @@ export interface GamerMail extends Document {
   topic: string
 }
 
-export interface MailLabel extends Document {
+export interface GamerMailLabel extends Document {
   authorID: string
   categoryID: string
   guildID: string
