@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Vous retire de l'évènement si vous ne pouvez finalement pas y participer.",
+  "EXTENDED": "**{{prefix}}eventleave [ID d'évènement]** ~ Vous retire de l'évènement avec l'ID spécifié.",
+  "USAGE": "{{prefix}}eventleave [ID d'évènement]",
+  "ALIASES": "{{prefix}}el",
+  "NOT_JOINED": "Vous ne pouvez pas quitter cet évènement car vous ne vous êtes jamais inscrit.",
+  "LEFT": "Vous avez quitté cet évènement."
+}
