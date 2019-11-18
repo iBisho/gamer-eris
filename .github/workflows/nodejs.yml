@@ -20,6 +20,7 @@ jobs:
     - name: npm install, tsc and lint
       run: |
         npm i
+        cp config.ts.example config.ts
         npm run test
         npm run lint
       env:
