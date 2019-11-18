@@ -1,7 +1,7 @@
 import { Message, PrivateChannel, Guild, CategoryChannel, Constants, Overwrite, TextChannel } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import { GamerMail, MailLabel, GamerTag } from '../types/gamer'
+import { GamerMail, GamerMailLabel, GamerTag } from '../types/gamer'
 import GamerEmbed from '../structures/GamerEmbed'
 import { GamerEmoji } from '../types/database'
 
@@ -91,7 +91,7 @@ export default class {
     const label = (await this.Gamer.database.models.label.findOne({
       guildID: message.channel.guild.id,
       name: firstWord.toLowerCase()
-    })) as MailLabel | null
+    })) as GamerMailLabel | null
 
     const categoryID = label ? label.categoryID : guildSettings.mails.categoryID
     let category = categoryID ? message.channel.guild.channels.get(categoryID) : undefined
