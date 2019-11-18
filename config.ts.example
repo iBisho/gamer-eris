@@ -2,8 +2,8 @@ export default {
 	token: "Bot_Token_Here",
 	defaultPrefix: "!",
 	staff: {
-    mods: [],
-    developers: []
+    mods: ['userID'],
+    developers: ['userID']
   },
 	apiKeys: {
     amplitude: {
