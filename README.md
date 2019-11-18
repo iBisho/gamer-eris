@@ -11,7 +11,3 @@ Keep Unique role sets in their own table
 Keep role messages in a separate table
 
 Keep permissions in a seaprate table
-
-Persistant cooldowns in its own table.
-
-Force a limit on how many mod roles.

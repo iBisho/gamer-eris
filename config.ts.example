@@ -6,10 +6,18 @@ export default {
     developers: []
   },
 	apiKeys: {
+    amplitude: {
+      key: 'AMPLITUDE_API_KEY',
+      url: 'https://api.amplitude.com/2/httpapi'
+    },
     tenor: 'Tenor_API_KEY',
 		imgur: {
       id: `IMGUR_ID`,
       secret: `IMGUR_SECRET`
     }
+  },
+  channelIDs: {
+    imageStorage: 'CHANNEL_ID',
+    errors: 'CHANNEL_ID'
   }
 }

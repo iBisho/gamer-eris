@@ -1,10 +1,16 @@
 import { User, Guild } from 'eris'
 import { GamerEmoji } from '../types/database'
 import { milliseconds } from '../types/enums/time'
+import GamerClient from '../structures/GamerClient'
 
 const REGEXP = /%AUTHOR%|%AUTHORMENTION%|%USER%|%GUILD%|%USERMENTION%|%USERCOUNT%|%MEMBERCOUNT%|%AUTHORIMAGE%|%USERIMAGE%|%GUILDIMAGE%/gi
 
 export default class {
+  Gamer: GamerClient
+  constructor(client: GamerClient) {
+    this.Gamer = client
+  }
+
   variables(string: string, user?: User, guild?: Guild, author?: User, emojis?: GamerEmoji[]) {
     let fullContent = ``
 
@@ -79,9 +85,13 @@ export default class {
     const hours = Math.floor((time % 86400) / 3600)
     const minutes = Math.floor(((time % 86400) % 3600) / 60)
     const seconds = Math.floor(((time % 86400) % 3600) % 60)
-    return `${days ? `${days}d ` : ''}${hours ? `${hours}h ` : ''}${minutes ? `${minutes}m ` : ''}${
-      seconds ? `${seconds}s ` : ''
-    }`
+
+    const dayString = days ? `${days}d ` : ''
+    const hourString = hours ? `${hours}h ` : ''
+    const minuteString = minutes ? `${minutes}m ` : ''
+    const secondString = seconds ? `${seconds}s ` : ''
+
+    return `${dayString}${hourString}${minuteString}${secondString}`
   }
 
   stringToMilliseconds(text: string) {
@@ -117,4 +127,22 @@ export default class {
 
     return amount * multiplier
   }
+
+  // async stringToEmbed(text: string) {
+  //   // If this throws then handle it where the function is called to show error to user of why their json failed
+  //   const json = JSON.parse(text) as EmbedBase
+
+  //   const embed = new GamerEmbed()
+  //   if (json.timestamp) embed.setTimestamp()
+  //   if (json.description) embed.setDescription(json.description)
+  //   if (json.title) embed.setTitle(json.title)
+
+  //   if (json.author && json.author.name) embed.setAuthor(json.author.name, json.author.icon_url, json.author.url)
+
+  //   if (json.footer && json.footer.text) embed.setFooter(json.footer.text, json.footer.icon_url)
+
+  //   if (json.fields) for (const field of json.fields) embed.addField(field.name, field.value, field.inline)
+
+  //   return embed
+  // }
 }

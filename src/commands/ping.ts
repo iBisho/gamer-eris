@@ -7,7 +7,6 @@ import GuildDefaults from '../constants/settings/guild'
 
 export default new Command([`ping`, `pong`], async (message, _args, context) => {
   const ping = Date.now() - message.timestamp
-
   const Gamer = context.client as GamerClient
   const settings =
     message.channel instanceof PrivateChannel

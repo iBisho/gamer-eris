@@ -1,5 +1,6 @@
 import { Message, AnyGuildChannel, Member, Role } from 'eris'
 import config from '../../../config'
+import constants from '../../constants'
 
 const emojiRegex = /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/
 
@@ -99,5 +100,9 @@ export default class {
     const everyoneRole = member.guild.roles.get(member.guild.id) as Role
 
     return memberHighestRole || everyoneRole
+  }
+
+  booleanEmoji(enabled: boolean) {
+    return enabled ? constants.emojis.greenTick : constants.emojis.redX
   }
 }

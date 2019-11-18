@@ -1,4 +1,4 @@
-import { Guild, CategoryChannel, Permission } from 'eris'
+import { Guild, CategoryChannel, Permission, Overwrite } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import i18next = require('i18next')
@@ -13,19 +13,27 @@ export default class {
     guildSettings: GuildSettings
   ) {
     const REASON = language(`settings/setverify:REASON`)
-    const category = await guild.createChannel(language(`basic/verify:CATEGORY_NAME`), 4, REASON)
-    const roleIDs = guildSettings.staff.modRoleIDs
-    if (guildSettings.staff.adminRoleID) roleIDs.push(guildSettings.staff.adminRoleID)
-    // Grant all mod roles and gamer bot permissions to see all verify channels
-    for (const id of roleIDs) category.editPermission(id, 3072, 0, 'role')
-    category.editPermission(Gamer.user.id, 3072, 0, 'member')
-    // Remove permission from the everyone role to see verify channels
-    category.editPermission(guild.id, 0, 1024, 'role')
+    const overwrites: Overwrite[] = [
+      { id: Gamer.user.id, allow: 3072, deny: 0, type: 'member' },
+      { id: guild.id, allow: 0, deny: 1024, type: 'role' }
+    ]
+    if (guildSettings.staff.adminRoleID)
+      overwrites.push({ id: guildSettings.staff.adminRoleID, allow: 3072, deny: 0, type: 'role' })
+    for (const id of guildSettings.staff.modRoleIDs) overwrites.push({ id, allow: 3072, deny: 0, type: 'role' })
+
+    const category = await guild.createChannel(language(`basic/verify:CATEGORY_NAME`), 4, {
+      reason: REASON,
+      permissionOverwrites: overwrites
+    })
 
     // Create the verify role
     const role = await guild.createRole({ name: language(`basic/verify:VERIFY_ROLENAME`) })
     // Create the channel inside the category so it has the proper permissions
-    const verifyChannel = await guild.createChannel(language(`basic/verify:CHANNEL_NAME`), 0, REASON, category.id)
+    const verifyChannel = await guild.createChannel(language(`basic/verify:CHANNEL_NAME`), 0, {
+      reason: REASON,
+      parentID: category.id
+    })
+
     verifyChannel.editPermission(role.id, 3072, 0, `role`)
 
     guildSettings.verify.categoryID = category.id
@@ -61,7 +69,7 @@ export default class {
           const perm = channel.permissionOverwrites.get(key) as Permission
           const parentPerm = parent.permissionOverwrites.get(key)
           // If the parent has this user/role permission and they are the exact same perms then check next permission
-          if (parentPerm && (parentPerm.allow === perm.allow && parentPerm.deny === perm.deny)) continue
+          if (parentPerm && parentPerm.allow === perm.allow && parentPerm.deny === perm.deny) continue
 
           isSynced = false
           break
@@ -91,24 +99,22 @@ export default class {
   ) {
     const REASON = language(`settings/setfeedback:SETUP_REASON`)
     // Create the category first and edit its permissions so that the other two channels can be syned easily
-    const category = await guild.createChannel(`Feedback`, 4, REASON)
-    // Disable send and add reactions for all
-    await category.editPermission(guild.id, 0, 2112, `role`)
-    // Allow the bot to be able to all necessary perms
-    await category.editPermission(Gamer.user.id, 347200, 0, `member`)
+    const category = await guild.createChannel(`Feedback`, 4, {
+      reason: REASON,
+      permissionOverwrites: [
+        { id: guild.id, allow: 0, deny: 2112, type: `role` },
+        { id: Gamer.user.id, allow: 347200, deny: 0, type: `member` }
+      ]
+    })
 
-    const ideaChannel = await guild.createChannel(
-      language(`settings/setfeedback:IDEA_CHANNEL_NAME`),
-      0,
-      REASON,
-      category.id
-    )
-    const bugsChannel = await guild.createChannel(
-      language(`settings/setfeedback:BUGS_CHANNEL_NAME`),
-      0,
-      REASON,
-      category.id
-    )
+    const ideaChannel = await guild.createChannel(language(`settings/setfeedback:IDEA_CHANNEL_NAME`), 0, {
+      reason: REASON,
+      parentID: category.id
+    })
+    const bugsChannel = await guild.createChannel(language(`settings/setfeedback:BUGS_CHANNEL_NAME`), 0, {
+      reason: REASON,
+      parentID: category.id
+    })
 
     // Update all the feedback settings
     guildSettings.feedback.idea.channelID = ideaChannel.id

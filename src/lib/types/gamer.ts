@@ -143,4 +143,19 @@ export interface GamerTag extends Document {
   type: string
   guildID: string
   embedCode: string
+  mailOnly: boolean
+}
+
+export interface GamerMail extends Document {
+  id: string
+  userID: string
+  guildID: string
+  topic: string
+}
+
+export interface MailLabel extends Document {
+  authorID: string
+  categoryID: string
+  guildID: string
+  name: string
 }

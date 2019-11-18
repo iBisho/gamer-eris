@@ -1,12 +1,11 @@
 // Logs that a command run (even if it was inhibited)
-import { PossiblyUncachedMessage, Message, PrivateChannel, Constants } from 'eris'
+import { PossiblyUncachedMessage, Message, PrivateChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
 import { GamerEvent, GamerReactionRole } from '../lib/types/gamer'
 import { GuildSettings } from '../lib/types/settings'
-import reactionrole from '../database/schemas/reactionrole'
 
 const eventEmojis: string[] = []
 export default class extends Event {
@@ -28,7 +27,7 @@ export default class extends Event {
       rawMessage instanceof Message ? rawMessage : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id)
 
     if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
-    this.handleReactionRole(message, emoji, user)
+    this.handleReactionRole(message, emoji, userID)
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {

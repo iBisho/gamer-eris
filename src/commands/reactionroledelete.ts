@@ -4,7 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import { GamerReactionRole } from '../lib/types/gamer'
 
-export default new Command([`reactionroleremove`, `rrr`], async (message, args, context) => {
+export default new Command([`reactionroledelete`, `rrd`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 
@@ -21,7 +21,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [name, emoji] = args
-  if (!name || !emoji) return helpCommand.execute(message, [`reactionrolecreate`], context)
+  if (!name || !emoji) return helpCommand.execute(message, [`reactionroledelete`], context)
 
   const validEmoji = Gamer.helpers.discord.convertEmoji(emoji, `data`)
   if (!validEmoji) return message.channel.createMessage(language(`community/emojicreate:NEED_VALID_EMOJI`))
@@ -35,5 +35,5 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
 
   Gamer.database.models.reactionRole.deleteOne({ name, guildID: message.channel.guild.id })
 
-  return message.channel.createMessage(language(`roles/reactionrolecreate:DELETED`, { name }))
+  return message.channel.createMessage(language(`roles/reactionroledelete:DELETED`, { name }))
 })

@@ -19,6 +19,7 @@ import FeedbackHelper from '../utils/feedback'
 import LeaderboardHelper from '../utils/leaderboards'
 import LevelsHelper from '../utils/levels'
 import LoggerHelper from '../utils/logger'
+import MailHelper from '../utils/mail'
 import ModerationHelper from '../utils/moderation'
 import ScriptsHelper from '../utils/scripts'
 import TransformHelper from '../utils/transform'
@@ -66,10 +67,11 @@ export default class GamerClient extends Client {
     leaderboards: new LeaderboardHelper(this),
     levels: new LevelsHelper(this),
     logger: new LoggerHelper(),
+    mail: new MailHelper(this),
     moderation: new ModerationHelper(this),
     profiles: new ProfileHelper(),
     scripts: new ScriptsHelper(),
-    transform: new TransformHelper(),
+    transform: new TransformHelper(this),
     utils: new UtilsHelper(this)
   }
 
