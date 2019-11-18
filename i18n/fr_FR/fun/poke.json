@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Poke le membre / role mentionnée et envoie un gif dans le salon.",
+	"EXTENDED": "**{{prefix}}poke [@utilisateur]** ~ Poke le membre/rôle mentionné et envoie un gif dans le salon.",
+	"USAGE": "{{prefix}}poke [@utilisateur]",
+	"ALIASES": "Poke n'a pas d'alias.",
+	"REPLY": "***{{mention}} a été poke par {{author}}!***",
+	"SELF": "De temps en temps, j'ai aussi besoin de me poke moi-même..."
+}
