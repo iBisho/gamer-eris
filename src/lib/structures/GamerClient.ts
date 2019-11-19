@@ -3,7 +3,7 @@ import i18n from '../../i18next'
 import { TFunction } from 'i18next'
 import * as glob from 'glob'
 import { PrivateChannel, Message } from 'eris'
-import { Collector, Mission, GamerTag } from '../types/gamer'
+import { Collector, Mission, GamerTag, Slowmode } from '../types/gamer'
 import * as fs from 'fs'
 import { join } from 'path'
 
@@ -120,6 +120,10 @@ export default class GamerClient extends Client {
   monitors: Map<string, Monitor> = new Map()
   // Tags are cached so no need to fetch on every message
   tags: Map<string, GamerTag> = new Map()
+  // Array that holds user information to have slowmode when users use commands rapidly.
+  slowmode: Slowmode[] = []
+  // The daily cooldown holder
+  cooldowns: Map<string, number> = new Map()
 
   constructor(options: ClientOptions) {
     super(options)

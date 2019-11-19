@@ -38,7 +38,7 @@ export default class {
     mission: mongoose.model('Mission', MissionSchema),
     modlog: mongoose.model('Modlog', ModlogSchema),
     reactionRole: mongoose.model('ReactionRole', ReactionRoleSchema),
-    roleset: mongoose.model('ReactionRole', RolesetSchema),
+    roleset: mongoose.model('Roleset', RolesetSchema),
     shortcut: mongoose.model('Shortcut', ShortcutSchema),
     // subscription: mongoose.model('Subscription', SubscriptionSchema),
     survey: mongoose.model('Survey', SurveySchema),

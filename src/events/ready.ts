@@ -188,6 +188,24 @@ export default class extends Event {
       }
     }, milliseconds.MINUTE * 20)
 
+    // Clears out any user who is past the slowmode of 2 seconds
+    setInterval(() => {
+      const now = Date.now()
+      if (!Gamer.slowmode.length) return
+
+      Gamer.slowmode = Gamer.slowmode.filter(user => now - user.timestamp < 2000)
+    }, milliseconds.SECOND)
+
+    // Clears all cooldowns every 5 seconds
+    setInterval(() => {
+      const now = Date.now()
+      for (const [id, timestamp] of Gamer.cooldowns.entries()) {
+        if (now < timestamp) continue
+        // Remove the cooldown as the time has passed
+        Gamer.cooldowns.delete(id)
+      }
+    }, milliseconds.SECOND * 5)
+
     Gamer.helpers.logger.green(`Loading all tags into cache now...`)
     // Set the tags in cache
     const tags = (await Gamer.database.models.tag.find()) as GamerTag[]

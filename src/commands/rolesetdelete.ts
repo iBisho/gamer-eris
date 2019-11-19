@@ -3,7 +3,7 @@ import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 
-export default new Command([`rolesetcreate`, `rsc`], async (message, args, context) => {
+export default new Command([`rolesetdelete`, `rsd`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 

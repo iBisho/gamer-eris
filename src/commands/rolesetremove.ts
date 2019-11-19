@@ -4,7 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import { GamerRoleset } from '../lib/types/gamer'
 
-export default new Command([`rolesetcreate`, `rsc`], async (message, args, context) => {
+export default new Command([`rolesetremove`, `rsr`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 

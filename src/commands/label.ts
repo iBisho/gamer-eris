@@ -4,7 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import { GamerMailLabel } from '../lib/types/gamer'
 
-export default new Command([`mail`, `m`], async (message, args, context) => {
+export default new Command(`label`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
 
   const content = args.join(' ')
