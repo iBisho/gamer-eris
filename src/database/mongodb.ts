@@ -11,6 +11,7 @@ import MemberSchema from './schemas/member'
 import MissionSchema from './schemas/mission'
 import ModlogSchema from './schemas/modlog'
 import ReactionRoleSchema from './schemas/reactionrole'
+import RolesetSchema from './schemas/roleset'
 import ShortcutSchema from './schemas/shortcut'
 // import SubscriptionSchema from './schemas/subscription'
 import SurveySchema from './schemas/survey'
@@ -37,6 +38,7 @@ export default class {
     mission: mongoose.model('Mission', MissionSchema),
     modlog: mongoose.model('Modlog', ModlogSchema),
     reactionRole: mongoose.model('ReactionRole', ReactionRoleSchema),
+    roleset: mongoose.model('ReactionRole', RolesetSchema),
     shortcut: mongoose.model('Shortcut', ShortcutSchema),
     // subscription: mongoose.model('Subscription', SubscriptionSchema),
     survey: mongoose.model('Survey', SurveySchema),

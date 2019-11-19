@@ -7,7 +7,7 @@ import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
-import { GamerTradingCard } from '../lib/types/gamer'
+import { GamerTradingCard, GamerTag } from '../lib/types/gamer'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default class extends Event {
@@ -187,6 +187,11 @@ export default class extends Event {
         channel.createMessage({ embed: embed.code })
       }
     }, milliseconds.MINUTE * 20)
+
+    Gamer.helpers.logger.green(`Loading all tags into cache now...`)
+    // Set the tags in cache
+    const tags = (await Gamer.database.models.tag.find()) as GamerTag[]
+    for (const tag of tags) Gamer.tags.set(`${tag.guildID}.${tag.name}`, tag)
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }

@@ -3,7 +3,7 @@ import i18n from '../../i18next'
 import { TFunction } from 'i18next'
 import * as glob from 'glob'
 import { PrivateChannel, Message } from 'eris'
-import { Collector, Mission } from '../types/gamer'
+import { Collector, Mission, GamerTag } from '../types/gamer'
 import * as fs from 'fs'
 import { join } from 'path'
 
@@ -27,6 +27,7 @@ import UtilsHelper from '../utils/utils'
 
 import constants from '../../constants'
 import { AmplitudeEvent } from '../types/amplitude'
+import Gamer from '../..'
 
 const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
 const assetsFolder = join(rootFolder, `assets`)
@@ -117,6 +118,8 @@ export default class GamerClient extends Client {
   // All our stores to store files which we can reload easily.
   events: Map<string, Event> = new Map()
   monitors: Map<string, Monitor> = new Map()
+  // Tags are cached so no need to fetch on every message
+  tags: Map<string, GamerTag> = new Map()
 
   constructor(options: ClientOptions) {
     super(options)
@@ -125,22 +128,15 @@ export default class GamerClient extends Client {
   }
 
   async runMonitors(message: Message) {
-    if (message.channel instanceof PrivateChannel) return true
-    let allowCommands = true
-    await Promise.all(
-      [...this.monitors.values()].map(async monitor => {
-        if (monitor.ignoreBots && message.author.bot) return
-        if (monitor.ignoreDM && message.channel instanceof PrivateChannel) return
-        if (monitor.ignoreEdits && message.editedTimestamp) return
-        if (monitor.ignoreOthers && message.author.id !== this.user.id) return
+    if (message.channel instanceof PrivateChannel) return
+    for (const monitor of Gamer.monitors.values()) {
+      if (monitor.ignoreBots && message.author.bot) continue
+      if (monitor.ignoreDM && message.channel instanceof PrivateChannel) continue
+      if (monitor.ignoreEdits && message.editedTimestamp) continue
+      if (monitor.ignoreOthers && message.author.id !== this.user.id) continue
 
-        const result = await monitor.execute(message, this)
-        // If the result is truthy from the monitors cancel the commands for this message
-        if (result) allowCommands = false
-      })
-    )
-
-    return allowCommands
+      monitor.execute(message, this)
+    }
   }
 
   async connect() {

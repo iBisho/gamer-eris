@@ -159,3 +159,9 @@ export interface GamerMailLabel extends Document {
   guildID: string
   name: string
 }
+
+export interface GamerRoleset extends Document {
+  guildID: string
+  roleIDs: string[]
+  name: string
+}

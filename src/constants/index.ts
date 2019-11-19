@@ -7,6 +7,7 @@ import missions from './missions'
 import arenaofvalor from './cards/arenaofvalor'
 import mobilelegends from './cards/mobilelegends'
 import rulesofsurvival from './cards/rulesofsurvival'
+import servers from './modules/servers'
 
 export default {
   emojis,
@@ -19,5 +20,8 @@ export default {
     arenaofvalor,
     mobilelegends,
     rulesofsurvival
+  },
+  modules: {
+    servers
   }
 }
