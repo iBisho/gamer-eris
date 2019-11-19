@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Supprime un évènement de la base de donnée.",
+	"EXTENDED": "**{{prefix}}eventdelete [ID d'évènement]** ~ Supprime l'évènement ayant l'ID spécifié.",
+	"USAGE": "{{prefix}}eventdelete [ID d'évènement]",
+	"ALIASES": "{{prefix}}ed",
+	"DELETE": "Vous avez supprimé cet évènement."
+}
