@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Refuser la participation à un événement.",
+  "EXTENDED": "**{{prefix}}eventdeny [ID d'évènement]** ~ Fait savoir aux autres participants que vous ne serez pas de la partie lors de l'évènement avec l'ID spécifié.",
+  "USAGE": "{{prefix}}eventdeny [ID d'évènement]",
+  "ALIASES": "{{prefix}}edeny",
+  "ALREADY_DENIED": "Vous êtes déjà inscrit en tant que non participant à cet évènement.",
+  "DENIED": "Vous êtes désormais inscrit en tant que non participant pour cet évènement."
+}
