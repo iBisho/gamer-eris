@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Affiche un évènement depuis la base de donnée.",
+	"EXTENDED": "**{{prefix}}eventadvertise [ID d'évènement]** ~ Créer la carte de l'évènement avec l'ID correspondant spécifié.",
+	"USAGE": "{{prefix}}eventadvertise [ID d'évènement]",
+	"ALIASES": "{{prefix}}ead",
+	"DELETE": "Vous avez supprimé l'évènement ayant l'ID : {{id}}."
+}
