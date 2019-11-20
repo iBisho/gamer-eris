@@ -31,7 +31,7 @@
     "confusables": "^0.3.3",
     "eris": "github:abalabahaha/eris#dev",
     "get-urls": "^9.2.0",
-    "i18next": "^19.0.0",
+    "i18next": "^19.0.1",
     "i18next-node-fs-backend": "^2.1.3",
     "mongoose": "^5.7.12",
     "node-fetch": "^2.6.0",
