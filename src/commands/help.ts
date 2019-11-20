@@ -65,7 +65,8 @@ const categories = [
       `events`,
       `eventshow`
     ]
-  }
+  },
+  { name: `moderation`, commands: [`purge`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {

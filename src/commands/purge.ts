@@ -24,21 +24,17 @@ export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args
 
   const messages = await message.channel.getMessages(500)
 
-  const filteredMessages = filter
-    ? messages.filter(msg => {
-        if (!message.mentions.length) return true
-        return message.mentions.some(user => user.id === msg.author.id)
-      })
-    : messages
+  const filteredMessages =
+    filter && message.mentions.length
+      ? messages.filter(msg => message.mentions.some(user => user.id === msg.author.id))
+      : messages
 
   const messagesToDelete = filteredMessages.splice(0, amount)
-  messagesToDelete.push(message)
 
   message.channel.deleteMessages(messagesToDelete.map(m => m.id))
 
   const response = await message.channel.createMessage(
-    language(`moderation/purge:RESPONSE`, { amount: filteredMessages.length })
+    language(`moderation/purge:RESPONSE`, { amount: messagesToDelete.length })
   )
-  if (response) setTimeout(() => response.delete(), 10000)
-  return
+  return setTimeout(() => response.delete().catch(() => undefined), 10000)
 })
