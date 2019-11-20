@@ -14,6 +14,11 @@ Canvas.registerFont(join(fontsFolder, `sft_heavy.ttf`), `SFTHeavy`)
   .registerFont(join(fontsFolder, `lato_bold.ttf`), `LatoBold`)
   .registerFont(join(fontsFolder, `NotoEmoji.ttf`), `LatoBold`)
   .registerFont(join(fontsFolder, `NotoSans-Regular.ttf`), `LatoBold`)
+  .registerFont(join(fontsFolder, `SF-Pro-Text-Heavy.otf`), `SFTHeavy`)
+  .registerFont(join(fontsFolder, `SF-Pro-Text-Light.otf`), `SFTLight`)
+  .registerFont(join(fontsFolder, `SF-Pro-Text-Bold.otf`), `SFTBold`)
+  .registerFont(join(fontsFolder, `SF-Pro-Text-Regular.otf`), `SFTRegular`)
+  .registerFont(join(fontsFolder, `SF-Pro-Text-Medium.otf`), `SFTMedium`)
 
 const Gamer = new GamerClient({
   token: config.token,

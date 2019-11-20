@@ -18,6 +18,6 @@
 	"VIP_THEME": "Sorry, but the dark theme is only for VIP subscribers. If you want to become VIP, please pledge to our [Patreon](https://www.patreon.com/g4m3r).",
 	"VIP_BACKGROUND": "⭐ That background is only for VIP subscribers. If you want to become VIP please pledge to our [Patreon](https://www.patreon.com/g4m3r).",
 	"UNLOCKABLE": "Background #{{id}} is not unlockable with currency.",
-	"NEED_MONEY": "You do not have enough Gamer Gold to buy this background. This background costs {{cost}} and you only have {{currency}}. You need {{needed}} more Gamer Gold.",
+	"NEED_MONEY": "You do not have enough Gamer Coins to buy this background. This background costs {{cost}} and you only have {{currency}}. You need {{needed}} more Gamer Coins.",
 	"BOUGHT": "You just bought the #{{name}} background pack. You can now use the background command to equip your backgrounds."
 }

@@ -22,9 +22,9 @@ export default new Command([`leaderboard`, `lb`], async (message, args, context)
   const NOT_ENOUGH = language(`leveling/leaderboard:NOT_ENOUGH`)
 
   let buffer: Buffer | undefined
-  if (globalTypes.includes(id.toLowerCase()) || globalTypes.includes(type.toLowerCase())) {
+  if ((id && globalTypes.includes(id.toLowerCase())) || (type && globalTypes.includes(type.toLowerCase()))) {
     buffer = await Gamer.helpers.leaderboards.makeGlobalCanvas(message, member, NO_POINTS, NOT_ENOUGH)
-  } else if (voiceTypes.includes(id.toLowerCase()) || voiceTypes.includes(type.toLowerCase())) {
+  } else if ((id && voiceTypes.includes(id.toLowerCase())) || (type && voiceTypes.includes(type.toLowerCase()))) {
     buffer = await Gamer.helpers.leaderboards.makeVoiceCanvas(message, member, NO_POINTS, NOT_ENOUGH)
   } else {
     buffer = await Gamer.helpers.leaderboards.makeLocalCanvas(message, member, NO_POINTS, NOT_ENOUGH)
