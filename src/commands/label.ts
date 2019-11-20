@@ -15,7 +15,7 @@ export default new Command(`label`, async (message, args, context) => {
   })) as GuildSettings | null
   if (!guildSettings) return
 
-  const language = Gamer.i18n.get(guildSettings.language)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   if (

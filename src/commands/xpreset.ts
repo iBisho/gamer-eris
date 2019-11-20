@@ -13,7 +13,7 @@ export default new Command(`xpreset`, async (message, args, context) => {
 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings ? guildSettings.staff.adminRoleID : undefined)) return
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // Now we need to reset the entire guilds information

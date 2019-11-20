@@ -14,7 +14,7 @@ export default new Command(`xp`, async (message, args, context) => {
 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings ? guildSettings.staff.adminRoleID : undefined)) return
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const [type, number, userID] = args

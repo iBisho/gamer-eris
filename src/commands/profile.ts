@@ -1,31 +1,51 @@
 import { Command } from 'yuuko'
-import { GuildSettings, UserSettings } from '../lib/types/settings'
+import { UserSettings } from '../lib/types/settings'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import UserDefaults from '../constants/settings/user'
+import GamerEmbed from '../lib/structures/GamerEmbed'
+import { GamerMission } from '../lib/types/gamer'
 
 export default new Command([`profile`, `p`, `prof`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || !message.member) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const [id] = args
   const memberID = message.mentions.length ? message.mentions[0].id : id
 
-  const member = message.channel.guild.members.get(memberID)
-  if (!member) return
+  const member = message.channel.guild.members.get(memberID) || message.member
 
   const buffer = await Gamer.helpers.profiles.makeCanvas(message, member, Gamer)
   if (!buffer) return
 
-  const response = await message.channel.createMessage('', { file: buffer, name: `profile.jpg` })
+  const fileName = `profile.jpg`
+
+  const missionData = (await Gamer.database.models.mission.find({
+    userID: message.author.id
+  })) as GamerMission[]
+
+  const embed = new GamerEmbed()
+    .setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
+    .setDescription(
+      Gamer.missions
+        .map(mission => {
+          const relevantMission = missionData.find(m => m.commandName === mission.commandName)
+          if (!relevantMission) return `0 / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
+
+          if (!relevantMission.completed)
+            return `${relevantMission.amount} / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
+          return `${constants.emojis.greenTick}: ${mission.title} **[${mission.reward}] XP**`
+        })
+        .join('\n')
+    )
+    .attachFile(buffer, fileName)
+    .setImage(`attachment://${fileName}`)
+
+  const response = await message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
 
   const userSettings =
     ((await Gamer.database.models.user.findOne({

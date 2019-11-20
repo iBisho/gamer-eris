@@ -11,7 +11,7 @@ export default new Command(`idea`, async (message, args, context) => {
 
   const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
 
-  const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // If the settings are null then the feedback system is disabled

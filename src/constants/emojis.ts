@@ -1,4 +1,5 @@
 export default {
+  coin: `<:g4m3rwhite:443416083874054145>`,
   currency: `<:gg:601135376765157416>`,
   denials: `<:event_denials:473797674701815808>`,
   discord: `<:discord:494050000779608064>`,

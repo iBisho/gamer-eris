@@ -14,7 +14,7 @@ export default new Command(`mute`, async (message, args, context) => {
   const guildSettings = (await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
   })) as GuildSettings | null
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
   // If there is default settings the mute role won't exist
   if (!guildSettings) return message.channel.createMessage(language(`moderation/mute:NEED_MUTE_ROLE`))

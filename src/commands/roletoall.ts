@@ -22,7 +22,7 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
 
-  const language = Gamer.i18n.get(guildSettings.language)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const [roleIDOrName] = args

@@ -1,9 +1,8 @@
 import Monitor from '../lib/structures/Monitor'
 import { Message, PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { UserSettings, GuildSettings } from '../lib/types/settings'
+import { UserSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import GuildDefaults from '../constants/settings/guild'
 import { GamerEmoji } from '../lib/types/database'
 
 export default class extends Monitor {
@@ -24,12 +23,7 @@ export default class extends Monitor {
       return []
     })) as GamerEmoji[]
 
-    const settings =
-      ((await Gamer.database.models.guild.findOne({
-        id: message.channel.guild.id
-      })) as GuildSettings | null) || GuildDefaults
-
-    const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return
 
     const REASON = language(`settings/afk:REASON`)

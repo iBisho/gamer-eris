@@ -1,11 +1,9 @@
-// Logs that a command run (even if it was inhibited)
-import { PossiblyUncachedMessage, Message, PrivateChannel } from 'eris'
+import { PossiblyUncachedMessage, Message, PrivateChannel, User } from 'eris'
 import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
 import { GamerEvent, GamerReactionRole } from '../lib/types/gamer'
-import { GuildSettings } from '../lib/types/settings'
 
 const eventEmojis: string[] = []
 export default class extends Event {
@@ -28,6 +26,7 @@ export default class extends Event {
 
     if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
     this.handleReactionRole(message, emoji, userID)
+    this.handleProfileReaction(message, emoji, user)
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
@@ -35,10 +34,7 @@ export default class extends Event {
     const event = (await Gamer.database.models.event.findOne({ adMessageID: message.id })) as GamerEvent | null
     if (!event) return
 
-    const guildSettings = (await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
-    })) as GuildSettings | null
-    const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return
 
     const [joinEmojiID, denyEmojiID] = [constants.emojis.greenTick, constants.emojis.redX].map(e =>
@@ -100,5 +96,27 @@ export default class extends Event {
       if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
       else member.addRole(roleID, `Added roles for clicking a reaction role message.`)
     }
+  }
+
+  async handleProfileReaction(message: Message, emoji: ReactionEmoji, user: User) {
+    if (message.channel instanceof PrivateChannel || user.id !== Gamer.user.id) return
+
+    const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
+    if (constants.emojis.discord !== fullEmojiName || message.embeds.length || !message.attachments.length) return
+
+    Gamer.amplitude.push({
+      authorID: message.author.id,
+      channelID: message.channel.id,
+      guildID: message.channel.guild.id,
+      messageID: message.id,
+      timestamp: message.timestamp,
+      type: 'PROFILE_INVITE'
+    })
+
+    Gamer.helpers.logger.green(`${user.username} just reacted to a profile discord invite <3`)
+    try {
+      const dmChannel = await user.getDMChannel()
+      dmChannel.createMessage(`Interested in Shop Titans? Check out https://discord.gg/shoptitans`)
+    } catch {}
   }
 }

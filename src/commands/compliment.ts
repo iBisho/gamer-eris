@@ -47,8 +47,8 @@ export default new Command([`compliment`, `comp`], (message, _args, context) => 
   if (message.channel instanceof PrivateChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const language = Gamer.i18n.get('en-US')
-  if (!language) return null
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
 
   const user = message.mentions.length ? message.mentions[0] : message.author
 

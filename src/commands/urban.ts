@@ -3,17 +3,13 @@ import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`urban`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
+  if (message.channel instanceof PrivateChannel) return
 
-  const guildSettings =
-    message.channel instanceof PrivateChannel
-      ? null
-      : ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null)
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
-  if (!language) return null
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
 
   // Check all permissions before running command
   if (!(message.channel instanceof PrivateChannel)) {

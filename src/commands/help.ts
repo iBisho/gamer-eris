@@ -4,7 +4,6 @@ import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import Constants from '../constants/index'
-import GuildDefaults from '../constants/settings/guild'
 
 const categories = [
   { name: `basic`, commands: [`help`, `ping`, `invite`, `server`, `user`] },
@@ -35,11 +34,22 @@ const categories = [
   },
   {
     name: `settings`,
-    commands: [`afk`, `setverify`, `setfeedback`, `setprofanity`, `setcapital`, `setwhitelisted`, `setmodlogs`]
+    commands: [
+      `afk`,
+      `setverify`,
+      `setfeedback`,
+      `setprofanity`,
+      `setcapital`,
+      `setwhitelisted`,
+      `setmodlogs`,
+      `setstaff`,
+      `setlanguage`,
+      `setprefix`
+    ]
   },
   { name: `utility`, commands: [`imgur`] },
   { name: `feedback`, commands: [`bugs`, `idea`, `feedback`] },
-  { name: `roles`, commands: [`give`, `public`, `role`, `take`] },
+  { name: `roles`, commands: [`give`, `public`, `role`, `take`, `roleinfo`] },
   {
     name: `events`,
     commands: [
@@ -64,15 +74,12 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
     return message.channel.createMessage(`Please use this command on a guild. Thank you!`)
 
   const Gamer = context.client as GamerClient
-  const settings =
-    ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null) ||
-    GuildDefaults
-  if (!settings) return
+  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
 
-  const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || 'en-US')
   if (!language) return
 
-  const prefix = settings.prefix || '.'
+  const prefix = settings?.prefix || Gamer.prefix
   const FEATURES = language(`basic/help:FEATURES`, { prefix })
   const VIPFEATURES = language(`basic/help:VIPFEATURES`, { prefix })
   const CHECKWIKI = language(`basic/help:CHECK_WIKI`)
@@ -86,7 +93,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
       .addField(language(`basic/help:SEE_ALL`), CHECKWIKI)
       .addField(language(`basic/help:LINKS`), LINKSVALUE)
 
-    if (settings.vip.isVIP) embed.addField(language(`basic/help:VIP_FEATURES`), VIPFEATURES)
+    if (settings?.vip.isVIP) embed.addField(language(`basic/help:VIP_FEATURES`), VIPFEATURES)
 
     return message.channel.createMessage({ embed: embed.code })
   }

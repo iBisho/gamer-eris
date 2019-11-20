@@ -2,7 +2,6 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 
 const gifs = [
   `https://media.giphy.com/media/ThndUIbw1Znbi/giphy.gif`,
@@ -38,9 +37,8 @@ const gifs = [
 export default new Command(`baka`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || !message.member) return
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
 
-  const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const user = message.mentions.length ? message.mentions[0] : message.author

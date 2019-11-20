@@ -3,7 +3,7 @@
   "EXTENDED": "**{{prefix}}invite** ~ Displays the invite link for the bot to invite it to your server and also a link to join the Support server if you need help.",
   "USAGE": "{{prefix}}invite",
   "ALIASES": "{{prefix}}join",
-  "EMBED_DESCRIPTION": "Visit our website at **https://g4m3r.xyz** to add the bot to your server!",
+  "EMBED_DESCRIPTION": "Visit our website at **https://gamer.netlify.com** to add the bot to your server!",
   "LINKS": "$t(basic/invite:LINKS_LINE_1)\n$t(basic/invite:LINKS_LINE_2)",
   "LINKS_LINE_1": "**»** <:g4m3rwhite:443416083874054145> **Invite The Bot**: [Click Here To Invite Bot]({{invite}})",
   "LINKS_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Need Help?**: [Support Server](https://discord.gg/J4NqJ72)"

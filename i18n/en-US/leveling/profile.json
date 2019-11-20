@@ -9,5 +9,6 @@
 	"EXTENDED_LINE_6": "» Use the **{{prefix}}leaderboard** command to check the leaderboard info.",
 	"EXTENDED_LINE_7": "» Use the **{{prefix}}background** command to select your custom background.",
 	"USAGE": "{{prefix}}profile *[User]*",
-	"ALIASES": "{{prefix}}p"
+	"ALIASES": "{{prefix}}p",
+	"CURRENT_MISSIONS": "Current Missions For XP:"
 }

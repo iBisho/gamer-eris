@@ -1,7 +1,6 @@
 import config from '../config'
 import GamerClient from './lib/structures/GamerClient'
 import { Message, PrivateChannel } from 'eris'
-import { GuildSettings } from './lib/types/settings'
 import { Canvas } from 'canvas-constructor'
 import { join } from 'path'
 import GamerEmbed from './lib/structures/GamerEmbed'
@@ -42,10 +41,7 @@ Gamer.globalCommandRequirements = {
     const botPerms = message.channel.permissionsOf(Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages')) return false
 
-    const guildSettings = (await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
-    })) as GuildSettings | null
-    const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return false
 
     // Check if bot has embed links perms
@@ -62,6 +58,16 @@ Gamer.addCommandDir(`${__dirname}/commands`)
   .addDirectory(`${__dirname}/monitors`)
   .addDirectory(`${__dirname}/events`)
   .connect()
+
+Gamer.prefixes((message: Message) => {
+  // If in DM use the default prefix
+  if (message.channel instanceof PrivateChannel) return
+  // If in a server who has not customized their prefix, use the default prefix
+  const prefix = Gamer.guildPrefixes.get(message.channel.guild.id)
+  if (!prefix) return
+  // If in a server with the custom prefix, use the custom prefix
+  return prefix
+})
 
 // bind so the `this` is relevent to the event
 for (const [name, event] of Gamer.events) Gamer.on(name, event.execute.bind(event))

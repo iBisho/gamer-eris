@@ -13,7 +13,7 @@ export default new Command(`setcapture`, async (message, args, context) => {
   })) as GuildSettings | null
   if (!guildSettings) guildSettings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
 
-  const language = Gamer.i18n.get(guildSettings.language)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return

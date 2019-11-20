@@ -5,7 +5,6 @@ import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
 import { GamerEvent, GamerReactionRole } from '../lib/types/gamer'
-import { GuildSettings } from '../lib/types/settings'
 
 const eventEmojis: string[] = []
 export default class extends Event {
@@ -32,10 +31,7 @@ export default class extends Event {
     const event = (await Gamer.database.models.event.findOne({ adMessageID: message.id })) as GamerEvent | null
     if (!event) return
 
-    const guildSettings = (await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
-    })) as GuildSettings | null
-    const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return
 
     const joinEmojiID = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `id`)

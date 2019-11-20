@@ -56,7 +56,7 @@ export default new Command(`verify`, async (message, args, context) => {
       id: message.channel.guild.id
     })) as GuildSettings | null) || (new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings)
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const content = args.join(` `)

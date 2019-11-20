@@ -9,8 +9,6 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
 
   const Gamer = context.client as GamerClient
 
-  const res = await Gamer.executeWebhook('webhookID', 'token', { embeds: [], wait: false })
-  console.log(res)
   const botMember = message.channel.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
@@ -18,7 +16,7 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
     id: message.channel.guild.id
   })) as GuildSettings | null
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // Check if the bot has the ban permissions

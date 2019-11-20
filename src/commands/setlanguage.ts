@@ -9,7 +9,7 @@ export default new Command(`setlanguage`, async (message, args, context) => {
   if (message.channel instanceof PrivateChannel) return
 
   let settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
-  const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // If the user does not have a modrole or admin role quit out
@@ -25,6 +25,7 @@ export default new Command(`setlanguage`, async (message, args, context) => {
     return message.channel.createMessage(language(`settings/setlanguage:ALREADY_ACTIVE`, { name: personality.name }))
   settings.language = personality.id
   settings.save()
+  Gamer.guildLanguages.set(message.channel.guild.id, personality.id)
 
   return message.channel.createMessage(language(`settings/setlanguage:SET`, { name: personality.name }))
 })

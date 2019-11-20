@@ -5,17 +5,12 @@ import { PrivateChannel } from 'eris'
 import { parse } from 'url'
 import config from '../../config'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`imgur`, async (message, args, context) => {
   if (message.channel instanceof PrivateChannel) return
   const Gamer = context.client as GamerClient
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const [attachment] = message.attachments

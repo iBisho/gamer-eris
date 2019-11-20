@@ -1,5 +1,4 @@
 import { Command } from 'yuuko'
-import { GuildSettings } from '../lib/types/settings'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GamerLevel } from '../lib/types/gamer'
@@ -8,11 +7,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || !message.member) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const [type, number, ...idsOrNames] = args

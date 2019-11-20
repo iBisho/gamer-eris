@@ -15,7 +15,7 @@ export default new Command(`daily`, async (message, _args, context) => {
   const guildSettings =
     ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null) ||
     GuildDefaults
-  const language = Gamer.i18n.get(guildSettings.language)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // Check if on cooldown
@@ -46,7 +46,7 @@ export default new Command(`daily`, async (message, _args, context) => {
     language(`leveling/daily:SUCCESS`, {
       mention: message.author.mention,
       amount: guildSettings.xp.daily,
-      emoji: constants.emojis.currency
+      emoji: constants.emojis.coin
     })
   )
 })

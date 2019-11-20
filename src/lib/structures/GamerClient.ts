@@ -39,11 +39,8 @@ const assetsPaths = {
   xpbar: join(assetsFolder, `profile/xp_bar_empty.png`),
   badges: {
     vip: join(assetsFolder, `profile/badges/vip.png`),
-    nintendo: join(assetsFolder, `profile/badges/nintendo.png`),
-    playstation: join(assetsFolder, `profile/badges/playstation.png`),
-    xbox: join(assetsFolder, `profile/badges/xbox.png`),
-    mobile: join(assetsFolder, `profile/badges/mobile.png`),
-    steam: join(assetsFolder, `profile/badges/steam.png`)
+    loud: join(assetsFolder, `profile/badges/loud.jpg`),
+    shoptitans: join(assetsFolder, `profile/Backgrounds/shoptitans.jpg`)
   },
   background: join(assetsFolder, `leaderboard/background.png`),
   circle: join(assetsFolder, `leaderboard/circle.png`),
@@ -104,11 +101,12 @@ export default class GamerClient extends Client {
       xpbar: fs.readFileSync(assetsPaths.xpbar),
       badges: {
         vip: fs.readFileSync(assetsPaths.badges.vip),
-        nintendo: fs.readFileSync(assetsPaths.badges.nintendo),
-        playstation: fs.readFileSync(assetsPaths.badges.playstation),
-        xbox: fs.readFileSync(assetsPaths.badges.xbox),
-        mobile: fs.readFileSync(assetsPaths.badges.mobile),
-        steam: fs.readFileSync(assetsPaths.badges.steam)
+        loud: fs.readFileSync(assetsPaths.badges.loud),
+        // // playstation: fs.readFileSync(assetsPaths.badges.playstation),
+        // // xbox: fs.readFileSync(assetsPaths.badges.xbox),
+        // // mobile: fs.readFileSync(assetsPaths.badges.mobile),
+        shoptitans: fs.readFileSync(assetsPaths.badges.shoptitans)
+        // // steam: fs.readFileSync(assetsPaths.badges.steam)
       }
     }
   }
@@ -124,6 +122,10 @@ export default class GamerClient extends Client {
   slowmode: Slowmode[] = []
   // The daily cooldown holder
   cooldowns: Map<string, number> = new Map()
+  // The customized guild prefixes. Cached so they arent fetched on every message
+  guildPrefixes: Map<string, string> = new Map()
+  // The languages set. Cached because they are the most often reason to fetch guild settings
+  guildLanguages: Map<string, string> = new Map()
 
   constructor(options: ClientOptions) {
     super(options)

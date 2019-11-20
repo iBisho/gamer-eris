@@ -17,4 +17,5 @@ export interface AmplitudeEvent {
     | 'ROLE_REMOVED'
     | 'COMMAND_RAN'
     | 'MAIL_CREATE'
+    | 'PROFILE_INVITE'
 }

@@ -17,7 +17,7 @@ export default new Command(
       ((await Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null) ||
       (GuildDefaults as GuildSettingsDefault)
 
-    const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language || !settings) return null
 
     const owner = Gamer.users.get(guild.ownerID)

@@ -1,5 +1,5 @@
 import { Member, Role } from 'eris'
-import { MemberSettings, UserSettings, GuildSettings } from '../types/settings'
+import { MemberSettings, UserSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { GamerLevel, GamerMission } from '../types/gamer'
@@ -101,10 +101,7 @@ export default class {
     }
     if (!rolesToAdd.length) return
 
-    const guildSettings = (await this.Gamer.database.models.guild.findOne({
-      id: member.guild.id
-    })) as GuildSettings | null
-    const language = this.Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
     for (const roleID of rolesToAdd) {
       member.addRole(roleID, language?.(`leveling/xp:ROLE_ADD_REASON`))
       this.Gamer.amplitude.push({
@@ -117,10 +114,9 @@ export default class {
     }
   }
 
-  async addGlobalXP(member: Member, xpAmountToAdd = 1) {
-    if (this.checkCooldown(member, true)) return
-
-    const userSettings = ((await this.Gamer.database.models.user.findOne({ id: member.id })) ||
+  async addGlobalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false) {
+    if (!overrideCooldown && this.checkCooldown(member, true)) return
+    const userSettings = ((await this.Gamer.database.models.user.findOne({ userID: member.id })) ||
       new this.Gamer.database.models.user({ userID: member.id })) as UserSettings
 
     let multiplier = 1
@@ -133,24 +129,18 @@ export default class {
 
     const totalXP = xpAmountToAdd * multiplier + userSettings.leveling.xp
     userSettings.leveling.xp = totalXP
+    userSettings.save()
 
     // Get the details on the users next level
     const nextLevelInfo = constants.levels.find(lvl => lvl.level === userSettings.leveling.level + 1)
     // User did not level up
-    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) {
-      userSettings.save()
-      return
-    }
+    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) return
 
     // User did level up
 
     const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
     // Past max xp for highest level so just no more levelups needed
-    if (!newLevel) {
-      userSettings.save()
-      return
-    }
-
+    if (!newLevel) return
     // Add one level
     userSettings.leveling.level = newLevel.level
     userSettings.save()
@@ -259,9 +249,8 @@ export default class {
 
     // If the user already got the rewards for this mission
     if (missionData.completed) return
-
     // The mission has not been completed so just increment by 1
-    if (missionData.amount + 1 < mission.amount) {
+    if (missionData.amount + 1 <= mission.amount) {
       missionData.amount += 1
       missionData.save()
       return
@@ -271,6 +260,6 @@ export default class {
     missionData.save()
     // The mission should be completed now so need to give XP.
     this.addLocalXP(member, mission.reward, true)
-    this.addGlobalXP(member, mission.reward)
+    this.addGlobalXP(member, mission.reward, true)
   }
 }

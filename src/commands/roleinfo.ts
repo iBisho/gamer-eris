@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`roleinfo`, `ri`], async (message, args, context) => {
@@ -18,16 +17,8 @@ export default new Command([`roleinfo`, `ri`], async (message, args, context) =>
       )
   if (!role) return
 
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
-  const language = Gamer.i18n.get(settings ? settings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
-  // If the user does not have a modrole or admin role quit out
-  if (
-    !settings ||
-    Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
-    (settings.staff.adminRoleID && Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID))
-  )
-    return
 
   const members = message.channel.guild.members.filter(member => member.roles.includes(role.id))
 

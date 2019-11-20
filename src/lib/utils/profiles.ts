@@ -21,7 +21,7 @@ export default class {
         id: `${member.guild.id}.${member.id}`
       })) as MemberSettings | null) || MemberDefaults
     const userSettings =
-      ((await Gamer.database.models.user.findOne({ id: member.id })) as UserSettings | null) || UserDefaults
+      ((await Gamer.database.models.user.findOne({ userID: member.id })) as UserSettings | null) || UserDefaults
     // Select the background theme & id from their settings if no override options were provided
     const style = (options && options.style) || userSettings.profile.theme
     const backgroundID = (options && options.backgroundID) || userSettings.profile.backgroundID
@@ -33,29 +33,28 @@ export default class {
     if (!backgroundData) return
 
     // SERVER XP DATA
-    const serverLevelDetails = Constants.levels.find(lev => lev.level === (memberSettings.leveling.level || 1))
-    const globalLevelDetails = Constants.levels.find(lev => lev.level === (userSettings.leveling.level || 1))
+    const serverLevelDetails = Constants.levels.find(lev => lev.xpNeeded > memberSettings.leveling.xp)
+    const globalLevelDetails = Constants.levels.find(lev => lev.xpNeeded > userSettings.leveling.xp)
     if (!serverLevelDetails || !globalLevelDetails) return
 
     const serverXPForLevel = serverLevelDetails.xpNeeded
     const globalXPForLevel = globalLevelDetails.xpNeeded
 
-    const memberLevel = memberSettings.leveling.level
+    const memberLevel = serverLevelDetails.level
     const totalMemberXP = memberSettings.leveling.xp
-    const globalLevel = userSettings.leveling.level
+    const globalLevel = globalLevelDetails.level
     const totalGlobalXP = userSettings.leveling.xp
-
     // Since XP is stored as TOTAL and is not reset per level we need to make a cleaner version
     // Create the cleaner xp based on the level of the member
     let memberXP = totalMemberXP
-    if (memberLevel >= 1) {
+    if (serverLevelDetails.level >= 1) {
       const previousLevel = Constants.levels.find(lev => lev.level === (memberLevel > 1 ? memberLevel - 1 : 1))
       if (!previousLevel) return
       memberXP = totalMemberXP - previousLevel.xpNeeded
     }
     // Create the cleaner xp based on the level of the user
     let globalXP = totalGlobalXP
-    if (globalLevel >= 1) {
+    if (globalLevelDetails.level >= 1) {
       const previousLevel = Constants.levels.find(lev => lev.level === (globalLevel > 1 ? globalLevel - 1 : 1))
       if (!previousLevel) return
       globalXP = totalGlobalXP - previousLevel.xpNeeded
@@ -192,10 +191,17 @@ export default class {
 
     // user badges
     if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings.vip.isVIP) {
-      canvas.addRoundImage(Gamer.buffers.profiles.badges.vip, 45, 455, 50, 50, 25, true)
+      canvas
+        .addRoundImage(Gamer.buffers.profiles.badges.vip, 45, 455, 50, 50, 25, true)
+        .addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
+        .addRoundImage(Gamer.buffers.profiles.badges.loud, 195, 455, 50, 50, 25, true)
+    } else if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings.vip.isVIP) {
+      canvas
+        .addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 45, 455, 50, 50, 25, true)
+        .addRoundImage(Gamer.buffers.profiles.badges.loud, 195, 455, 50, 50, 25, true)
     }
     // Spots to add user custom badges
-    //   .addRoundImage(Gamer.buffers.profiles.badges.nintendo, 120, 455, 50, 50, 25, true)
+    // canvas.addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
     //   .addRoundImage(Gamer.buffers.profiles.badges.playstation, 195, 455, 50, 50, 25, true)
     //   .addRoundImage(Gamer.buffers.profiles.badges.xbox, 270, 455, 50, 50, 25, true)
     //   .addRoundImage(Gamer.buffers.profiles.badges.mobile, 345, 455, 50, 50, 25, true)

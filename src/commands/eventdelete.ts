@@ -19,7 +19,7 @@ export default new Command([`eventdelete`, `ed`], async (message, args, context)
   )
     return
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const [number] = args

@@ -8,7 +8,7 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
   if (message.channel instanceof PrivateChannel) return
 
   let settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
-  const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // If the user does not have a modrole or admin role quit out

@@ -14,7 +14,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
     id: message.channel.guild.id
   })) as GuildSettings | null
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return

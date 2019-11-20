@@ -14,7 +14,7 @@ export default class extends Event {
     const guildSettings =
       ((await Gamer.database.models.guild.findOne({ id: channel.guild.id })) as GuildSettings | null) || GuildDefaults
 
-    const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
     if (!language) return
 
     // Verification categories are automatically handled

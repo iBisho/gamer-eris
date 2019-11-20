@@ -8,7 +8,7 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel) return
 
   const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
-  const language = Gamer.i18n.get(settings ? settings.language : 'en-US')
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // If there are no settings then there are no public roles
@@ -27,7 +27,8 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
         r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase()
       )
   if (!role) return message.channel.createMessage(language(`roles/role:NEED_ROLE`))
-
+  if (!settings.moderation.roleIDs.public.includes(role.id))
+    return message.channel.createMessage(language(`roles/role:NOT_PUBLIC`))
   // Check if the bots role is high enough to manage the role
   const botsRoles = bot.roles.sort(
     (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position

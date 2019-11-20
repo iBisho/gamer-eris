@@ -13,7 +13,7 @@ export default new Command([`reason`, `case`], async (message, args, context) =>
     id: message.channel.guild.id
   })) as GuildSettings | null
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   if (

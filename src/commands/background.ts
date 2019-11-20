@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import { GuildSettings, UserSettings } from '../lib/types/settings'
+import { UserSettings } from '../lib/types/settings'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
@@ -8,15 +8,11 @@ export default new Command([`background`, `bg`], async (message, args, context) 
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || !message.member) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-
   const userSettings = ((await Gamer.database.models.user.findOne({
     id: message.author.id
   })) || new Gamer.database.models.user({ userID: message.author.id })) as UserSettings
 
-  const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const [type, id, color] = args

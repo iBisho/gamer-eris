@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 import { GamerTradingCard, GamerTag } from '../lib/types/gamer'
 
 export default new Command(`capture`, async (message, args, context) => {
@@ -10,11 +9,7 @@ export default new Command(`capture`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (!args.length) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-
-  const language = Gamer.i18n.get(guildSettings?.language || `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   const cardSettings = (await Gamer.database.models.tradingCard.find({

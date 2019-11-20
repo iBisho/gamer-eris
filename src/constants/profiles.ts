@@ -9,7 +9,7 @@ export default {
   clanDefaults: {
     logo: join(assetsFolder, `profile/g4m3r.png`),
     text: `The Bot For Every Gamer`,
-    url: `https://g4m3r.xyz`,
+    url: `https://gamer.netlify.com`,
     name: `G4M3R`
   },
   whiteMode: {
@@ -42,12 +42,12 @@ export default {
     clanText: `#fff`,
     clanURL: `#fff`
   },
-  defaultBackground: `Rules Of Survival - 300 Player BR Game`,
+  defaultBackground: `Shop Titans`,
   backgrounds: [
     {
       id: 1,
-      name: `BF1 Pilot`,
-      buffer: fs.readFileSync(join(assetsFolder, `statsImages/bf1pilot.jpg`))
+      name: `Shop Titans`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/shoptitans.jpg`))
     },
     {
       id: 2,

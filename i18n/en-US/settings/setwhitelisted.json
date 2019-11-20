@@ -6,7 +6,7 @@
   "EXTENDED_LINE_3": "**{{prefix}}setwhitelisted role [@Role]** ~ Sets a role to be whitelisted. This role will have the permission to post links anywhere in the server.",
   "EXTENDED_LINE_4": "**{{prefix}}setwhitelisted channel [#channel]** ~ Sets a channel to be whitelisted. This channel will allow links to be posted by anyone in the server.",
   "EXTENDED_LINE_5": "**{{prefix}}setwhitelisted user [@user]** ~ Sets a user to be whitelisted. This user will be able to post links anywhere in the server.",
-  "EXTENDED_LINE_6": "**{{prefix}}setwhitelisted url [Your URL]** ~ Sets a url to be whitelisted. This url will be able to be posted by anyone. You only need to use the main domain of the url. For example, <https://g4m3r.info> will allow all links for this website.",
+  "EXTENDED_LINE_6": "**{{prefix}}setwhitelisted url [Your URL]** ~ Sets a url to be whitelisted. This url will be able to be posted by anyone. You only need to use the main domain of the url. For example, <https://gamer.netlify.com> will allow all links for this website.",
   "USAGE": "{{prefix}}setwhitelisted [enable | disable | channel | role | user | url] [#Channel | @Role | @User | URL]",
   "ALIASES": "Setwhitelisted does not have any aliases",
   "ALREADY_ENABLED": "The link/URL filter is already enabled.",

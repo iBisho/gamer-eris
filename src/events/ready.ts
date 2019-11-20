@@ -53,11 +53,7 @@ export default class extends Event {
           // If no message something is very wrong as the first json message should always be there to be safe just cancel
           if (!message) return
 
-          const guildSettings = (await Gamer.database.models.guild.findOne({
-            id: guild.id
-          })) as GuildSettings | null
-
-          const language = Gamer.i18n.get(guildSettings ? guildSettings.language : 'en-US')
+          const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
           if (!language) return
 
           // If the channel has gone inactive too long delete it so there is no spam empty unused channels
@@ -78,7 +74,7 @@ export default class extends Event {
       Gamer.missions = []
       for (let i = 0; i < 3; i++)
         Gamer.missions.push(constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))])
-    }, milliseconds.DAY)
+    }, milliseconds.HOUR * 6)
 
     // Checks if a member is inactive to begin losing XP every day
     setInterval(async () => {
@@ -89,7 +85,10 @@ export default class extends Event {
         // If the inactive days allowed has not been enabled then skip
         if (!guildSettings.xp.inactiveDaysAllowed) continue
 
-        const language = Gamer.i18n.get(guildSettings ? guildSettings.language : `en-US`)
+        const guild = Gamer.guilds.get(guildSettings.id)
+        if (!guild) continue
+
+        const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
         if (!language) continue
 
         // Get all members from the database as anyone with default settings dont need to be checked
@@ -99,7 +98,6 @@ export default class extends Event {
           // If they have never been updated skip. Or if their XP is below 100 the minimum threshold
           if (!memberSettings.leveling.lastUpdatedAt || memberSettings.leveling.xp < 100) continue
           // Get the member object
-          const guild = Gamer.guilds.get(guildSettings.id)
           const member = guild?.members.get(memberSettings.memberID)
           if (!member) continue
 
@@ -125,18 +123,21 @@ export default class extends Event {
 
         fetch(config.apiKeys.amplitude.url, {
           method: `POST`,
-          headers: { 'Content-Type': `application/json` },
+          headers: { 'Content-Type': `application/json`, Accept: '*/*' },
           body: JSON.stringify({
             // eslint-disable-next-line @typescript-eslint/camelcase
             api_key: config.apiKeys.amplitude.key,
             // Splice will return the deleted items from the array
-            events: Gamer.amplitude.splice(0, 10)
+            events: Gamer.amplitude
+              .splice(0, 10)
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              .map(data => ({ ...data, user_id: data.authorID, event_type: data.type }))
           })
         })
       }
     }, milliseconds.SECOND)
 
-    // Process all events once per minute
+    // Process all gamer events once per minute
     setInterval(() => Gamer.helpers.events.process(), milliseconds.MINUTE)
 
     // Process all mutes
@@ -169,11 +170,7 @@ export default class extends Event {
 
         const randomCard = cards[Math.floor(Math.random() * cards.length)]
 
-        const guildSettings = (await Gamer.database.models.guild.findOne({
-          id: guild.id
-        })) as GuildSettings | null
-
-        const language = Gamer.i18n.get(guildSettings?.language || `en-US`)
+        const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
         if (!language) continue
 
         setting.lastItemName = randomCard.name
@@ -181,7 +178,7 @@ export default class extends Event {
 
         embed
           .setAuthor(language(`gaming/capture:GUESS`), Gamer.user.avatarURL)
-          .setTitle(language(`gaming/capture:TITLE`, { prefix: guildSettings?.prefix || `.` }))
+          .setTitle(language(`gaming/capture:TITLE`, { prefix: Gamer.guildPrefixes.get(guild.id) || Gamer.prefix }))
           .setImage(randomCard.image)
 
         channel.createMessage({ embed: embed.code })
@@ -210,6 +207,21 @@ export default class extends Event {
     // Set the tags in cache
     const tags = (await Gamer.database.models.tag.find()) as GamerTag[]
     for (const tag of tags) Gamer.tags.set(`${tag.guildID}.${tag.name}`, tag)
+
+    // Set the missions on startup
+    // Remove all missions first before creating any new missions
+    await Gamer.database.models.mission.deleteMany({}).catch(error => console.log(error))
+    while (Gamer.missions.length < 3) {
+      const randomMission = constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))]
+      if (!Gamer.missions.find(m => m.title === randomMission.title)) Gamer.missions.push(randomMission)
+    }
+
+    // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
+    const allGuildSettings = (await Gamer.database.models.guild.find()) as GuildSettings[]
+    for (const settings of allGuildSettings) {
+      if (settings.prefix !== Gamer.prefix) Gamer.guildPrefixes.set(settings.id, settings.prefix)
+      if (settings.language !== `en-US`) Gamer.guildLanguages.set(settings.id, settings.language)
+    }
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }
