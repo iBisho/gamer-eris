@@ -5,6 +5,8 @@ import { MemberSettings } from '../lib/types/settings'
 
 export default class extends Event {
   async execute(member: Member) {
+    if (member.bot) return
+
     let memberSettings = (await Gamer.database.models.member.findOne({
       memberID: member.id
     })) as MemberSettings | null
@@ -15,6 +17,7 @@ export default class extends Event {
         id: `${member.guild.id}.${member.id}`
       }) as MemberSettings
 
+    console.log('voicechanneljoin', member.username, member.id, Date.now())
     memberSettings.leveling.joinedVoiceAt = Date.now()
     memberSettings.save()
   }

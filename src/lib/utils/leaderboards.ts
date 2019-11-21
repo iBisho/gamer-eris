@@ -3,6 +3,7 @@ import fetch from 'node-fetch'
 import GamerClient from '../structures/GamerClient'
 import { Message, Member } from 'eris'
 import { MemberSettings, UserSettings } from '../types/settings'
+import constants from '../../constants'
 
 // Canvas.registerFont(join(assetsFolder, `fonts/SF-Pro-Text-Heavy.otf`), `SFTHeavy`)
 // Canvas.registerFont(join(assetsFolder, `fonts/SF-Pro-Text-Light.otf`), `SFTLight`)
@@ -133,7 +134,8 @@ export default class {
       .find()
       .sort(`-leveling.voicexp`)) as MemberSettings[]
 
-    const index = allRelevantUsers.findIndex(data => data.id === member.id)
+    console.log(allRelevantUsers)
+    const index = allRelevantUsers.findIndex(data => data.memberID === member.id)
     const memberSettings = allRelevantUsers[index]
     if (!memberSettings) {
       message.channel.createMessage(NO_POINTS)
@@ -263,6 +265,9 @@ export default class {
         this.Gamer.helpers.logger.yellow(`Error while fetching avatar url in leaderboard ${userData.avatarUrl}`)
       }
 
+      const currentLevel =
+        constants.levels.find(level => level.xpNeeded > userData.currentXP) ||
+        constants.levels[constants.levels.length - 1]
       canvas
         .setColor(`#46a3ff`)
         .setTextFont(`18px SFTMedium`)
@@ -277,7 +282,7 @@ export default class {
         .addText(`#${userData.discriminator}`, 350, userY + 8)
         .setTextAlign(`center`)
         .setTextFont(`18px SFTMedium`)
-        // .addText(currentLevel.toString(), 485, userY)
+        .addText(currentLevel.level.toString(), 485, userY)
         .addResponsiveText(userData.currentXP.toString(), 540, userY, 100)
         .addImage(this.Gamer.buffers.leaderboards.rectangle, 585, userY - 24)
 

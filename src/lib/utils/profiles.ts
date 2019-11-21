@@ -37,9 +37,6 @@ export default class {
     const globalLevelDetails = Constants.levels.find(lev => lev.xpNeeded > userSettings.leveling.xp)
     if (!serverLevelDetails || !globalLevelDetails) return
 
-    const serverXPForLevel = serverLevelDetails.xpNeeded
-    const globalXPForLevel = globalLevelDetails.xpNeeded
-
     const memberLevel = serverLevelDetails.level
     const totalMemberXP = memberSettings.leveling.xp
     const globalLevel = globalLevelDetails.level
@@ -47,25 +44,26 @@ export default class {
     // Since XP is stored as TOTAL and is not reset per level we need to make a cleaner version
     // Create the cleaner xp based on the level of the member
     let memberXP = totalMemberXP
-    if (serverLevelDetails.level >= 1) {
-      const previousLevel = Constants.levels.find(lev => lev.level === (memberLevel > 1 ? memberLevel - 1 : 1))
+    if (memberLevel >= 1) {
+      const previousLevel = Constants.levels.find(lev => lev.level === memberLevel - 1)
       if (!previousLevel) return
+
       memberXP = totalMemberXP - previousLevel.xpNeeded
     }
     // Create the cleaner xp based on the level of the user
     let globalXP = totalGlobalXP
-    if (globalLevelDetails.level >= 1) {
-      const previousLevel = Constants.levels.find(lev => lev.level === (globalLevel > 1 ? globalLevel - 1 : 1))
+    if (globalLevel >= 1) {
+      const previousLevel = Constants.levels.find(lev => lev.level === globalLevel - 1)
       if (!previousLevel) return
       globalXP = totalGlobalXP - previousLevel.xpNeeded
     }
-    // GLOBAL XP DATA
+
     // Calculate Progress
     const xpBarWidth = 360
 
-    const sRatio = memberXP / serverXPForLevel
+    const sRatio = memberXP / serverLevelDetails.xpNeeded
     const sProgress = xpBarWidth * sRatio
-    const gRatio = globalXP / globalXPForLevel
+    const gRatio = globalXP / globalLevelDetails.xpNeeded
     const gProgress = xpBarWidth * gRatio
 
     // STYLES EVALUATION AND DATA
@@ -103,7 +101,6 @@ export default class {
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
       ``
     )
-
     canvas
       .setColor(mode.userdivider)
       .addRect(158, 135, 240, 2)
@@ -115,12 +112,6 @@ export default class {
       .setTextAlign(`left`)
       .setTextFont(`18px LatoBold`)
       .addText(`#${member.user.discriminator}`, 160, 165)
-
-      // all xp bars
-      .setColor(mode.xpbarFilling)
-      .addBeveledRect(45, 260, xpBarWidth, 30, 25)
-      .addBeveledRect(45, 370, xpBarWidth, 30, 25)
-      .restore()
 
       // level bar texts
       .setColor(mode.xpbarText)
@@ -134,42 +125,68 @@ export default class {
       .addText(memberLevel.toString(), 310, 245)
       .addText(globalLevel.toString(), 310, 355)
 
-      // server xp bar filling
-      .setShadowColor(`rgba(155, 222, 239,.5)`)
-      .setShadowBlur(7)
-      .printLinearGradient(45, 260, 45 + sProgress, 285, [
-        { position: 0, color: `#5994f2` },
-        { position: 0.25, color: `#8bccef` },
-        { position: 0.5, color: `#9bdeef` },
-        { position: 0.75, color: `#9befe7` }
-      ])
-      .addBeveledRect(45, 260, sProgress, 30, 25)
-      .restore()
+      // all xp bars
+      .setColor(mode.xpbarFilling)
+      .addBeveledRect(45, 260, xpBarWidth, 30, 25)
+      .addBeveledRect(45, 370, xpBarWidth, 30, 25)
 
-      // global xp bar filling
-      .restore()
-      .setShadowColor(`rgba(155, 222, 239,.5)`)
-      .setShadowBlur(7)
-      .printLinearGradient(45, 370, 45 + gProgress, gProgress ? 395 : 370, [
-        { position: 0, color: `#5994f2` },
-        { position: 0.25, color: `#8bccef` },
-        { position: 0.5, color: `#9bdeef` },
-        { position: 0.75, color: `#9befe7` }
-      ])
-      .addBeveledRect(45, 370, gProgress, 30, 25)
-      .restore()
+    // server xp bar filling
+    // The if checks solve a crucial bug in canvas DO NOT REMOVE.
+    // The global bar breaks and is always fill if u have server level 0 without the if checks
+    if (sProgress) {
+      canvas
+        .setShadowColor(`rgba(155, 222, 239, .5)`)
+        .setShadowBlur(7)
+        .printLinearGradient(45, 260, 45 + sProgress, 285, [
+          { position: 0, color: `#5994f2` },
+          { position: 0.25, color: `#8bccef` },
+          { position: 0.5, color: `#9bdeef` },
+          { position: 0.75, color: `#9befe7` }
+        ])
+        .addBeveledRect(45, 260, sProgress, 30, 25)
+    }
 
+    // global xp bar filling
+    if (gProgress) {
+      canvas
+        .setShadowColor(`rgba(155, 222, 239, .5)`)
+        .setShadowBlur(7)
+        .printLinearGradient(45, 370, 45 + gProgress, 395, [
+          { position: 0, color: `#5994f2` },
+          { position: 0.25, color: `#8bccef` },
+          { position: 0.5, color: `#9bdeef` },
+          { position: 0.75, color: `#9befe7` }
+        ])
+        .addBeveledRect(45, 370, gProgress, 30, 25)
+    }
+
+    canvas
       // server xp bar text
       .setColor(sRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
-      .addText(`${memberXP}/${serverXPForLevel}`, 190, 280)
+      .addText(`${memberXP}/${serverLevelDetails.xpNeeded}`, 190, 280)
 
-      // server xp bar text
+      // global xp bar text
       .setColor(gRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
-      .addText(`${globalXP}/${globalXPForLevel}`, 190, 390)
+      .addText(`${globalXP}/${globalLevelDetails.xpNeeded}`, 190, 390)
+
+      // clan info (logo, text)
+      .addCircularImage(Gamer.buffers.botLogo, 555, 480, 50, true)
+      .setColor(mode.clanRectFilling)
+      .addBeveledRect(590, 435, 200, 90)
+      .setTextAlign(`left`)
+      .setColor(mode.clanName)
+      .setTextFont(`20px LatoBold`)
+      .addText(Constants.profiles.clanDefaults.name, 600, 463)
+      .setColor(mode.clanText)
+      .setTextFont(`14px LatoBold`)
+      .addMultilineText(Constants.profiles.clanDefaults.text.substr(0, 50), 600, 483)
+      .setColor(mode.clanURL)
+      .setTextFont(`14px LatoBold`)
+      .addText(Constants.profiles.clanDefaults.url, 600, 515)
 
       // all badgeholders
       .setShadowColor(mode.badgeShadow)
@@ -195,10 +212,10 @@ export default class {
         .addRoundImage(Gamer.buffers.profiles.badges.vip, 45, 455, 50, 50, 25, true)
         .addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
         .addRoundImage(Gamer.buffers.profiles.badges.loud, 195, 455, 50, 50, 25, true)
-    } else if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings.vip.isVIP) {
+    } else {
       canvas
         .addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 45, 455, 50, 50, 25, true)
-        .addRoundImage(Gamer.buffers.profiles.badges.loud, 195, 455, 50, 50, 25, true)
+        .addRoundImage(Gamer.buffers.profiles.badges.loud, 120, 455, 50, 50, 25, true)
     }
     // Spots to add user custom badges
     // canvas.addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
@@ -206,24 +223,6 @@ export default class {
     //   .addRoundImage(Gamer.buffers.profiles.badges.xbox, 270, 455, 50, 50, 25, true)
     //   .addRoundImage(Gamer.buffers.profiles.badges.mobile, 345, 455, 50, 50, 25, true)
     //   .addRoundImage(Gamer.buffers.profiles.badges.steam, 420, 455, 50, 50, 25, true)
-
-    // clan info (logo, text)
-    canvas
-      .addCircularImage(Gamer.buffers.botLogo, 555, 480, 50, true)
-      .setColor(mode.clanRectFilling)
-      .addBeveledRect(590, 435, 200, 90)
-      .save()
-      .restore()
-      .setTextAlign(`left`)
-      .setColor(mode.clanName)
-      .setTextFont(`20px LatoBold`)
-      .addText(Constants.profiles.clanDefaults.name, 600, 463)
-      .setColor(mode.clanText)
-      .setTextFont(`14px LatoBold`)
-      .addMultilineText(Constants.profiles.clanDefaults.text.substr(0, 50), 600, 483)
-      .setColor(mode.clanURL)
-      .setTextFont(`14px LatoBold`)
-      .addText(Constants.profiles.clanDefaults.url, 600, 515)
 
     return canvas.toBufferAsync()
   }
