@@ -129,21 +129,20 @@ export default class {
 
     const totalXP = xpAmountToAdd * multiplier + userSettings.leveling.xp
     userSettings.leveling.xp = totalXP
-    userSettings.save()
 
     // Get the details on the users next level
     const nextLevelInfo = constants.levels.find(lvl => lvl.level === userSettings.leveling.level + 1)
     // User did not level up
-    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) return
+    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) return userSettings.save()
 
     // User did level up
 
     const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
     // Past max xp for highest level so just no more levelups needed
-    if (!newLevel) return
+    if (!newLevel) return userSettings.save()
     // Add one level
     userSettings.leveling.level = newLevel.level
-    userSettings.save()
+    return userSettings.save()
   }
 
   async removeXP(member: Member, reason: string, xpAmountToRemove = 1) {

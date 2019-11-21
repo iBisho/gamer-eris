@@ -22,9 +22,10 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   )
     return
 
-  const [number, type, value] = args
+  const [number, type, ...fullValue] = args
   const eventID = parseInt(number, 10)
-  if (!eventID || !type || !value) return
+  if (!eventID || !type || !fullValue.length) return
+  const [value] = fullValue
 
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
@@ -34,27 +35,27 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     id: eventID,
     guildID: message.channel.guild.id
   })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   let response = `events/eventedit:TITLE_UPDATED`
   switch (type.toLowerCase()) {
     case `title`:
-      event.title = value
+      event.title = fullValue.join(' ')
       break
     case `platform`:
-      event.platform = value
+      event.platform = fullValue.join(' ')
       response = `events/eventedit:PLATFORM_UPDATED`
       break
     case `game`:
-      event.game = value
+      event.game = fullValue.join(' ')
       response = `events/eventedit:GAME_UPDATED`
       break
     case `activity`:
-      event.activity = value
+      event.activity = fullValue.join(' ')
       response = `events/eventedit:ACTIVITY_UPDATED`
       break
     case `description`:
-      event.description = value
+      event.description = fullValue.join(' ')
       response = `events/eventedit:DESCRIPTION_UPDATED`
       break
     case `tags`:

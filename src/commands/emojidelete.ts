@@ -20,7 +20,7 @@ export default new Command([`emojidelete`, `emd`], async (message, args, context
   })) as GamerEmoji | null
   if (!nameExists) return message.channel.createMessage(language(`community/emojidelete:DOESNT_EXIST`, { name }))
 
-  Gamer.database.models.emoji.deleteOne({ name, authorID: message.author.id })
+  await Gamer.database.models.emoji.deleteOne({ name, authorID: message.author.id })
 
   return message.channel.createMessage(language(`community/emojidelete:DELETED`, { name }))
 })

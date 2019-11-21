@@ -398,8 +398,8 @@ export default class {
     if (!language) return
 
     const embed = new GamerEmbed()
-      .setAuthor(language(`events/event:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
-      .setTitle(language(`events/event:STARTING_TITLE`, { title: event.title }))
+      .setAuthor(language(`events/events:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
+      .setTitle(language(`events/events:STARTING_TITLE`, { title: event.title }))
       .addField(language(`events/eventshow:RSVP_EMOJI`), `${event.attendees.length} / ${event.maxAttendees}`)
       .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
 
@@ -438,11 +438,11 @@ export default class {
     const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(Date.now() - event.start)
 
     const embed = new GamerEmbed()
-      .setAuthor(language(`events/event:REMIND`, { eventID: event.id }))
+      .setAuthor(language(`events/events:REMIND`, { eventID: event.id }))
       .setDescription(event.description)
-      .addField(language(`events/event:TITLE`), event.title, true)
-      .addField(language(`events/event:STARTS_IN`), startsIn, true)
-      .setFooter(language(`events/event:REMIND_FOOTER`, { guildName: guild.name }))
+      .addField(language(`events/events:TITLE`), event.title, true)
+      .addField(language(`events/events:STARTS_IN`), startsIn, true)
+      .setFooter(language(`events/events:REMIND_FOOTER`, { guildName: guild.name }))
     if (guild.iconURL) embed.setThumbnail(guild.iconURL)
 
     if (event.dmReminders) {

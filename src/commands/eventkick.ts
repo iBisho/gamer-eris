@@ -33,7 +33,7 @@ export default new Command([`eventkick`, `ek`], async (message, args, context) =
     id: eventID,
     guildID: message.channel.guild.id
   })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   if (!event.attendees.includes(user.id) && !event.waitingList.includes(user.id))
     return message.channel.createMessage(language(`events/eventkick:NOT_JOINED`))

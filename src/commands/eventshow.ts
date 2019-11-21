@@ -23,14 +23,14 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
   if (!language) return
 
   const [eventID] = args
-  if (!eventID) return message.channel.createMessage(language(`events/event:NEED_EVENT_ID`))
+  if (!eventID) return message.channel.createMessage(language(`events/events:NEED_EVENT_ID`))
 
   // Get the event from this server using the id provided
   const event = (await Gamer.database.models.event.findOne({
     id: eventID,
     guildID: message.channel.guild.id
   })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   const attendees = Gamer.helpers.discord.idsToUserTag(event.attendees)
   const waitingList = Gamer.helpers.discord.idsToUserTag(event.waitingList)

@@ -25,7 +25,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   const fileName = `profile.jpg`
 
   const missionData = (await Gamer.database.models.mission.find({
-    userID: message.author.id
+    userID: member.id
   })) as GamerMission[]
 
   const embed = new GamerEmbed()
@@ -36,7 +36,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
           const relevantMission = missionData.find(m => m.commandName === mission.commandName)
           if (!relevantMission) return `0 / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
 
-          if (!relevantMission.completed)
+          if (relevantMission.amount < mission.amount)
             return `${relevantMission.amount} / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
           return `${constants.emojis.greenTick}: ${mission.title} **[${mission.reward}] XP**`
         })

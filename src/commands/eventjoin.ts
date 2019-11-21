@@ -20,7 +20,7 @@ export default new Command([`eventjoin`, `ej`], async (message, args, context) =
     id: eventID,
     guildID: message.channel.guild.id
   })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   if (event.attendees.includes(message.author.id))
     return message.channel.createMessage(language(`events/eventjoin:ALREADY_JOINED`))

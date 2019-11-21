@@ -95,29 +95,28 @@ export default class {
   }
 
   stringToMilliseconds(text: string) {
-    // Accepts 5h or 5 h
-    const [number, letter] = text.split(text.length === 2 ? `` : ` `)
+    // Finds the first of these letters
+    const match = /(w|d|h|m|s)/.exec(text)
+    // if none of them were found cancel
+    if (!match) return
+    // Get the number which should be before the index of that match
+    const number = text.substring(0, match.index)
+    // Get the letter that was found
+    const [letter] = match
     if (!number || !letter) return
 
     let multiplier = milliseconds.SECOND
     switch (letter.toLowerCase()) {
       case `w`:
-      case `week`:
-      case `weeks`:
         multiplier = milliseconds.WEEK
         break
       case `d`:
-      case `day`:
-      case `days`:
         multiplier = milliseconds.DAY
+        break
       case `h`:
-      case `hour`:
-      case `hours`:
         multiplier = milliseconds.HOUR
         break
       case `m`:
-      case `minute`:
-      case `minutes`:
         multiplier = milliseconds.MINUTE
         break
     }

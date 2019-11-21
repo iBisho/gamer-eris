@@ -30,7 +30,7 @@ export default new Command([`eventadvertise`, `ead`], async (message, args, cont
     id: eventID,
     guildID: message.channel.guild.id
   })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   // If an old event card exists in a different channel get rid of it
   if (event.adChannelID && event.adMessageID && event.adChannelID !== message.channel.id) {

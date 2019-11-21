@@ -19,7 +19,7 @@ export default new Command([`eventdeny`, `edeny`], async (message, args, context
     id: eventID,
     guildID: message.channel.guild.id
   })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   if (event.denials.includes(message.author.id))
     return message.channel.createMessage(language(`events/eventeventdeny:ALREADY_DENIED`))
