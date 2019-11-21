@@ -27,7 +27,7 @@ jobs:
       uses: webfactory/ssh-agent@v0.1.1
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
+    - run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
             cd gamer-eris
             git pull
