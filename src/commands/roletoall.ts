@@ -12,18 +12,19 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
   if (!botMember || !botMember.permission.has('manageRoles')) return
   if (!message.member.permission.has(`manageRoles`)) return
 
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
+
   const guildSettings = (await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
   })) as GuildSettings | null
 
   // If they are using default settings, they won't be vip server
-  if (!guildSettings || !guildSettings.vip.isVIP) return
+  if (!guildSettings || !guildSettings.vip.isVIP)
+    return message.channel.createMessage(language(`vip/roletoall:NEED_VIP`))
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
-
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
 
   const [roleIDOrName] = args
   const role = message.roleMentions.length
@@ -33,10 +34,12 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
       )
   if (!role) return message.channel.createMessage(language(`vip/roletoall:NEED_ROLE`))
 
+  console.log(6)
   const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
   if (botsHighestRole.position < role.position)
     return message.channel.createMessage(language(`vip/roletoall:BOT_TOO_LOW`))
 
+  console.log(7)
   const memberHighestRole = Gamer.helpers.discord.highestRole(message.member)
   if (memberHighestRole.position < role.position)
     return message.channel.createMessage(language(`vip/roletoall:USER_TOO_LOW`))

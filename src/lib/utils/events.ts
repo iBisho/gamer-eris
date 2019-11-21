@@ -180,7 +180,7 @@ export default class {
       .setTextAlign(`left`)
       .setColor(`#FFFFFF`)
       .setTextFont(`26px SFTHeavy`)
-      .addMultilineText(event.title, 30, 70)
+      .addMultilineText(event.title, 30, 90)
 
       // event author
       .setTextFont(`14px SFTHeavy`)
@@ -213,7 +213,7 @@ export default class {
 
     if (event.isRecurring) {
       canvas
-        .addImage(this.Gamer.buffers.events.recurring, 68, 29)
+        .addImage(this.Gamer.buffers.events.recurring, 30, 29)
         .setColor(`#FFFFFF`)
         .setTextAlign(`center`)
         .setTextFont(`18px SFTHeavy`)

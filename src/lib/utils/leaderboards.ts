@@ -134,7 +134,6 @@ export default class {
       .find()
       .sort(`-leveling.voicexp`)) as MemberSettings[]
 
-    console.log(allRelevantUsers)
     const index = allRelevantUsers.findIndex(data => data.memberID === member.id)
     const memberSettings = allRelevantUsers[index]
     if (!memberSettings) {

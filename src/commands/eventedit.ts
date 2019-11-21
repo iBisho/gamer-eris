@@ -24,9 +24,11 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
 
   const [number, type, ...fullValue] = args
   const eventID = parseInt(number, 10)
-  if (!eventID || !type || !fullValue.length) return
-  const [value] = fullValue
+  if (!eventID || !type) return
 
+  // toggles dont need a value
+  if (!fullValue.length && ![`repeat`, `remove`, `dm`, `dms`, `showattendees`].includes(type.toLowerCase())) return
+  const [value] = fullValue
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
@@ -89,6 +91,10 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       event.dmReminders = !event.dmReminders
       response = `events/eventedit:DM_UPDATED`
       break
+    case `showattendees`:
+      event.showAttendees = !event.showAttendees
+      response = `events/eventedit:SHOWATTENDEES_UPDATED`
+      break
     case `reminder`:
       const reminder = Gamer.helpers.transform.stringToMilliseconds(value)
       if (!reminder) return helpCommand.execute(message, [`eventedit`], context)
@@ -143,10 +149,6 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `template`:
       event.templateName = value
       response = `events/eventedit:TEMPLATE_UPDATED`
-      break
-    case `showattendees`:
-      event.showAttendees = !event.showAttendees
-      response = `events/eventedit:SHOWATTENDEES_UPDATED`
       break
     default:
       // If they used the command wrong show them the help
