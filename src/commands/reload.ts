@@ -13,7 +13,7 @@ export default new Command(
     const Gamer = context.client as GamerClient
 
     // First recompile the files
-    await asyncExecute('tsc')
+    await asyncExecute('npm run build')
     // Reloads commands
     Gamer.reloadCommands()
     // Reloads all the stores
