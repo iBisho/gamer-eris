@@ -24,16 +24,16 @@ jobs:
         npm run test
         npm run lint
     - name: Deploy Master To Beta
-      - uses: webfactory/ssh-agent@v0.1.1
+      uses: webfactory/ssh-agent@v0.1.1
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
-          cd gamer-eris
-          git pull
-          npm run clean
-          npm run build
-          pm2 restart gamer-beta
-        EOF
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
+            cd gamer-eris
+            git pull
+            npm run clean
+            npm run build
+            pm2 restart gamer-beta
+          EOF
       env:
         CI: true
