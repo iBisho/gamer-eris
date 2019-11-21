@@ -22,7 +22,7 @@ export default class {
       .find({
         guildID: member.guild.id
       })
-      .sort(`leveling.xp`)) as MemberSettings[]
+      .sort(`-leveling.xp`)) as MemberSettings[]
 
     const index = allRelevantMembers.findIndex(data => data.memberID === member.id)
     const memberSettings = allRelevantMembers[index]
@@ -62,6 +62,7 @@ export default class {
     }
 
     return this.buildCanvas(
+      `SERVER`,
       userAvatar,
       username,
       member.user.discriminator,
@@ -75,7 +76,7 @@ export default class {
   }
 
   async makeGlobalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
-    const allRelevantUsers = (await this.Gamer.database.models.user.find().sort(`leveling.xp`)) as UserSettings[]
+    const allRelevantUsers = (await this.Gamer.database.models.user.find().sort(`-leveling.xp`)) as UserSettings[]
 
     const index = allRelevantUsers.findIndex(data => data.userID === member.id)
     const userData = allRelevantUsers[index]
@@ -114,6 +115,7 @@ export default class {
     }
 
     return this.buildCanvas(
+      `GLOBAL`,
       userAvatar,
       username,
       member.user.discriminator,
@@ -129,7 +131,7 @@ export default class {
   public async makeVoiceCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
     const allRelevantUsers = (await this.Gamer.database.models.member
       .find()
-      .sort(`leveling.voicexp`)) as MemberSettings[]
+      .sort(`-leveling.voicexp`)) as MemberSettings[]
 
     const index = allRelevantUsers.findIndex(data => data.id === member.id)
     const memberSettings = allRelevantUsers[index]
@@ -169,6 +171,7 @@ export default class {
     }
 
     return this.buildCanvas(
+      `VOICE`,
       userAvatar,
       username,
       member.user.discriminator,
@@ -182,6 +185,7 @@ export default class {
   }
 
   public async buildCanvas(
+    type: `SERVER` | `GLOBAL` | `VOICE`,
     avatarBuffer: Buffer,
     username: string,
     discriminator: string,
@@ -235,7 +239,7 @@ export default class {
       // HEADER
       .setColor(`#2c2c2c`)
       .setTextFont(`18px SFTHeavy`)
-      .addText(`VOICE`, 355, 50)
+      .addText(type, 355, 50)
       .setTextFont(`18px SFTLight`)
       .addText(`LEADERBOARD`, 465, 50)
 
