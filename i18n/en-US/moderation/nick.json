@@ -1,6 +1,10 @@
 {
 	"DESCRIPTION": "Easily change the nickname of a member on your server.",
-	"EXTENDED": "**{{prefix}}nick [User]** ~ Changes the nickname of the mentioned user.",
+	"EXTENDED": "$t(moderation/nick:EXTENDED_LINE_1)\n$t(moderation/nick:EXTENDED_LINE_2)\n$t(moderation/nick:EXTENDED_LINE_3)\n$t(moderation/nick:EXTENDED_LINE_4)",
+	"EXTENDED_LINE_1": "**{{prefix}}nick** ~ Resets your own nickname.",
+	"EXTENDED_LINE_2": "**{{prefix}}nick [Nickname]** ~ Change your own nickname.",
+	"EXTENDED_LINE_3": "**{{prefix}}nick [Nickname] [@User]** ~ Change another members nickname if you have the mod/admin perms.",
+	"EXTENDED_LINE_4": "**{{prefix}}nick [@User]** ~ Reset another members nickname if you have the mod/admin perms..",
 	"USAGE": "{{prefix}}nick *[User] [Nickname]*",
 	"ALIASES": "Nick does not have any aliases.",
 	"USER_TOO_LOW": "Your highest role is not high enough to edit this member's nickname.",
