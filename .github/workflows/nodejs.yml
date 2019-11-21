@@ -30,6 +30,7 @@ jobs:
       run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
             cd gamer-eris
+            rm package-lock.json -f -r || true
             git pull
             npm run clean
             npm run build
