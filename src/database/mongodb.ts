@@ -22,8 +22,9 @@ import GuildDefaults from '../constants/settings/guild'
 import MemberDefaults from '../constants/settings/member'
 import UserDefaults from '../constants/settings/user'
 import config from '../../config'
-// TODO: We should move this into a config file
+
 const connectionString = config.mongoConnectionString
+
 class Database {
   connection: mongoose.Connection
   models = {

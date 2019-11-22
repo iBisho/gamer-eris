@@ -8,7 +8,7 @@ const authenticatedFetch = (url: RequestInfo, opts: RequestInit = {}) =>
       'Content-Type': 'application/json',
       Accept: 'application/vnd.twitchtv.v5+json',
       Authorization: `Bearer ${config.twitch.clientSecret}`,
-      'Client-ID': config.twitch.clientId,
+      'Client-ID': config.twitch.clientID,
       ...(opts.headers || {})
     }
   })
