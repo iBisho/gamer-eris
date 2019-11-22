@@ -56,7 +56,7 @@ export default class GamerClient extends Client {
   // Message collectors
   collectors: Map<string, Collector> = new Map()
 
-  database = new Database()
+  database = Database
 
   helpers = {
     discord: new DiscordHelper(),
