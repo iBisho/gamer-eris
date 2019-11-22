@@ -2,7 +2,9 @@ import fastifyBuilder from 'fastify'
 import twitchRouters from './../twitch/hooks'
 
 const fastify = fastifyBuilder({
-  logger: true
+  logger: {
+    prettyPrint: true
+  }
 })
 
 fastify.register(twitchRouters, { prefix: '/twitch' })
