@@ -7,22 +7,18 @@ export default new Command(`twitch`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 
+  const helpCommand = Gamer.commandForName('help')
+  if (!helpCommand) return
+
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
+
   const guildSettings = (await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
   })) as GuildSettings | null
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
   // If the user is not an admin cancel out
-  if (
-    !message.member ||
-    !message.member.permission.has('administrator') ||
-    (guildSettings?.staff.adminRoleID && !message.member.roles.includes(guildSettings.staff.adminRoleID))
-  )
-    return
-
-  const helpCommand = Gamer.commandForName('help')
-  if (!helpCommand) return
+  if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [type, username, game] = args
   if (!type || !username) return helpCommand.execute(message, [`twitch`], context)

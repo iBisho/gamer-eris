@@ -27,7 +27,7 @@ export default class extends Event {
           .setAuthor(subscription.username, data.thumbnail_url)
           .addField(language(`gaming/twitch:TITLE`), data.title)
           .addField(language(`gaming/twitch:VIEWS`), String(data.viewer_count))
-          .setImage(data.thumbnail_url)
+          .setThumbnail(data.thumbnail_url)
           .addField(
             language(`gaming/twitch:TWITCH_CHANNEL`),
             language(`gaming/twitch:HYPERLINK`, { url: `https://twitch.tv/${subscription.username}` })

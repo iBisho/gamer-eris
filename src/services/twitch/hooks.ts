@@ -42,7 +42,7 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
 
   // Receiving webhook
   fastify.post('/streams', async (req, res) => {
-    const userId = req.query.user_id
+    const userID = req.query.user_id
     const body: {
       data: Array<TwitchStream>
     } = req.body
@@ -50,12 +50,12 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
     const stream = body.data[0] || null
 
     const subscription = await database.models.subscription.findOne({
-      'meta.userId': userId
+      'meta.userID': userID
     })
 
     if (!subscription) {
       // @todo: Need to clean up this subscription...
-      console.warn('[Twitch] Received a unknown subscription for userId ', userId)
+      console.warn('[Twitch] Received a unknown subscription for userID ', userID)
       res.status(200).send()
       return
     }
