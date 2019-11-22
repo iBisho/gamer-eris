@@ -2,6 +2,7 @@ import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 import database from '../../database/mongodb'
 import { TwitchStream } from './api'
+import Gamer from '../..'
 
 type TwitchRouter = fastify.Plugin<Server, IncomingMessage, ServerResponse, {}>
 
@@ -46,7 +47,7 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
       data: Array<TwitchStream>
     } = req.body
 
-    const stream = body.data[0]
+    const stream: void | TwitchStream = body.data[0]
 
     const subscription = await database.models.subscription.findOne({
       'meta.userId': userId
@@ -72,9 +73,8 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
     subscription.meta.lastOnlineAt = new Date(stream.started_at)
     await subscription.save()
 
-    // @todo: send to gamer
-    // sendGamerNotification(subscription, stream, isOnline)
-    console.log(stream.user_name, ' is ', isOnline ? 'online' : 'offline')
+    console.debug(stream.user_name, ' is ', isOnline ? 'online' : 'offline')
+    Gamer.emit('twitchAlert', subscription, stream)
 
     res.status(200).send({ status: 'ok' })
   })

@@ -9,7 +9,7 @@ export default {
     webhookCallback: '',
     clientId: '',
     clientSecret: ''
-  }
+  },
   staff: {
     mods: ['userID'],
     developers: ['userID']

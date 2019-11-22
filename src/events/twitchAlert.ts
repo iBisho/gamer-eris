@@ -2,19 +2,37 @@ import Event from '../lib/structures/Event'
 import { GamerSubscription } from '../database/schemas/subscription'
 import Gamer from '..'
 import GamerEmbed from '../lib/structures/GamerEmbed'
+import { TwitchStream } from '../services/twitch/api'
 
 export default class extends Event {
-  async execute(subscription: GamerSubscription, data: TwitchStream) {
+  async execute(subscription: GamerSubscription, data: void | TwitchStream) {
     for (const sub of subscription.subs) {
       const language = Gamer.i18n.get(Gamer.guildLanguages.get(sub.guildID) || `en-US`)
       if (!language) continue
 
-      const embed = new GamerEmbed()
-        .setAuthor(subscription.username, data.thumbnail_url)
-        .setThumbnail(data.thumbnail_url)
-        .addField(language(`gaming/twitch:VIEWS`), data.views)
-        .addField(language(`gaming/twitch:TWITCH_CHANNEL`), language(`gaming/twitch:HYPERLINK`, { url: data.url }))
-        .setTimestamp()
+      const embed = new GamerEmbed().setTimestamp()
+
+      if (!data) {
+        embed
+          .setAuthor(subscription.username)
+          .setDescription(language(`gaming/twitch:OFFLINE`))
+          .addField(
+            language(`gaming/twitch:TWITCH_CHANNEL`),
+            language(`gaming/twitch:HYPERLINK`, { url: `https://twitch.tv/${subscription.username}` })
+          )
+      }
+
+      if (data) {
+        embed
+          .setAuthor(subscription.username, data.thumbnail_url)
+          .addField(language(`gaming/twitch:TITLE`), data.title)
+          .addField(language(`gaming/twitch:VIEWS`), String(data.viewer_count))
+          .setImage(data.thumbnail_url)
+          .addField(
+            language(`gaming/twitch:TWITCH_CHANNEL`),
+            language(`gaming/twitch:HYPERLINK`, { url: `https://twitch.tv/${subscription.username}` })
+          )
+      }
 
       const guild = Gamer.guilds.get(sub.guildID)
       if (!guild) continue
