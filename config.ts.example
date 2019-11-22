@@ -5,6 +5,11 @@ export default {
   hooks: {
     port: 8080
   },
+  twitch: {
+    webhookCallback: '',
+    clientId: '',
+    clientSecret: ''
+  }
   staff: {
     mods: ['userID'],
     developers: ['userID']

@@ -48,7 +48,7 @@ export default new Command(`twitch`, async (message, args, context) => {
           subs: [subPayload]
         }
 
-        new Gamer.database.models.subscription(payload)
+        await Gamer.database.models.subscription.create(payload)
 
         return message.channel.createMessage(
           language(`gaming/twitch:SUBSCRIBED`, { username, channel: message.channel.mention })

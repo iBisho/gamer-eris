@@ -6,6 +6,16 @@ import { join } from 'path'
 import GamerEmbed from './lib/structures/GamerEmbed'
 import constants from './constants'
 
+import HooksServices from './services/hooks'
+
+import TwitchService from './services/twitch/index'
+
+// Initiate hooks service
+HooksServices(config.hooks.port)
+
+// Initiate twitch service
+TwitchService()
+
 // Register the assets
 const rootFolder = join(__dirname, `..`, `..`)
 const fontsFolder = join(rootFolder, `assets/fonts`)

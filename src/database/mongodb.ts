@@ -56,8 +56,16 @@ class Database {
 
   constructor() {
     // Connect to the db
-    mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
+    mongoose.connect(connectionString, {
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useFindAndModify: true,
+      useUnifiedTopology: true
+    })
+    // Switch to "true" if need to debug mongodb queries
+    mongoose.set('debug', false)
     this.connection = mongoose.connection
+
     this.connection.on(`error`, error => console.error(`MongoDB connection error`, error))
     this.connection.once(`open`, () => {
       console.log(`MongoDB Connected!`)
