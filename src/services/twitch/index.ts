@@ -33,22 +33,22 @@ export async function runCronSubscribe() {
 
   for (const stream of unfullfilledSubscriptions) {
     try {
-      // Let's find this userId first
+      // Let's find this userID first
       const result = await api.users.byLogin(stream.username)
 
       // Compare by checking user name lowercase.
       // Should we also check display names?
       // Not sure. Display names *might* not be unique.
       const user = result.users.find(user => user.name.toLowerCase() === stream.username.toLowerCase())
-      const userId = user?._id
+      const userID = user?._id
 
-      if (!userId) throw new Error('User not found')
+      if (!userID) throw new Error('User not found')
 
       // This is the information that we will check later to see if our webhook subscription was successful.
-      const subscriptionTopic = `https://api.twitch.tv/helix/streams?user_id=${userId}`
+      const subscriptionTopic = `https://api.twitch.tv/helix/streams?user_id=${userID}`
 
       const success = await api.webhooks.hub.create({
-        'hub.callback': `${config.twitch.webhookCallback}?userID=${userId}`,
+        'hub.callback': `${config.twitch.webhookCallback}?userID=${userID}`,
         'hub.mode': 'subscribe',
         'hub.topic': subscriptionTopic,
         'hub.lease_seconds': MAX_SUBSCRIPTION_TIME_SECONDS
@@ -57,7 +57,7 @@ export async function runCronSubscribe() {
       if (!success) throw new Error('Failed to create webhook')
 
       stream.meta.subscriptionTopic = subscriptionTopic
-      stream.meta.userId = userId
+      stream.meta.userID = userID
       await stream.save()
     } catch (e) {
       console.warn('Error while subscription to twitch ', stream.username, e)

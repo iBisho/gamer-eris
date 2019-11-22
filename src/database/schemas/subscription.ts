@@ -32,7 +32,7 @@ export default new mongoose.Schema(
         type: Date,
         default: null
       },
-      userId: {
+      userID: {
         type: String
       },
       lastOnlineAt: {
@@ -59,7 +59,7 @@ export interface GamerSubscription extends mongoose.Document {
     retries: number
     subscriptionExpiresAt: Date | null
     subscriptionTopic: string | null
-    userId: string | null
+    userID: string | null
     lastOnlineAt: Date | null
   }
   subs: SubscriptionListener[]

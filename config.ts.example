@@ -1,13 +1,13 @@
 export default {
   token: 'Bot_Token_Here',
   defaultPrefix: '!',
-  mongoConnectionString: 'CONNECTION_STRING',  
+  mongoConnectionString: 'CONNECTION_STRING',
   hooks: {
     port: 8080
   },
   twitch: {
     webhookCallback: '',
-    clientId: '',
+    clientID: '',
     clientSecret: ''
   },
   staff: {
