@@ -60,9 +60,7 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
       return
     }
 
-    const isOnline = stream ? true : false
-
-    if (isOnline && subscription.meta.lastOnlineAt === new Date(stream.started_at)) {
+    if (stream && subscription.meta.lastOnlineAt === new Date(stream.started_at)) {
       // If the sreamer is online and we already have this started time in our database,
       // it means we already sent an online message...
       // We are probably receiving this for other changes such as stream title change
@@ -70,10 +68,12 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
       return
     }
 
-    subscription.meta.lastOnlineAt = new Date(stream.started_at)
-    await subscription.save()
+    if (stream?.started_at) {
+      subscription.meta.lastOnlineAt = new Date(stream.started_at)
+      await subscription.save()
+    }
 
-    console.debug(stream.user_name, ' is ', isOnline ? 'online' : 'offline')
+    console.debug(stream.user_name, ' is ', stream ? 'online' : 'offline')
     Gamer.emit('twitchAlert', subscription, stream)
 
     res.status(200).send({ status: 'ok' })

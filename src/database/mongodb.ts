@@ -59,7 +59,7 @@ class Database {
     mongoose.connect(connectionString, {
       useCreateIndex: true,
       useNewUrlParser: true,
-      useFindAndModify: true,
+      useFindAndModify: false,
       useUnifiedTopology: true
     })
     // Switch to "true" if need to debug mongodb queries
