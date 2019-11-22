@@ -121,7 +121,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       const start = Gamer.helpers.transform.stringToMilliseconds(value)
       if (!start) return helpCommand.execute(message, [`eventedit`], context)
 
-      event.start = start
+      event.start = Date.now() + start
       response = `events/eventedit:START_UPDATED`
       break
     case `alertrole`:
