@@ -42,7 +42,7 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
 
   // Receiving webhook
   fastify.post('/streams', async (req, res) => {
-    const userId = req.query.user_id
+    const userId = req.query.userID
     const body: {
       data: Array<TwitchStream>
     } = req.body

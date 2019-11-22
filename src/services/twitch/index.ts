@@ -48,7 +48,7 @@ export async function runCronSubscribe() {
       const subscriptionTopic = `https://api.twitch.tv/helix/streams?user_id=${userId}`
 
       const success = await api.webhooks.hub.create({
-        'hub.callback': config.twitch.webhookCallback,
+        'hub.callback': `${config.twitch.webhookCallback}?userID=${userId}`,
         'hub.mode': 'subscribe',
         'hub.topic': subscriptionTopic,
         'hub.lease_seconds': MAX_SUBSCRIPTION_TIME_SECONDS
