@@ -6,6 +6,7 @@ import config from '../../../config'
 // Twitch Webhooks subscriptions expires in 30 days.
 // https://dev.twitch.tv/docs/api/webhooks-reference#subscribe-tounsubscribe-from-events
 const MAX_SUBSCRIPTION_TIME_SECONDS = 2000
+// const MAX_SUBSCRIPTION_TIME_SECONDS = 864000
 
 // Every 2 minutes
 const CRON_INTERVAL_MS = 2 * 60 * 1000

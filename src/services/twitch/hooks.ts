@@ -47,7 +47,7 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
       data: Array<TwitchStream>
     } = req.body
 
-    const stream: void | TwitchStream = body.data[0]
+    const stream = body.data[0] || null
 
     const subscription = await database.models.subscription.findOne({
       'meta.userId': userId
@@ -73,7 +73,7 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
       await subscription.save()
     }
 
-    console.debug(stream.user_name, ' is ', stream ? 'online' : 'offline')
+    console.debug(subscription.username, ' is ', stream ? 'online' : 'offline')
     Gamer.emit('twitchAlert', subscription, stream)
 
     res.status(200).send({ status: 'ok' })
