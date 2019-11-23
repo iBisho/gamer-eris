@@ -13,7 +13,7 @@ import ModlogSchema from './schemas/modlog'
 import ReactionRoleSchema from './schemas/reactionrole'
 import RolesetSchema from './schemas/roleset'
 import ShortcutSchema from './schemas/shortcut'
-// import SubscriptionSchema from './schemas/subscription'
+import SubscriptionSchema, { GamerSubscription } from './schemas/subscription'
 import SurveySchema from './schemas/survey'
 import TagSchema from './schemas/tag'
 import TradingCardSchema from './schemas/tradingCard'
@@ -23,8 +23,11 @@ import MemberDefaults from '../constants/settings/member'
 import UserDefaults from '../constants/settings/user'
 import { GuildSettings, UserSettings } from '../lib/types/settings'
 
-const connectionString = `mongodb://localhost:27017/test`
-export default class {
+import config from '../../config'
+
+const connectionString = config.mongoConnectionString
+
+class Database {
   connection: mongoose.Connection
   models = {
     client: mongoose.model('Client', ClientSchema),
@@ -41,7 +44,7 @@ export default class {
     reactionRole: mongoose.model('ReactionRole', ReactionRoleSchema),
     roleset: mongoose.model('Roleset', RolesetSchema),
     shortcut: mongoose.model('Shortcut', ShortcutSchema),
-    // subscription: mongoose.model('Subscription', SubscriptionSchema),
+    subscription: mongoose.model<GamerSubscription>('Subscription', SubscriptionSchema),
     survey: mongoose.model('Survey', SurveySchema),
     tag: mongoose.model('Tag', TagSchema),
     tradingCard: mongoose.model('TradingCards', TradingCardSchema),
@@ -56,11 +59,21 @@ export default class {
 
   constructor() {
     // Connect to the db
-    mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
+    mongoose.connect(connectionString, {
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true
+    })
+    // Switch to "true" if need to debug mongodb queries
+    mongoose.set('debug', false)
     this.connection = mongoose.connection
+
     this.connection.on(`error`, error => console.error(`MongoDB connection error`, error))
     this.connection.once(`open`, () => {
       console.log(`MongoDB Connected!`)
     })
   }
 }
+
+export default new Database()

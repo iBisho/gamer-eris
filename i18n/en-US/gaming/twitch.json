@@ -1,0 +1,18 @@
+{
+  "DESCRIPTION": "Setup twitch alerts for your server.",
+  "EXTENDED": "$t(gaming/twitch:EXTENDED_LINE_1)\n$t(gaming/twitch:EXTENDED_LINE_2)\n$t(gaming/twitch:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}twitch subscribe [Twitch Username]** ~ Subscribes to a twitch streamer.",
+  "EXTENDED_LINE_2": "**{{prefix}}twitch unsubscribe [Twitch Username]** ~ Removes the subscription to a twitch streamer.",
+  "EXTENDED_LINE_3": "**{{prefix}}twitch subscribe [Twitch Username] [Twitch Game]** ~ Subscribes to a twitch stream **ONLY** when they stream this game.",
+  "USAGE": "{{prefix}}twitch [Twitch Username] *[Game Name]*",
+  "ALIASES": "Twitch does not have any aliases.",
+  "SUBSCRIBED": "Successfully subscribed to twitch alerts for {{username}} on {{channel}}.",
+  "NOT_SUBSCRIBED": "The {{username}} has no subscriptions set up for twitch at this time.",
+  "NOT_SUBBED": "The {{username}} has no subscriptions set up for this channel at this time.",
+  "ALREADY_SUBBED": "The {{username}} is already subscribed to send alerts in this channel.",
+  "VIEWS": "Views:",
+  "TWITCH_CHANNEL": "Twitch Channel:",
+  "HYPERLINK": "[Click Me To Watch]({{url}})",
+  "ONLINE": "ONLINE",
+  "OFFLINE": "OFFLINE"
+}
