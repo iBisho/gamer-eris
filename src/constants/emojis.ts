@@ -21,5 +21,5 @@ export default {
   repeat: `<:repeaty:647528274020401162>`,
   sunglasses: `🕶`,
   thinking: `<:g4m3rthinking:510742679542431764>`,
-  usb: `<:usb:494050000741990400>`,
+  usb: `<:usb:494050000741990400>`
 }
