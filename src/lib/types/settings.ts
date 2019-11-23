@@ -29,6 +29,9 @@ export interface UserSettings extends mongoose.Document {
     }
     badgesUnlocked: number
   }
+  network: {
+    guildID?: string
+  }
 }
 
 export interface Boost {
@@ -209,6 +212,15 @@ export interface GuildSettings extends mongoose.Document {
       first: string
       second: string
       third: string
+    }
+  }
+  network: {
+    channelIDs: {
+      followers: string[]
+      wall?: string
+      notifications?: string
+      feed?: string
+      photos?: string
     }
   }
 }

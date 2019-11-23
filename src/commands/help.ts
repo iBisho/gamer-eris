@@ -67,7 +67,8 @@ const categories = [
     ]
   },
   { name: `moderation`, commands: [`purge`, `nick`] },
-  { name: `vip`, commands: [`vipregister`, `roletoall`] }
+  { name: `vip`, commands: [`vipregister`, `roletoall`] },
+  { name: `network`, commands: [`networkcreate`, `networkfollow`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
