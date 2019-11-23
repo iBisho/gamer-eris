@@ -24,7 +24,10 @@ export default new Command([`eventkick`, `ek`], async (message, args, context) =
 
   const [number, userID] = args
   const eventID = parseInt(number, 10)
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
 
+  if (!eventID) return helpCommand.execute(message, [`eventkick`], context)
   const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(userID)
   if (!user) return message.channel.createMessage(language(`events/eventkick:NEED_USER`))
 

@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GamerEmoji } from '../lib/types/database'
 
 export default new Command([`emojidelete`, `emd`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -11,16 +10,16 @@ export default new Command([`emojidelete`, `emd`], async (message, args, context
   if (!language) return
 
   const [name] = args
-  if (!name) return message.channel.createMessage(language(`community/emojidelete:NEED_NAME`))
+  if (!name) return message.channel.createMessage(language(`emojis/emojidelete:NEED_NAME`))
 
   // Find the emoji with a name AND author id so user cant delete others emojis
-  const nameExists = (await Gamer.database.models.emoji.findOne({
-    name,
+  const nameExists = await Gamer.database.models.emoji.findOne({
+    name: name.toLowerCase(),
     authorID: message.author.id
-  })) as GamerEmoji | null
-  if (!nameExists) return message.channel.createMessage(language(`community/emojidelete:DOESNT_EXIST`, { name }))
+  })
+  if (!nameExists) return message.channel.createMessage(language(`emojis/emojidelete:DOESNT_EXIST`, { name }))
 
-  await Gamer.database.models.emoji.deleteOne({ name, authorID: message.author.id })
+  await Gamer.database.models.emoji.deleteOne({ _id: nameExists._id })
 
-  return message.channel.createMessage(language(`community/emojidelete:DELETED`, { name }))
+  return message.channel.createMessage(language(`emojis/emojidelete:DELETED`, { name }))
 })

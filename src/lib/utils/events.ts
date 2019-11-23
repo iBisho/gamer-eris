@@ -67,7 +67,7 @@ export default class {
       showAttendees: true
     }
 
-    this.Gamer.database.models.event.create(newEvent)
+    await this.Gamer.database.models.event.create(newEvent)
 
     // add new event to events array to be sent to amplitude for product analytics
     this.Gamer.amplitude.push({

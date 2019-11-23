@@ -24,13 +24,14 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
 
   const [number, type, ...fullValue] = args
   const eventID = parseInt(number, 10)
-  if (!eventID || !type) return
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
+
+  if (!eventID || !type) return helpCommand.execute(message, [`eventadd`], context)
 
   // toggles dont need a value
   if (!fullValue.length && ![`repeat`, `remove`, `dm`, `dms`, `showattendees`].includes(type.toLowerCase())) return
   const [value] = fullValue
-  const helpCommand = Gamer.commandForName(`help`)
-  if (!helpCommand) return
 
   // Get the event from this server using the id provided
   const event = (await Gamer.database.models.event.findOne({

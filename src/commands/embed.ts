@@ -1,26 +1,27 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
-import { GamerEmoji } from '../lib/types/database'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command(`embed`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   // If the user does not have a modrole or admin role quit out
   if (
     !settings ||
-    Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
-    (settings.staff.adminRoleID && Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID))
+    !(
+      Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
+      Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)
+    )
   )
     return
 
-  const emojis = (await Gamer.database.models.emoji.find()) as GamerEmoji[]
+  const emojis = await Gamer.database.models.emoji.find()
 
   const transformed = Gamer.helpers.transform.variables(
     args.join(' '),

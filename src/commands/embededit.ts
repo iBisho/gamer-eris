@@ -9,6 +9,9 @@ export default new Command(`embededit`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
+
   const [channelID] = message.channelMentions
   const channel = channelID ? message.channel.guild.channels.get(channelID) : message.channel
   if (!channel || !(channel instanceof TextChannel)) return
@@ -17,7 +20,8 @@ export default new Command(`embededit`, async (message, args, context) => {
   if (!messageID) return
   // Remove the id so only thing left is the embed code
   args.shift()
-
+  // If there was no JSON code given then cancel out
+  if (!args.length) return message.channel.createMessage(language(`embedding/embededit:NEED_JSON`))
   const messageToUse = channel.messages.get(messageID) || (await Gamer.getMessage(channel.id, messageID))
   if (!messageToUse || messageToUse.author.id !== Gamer.user.id) return
 
@@ -25,13 +29,13 @@ export default new Command(`embededit`, async (message, args, context) => {
   if (!embed) return
 
   const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
   // If the user does not have a modrole or admin role quit out
   if (
     !settings ||
-    Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
-    (settings.staff.adminRoleID && Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID))
+    !(
+      Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
+      Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)
+    )
   )
     return
 
@@ -45,13 +49,15 @@ export default new Command(`embededit`, async (message, args, context) => {
     emojis
   )
 
-  const embedCode = JSON.parse(transformed)
-  if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
-  messageToUse.edit({ content: embedCode.plaintext, embed: embedCode }).catch(error => {
+  try {
+    const embedCode = JSON.parse(transformed)
+    if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
+    return messageToUse.edit({ content: embedCode.plaintext, embed: embedCode })
+  } catch (error) {
     const embed = new GamerEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .setTitle(language(`embedding/embed:BAD_EMBED`))
       .setDescription(['```js', error, '```'].join('\n'))
-    message.channel.createMessage({ embed: embed.code })
-  })
+    return message.channel.createMessage({ embed: embed.code })
+  }
 })

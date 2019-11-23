@@ -23,7 +23,7 @@ export default class {
         if (!word.startsWith('{') || !word.endsWith(`}`) || !emojis) return word
 
         const name = word.substring(1, word.length - 1)
-        const foundEmoji = emojis.find(e => e.name === name)
+        const foundEmoji = emojis.find(e => e.name === name.toLowerCase())
         if (!foundEmoji) return word
 
         return foundEmoji.fullCode

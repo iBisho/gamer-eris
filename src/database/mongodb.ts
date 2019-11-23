@@ -24,6 +24,7 @@ import UserDefaults from '../constants/settings/user'
 import { GuildSettings, UserSettings } from '../lib/types/settings'
 
 import config from '../../config'
+import { GamerEmoji } from '../lib/types/database'
 
 const connectionString = config.mongoConnectionString
 
@@ -31,7 +32,7 @@ class Database {
   connection: mongoose.Connection
   models = {
     client: mongoose.model('Client', ClientSchema),
-    emoji: mongoose.model('Emoji', EmojiSchema),
+    emoji: mongoose.model<GamerEmoji>('Emoji', EmojiSchema),
     event: mongoose.model('Event', EventSchema),
     feedback: mongoose.model('Feedback', FeedbackSchema),
     guild: mongoose.model<GuildSettings>('Guild', GuildSchema),

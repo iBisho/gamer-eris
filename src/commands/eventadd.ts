@@ -24,7 +24,10 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
 
   const [number, ...roleIDsOrNames] = args
   const eventID = parseInt(number, 10)
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
 
+  if (!eventID) return helpCommand.execute(message, [`eventadd`], context)
   // Get the event from this server using the id provided
   const event = (await Gamer.database.models.event.findOne({
     id: eventID,

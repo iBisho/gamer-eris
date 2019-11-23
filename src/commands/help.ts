@@ -69,7 +69,9 @@ const categories = [
   { name: `moderation`, commands: [`purge`, `nick`] },
   { name: `vip`, commands: [`vipregister`, `roletoall`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`] },
-  { name: `gaming`, commands: [`twitch`] }
+  { name: `gaming`, commands: [`twitch`] },
+  { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`] },
+  { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
