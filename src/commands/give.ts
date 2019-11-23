@@ -1,21 +1,22 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, Role } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel } from 'eris'
 
 export default new Command(`give`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // If the user does not have a modrole or admin role quit out
   if (
     !settings ||
-    Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
-    (settings.staff.adminRoleID && Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID))
+    !(
+      Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
+      Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)
+    )
   )
     return
 
@@ -39,20 +40,12 @@ export default new Command(`give`, async (message, args, context) => {
   if (!role) return message.channel.createMessage(language(`roles/give:NEED_ROLE`))
 
   // Check if the bots role is high enough to manage the role
-  const botsHighestRoleID = bot.roles.reduce((prev, next) =>
-    (bot.guild.roles.get(next) as Role).position > (bot.guild.roles.get(prev) as Role).position ? next : prev
-  )
-  const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
-  if (!botsHighestRole) return
+  const botsHighestRole = Gamer.helpers.discord.highestRole(bot)
   if (botsHighestRole.position < role.position) return message.channel.createMessage(language(`roles/give:BOT_TOO_LOW`))
   // Check if the authors role is high enough to grant this role
   if (!message.member) return
 
-  const memberHighestRoleID = message.member.roles.reduce((prev, next) =>
-    (bot.guild.roles.get(next) as Role).position > (bot.guild.roles.get(prev) as Role).position ? next : prev
-  )
-  const memberHighestRole = bot.guild.roles.get(memberHighestRoleID)
-  if (!memberHighestRole) return
+  const memberHighestRole = Gamer.helpers.discord.highestRole(message.member)
   if (memberHighestRole.position < role.position)
     return message.channel.createMessage(language(`roles/give:USER_TOO_LOW`))
 

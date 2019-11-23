@@ -22,15 +22,11 @@ export default new Command(`public`, async (message, args, context) => {
 
   const bot = message.channel.guild.members.get(Gamer.user.id)
   if (!bot) return
-  // Check if the bots role is high enough to manage the role
-  const botsRoles = bot.roles.sort(
-    (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
-  )
-  const [botsHighestRoleID] = botsRoles
-  const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
+
+  const botsHighestRole = Gamer.helpers.discord.highestRole(bot)
   if (!botsHighestRole) return
 
-  for (const roleNameOrID of args) {
+  for (const roleNameOrID of [...args, ...message.roleMentions]) {
     const role =
       message.channel.guild.roles.get(roleNameOrID) ||
       message.channel.guild.roles.find(
@@ -43,7 +39,7 @@ export default new Command(`public`, async (message, args, context) => {
     validRoles.add(role)
   }
 
-  if (!validRoles.size) return message.channel.createMessage(`roles/public:NO_VALID_ROLES`)
+  if (!validRoles.size) return message.channel.createMessage(language(`roles/public:NO_VALID_ROLES`))
 
   if (!settings) settings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
   const roleIDs = [...validRoles].map(role => role.id)

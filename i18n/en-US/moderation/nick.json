@@ -13,6 +13,7 @@
 	"SUCCESS": "Nickname for {{user}} has been changed.",
 	"EDITED_SELF": "You have successfully changed your nickname.",
 	"RESET": "You have successfully reset your nickname.",
-	"NEED_NICK_PERMS": "I need manage nickname perms to run this command on this server. Please contact a mod/admin to update my permissions."
+	"NEED_NICK_PERMS": "I need manage nickname permission to run this command on this server. Please contact a mod/admin to update my permissions.",
+	"EDITED_MEMBER": "You have successfully edited {{member}}'s nickname."
 }
 
