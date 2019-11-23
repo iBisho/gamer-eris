@@ -56,5 +56,11 @@ export default new mongoose.Schema({
     },
     // The badge spots the user has bought
     badgesUnlocked: { type: Number, min: 1, max: 4, default: 1 }
+  },
+  network: {
+    // All the users that are following this user
+    followerIDs: { type: [String], default: [] },
+    // The guild id where this users social network exists
+    guildID: String
   }
 })

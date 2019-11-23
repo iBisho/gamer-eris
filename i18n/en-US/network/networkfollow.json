@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Follow or unfollow a user social network.",
+  "EXTENDED": "**{{prefix}}networkfollow [@User | User ID]** ~ Follows or unfollows the user. Following a user will have all his posts be sent to your profile servers feed channel.",
+  "NEED_PROFILE_SERVER": "In order to follow a user, you must first set up your own profile server. To create your server, please create a new discord server, invite me to that server with the **invite** command. Finally, use the **createnetwork** command to create your own profile server.",
+	"NEED_TARGET_PROFILE_SERVER": "The user you are trying to follow has not created their profile server yet so I am unable to follow them for you.",
+	"FOLLOWED": "Successfully followed {{username}}.",
+	"UNFOLLOWED": "Successfully unfollowed {{username}}."
+}

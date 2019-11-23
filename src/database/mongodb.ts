@@ -21,6 +21,8 @@ import UserSchema from './schemas/user'
 import GuildDefaults from '../constants/settings/guild'
 import MemberDefaults from '../constants/settings/member'
 import UserDefaults from '../constants/settings/user'
+import { GuildSettings, UserSettings } from '../lib/types/settings'
+
 import config from '../../config'
 
 const connectionString = config.mongoConnectionString
@@ -32,7 +34,7 @@ class Database {
     emoji: mongoose.model('Emoji', EmojiSchema),
     event: mongoose.model('Event', EventSchema),
     feedback: mongoose.model('Feedback', FeedbackSchema),
-    guild: mongoose.model('Guild', GuildSchema),
+    guild: mongoose.model<GuildSettings>('Guild', GuildSchema),
     label: mongoose.model('Label', LabelSchema),
     level: mongoose.model('Level', LevelSchema),
     mail: mongoose.model('Mail', MailSchema),
@@ -46,7 +48,7 @@ class Database {
     survey: mongoose.model('Survey', SurveySchema),
     tag: mongoose.model('Tag', TagSchema),
     tradingCard: mongoose.model('TradingCards', TradingCardSchema),
-    user: mongoose.model('User', UserSchema)
+    user: mongoose.model<UserSettings>('User', UserSchema)
   }
 
   constants = {

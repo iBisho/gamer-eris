@@ -59,7 +59,7 @@ export default class {
   }
 
   checkPermissions(channel: AnyGuildChannel, userID: string, permissions: string[]) {
-    return !!permissions.some(permission => !channel.permissionsOf(userID).has(permission))
+    return !permissions.some(permission => !channel.permissionsOf(userID).has(permission))
   }
 
   idsToUserTag(ids: string[]) {
