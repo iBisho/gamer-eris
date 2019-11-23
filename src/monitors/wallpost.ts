@@ -62,7 +62,7 @@ export default class extends Monitor {
         // Make sure the channel exists and bot has perms in it before sending
         if (photosChannel && photosChannel instanceof TextChannel) {
           if (
-            !Gamer.helpers.discord.checkPermissions(photosChannel, Gamer.user.id, [
+            Gamer.helpers.discord.checkPermissions(photosChannel, Gamer.user.id, [
               'readMessages',
               'sendMessages',
               'embedLinks'
