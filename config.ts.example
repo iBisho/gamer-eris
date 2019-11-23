@@ -1,17 +1,26 @@
 export default {
-	token: "Bot_Token_Here",
-	defaultPrefix: "!",
-	staff: {
+  token: 'Bot_Token_Here',
+  defaultPrefix: '!',
+  mongoConnectionString: 'CONNECTION_STRING',
+  hooks: {
+    port: 8080
+  },
+  twitch: {
+    webhookCallback: '',
+    clientID: '',
+    clientSecret: ''
+  },
+  staff: {
     mods: ['userID'],
     developers: ['userID']
   },
-	apiKeys: {
+  apiKeys: {
     amplitude: {
       key: 'AMPLITUDE_API_KEY',
       url: 'https://api.amplitude.com/2/httpapi'
     },
     tenor: 'Tenor_API_KEY',
-		imgur: {
+    imgur: {
       id: `IMGUR_ID`,
       secret: `IMGUR_SECRET`
     }
