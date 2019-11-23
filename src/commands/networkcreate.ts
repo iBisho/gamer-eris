@@ -15,7 +15,7 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
-  let guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
@@ -98,7 +98,7 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
 
     // Update the settings with all the new channels created
     if (!guildSettings)
-      guildSettings = await Gamer.database.models.guild.create({
+      await Gamer.database.models.guild.create({
         id: message.channel.guild.id,
         network: {
           channelIDs: {
