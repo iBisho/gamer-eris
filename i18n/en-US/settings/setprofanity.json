@@ -16,6 +16,7 @@
   "ENABLED": "The profanity filter is now enabled.",
   "ALREADY_DISABLED": "The profanity filter is already disabled.",
   "DISABLED": "The profanity filter is now disabled.",
-  "ADDED": "The words have been successfully saved into the database. I will make sure to clean out all of these words when anyone types them.",
-  "REMOVED": "The words have been removed from the database. I will no longer filter these words."
+  "ADDED": "Successfully saved into the list of profane words in the  database.",
+  "REMOVED": "Successfully removed from the list of profane words in the database.",
+  "SETUP": "The profanity filter has been enabled and the default profanity words have been added on your server."
 }

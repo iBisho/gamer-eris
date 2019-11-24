@@ -2,6 +2,7 @@ import emojis from './emojis'
 import general from './general'
 import levels from './levels'
 import personalities from './personalities'
+import profanity from './profanity'
 import profiles from './profiles'
 import missions from './missions'
 import arenaofvalor from './cards/arenaofvalor'
@@ -14,6 +15,7 @@ export default {
   general,
   levels,
   personalities,
+  profanity,
   profiles,
   missions,
   cards: {

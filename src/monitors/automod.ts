@@ -10,9 +10,9 @@ export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
     if (message.channel instanceof PrivateChannel || !message.member) return
 
-    const settings = (await Gamer.database.models.guild.findOne({
+    const settings = await Gamer.database.models.guild.findOne({
       id: message.channel.guild.id
-    })) as GuildSettings | null
+    })
     // If they have default settings, then no automoderation features will be enabled
     if (!settings) return
 
@@ -23,6 +23,13 @@ export default class extends Monitor {
     if (!message.content.startsWith(`modbypass`)) {
       if (Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)) return
     }
+
+    const embed = new GamerEmbed().setAuthor(
+      message.member && message.member.nick ? message.member.nick : message.author.username,
+      message.author.avatarURL
+    )
+
+    const reasons: string[] = []
 
     let content = `${message.content}`
 
@@ -44,15 +51,18 @@ export default class extends Monitor {
         timestamp: message.timestamp,
         type: 'CAPITAL_SPAM_DELETED'
       })
+      reasons.push(language(`common:AUTOMOD_CAPITALS`))
     }
 
     // Run the filter and get back either null or cleaned string
     const naughtyWordCleanup = this.naughtyWordFilter(content, settings)
     if (naughtyWordCleanup) {
+      const naughtyReason = language(`common:AUTOMOD_NAUGHTY`)
       for (const word of naughtyWordCleanup.naughtyWords) {
+        if (!reasons.includes(naughtyReason)) reasons.push(naughtyReason)
         // Log each cleaned word
         Gamer.helpers.logger.green(
-          `Deleted a [${word}] naughty word on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
+          `Deleted [${word}] naughty word on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
         )
         // Remove 5 XP per word used
         Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 5)
@@ -65,6 +75,7 @@ export default class extends Monitor {
           type: 'PROFANITY_DELETED'
         })
       }
+
       // If a cleaned string is returned set the content to the string
       content = naughtyWordCleanup.cleanString
     }
@@ -89,24 +100,25 @@ export default class extends Monitor {
           type: 'URLS_DELETED'
         })
       }
+      reasons.push(language(`common:AUTOMOD_URLS`))
     }
 
     if (content === message.content) return
 
     // If the message can be deleted, delete it
     if (message.channel.permissionsOf(Gamer.user.id).has('manageMessages'))
-      message.delete(language(`common:AUTOMOD_DELETE_REASON`))
+      message.delete(language(`common:AUTOMOD_DELETE_REASON`)).catch(() => null)
 
-    const embed = new GamerEmbed()
-      .setAuthor(
-        message.member && message.member.nick ? message.member.nick : message.author.username,
-        message.author.avatarURL
-      )
-      .setDescription(content)
-      .setFooter(language(`common:AUTOMOD_DELETE_REASON`))
+    embed.setDescription(content)
 
+    if (reasons.length === 1) embed.setFooter(reasons[0])
+    else embed.setFooter(language(`common:TOO_MUCH_WRONG`))
     // Send back the cleaned message with the author information
     message.channel.createMessage({ embed: embed.code })
+    if (reasons.length > 1) {
+      const reason = await message.channel.createMessage(`${message.author.mention} ${reasons.join('\n')}`)
+      setTimeout(() => reason.delete().catch(() => null), 3000)
+    }
   }
 
   capitalSpamFilter(message: Message, settings: GuildSettings) {

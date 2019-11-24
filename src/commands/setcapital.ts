@@ -15,8 +15,11 @@ export default new Command(`setcapital`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
 
   const [type, number] = args
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
 
-  if (!settings) settings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
+  if (!type) return helpCommand.execute(message, [`setcapital`], context)
+  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
 
   switch (type.toLowerCase()) {
     case `disable`:
@@ -28,7 +31,7 @@ export default new Command(`setcapital`, async (message, args, context) => {
         return message.channel.createMessage(language(`settings/setcapital:ALREADY_ENABLED`))
       settings.moderation.filters.capital = 50
       settings.save()
-      return message.channel.createMessage(language(`settings/setcapital:ENABLED`))
+      return message.channel.createMessage(language(`settings/setcapital:ENABLED_DEFAULT`))
     default:
       const amount = parseInt(number, 10)
       if (!amount || amount > 100 || amount < 40)
