@@ -1,5 +1,6 @@
 import fastifyBuilder from 'fastify'
 import twitchRouters from './../twitch/hooks'
+import helmet from 'fastify-helmet'
 
 const fastify = fastifyBuilder({
   logger: {
@@ -7,11 +8,15 @@ const fastify = fastifyBuilder({
   }
 })
 
+fastify.register(helmet, {
+  hidePoweredBy: {
+    // :p
+    setTo: 'PHP 4.2.0'
+  }
+})
+
 fastify.register(twitchRouters, { prefix: '/twitch' })
 
 export default (port: number) => {
-  fastify.listen(port || 3000, (err, address) => {
-    if (err) throw err
-    fastify.log.info(`server listening on ${address}`)
-  })
+  fastify.listen(port || 3000, '0.0.0.0')
 }
