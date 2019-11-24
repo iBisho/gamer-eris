@@ -31,6 +31,7 @@
     "confusables": "^0.3.3",
     "eris": "github:caf203/eris#dev",
     "fastify": "^2.10.0",
+    "fastify-helmet": "^3.0.2",
     "get-urls": "^9.2.0",
     "i18next": "^19.0.1",
     "i18next-node-fs-backend": "^2.1.3",
