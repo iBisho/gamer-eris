@@ -1,0 +1,6 @@
+{
+	"DESCRIPTION": "Siehe Dir den Avatar eines Benutzers auf dem Server an.",
+	"EXTENDED": "Dieser Befehl zeigt nur das Rawbild an. Verwende den Befehl {{prefix}}logo, um eine angepasste Version des Avatars anzuzeigen.",
+	"USAGE": "{{prefix}}Avatar",
+	"ALIASES": "{{prefix}}Benutzerbild {{prefix}}bb"
+}
