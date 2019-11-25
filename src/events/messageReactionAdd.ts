@@ -31,7 +31,7 @@ export default class extends Event {
     this.handleReactionRole(message, emoji, userID)
     this.handleProfileReaction(message, emoji, user)
     this.handleNetworkReaction(message, emoji, user)
-    // this.handleFeedbackReaction(message, emoji, user)
+    this.handleFeedbackReaction(message, emoji, user)
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
@@ -126,7 +126,7 @@ export default class extends Event {
   }
 
   async handleNetworkReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (message.channel instanceof PrivateChannel || user.bot) return
+    if (message.channel instanceof PrivateChannel) return
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
     if (!networkReactions.includes(fullEmojiName) || !message.embeds.length) return
@@ -294,8 +294,7 @@ export default class extends Event {
   }
 
   async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (message.channel instanceof PrivateChannel || user.bot) return
-
+    if (message.channel instanceof PrivateChannel) return
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
     if (!message.embeds.length || message.author.id !== Gamer.user.id) return
