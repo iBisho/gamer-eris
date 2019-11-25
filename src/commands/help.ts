@@ -66,7 +66,10 @@ const categories = [
       `eventshow`
     ]
   },
-  { name: `moderation`, commands: [`purge`, `nick`] },
+  {
+    name: `moderation`,
+    commands: [`purge`, `nick`, `ban`, `unban`, `kick`, `mute`, `unmute`, `warn`, `modlog`, `reason`]
+  },
   { name: `vip`, commands: [`vipregister`, `roletoall`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`] },
   { name: `gaming`, commands: [`twitch`] },
@@ -77,7 +80,7 @@ const categories = [
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
   // Gamers goal is to increase activity in a server not in a DM.
   if (message.channel instanceof PrivateChannel)
-    return message.channel.createMessage(`Please use this command on a guild. Thank you!`)
+    return message.channel.createMessage(`Please use this command in a server. Thank you!`)
 
   const Gamer = context.client as GamerClient
   const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null

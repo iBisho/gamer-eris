@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 import { GamerEvent } from '../lib/types/gamer'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
@@ -9,9 +8,9 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
   if (message.channel instanceof PrivateChannel || !message.member) return
   const Gamer = context.client as GamerClient
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   if (
     !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
@@ -40,18 +39,20 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
 
   const embed = new GamerEmbed()
     .setAuthor(message.author.username, message.author.avatarURL)
-    .addField(
-      language(`events/eventshow:BASIC_EMOJI`),
-      language(`events/eventshow:BASIC`, {
-        title: event.title,
-        tags: event.tags.length ? event.tags.join(`, `) : language('common:NONE')
-      })
-    )
+    .setTitle(event.title)
+    .setDescription(event.description)
+    // .addField(
+    //   language(`events/eventshow:BASIC_EMOJI`),
+    //   language(`events/eventshow:BASIC`, {
+    //     title: event.title,
+    //     tags: event.tags.length ? event.tags.join(`, `) : language('common:NONE')
+    //   })
+    // )
     .addField(
       language(`events/eventshow:TIME_EMOJI`),
       language(`events/eventshow:TIME`, { duration: Gamer.helpers.transform.humanizeMilliseconds(event.duration) })
     )
-    .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
+    // .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
     .addField(
       language(`events/eventshow:RSVP_EMOJI`),
       language(`events/eventshow:RSVP`, {

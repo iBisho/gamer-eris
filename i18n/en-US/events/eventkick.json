@@ -5,5 +5,5 @@
   "ALIASES": "{{prefix}}ek",
   "NEED_USER": "You did not provide a user to kick from the event.",
   "NOT_JOINED": "This user is unable to be kicked from the event, because they are not attending the event.",
-  "KICKED": "The user has been kicked from the event.",
+  "KICKED": "The user has been kicked from the event."
 }

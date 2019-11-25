@@ -126,22 +126,4 @@ export default class {
 
     return amount * multiplier
   }
-
-  // async stringToEmbed(text: string) {
-  //   // If this throws then handle it where the function is called to show error to user of why their json failed
-  //   const json = JSON.parse(text) as EmbedBase
-
-  //   const embed = new GamerEmbed()
-  //   if (json.timestamp) embed.setTimestamp()
-  //   if (json.description) embed.setDescription(json.description)
-  //   if (json.title) embed.setTitle(json.title)
-
-  //   if (json.author && json.author.name) embed.setAuthor(json.author.name, json.author.icon_url, json.author.url)
-
-  //   if (json.footer && json.footer.text) embed.setFooter(json.footer.text, json.footer.icon_url)
-
-  //   if (json.fields) for (const field of json.fields) embed.addField(field.name, field.value, field.inline)
-
-  //   return embed
-  // }
 }
