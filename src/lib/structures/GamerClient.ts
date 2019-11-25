@@ -61,7 +61,7 @@ export default class GamerClient extends Client {
   helpers = {
     discord: new DiscordHelper(),
     events: new EventsHelper(this),
-    feedback: new FeedbackHelper(),
+    feedback: new FeedbackHelper(this),
     leaderboards: new LeaderboardHelper(this),
     levels: new LevelsHelper(this),
     logger: new LoggerHelper(),

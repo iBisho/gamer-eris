@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "Set a language/personality for your server.",
-  "EXTENDED": "$t(settings/setfeedback:EXTENDED_LINE_1)\n$t(settings/setfeedback:EXTENDED_LINE_2)",
+  "EXTENDED": "$t(settings/setlanguage:EXTENDED_LINE_1)\n$t(settings/setlanguage:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}setlanguage french** ~ Sets the french language.",
   "EXTENDED_LINE_2": "**{{prefix}}setlanguage german** ~ Sets the german language.",
   "USAGE": "{{prefix}}setlanguage [Language Name]",

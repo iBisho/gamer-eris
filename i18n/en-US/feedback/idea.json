@@ -1,8 +1,8 @@
 {
   "DESCRIPTION": "Send a idea feedback to your server staff.",
-  "EXTENDED": "$t(feedback/idea:EXTENDED_LINE_1)\n$t(feedback/idea:EXTENDED_LINE_2)\n$t(feedback/idea:EXTENDED_LINE_3)\n$t(feedback/idea:EXTENDED_LINE_4)",
+  "EXTENDED": "$t(feedback/idea:EXTENDED_LINE_1)\n$t(feedback/idea:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}idea Your idea** ~ Begins a series of questions to get all the necessary information to complete a idea.",
-  "EXTENDED_LINE_4": "**ADVANCED:** If you know all the questions for that servers idea. Split your answers with | and it will work as well.",
+  "EXTENDED_LINE_2": "**ADVANCED:** If you know all the questions for that servers idea. Split your answers with | and it will work as well.",
   "USAGE": "{{prefix}}idea [Your idea]",
   "ALIASES": "Idea does not have any aliases.",
   "NOT_ACTIVATED": "The server has not enabled the option to send ideas. Please contact a server moderator or admin to enable this feature on your server.",
@@ -15,5 +15,6 @@
 	"MISSING_REACT": "I am missing the **Add Reactions** permission in the ideas channel.",
 	"MISSING_EXTERNAL": "I am missing the **External Emojis** permission in the ideas channel.",
 	"MISSING_HISTORY": "I am missing the **Read Message History** permission in the ideas channel. This permission is needed to add reactions.",
-	"SENT": "Your idea has been sent, thank you!"
+	"SENT": "Your idea has been sent, thank you!",
+	"CANCELLED": "You have cancelled the idea submission."
 }

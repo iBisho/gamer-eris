@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import ClientSchema from './schemas/client'
 import EmojiSchema from './schemas/emoji'
 import EventSchema from './schemas/event'
-import FeedbackSchema from './schemas/feedback'
+import FeedbackSchema, { GamerFeedback } from './schemas/feedback'
 import GuildSchema from './schemas/guild'
 import LabelSchema from './schemas/label'
 import LevelSchema from './schemas/level'
@@ -21,10 +21,11 @@ import UserSchema from './schemas/user'
 import GuildDefaults from '../constants/settings/guild'
 import MemberDefaults from '../constants/settings/member'
 import UserDefaults from '../constants/settings/user'
-import { GuildSettings, UserSettings } from '../lib/types/settings'
+import { GuildSettings, UserSettings, MemberSettings } from '../lib/types/settings'
 
 import config from '../../config'
 import { GamerEmoji } from '../lib/types/database'
+import { GamerMail } from '../lib/types/gamer'
 
 const connectionString = config.mongoConnectionString
 
@@ -34,12 +35,12 @@ class Database {
     client: mongoose.model('Client', ClientSchema),
     emoji: mongoose.model<GamerEmoji>('Emoji', EmojiSchema),
     event: mongoose.model('Event', EventSchema),
-    feedback: mongoose.model('Feedback', FeedbackSchema),
+    feedback: mongoose.model<GamerFeedback>('Feedback', FeedbackSchema),
     guild: mongoose.model<GuildSettings>('Guild', GuildSchema),
     label: mongoose.model('Label', LabelSchema),
     level: mongoose.model('Level', LevelSchema),
-    mail: mongoose.model('Mail', MailSchema),
-    member: mongoose.model('Member', MemberSchema),
+    mail: mongoose.model<GamerMail>('Mail', MailSchema),
+    member: mongoose.model<MemberSettings>('Member', MemberSchema),
     mission: mongoose.model('Mission', MissionSchema),
     modlog: mongoose.model('Modlog', ModlogSchema),
     reactionRole: mongoose.model('ReactionRole', ReactionRoleSchema),

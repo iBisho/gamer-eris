@@ -41,7 +41,6 @@ export default new Command(`idea`, async (message, args, context) => {
 
   const embed = new GamerEmbed()
     .setThumbnail(message.author.avatarURL)
-    .setColor(`#F44A41`)
     .setAuthor(
       language(`feedback/idea:FROM`, { user: `${message.author.username}#${message.author.discriminator}` }),
       message.author.avatarURL
@@ -82,40 +81,52 @@ export default new Command(`idea`, async (message, args, context) => {
       },
       callback: async (msg, collector) => {
         if (msg.channel instanceof PrivateChannel || !msg.member) return
-        const CANCEL_OPTIONS = language(`common:CANCEL_OPTIONS`)
-        // If the user wants to cancel quit out and delete the collector
-        if (CANCEL_OPTIONS.includes(msg.content.toLowerCase())) {
-          Gamer.collectors.delete(msg.author.id)
+        const CANCEL_OPTIONS = language(`common:CANCEL_OPTIONS`, { returnObjects: true })
+        if (CANCEL_OPTIONS.includes(msg.content)) {
+          message.channel.createMessage(language(`feedback/idea:CANCELLED`, { mention: msg.author.mention }))
           return
         }
 
         // The user must have provided some sort of content
-        embed.addField(question, msg.content)
+        const data = collector.data as FeedbackCollectorData
+        const questions = data.settings.feedback.idea.questions
+
+        // If the user gave some sort of response that we use that
+        if (msg.content) embed.addField(data.question, msg.content)
+        // If no response was provided but an image was uploaded and this is the last question we use this image
+        else if (questions.length === embed.code.fields.length + 1 && msg.attachments.length) {
+          embed.setImage(msg.attachments[0].url)
+          // Since this does not add a field we need to end it here as its the last question and without adding a field itll be an infinite loop
+          // This was the final question so now we need to post the feedback
+          Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
+          return Gamer.helpers.levels.completeMission(msg.member, `idea`, msg.channel.guild.id)
+        }
+        // Cancel out as the user is using it wrongly
+        else return
+
         // If more questions create another collector
-        const guildSettings = (collector.data as FeedbackCollectorData).settings
-        if (
-          embed.code.fields.length !== (collector.data as FeedbackCollectorData).settings.feedback.idea.questions.length
-        ) {
-          const currentIndex = guildSettings.feedback.idea.questions.findIndex(q => question === q)
+        if (embed.code.fields.length < questions.length) {
+          const currentIndex = questions.findIndex(q => data.question === q)
           // Something is very wrong quit out
           if (currentIndex < 0) return
 
-          const nextQuestion = guildSettings.feedback.idea.questions[currentIndex + 1]
+          const nextQuestion = questions[currentIndex + 1]
           // Send the message asking the user next question
           message.channel.createMessage(`${message.author.mention}, ${nextQuestion}`)
           // Update the collectors data
           collector.createdAt = Date.now()
-          if (collector.data) (collector.data as FeedbackCollectorData).question = nextQuestion
+          if (collector.data) data.question = nextQuestion
           Gamer.collectors.set(message.author.id, collector)
+          return
         }
 
         // This was the final question so now we need to post the feedback
-        Gamer.helpers.feedback.sendFeedback(message, channel, embed, settings, Gamer, language)
-        return Gamer.helpers.levels.completeMission(msg.member, `baka`, msg.channel.guild.id)
+        Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
+        return Gamer.helpers.levels.completeMission(msg.member, `idea`, msg.channel.guild.id)
       }
     })
   }
 
-  Gamer.helpers.feedback.sendFeedback(message, channel, embed, settings, Gamer, language)
-  return Gamer.helpers.levels.completeMission(message.member, `baka`, message.channel.guild.id)
+  Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
+  return Gamer.helpers.levels.completeMission(message.member, `idea`, message.channel.guild.id)
 })

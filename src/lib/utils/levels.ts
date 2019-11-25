@@ -1,5 +1,5 @@
-import { Member, Role } from 'eris'
-import { MemberSettings, UserSettings } from '../types/settings'
+import { Member } from 'eris'
+import { MemberSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { GamerLevel, GamerMission } from '../types/gamer'
@@ -17,18 +17,19 @@ export default class {
   }
 
   // The override cooldown is useful for XP command when you want to force add XP like daily command
-  async addLocalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false, reason?: string) {
+  async addLocalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false) {
     // If the member is in cooldown cancel out
     if (!overrideCooldown && this.checkCooldown(member)) return
 
-    const memberSettings = ((await this.Gamer.database.models.member.findOne({ memberID: member.id })) ||
-      new this.Gamer.database.models.member({
+    const memberSettings =
+      (await this.Gamer.database.models.member.findOne({ memberID: member.id })) ||
+      (await this.Gamer.database.models.member.create({
         memberID: member.id,
         guildID: member.guild.id,
         id: `${member.guild.id}.${member.id}`
-      })) as MemberSettings
+      }))
 
-    const userSettings = (await this.Gamer.database.models.user.findOne({ userID: member.id })) as UserSettings | null
+    const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
 
     let multiplier = 1
     if (userSettings)
@@ -76,20 +77,19 @@ export default class {
     const bot = member.guild.members.get(this.Gamer.user.id)
     if (!bot) return
     // Check if the bots role is high enough to manage the role
-    const botsRoles = bot.roles.sort(
-      (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
-    )
-    const [botsHighestRoleID] = botsRoles
-    const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
-    if (!botsHighestRole) return
+    const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
+
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
+    if (!language) return
+    const REASON = language('leveling/xp:ROLE_ADD_REASON')
 
     const rolesToAdd = []
     for (const roleID of levelData.roleIDs) {
       const role = member.guild.roles.get(roleID)
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
-      if (reason) {
-        member.addRole(roleID, reason)
+      if (REASON) {
+        member.addRole(roleID, REASON)
         this.Gamer.amplitude.push({
           authorID: member.id,
           guildID: member.guild.id,
@@ -101,9 +101,8 @@ export default class {
     }
     if (!rolesToAdd.length) return
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
     for (const roleID of rolesToAdd) {
-      member.addRole(roleID, language?.(`leveling/xp:ROLE_ADD_REASON`))
+      member.addRole(roleID, REASON)
       this.Gamer.amplitude.push({
         authorID: member.id,
         guildID: member.guild.id,
@@ -116,8 +115,9 @@ export default class {
 
   async addGlobalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false) {
     if (!overrideCooldown && this.checkCooldown(member, true)) return
-    const userSettings = ((await this.Gamer.database.models.user.findOne({ userID: member.id })) ||
-      new this.Gamer.database.models.user({ userID: member.id })) as UserSettings
+    const userSettings =
+      (await this.Gamer.database.models.user.findOne({ userID: member.id })) ||
+      (await this.Gamer.database.models.user.create({ userID: member.id }))
 
     let multiplier = 1
     if (userSettings)
@@ -145,7 +145,7 @@ export default class {
     return userSettings.save()
   }
 
-  async removeXP(member: Member, reason: string, xpAmountToRemove = 1) {
+  async removeXP(member: Member, xpAmountToRemove = 1) {
     if (xpAmountToRemove < 1) return
 
     const settings = (await this.Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings | null
@@ -183,19 +183,19 @@ export default class {
     if (!levelData || !levelData.roleIDs.length) return
 
     // Check if the bots role is high enough to manage the role
-    const botsRoles = bot.roles.sort(
-      (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
-    )
-    const [botsHighestRoleID] = botsRoles
-    const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
-    if (!botsHighestRole) return
+    const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
+
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
+    if (!language) return
+
+    const REASON = language('leveling/xp:ROLE_REMOVE_REASON')
 
     for (const roleID of levelData.roleIDs) {
       const role = member.guild.roles.get(roleID)
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
 
-      member.removeRole(roleID, reason)
+      member.removeRole(roleID, REASON)
       this.Gamer.amplitude.push({
         authorID: member.id,
         guildID: member.guild.id,

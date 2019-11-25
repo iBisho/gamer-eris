@@ -4,6 +4,7 @@ import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
 import { GamerEvent, GamerReactionRole } from '../lib/types/gamer'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
@@ -30,6 +31,7 @@ export default class extends Event {
     this.handleReactionRole(message, emoji, userID)
     this.handleProfileReaction(message, emoji, user)
     this.handleNetworkReaction(message, emoji, user)
+    // this.handleFeedbackReaction(message, emoji, user)
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
@@ -288,6 +290,165 @@ export default class extends Event {
 
       const response = await message.channel.createMessage(language(`network/reaction:FAILED`))
       return setTimeout(() => response.delete(), 10000)
+    }
+  }
+
+  async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, user: User) {
+    if (message.channel instanceof PrivateChannel || user.bot) return
+
+    const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
+
+    if (!message.embeds.length || message.author.id !== Gamer.user.id) return
+
+    // Check if this message is a feedback message
+    const feedback = await Gamer.database.models.feedback.findOne({ id: message.id })
+    if (!feedback) return
+    // Fetch the guild settings for this guild
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    if (!guildSettings) return
+
+    // Check if valid feedback channel
+    if (![guildSettings.feedback.idea.channelID, guildSettings.feedback.bugs.channelID].includes(message.channel.id))
+      return
+    // Check if a valid emoji was used
+    const feedbackReactions = [constants.emojis.mailbox, constants.emojis.greenTick, constants.emojis.redX]
+    if (feedback.isBugReport)
+      feedbackReactions.push(guildSettings.feedback.bugs.emojis.down, guildSettings.feedback.bugs.emojis.up)
+    else feedbackReactions.push(guildSettings.feedback.idea.emojis.down, guildSettings.feedback.idea.emojis.up)
+
+    if (!feedbackReactions.includes(fullEmojiName)) return
+
+    const reactorMember = message.channel.guild.members.get(user.id)
+    if (!reactorMember) return
+
+    const reactorIsMod = reactorMember.roles.some(id => guildSettings.staff.modRoleIDs.includes(id))
+    const reactorIsAdmin =
+      reactorMember.permission.has('administrator') ||
+      (guildSettings.staff.adminRoleID && reactorMember.roles.includes(guildSettings.staff.adminRoleID))
+
+    const feedbackMember = message.channel.guild.members.get(feedback.authorID)
+
+    switch (fullEmojiName) {
+      // This case will run if the reaction was the Mailbox reaction
+      case constants.emojis.mailbox:
+        // If the user is not atleast a mod cancel everything
+        if (!reactorIsAdmin && !reactorIsMod) return
+        // Server has not enabled mails
+        if (!guildSettings.mails.enabled || !guildSettings.mails.categoryID) return
+
+        Gamer.helpers.logger.green(`Sending a mail from feedback reaction`)
+
+        const openMail = await Gamer.database.models.mail.findOne({
+          guildID: message.channel.guild.id,
+          userID: feedback.authorID
+        })
+        // The feedback author does not have any open mails
+        if (!openMail) {
+          // Make sure the member is in the guild
+          if (!feedbackMember) return
+          // Create a mail for this guild. Passing the 4th arg User will override message.author in createMail
+          return Gamer.helpers.mail.createMail(
+            message,
+            `Feedback details requested by ${reactorMember.username}`,
+            guildSettings,
+            feedbackMember.user
+          )
+        }
+        // They have an open mail so we can just send it there
+        const mailChannel = message.channel.guild.channels.get(openMail.id)
+        if (!mailChannel || !(mailChannel instanceof TextChannel)) return
+        return mailChannel.createMessage({ content: user.mention, embed: message.embeds[0] })
+      // This case will run if the reaction was the solved green check mark
+      case constants.emojis.greenTick:
+        // If the user is not atleast a mod cancel everything
+        if (!reactorIsAdmin && !reactorIsMod) return
+
+        Gamer.helpers.logger.green(`Adding points due to feedback solved reaction.`)
+
+        // Send a DM to the user telling them it was solved
+        const embed = new GamerEmbed()
+          .setDescription(guildSettings.feedback.solvedMessage)
+          .setAuthor(`Feedback From ${message.channel.guild.name}`, message.channel.guild.iconURL)
+          .setTimestamp()
+
+        if (feedbackMember) {
+          Gamer.helpers.levels.addLocalXP(feedbackMember, 50, true)
+          try {
+            const dmChannel = await feedbackMember.user.getDMChannel()
+            await dmChannel.createMessage({ embed: embed.code })
+            // Shows the user the feedback that was accepted
+            await dmChannel.createMessage({ embed: message.embeds[0] })
+          } catch {}
+        }
+
+        // Send the feedback to the solved channel
+        const channel = guildSettings.feedback.solvedChannelID
+          ? message.channel.guild.channels.get(guildSettings.feedback.solvedChannelID)
+          : null
+        // If the bot has all necessary permissions in the log channel
+        if (channel && channel instanceof TextChannel) {
+          const botPerms = channel.permissionsOf(Gamer.user.id)
+          if (botPerms.has('readMessages') && botPerms.has('sendMessages') && botPerms.has('embedLinks'))
+            channel.createMessage({ embed: message.embeds[0] })
+        }
+
+        // Deletes the feedback
+        return message.delete()
+      // This case will run when the red x is reacted on
+      case constants.emojis.redX:
+        // If the user is not atleast a mod cancel everything
+        if (!reactorIsAdmin && !reactorIsMod) return
+
+        Gamer.helpers.logger.green(`Adding points due to feedback solved reaction.`)
+
+        // Send a DM to the user telling them it was solved
+        const rejectedEmbed = new GamerEmbed()
+          .setDescription(guildSettings.feedback.rejectedMessage)
+          .setAuthor(`Feedback From ${message.channel.guild.name}`, message.channel.guild.iconURL)
+          .setTimestamp()
+
+        if (feedbackMember) {
+          Gamer.helpers.levels.addLocalXP(feedbackMember, 50, true)
+          try {
+            const dmChannel = await feedbackMember.user.getDMChannel()
+            await dmChannel.createMessage({ embed: rejectedEmbed.code })
+            // Shows the user the feedback that was accepted
+            await dmChannel.createMessage({ embed: message.embeds[0] })
+          } catch {}
+        }
+
+        // Send the feedback to the solved channel
+        const rejectedChannel = guildSettings.feedback.rejectedChannelID
+          ? message.channel.guild.channels.get(guildSettings.feedback.rejectedChannelID)
+          : null
+        // If the bot has all necessary permissions in the log channel
+        if (rejectedChannel && rejectedChannel instanceof TextChannel) {
+          const botPerms = rejectedChannel.permissionsOf(Gamer.user.id)
+          if (botPerms.has('readMessages') && botPerms.has('sendMessages') && botPerms.has('embedLinks'))
+            rejectedChannel.createMessage({ embed: message.embeds[0] })
+        }
+
+        // Deletes the feedback
+        return message.delete()
+      // This case will run for when users react with anything else to it
+      default:
+        // If the user is no longer in the server we dont need to grant any xp
+        if (!feedbackMember) return
+        const downEmojis = [guildSettings.feedback.idea.emojis.down, guildSettings.feedback.bugs.emojis.down]
+        const upEmojis = [guildSettings.feedback.idea.emojis.up, guildSettings.feedback.bugs.emojis.up]
+        if (downEmojis.includes(fullEmojiName)) {
+          Gamer.helpers.logger.green(
+            `Removing points due to feedback reaction on ${message.channel.guild.name} discord server.`
+          )
+
+          return Gamer.helpers.levels.removeXP(feedbackMember, 3)
+        } else if (upEmojis.includes(fullEmojiName)) {
+          Gamer.helpers.logger.green(
+            `Adding points due to feedback reaction on ${message.channel.guild.name} discord server.`
+          )
+
+          return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
+        }
     }
   }
 }

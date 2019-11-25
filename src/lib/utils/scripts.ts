@@ -99,7 +99,7 @@ export default class {
   ) {
     const REASON = language(`settings/setfeedback:SETUP_REASON`)
     // Create the category first and edit its permissions so that the other two channels can be syned easily
-    const category = await guild.createChannel(`Feedback`, 4, {
+    const category = await guild.createChannel(language(`settings/setfeedback:CATEGORY_NAME`), 4, {
       reason: REASON,
       permissionOverwrites: [
         { id: guild.id, allow: 0, deny: 2112, type: `role` },

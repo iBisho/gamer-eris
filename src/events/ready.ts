@@ -106,11 +106,7 @@ export default class extends Event {
           if (daysSinceLastUpdated < guildSettings.xp.inactiveDaysAllowed) continue
 
           // Remove 1% of XP from the user for being inactive today.
-          await Gamer.helpers.levels.removeXP(
-            member,
-            language(`leveling/xp:ROLE_REMOVE_REASON`),
-            Math.floor(memberSettings.leveling.xp * 0.01)
-          )
+          await Gamer.helpers.levels.removeXP(member, Math.floor(memberSettings.leveling.xp * 0.01))
         }
       }
     }, milliseconds.DAY)

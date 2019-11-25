@@ -18,12 +18,17 @@ export default class extends Event {
       }
     }
 
+    const user = Gamer.users.get(userID)
+    if (!user) return
+
+    if (user.bot) return
     // If it is an uncached message we need to fetch the message
     const message =
       rawMessage instanceof Message ? rawMessage : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id)
 
     if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
     this.handleReactionRole(message, emoji, userID)
+    this.handleFeedbackReaction(message, emoji, userID)
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
@@ -76,5 +81,59 @@ export default class extends Event {
       if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
       else member.addRole(roleID, `Added roles for clicking a reaction role message.`)
     }
+  }
+
+  async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, userID: string) {
+    if (message.channel instanceof PrivateChannel) return
+
+    const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
+
+    if (!message.embeds.length || message.author.id !== Gamer.user.id) return
+
+    // Check if this message is a feedback message
+    const feedback = await Gamer.database.models.feedback.findOne({ id: message.id })
+    if (!feedback) return
+    // Fetch the guild settings for this guild
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    if (!guildSettings) return
+
+    // Check if valid feedback channel
+    if (![guildSettings.feedback.idea.channelID, guildSettings.feedback.bugs.channelID].includes(message.channel.id))
+      return
+    // Check if a valid emoji was used
+    const feedbackReactions: string[] = []
+    if (feedback.isBugReport)
+      feedbackReactions.push(guildSettings.feedback.bugs.emojis.down, guildSettings.feedback.bugs.emojis.up)
+    else feedbackReactions.push(guildSettings.feedback.idea.emojis.down, guildSettings.feedback.idea.emojis.up)
+
+    if (!feedbackReactions.includes(fullEmojiName)) return
+
+    const reactorMember = message.channel.guild.members.get(userID)
+    if (!reactorMember) return
+
+    const feedbackMember = message.channel.guild.members.get(feedback.authorID)
+
+    // If the user is no longer in the server we dont need to grant any xp
+    if (!feedbackMember) return
+
+    const downEmojis = [guildSettings.feedback.idea.emojis.down, guildSettings.feedback.bugs.emojis.down]
+    const upEmojis = [guildSettings.feedback.idea.emojis.up, guildSettings.feedback.bugs.emojis.up]
+
+    if (upEmojis.includes(fullEmojiName)) {
+      Gamer.helpers.logger.green(
+        `Removing points due to feedback reaction on ${message.channel.guild.name} discord server.`
+      )
+
+      return Gamer.helpers.levels.removeXP(feedbackMember, 3)
+    }
+
+    if (downEmojis.includes(fullEmojiName)) {
+      Gamer.helpers.logger.green(
+        `Adding points due to feedback reaction on ${message.channel.guild.name} discord server.`
+      )
+
+      return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
+    }
+    return
   }
 }

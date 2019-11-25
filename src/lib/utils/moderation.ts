@@ -1,6 +1,6 @@
 import { Message, User, PrivateChannel, TextChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
-import { MemberSettings, GuildSettings } from '../types/settings'
+import { GuildSettings } from '../types/settings'
 import { GamerModlog } from '../types/gamer'
 import GamerEmbed from '../structures/GamerEmbed'
 import constants from '../../constants'
@@ -27,23 +27,23 @@ export default class {
 
     const member = message.channel.guild.members.get(user.id)
     if (member) {
-      const memberSettings = (await this.Gamer.database.models.member.findOne({
+      const memberSettings = await this.Gamer.database.models.member.findOne({
         memberID: user.id
-      })) as MemberSettings | null
+      })
       if (memberSettings) {
         const currentXP = memberSettings.leveling.xp
         switch (action) {
           case `kick`: // Remove 50% when kicked
-            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, reason, Math.floor(currentXP / 2))
+            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, Math.floor(currentXP / 2))
             break
           case `warn`:
-            this.Gamer.helpers.levels.removeXP(member, reason, currentXP > 25 ? 25 : currentXP)
+            this.Gamer.helpers.levels.removeXP(member, currentXP > 25 ? 25 : currentXP)
             break
           case `mute`:
-            this.Gamer.helpers.levels.removeXP(member, reason, currentXP > 100 ? 100 : currentXP)
+            this.Gamer.helpers.levels.removeXP(member, currentXP > 100 ? 100 : currentXP)
             break
           case `ban`:
-            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, reason, currentXP)
+            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, currentXP)
             break
           default:
         }

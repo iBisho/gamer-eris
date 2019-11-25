@@ -42,7 +42,7 @@ export default class extends Monitor {
       Gamer.helpers.logger.green(
         `Deleted a Capital Spam message on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
       )
-      Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 3)
+      Gamer.helpers.levels.removeXP(message.member, 3)
       Gamer.amplitude.push({
         authorID: message.author.id,
         channelID: message.channel.id,
@@ -65,7 +65,7 @@ export default class extends Monitor {
           `Deleted [${word}] naughty word on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
         )
         // Remove 5 XP per word used
-        Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 5)
+        Gamer.helpers.levels.removeXP(message.member, 5)
         Gamer.amplitude.push({
           authorID: message.author.id,
           channelID: message.channel.id,
@@ -90,7 +90,7 @@ export default class extends Monitor {
         Gamer.helpers.logger.green(
           `Deleted a blacklisted URL ${url} on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
         )
-        Gamer.helpers.levels.removeXP(message.member, language(`leveling/xp:ROLE_REMOVE_REASON`), 5)
+        Gamer.helpers.levels.removeXP(message.member, 5)
         Gamer.amplitude.push({
           authorID: message.author.id,
           channelID: message.channel.id,

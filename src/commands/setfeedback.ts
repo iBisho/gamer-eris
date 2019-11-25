@@ -1,24 +1,22 @@
 import { Command } from 'yuuko'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`setfeedback`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 
-  let guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-  if (!guildSettings) guildSettings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
+  const guildSettings =
+    (await Gamer.database.models.guild.findOne({
+      id: message.channel.guild.id
+    })) || (await Gamer.database.models.guild.create({ id: message.channel.guild.id }))
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
   // If the user is not an admin cancel out
   if (
-    !message.member ||
-    !message.member.permission.has('administrator') ||
-    (guildSettings.staff.adminRoleID && !message.member.roles.includes(guildSettings.staff.adminRoleID))
+    !Gamer.helpers.discord.isModerator(message, guildSettings.staff.modRoleIDs) &&
+    !Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)
   )
     return
 
@@ -107,6 +105,7 @@ export default new Command(`setfeedback`, async (message, args, context) => {
     case 'addquestion':
       args.shift()
       args.shift()
+      if (!args.length) break
       const question = args.join(` `)
 
       if (isIdea) {
@@ -126,25 +125,30 @@ export default new Command(`setfeedback`, async (message, args, context) => {
     case 'removequestion':
       args.shift()
       args.shift()
+      if (!args.length) break
       const questionToRemove = args.join(` `)
 
       if (isIdea) {
         const exists = guildSettings.feedback.idea.questions.includes(questionToRemove)
         if (!exists) return message.channel.createMessage(language(`settings/setfeedback:QUESTION_DOESNT_EXIST`))
 
-        guildSettings.feedback.idea.questions.filter(q => q !== questionToRemove)
+        guildSettings.feedback.idea.questions = guildSettings.feedback.idea.questions.filter(
+          q => q !== questionToRemove
+        )
       } else {
         const exists = guildSettings.feedback.bugs.questions.includes(questionToRemove)
         if (!exists) return message.channel.createMessage(language(`settings/setfeedback:QUESTION_DOESNT_EXIST`))
 
-        guildSettings.feedback.bugs.questions.filter(q => q !== questionToRemove)
+        guildSettings.feedback.bugs.questions = guildSettings.feedback.bugs.questions.filter(
+          q => q !== questionToRemove
+        )
       }
 
       guildSettings.save()
       return message.channel.createMessage(language(`settings/setfeedback:QUESTION_REMOVED`))
   }
 
-  await message.channel.createMessage(language(`settings/feedback:INVALID_USE`))
+  await message.channel.createMessage(language(`settings/setfeedback:INVALID_USE`))
 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return

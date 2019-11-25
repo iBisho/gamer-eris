@@ -1,4 +1,4 @@
-import { Message, PrivateChannel, Guild, CategoryChannel, Constants, Overwrite, TextChannel } from 'eris'
+import { Message, PrivateChannel, Guild, CategoryChannel, Constants, Overwrite, TextChannel, User } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerMail, GamerMailLabel, GamerTag } from '../types/gamer'
@@ -72,8 +72,9 @@ export default class {
     return setTimeout(() => response.delete(), 10000)
   }
 
-  async createMail(message: Message, content: string, guildSettings: GuildSettings | null) {
+  async createMail(message: Message, content: string, guildSettings: GuildSettings | null, user?: User) {
     if (message.channel instanceof PrivateChannel) return
+    const mailUser = user || message.author
 
     const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
     if (!language) return
@@ -84,8 +85,8 @@ export default class {
 
     if (!guildSettings?.mails.enabled) return message.channel.createMessage(language(`mails/mail:DISABLED`))
 
-    const usernameToChannelName = message.author.username.replace(channelNameRegex, ``).toLowerCase()
-    const channelName = `${usernameToChannelName}${message.author.discriminator}`
+    const usernameToChannelName = mailUser.username.replace(channelNameRegex, ``).toLowerCase()
+    const channelName = `${usernameToChannelName}${mailUser.discriminator}`
 
     const [firstWord] = content.split(' ')
     const label = (await this.Gamer.database.models.label.findOne({
@@ -116,15 +117,13 @@ export default class {
     }
 
     // Creates a text channel by default and we move it to the mail category
-    const channel = await message.channel.guild.createChannel(channelName, 0, {
-      parentID: category.id
-    })
+    const channel = await message.channel.guild.createChannel(channelName, 0, { parentID: category.id })
 
     // if channel could not be created send an embed to the user so he can annoy the mods / admins
     if (!channel) return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
 
     this.Gamer.amplitude.push({
-      authorID: message.author.id,
+      authorID: mailUser.id,
       channelID: channel.id,
       guildID: message.channel.guild.id,
       messageID: message.id,
@@ -134,9 +133,9 @@ export default class {
 
     const topic = content.substring(0, content.length > 50 ? 50 : content.length)
 
-    new this.Gamer.database.models.mail({
+    await this.Gamer.database.models.mail.create({
       id: channel.id,
-      userID: message.author.id,
+      userID: mailUser.id,
       guildID: message.channel.guild.id,
       topic
     })
@@ -146,15 +145,15 @@ export default class {
     const embed = new GamerEmbed()
       .setAuthor(
         language(`mails/mail:SENT_BY`, {
-          user: message.member?.nick || message.author.username,
+          user: message.member?.nick || mailUser.username,
           channel: message.channel.name
         }),
-        message.author.avatarURL
+        mailUser.avatarURL
       )
       .setDescription(content)
       .addField(language(`mails/mail:SEND_REPLY`), language(`mails/mail:SEND_REPLY_INFO`, { prefix }), true)
       .addField(language(`mails/mail:CLOSE`), language(`mails/mail:CLOSE_INFO`, { prefix }), true)
-      .setFooter(language(`mails/mail:USERID`, { user: message.author.id }))
+      .setFooter(language(`mails/mail:USERID`, { user: mailUser.id }))
       .setTimestamp()
     if (message.attachments.length) embed.setImage(message.attachments[0].url)
 
