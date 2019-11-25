@@ -3,36 +3,26 @@ import { GamerSubscription } from '../database/schemas/subscription'
 import Gamer from '..'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TwitchStream } from '../services/twitch/api'
+import constants from '../constants'
 
 export default class extends Event {
-  async execute(subscription: GamerSubscription, data: void | TwitchStream) {
+  async execute(subscription: GamerSubscription, data: null | TwitchStream) {
+    // If no data the user went offline so we dont need to send any alert
+    if (!data) return
+
+    const imageURL = data.thumbnail_url.replace('{width}', '720').replace('{height}', '380')
+
+    const embed = new GamerEmbed()
+      .setDescription(`[${data.title}](https://twitch.tv/${subscription.username})`)
+      .setImage(imageURL)
+      .setColor(`#6441A4`)
+      .setTimestamp()
+
+    // Since the user went online we need to send the alert to all the subscribing channels
     for (const sub of subscription.subs) {
+      // Get the guild specific language
       const language = Gamer.i18n.get(Gamer.guildLanguages.get(sub.guildID) || `en-US`)
       if (!language) continue
-
-      const embed = new GamerEmbed().setTimestamp()
-
-      if (!data) {
-        embed
-          .setAuthor(subscription.username)
-          .setDescription(language(`gaming/twitch:OFFLINE`))
-          .addField(
-            language(`gaming/twitch:TWITCH_CHANNEL`),
-            language(`gaming/twitch:HYPERLINK`, { url: `https://twitch.tv/${subscription.username}` })
-          )
-      }
-
-      if (data) {
-        embed
-          .setAuthor(subscription.username, data.thumbnail_url)
-          .addField(language(`gaming/twitch:TITLE`), data.title)
-          .addField(language(`gaming/twitch:VIEWS`), String(data.viewer_count))
-          .setThumbnail(data.thumbnail_url)
-          .addField(
-            language(`gaming/twitch:TWITCH_CHANNEL`),
-            language(`gaming/twitch:HYPERLINK`, { url: `https://twitch.tv/${subscription.username}` })
-          )
-      }
 
       const guild = Gamer.guilds.get(sub.guildID)
       if (!guild) continue
@@ -42,6 +32,13 @@ export default class extends Event {
 
       const botPerms = channel.permissionsOf(Gamer.user.id)
       if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) continue
+
+      embed.setTitle(
+        language(`gaming/twitch:TITLE`, {
+          emoji: constants.emojis.online,
+          username: subscription.username
+        })
+      )
 
       Gamer.createMessage(sub.channelID, { embed: embed.code })
     }

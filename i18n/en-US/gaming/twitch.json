@@ -10,9 +10,5 @@
   "NOT_SUBSCRIBED": "The {{username}} has no subscriptions set up for twitch at this time.",
   "NOT_SUBBED": "The {{username}} has no subscriptions set up for this channel at this time.",
   "ALREADY_SUBBED": "The {{username}} is already subscribed to send alerts in this channel.",
-  "VIEWS": "Views:",
-  "TWITCH_CHANNEL": "Twitch Channel:",
-  "HYPERLINK": "[Click Me To Watch]({{url}})",
-  "ONLINE": "ONLINE",
-  "OFFLINE": "OFFLINE"
+  "TITLE": "{{emoji}} {{username}} is streaming on Twitch right now!"
 }
