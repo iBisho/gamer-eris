@@ -2,7 +2,6 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command([`warn`, `w`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || !message.member) return
@@ -11,12 +10,12 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   const botMember = message.channel.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+
+  const guildSettings = await Gamer.database.models.guild.findOne({
+    id: message.channel.guild.id
+  })
 
   if (
     !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
@@ -48,8 +47,8 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
     .addField(language(`common:REASON`), reason)
 
   // Send the user a message. AWAIT to make sure message is sent before they are banned and lose access
-  const dmChannel = await user.getDMChannel().catch(() => undefined)
-  if (dmChannel) dmChannel.createMessage({ embed: embed.code }).catch(() => undefined)
+  const dmChannel = await user.getDMChannel().catch(() => null)
+  if (dmChannel) dmChannel.createMessage({ embed: embed.code }).catch(() => null)
 
   const modlogID = await Gamer.helpers.moderation.createModlog(message, guildSettings, language, user, `warn`, reason)
 

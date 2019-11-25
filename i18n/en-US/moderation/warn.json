@@ -1,7 +1,7 @@
 {
   "DESCRIPTION": "Warns a user on your server.",
   "EXTENDED": "$t(moderation/warn:EXTENDED_LINE_1)\n$t(moderation/warn:EXTENDED_LINE_2)",
-  "EXTENDED_LINE_1": "**{{prefix}}warn add @user reason** ~ Warns the mentioned user and adds the reason to the mod log.",
+  "EXTENDED_LINE_1": "**{{prefix}}warn [@User] [Reason]** ~ Warns the mentioned user and adds the reason to the mod log.",
   "EXTENDED_LINE_2": "Place the bots role as high as possible to avoid missing permissions. That role has to be above the users highest role. Moderation has to be enabled in the guild settings.",
   "USAGE": "{{prefix}}warn [User] [Reason]",
   "ALIASES": "{{prefix}}w",
