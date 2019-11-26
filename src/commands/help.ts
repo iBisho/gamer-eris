@@ -44,12 +44,31 @@ const categories = [
       `setmodlogs`,
       `setstaff`,
       `setlanguage`,
-      `setprefix`
+      `setprefix`,
+      `setmail`,
+      `setcapture`
     ]
   },
   { name: `utility`, commands: [`imgur`] },
   { name: `feedback`, commands: [`bugs`, `idea`, `feedback`] },
-  { name: `roles`, commands: [`give`, `public`, `role`, `take`, `roleinfo`] },
+  {
+    name: `roles`,
+    commands: [
+      `give`,
+      `public`,
+      `role`,
+      `take`,
+      `roleinfo`,
+      `reactionrolecreate`,
+      `reactionroledelete`,
+      `reactionroleadd`,
+      `reactionroleremove`,
+      `rolesetcreate`,
+      `rolesetdelete`,
+      `rolesetadd`,
+      `rolesetremove`
+    ]
+  },
   {
     name: `events`,
     commands: [
@@ -70,6 +89,7 @@ const categories = [
     name: `moderation`,
     commands: [`purge`, `nick`, `ban`, `unban`, `kick`, `mute`, `unmute`, `warn`, `modlog`, `reason`]
   },
+  { name: `mails`, commands: [`mail`, `label`] },
   { name: `vip`, commands: [`vipregister`, `roletoall`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`] },
   { name: `gaming`, commands: [`twitch`] },

@@ -5,7 +5,6 @@ import { Canvas } from 'canvas-constructor'
 import { join } from 'path'
 import GamerEmbed from './lib/structures/GamerEmbed'
 import constants from './constants'
-
 import HooksServices from './services/hooks'
 
 import TwitchService from './services/twitch/index'

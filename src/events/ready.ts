@@ -7,7 +7,6 @@ import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
-import { GamerTradingCard, GamerTag } from '../lib/types/gamer'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default class extends Event {
@@ -141,7 +140,7 @@ export default class extends Event {
 
     // Run the Trading Card Interval every 20 minutes
     setInterval(async () => {
-      const cardSettings = (await Gamer.database.models.tradingCard.find()) as GamerTradingCard[]
+      const cardSettings = await Gamer.database.models.tradingCard.find()
       const embed = new GamerEmbed()
 
       for (const setting of cardSettings) {
@@ -201,7 +200,7 @@ export default class extends Event {
 
     Gamer.helpers.logger.green(`Loading all tags into cache now...`)
     // Set the tags in cache
-    const tags = (await Gamer.database.models.tag.find()) as GamerTag[]
+    const tags = await Gamer.database.models.tag.find()
     for (const tag of tags) Gamer.tags.set(`${tag.guildID}.${tag.name}`, tag)
 
     // Set the missions on startup

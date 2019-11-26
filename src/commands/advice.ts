@@ -46,5 +46,6 @@ export default new Command([`advice`, `ad`], async (message, _args, context) => 
     .setDescription(`${user ? user.mention : message.author.mention}, ${advice}`)
 
   message.channel.createMessage({ embed: embed.code })
+
   return Gamer.helpers.levels.completeMission(message.member, `advice`, message.channel.guild.id)
 })

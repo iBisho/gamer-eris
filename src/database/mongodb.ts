@@ -25,7 +25,7 @@ import { GuildSettings, UserSettings, MemberSettings } from '../lib/types/settin
 
 import config from '../../config'
 import { GamerEmoji } from '../lib/types/database'
-import { GamerMail } from '../lib/types/gamer'
+import { GamerMail, GamerMailLabel, GamerTag, GamerTradingCard, GamerReactionRole, GamerEvent } from '../lib/types/gamer'
 
 const connectionString = config.mongoConnectionString
 
@@ -34,22 +34,22 @@ class Database {
   models = {
     client: mongoose.model('Client', ClientSchema),
     emoji: mongoose.model<GamerEmoji>('Emoji', EmojiSchema),
-    event: mongoose.model('Event', EventSchema),
+    event: mongoose.model<GamerEvent>('Event', EventSchema),
     feedback: mongoose.model<GamerFeedback>('Feedback', FeedbackSchema),
     guild: mongoose.model<GuildSettings>('Guild', GuildSchema),
-    label: mongoose.model('Label', LabelSchema),
+    label: mongoose.model<GamerMailLabel>('Label', LabelSchema),
     level: mongoose.model('Level', LevelSchema),
     mail: mongoose.model<GamerMail>('Mail', MailSchema),
     member: mongoose.model<MemberSettings>('Member', MemberSchema),
     mission: mongoose.model('Mission', MissionSchema),
     modlog: mongoose.model('Modlog', ModlogSchema),
-    reactionRole: mongoose.model('ReactionRole', ReactionRoleSchema),
+    reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),
     roleset: mongoose.model('Roleset', RolesetSchema),
     shortcut: mongoose.model('Shortcut', ShortcutSchema),
     subscription: mongoose.model<GamerSubscription>('Subscription', SubscriptionSchema),
     survey: mongoose.model('Survey', SurveySchema),
-    tag: mongoose.model('Tag', TagSchema),
-    tradingCard: mongoose.model('TradingCards', TradingCardSchema),
+    tag: mongoose.model<GamerTag>('Tag', TagSchema),
+    tradingCard: mongoose.model<GamerTradingCard>('TradingCards', TradingCardSchema),
     user: mongoose.model<UserSettings>('User', UserSchema)
   }
 

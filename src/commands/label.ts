@@ -1,8 +1,6 @@
 import { Command } from 'yuuko'
 import { PrivateChannel, CategoryChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
-import { GamerMailLabel } from '../lib/types/gamer'
 
 export default new Command(`label`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -10,16 +8,16 @@ export default new Command(`label`, async (message, args, context) => {
   const content = args.join(' ')
   if (message.channel instanceof PrivateChannel) return Gamer.helpers.mail.handleDM(message, content)
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-  if (!guildSettings) return
-
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
+  const guildSettings = await Gamer.database.models.guild.findOne({
+    id: message.channel.guild.id
+  })
+  if (!guildSettings) return
+
   if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings.staff.modRoleIDs) ||
+    !Gamer.helpers.discord.isModerator(message, guildSettings.staff.modRoleIDs) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)
   )
     return
@@ -32,7 +30,7 @@ export default new Command(`label`, async (message, args, context) => {
 
   switch (type.toLowerCase()) {
     case `list`:
-      const labels = (await Gamer.database.models.label.find({ guildID: message.channel.guild.id })) as GamerMailLabel[]
+      const labels = await Gamer.database.models.label.find({ guildID: message.channel.guild.id })
       return message.channel.createMessage(
         labels.length ? labels.map(label => label.name).join('\n') : language(`mails/label:NO_LABELS`)
       )
@@ -51,16 +49,16 @@ export default new Command(`label`, async (message, args, context) => {
       const category = message.channel.guild.channels.get(categoryID)
       if (!category || !(category instanceof CategoryChannel)) return helpCommand.execute(message, [`label`], context)
 
-      const labelExists = (await Gamer.database.models.label.findOne({
+      const labelExists = await Gamer.database.models.label.findOne({
         name,
         guildID: message.channel.guild.id
-      })) as GamerMailLabel | null
+      })
 
       if (labelExists) return message.channel.createMessage(language(`mails/label:LABEL_EXISTS`, { name }))
 
-      new Gamer.database.models.label({
+      await Gamer.database.models.label.create({
         authorID: message.author.id,
-        categoryID: category,
+        categoryID: category.id,
         guildID: message.channel.guild.id,
         name
       })
@@ -68,10 +66,10 @@ export default new Command(`label`, async (message, args, context) => {
       return message.channel.createMessage(language(`mails/label:CREATED`, { name }))
     case `set`:
       if (!name) return helpCommand.execute(message, [`label`], context)
-      const labelToSet = (await Gamer.database.models.label.findOne({
+      const labelToSet = await Gamer.database.models.label.findOne({
         name,
         guildID: message.channel.guild.id
-      })) as GamerMailLabel | null
+      })
       if (!labelToSet) return message.channel.createMessage(language(`mails/label:INVALID_NAME`, { name }))
 
       const mail = await Gamer.database.models.mail.findOne({

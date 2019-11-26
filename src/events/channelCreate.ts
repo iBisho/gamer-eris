@@ -1,21 +1,19 @@
 import Event from '../lib/structures/Event'
 import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel, AnyGuildChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
-import * as i18next from 'i18next'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import GuildDefaults from '../constants/settings/guild'
+import { TFunction } from 'i18next'
 
 export default class extends Event {
   async execute(channel: PrivateChannel | TextChannel | VoiceChannel | CategoryChannel) {
     if (channel instanceof PrivateChannel) return
 
     const Gamer = channel.guild.shard.client as GamerClient
-    const guildSettings =
-      ((await Gamer.database.models.guild.findOne({ id: channel.guild.id })) as GuildSettings | null) || GuildDefaults
-
     const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
     if (!language) return
+
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: channel.guild.id })
+    if (!guildSettings) return
 
     // Verification categories are automatically handled
     if (
@@ -51,7 +49,7 @@ export default class extends Event {
     channelID: string | undefined,
     createPublicEnabled: boolean,
     publiclogsChannelID: string | undefined,
-    language: i18next.TFunction,
+    language: TFunction,
     Gamer: GamerClient
   ) {
     // First make sure that we even need to send the logs here

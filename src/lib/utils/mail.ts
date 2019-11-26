@@ -1,7 +1,7 @@
 import { Message, PrivateChannel, Guild, CategoryChannel, Constants, Overwrite, TextChannel, User } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import { GamerMail, GamerMailLabel, GamerTag } from '../types/gamer'
+import { GamerMail, GamerTag } from '../types/gamer'
 import GamerEmbed from '../structures/GamerEmbed'
 import { GamerEmoji } from '../types/database'
 
@@ -55,12 +55,12 @@ export default class {
     return message.channel.createMessage(language(`mails/mail:REPLY_SENT_TO_MODS`))
   }
 
-  async handleSupportChannel(message: Message, content: string, guildSettings: GuildSettings | null) {
+  async handleSupportChannel(message: Message, content: string, guildSettings: GuildSettings) {
     if (message.channel instanceof PrivateChannel) return
-    const mail = (await this.Gamer.database.models.mail.findOne({
+    const mail = await this.Gamer.database.models.mail.findOne({
       guildID: message.channel.guild.id,
       userID: message.author.id
-    })) as GamerMail | null
+    })
     // If the user doesn't have an open mail we need to create one
     if (!mail) return this.createMail(message, content, guildSettings)
 
@@ -89,13 +89,17 @@ export default class {
     const channelName = `${usernameToChannelName}${mailUser.discriminator}`
 
     const [firstWord] = content.split(' ')
-    const label = (await this.Gamer.database.models.label.findOne({
+    const label = await this.Gamer.database.models.label.findOne({
       guildID: message.channel.guild.id,
       name: firstWord.toLowerCase()
-    })) as GamerMailLabel | null
+    })
 
-    const categoryID = label ? label.categoryID : guildSettings.mails.categoryID
-    let category = categoryID ? message.channel.guild.channels.get(categoryID) : undefined
+    let category = label
+      ? message.channel.guild.channels.get(label.categoryID)
+      : guildSettings.mails.categoryID
+      ? message.channel.guild.channels.get(guildSettings.mails.categoryID)
+      : undefined
+
     // create a category if there is no category saved or the saved one is not existing anymore
 
     if (!category || !(category instanceof CategoryChannel)) {
@@ -114,6 +118,7 @@ export default class {
       })
 
       guildSettings.mails.categoryID = category.id
+      guildSettings.save()
     }
 
     // Creates a text channel by default and we move it to the mail category
@@ -153,7 +158,7 @@ export default class {
       .setDescription(content)
       .addField(language(`mails/mail:SEND_REPLY`), language(`mails/mail:SEND_REPLY_INFO`, { prefix }), true)
       .addField(language(`mails/mail:CLOSE`), language(`mails/mail:CLOSE_INFO`, { prefix }), true)
-      .setFooter(language(`mails/mail:USERID`, { user: mailUser.id }))
+      .setFooter(language(`mails/mail:USERID`, { id: mailUser.id }))
       .setTimestamp()
     if (message.attachments.length) embed.setImage(message.attachments[0].url)
 
@@ -321,7 +326,8 @@ export default class {
   }
 
   async close(message: Message, content: string, guildSettings: GuildSettings | null, mail: GamerMail) {
-    if (message.channel instanceof PrivateChannel) return
+    // If an empty string is passed cancel the command
+    if (message.channel instanceof PrivateChannel || !content) return
 
     const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
     if (!language) return
@@ -332,65 +338,54 @@ export default class {
 
     const prefix = guildSettings?.prefix || this.Gamer.prefix
 
-    const tag = (await this.Gamer.database.models.tag.findOne({
+    const tag = await this.Gamer.database.models.tag.findOne({
       guildID: message.channel.guild.id,
       mailOnly: true,
       name: content.toLowerCase()
-    })) as GamerTag | null
+    })
 
     const user = this.Gamer.users.get(mail.userID)
     if (!user) return
 
     // Delete the mail from the database
-    this.Gamer.database.models.mail.deleteOne({ guildID: message.channel.guild.id, userID: mail.userID })
+    await this.Gamer.database.models.mail.deleteOne({ guildID: message.channel.guild.id, userID: mail.userID })
 
-    // If the moderator is trying to send a tag
-    if (tag) {
-      // Fetch all emojis to transform variables
-      const emojis = (await this.Gamer.database.models.emoji.find()) as GamerEmoji[]
-      // Transform the tag string
-      const transformed = this.Gamer.helpers.transform.variables(
-        tag.embedCode,
-        user,
-        message.channel.guild,
-        message.author,
-        emojis
+    const dmEmbed = new GamerEmbed()
+      .setAuthor(
+        language(`mails/mail:CLOSED_BY`, {
+          user: message.member?.nick || message.author.username,
+          guild: message.channel.guild.name
+        }),
+        message.author.avatarURL
       )
+      .setDescription(content)
+      .addField(language(`mails/mail:CLOSED`), language(`mails/mail:CLOSED_INFO`, { prefix }))
+      .setTimestamp()
 
-      let success = false
-      try {
+    try {
+      // Get the user dm and send the embed
+      const dmChannel = await user.getDMChannel()
+      // If the moderator is trying to send a tag
+      if (tag) {
+        // Fetch all emojis to transform variables
+        const emojis = await this.Gamer.database.models.emoji.find()
+        // Transform the tag string
+        const transformed = this.Gamer.helpers.transform.variables(
+          tag.embedCode,
+          user,
+          message.channel.guild,
+          message.author,
+          emojis
+        )
         // Convert the string to JSON
         const embed = JSON.parse(transformed)
-        // Get the user dm and send the embed
-        const dmChannel = await user.getDMChannel()
         await dmChannel.createMessage({ content: embed.plaintext, embed: embed })
-        // Tell the user who sent them the message above because the tag might not be clear and that the mail is closed
-        const dmEmbed = new GamerEmbed()
-          .setAuthor(
-            language(`mails/mail:CLOSED_BY`, {
-              user: message.member?.nick || message.author.username,
-              guild: message.channel.guild.name
-            }),
-            message.author.avatarURL
-          )
-          .setDescription(content)
-          .addField(language(`mails/mail:CLOSED`), language(`mails/mail:CLOSED_INFO`, { prefix }))
-          .setTimestamp()
-
-        dmChannel.createMessage({ embed: dmEmbed.code })
-        // Tell the mod the message was sent
-        message.channel.createMessage(language(`mails/mail:TAG_SENT`, { name: tag.name }))
-        // Show the tag sent to the mods
-        message.channel.createMessage({ content: embed.plaintext, embed: embed })
-        success = true
-      } catch (error) {
-        // Something went wrong somewhere so show it failed
-        return message.channel.createMessage(language(`mails/mail:DM_FAILED`, { name: tag.name }))
       }
-
-      // Some error happened so cancel out
-      if (!success) return
-    }
+      // Alerts the user that mail closed
+      // If the tag was sent still send this because it tells the user who sent them the message above
+      // because the tag might not be clear and that the mail is closed
+      dmChannel.createMessage({ embed: dmEmbed.code })
+    } catch {}
 
     message.channel.delete(language(`mails/mail:CHANNEL_DELETE_REASON`, { user: message.author.username }))
 

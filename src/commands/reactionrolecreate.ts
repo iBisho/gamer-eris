@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command([`reactionrolecreate`, `rrc`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -10,9 +9,9 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -25,8 +24,11 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
   const messageToUse =
     message.channel.messages.get(messageID) || (await Gamer.getMessage(message.channel.id, messageID))
 
-  const validEmoji = Gamer.helpers.discord.convertEmoji(emoji, `data`)
-  if (!validEmoji) return message.channel.createMessage(language(`community/emojicreate:NEED_VALID_EMOJI`))
+  const validEmoji = await Gamer.database.models.emoji.findOne({
+    name: emoji.toLowerCase()
+  })
+
+  if (!validEmoji) return message.channel.createMessage(language(`emojis/emojicreate:NEED_VALID_EMOJI`))
 
   const roleIDs = []
 
@@ -47,9 +49,10 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
 
   if (reactionRole) return message.channel.createMessage(language(`role/reactionrolecreate:NAME_EXISTS`, { name }))
 
-  const reaction = `${validEmoji.name}:${validEmoji.id}`
+  const reaction = Gamer.helpers.discord.convertEmoji(validEmoji.fullCode, `reaction`)
+  if (!reaction) return
 
-  new Gamer.database.models.reactionRole({
+  await Gamer.database.models.reactionRole.create({
     name,
     reactions: [
       {
