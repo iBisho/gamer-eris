@@ -70,10 +70,9 @@ export default new Command(
       // Now we can edit the message with the promise's resolved result(s).
       const newContent = value
       try {
-        await outputMsg.edit(newContent.join('\n'))
+        await outputMsg.edit(newContent)
       } catch (_) {
-        newContent.splice(-2, 1, '(content too long)')
-        outputMsg.edit(newContent.join('\n')).catch(() => {})
+        message.channel.createMessage('Too long.')
       }
     }
   },
