@@ -12,6 +12,7 @@ import MissionSchema from './schemas/mission'
 import ModlogSchema from './schemas/modlog'
 import ReactionRoleSchema from './schemas/reactionrole'
 import RolesetSchema from './schemas/roleset'
+import RoleMessageSchema, { GamerRoleMessage } from './schemas/rolemessage'
 import ShortcutSchema from './schemas/shortcut'
 import SubscriptionSchema, { GamerSubscription } from './schemas/subscription'
 import SurveySchema from './schemas/survey'
@@ -25,7 +26,15 @@ import { GuildSettings, UserSettings, MemberSettings } from '../lib/types/settin
 
 import config from '../../config'
 import { GamerEmoji } from '../lib/types/database'
-import { GamerMail, GamerMailLabel, GamerTag, GamerTradingCard, GamerReactionRole, GamerEvent } from '../lib/types/gamer'
+import {
+  GamerMail,
+  GamerMailLabel,
+  GamerTag,
+  GamerTradingCard,
+  GamerReactionRole,
+  GamerEvent,
+  GamerRoleset
+} from '../lib/types/gamer'
 
 const connectionString = config.mongoConnectionString
 
@@ -44,7 +53,8 @@ class Database {
     mission: mongoose.model('Mission', MissionSchema),
     modlog: mongoose.model('Modlog', ModlogSchema),
     reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),
-    roleset: mongoose.model('Roleset', RolesetSchema),
+    roleMessages: mongoose.model<GamerRoleMessage>('RoleMessage', RoleMessageSchema),
+    roleset: mongoose.model<GamerRoleset>('Roleset', RolesetSchema),
     shortcut: mongoose.model('Shortcut', ShortcutSchema),
     subscription: mongoose.model<GamerSubscription>('Subscription', SubscriptionSchema),
     survey: mongoose.model('Survey', SurveySchema),

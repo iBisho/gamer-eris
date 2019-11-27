@@ -1,0 +1,70 @@
+import Event from '../lib/structures/Event'
+import { TextChannel, Constants, Message, PrivateChannel } from 'eris'
+import GamerClient from '../lib/structures/GamerClient'
+import GamerEmbed from '../lib/structures/GamerEmbed'
+import { PartialMessage } from '../lib/types/discord'
+
+export default class extends Event {
+  async execute(message: Message | PartialMessage) {
+    if (message.channel instanceof PrivateChannel) return
+
+    const Gamer = message.channel.guild.shard.client as GamerClient
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+    if (!language) return
+
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    // If there is no channel set for logging this cancel
+    if (!guildSettings?.moderation.logs.serverlogs.messages.channelID) return
+
+    // Create the base embed that first can be sent to public logs
+    const embed = new GamerEmbed()
+      .setTitle(language(`moderation/logs:MESSAGE_DELETED`))
+      .addField(language(`moderation/logs:MESSAGE_ID`), message.id, true)
+      .addField(language(`moderation/logs:CHANNEL`), message.channel.mention, true)
+      .setFooter(language(`moderation/logs:MESSAGE_WARNING`), message.channel.guild.iconURL)
+      .setTimestamp()
+
+    const logs = guildSettings.moderation.logs
+
+    const publicChannel = logs.publiclogsChannelID
+      ? message.channel.guild.channels.get(logs.publiclogsChannelID)
+      : undefined
+
+    const auditlogs = await message.channel.guild.getAuditLogs(
+      undefined,
+      undefined,
+      Constants.AuditLogActions.MESSAGE_DELETE
+    )
+
+    const logChannel = logs.serverlogs.members.channelID
+      ? message.channel.guild.channels.get(logs.serverlogs.members.channelID)
+      : undefined
+
+    if (logs.serverlogs.messages.deletedPublicEnabled && publicChannel && publicChannel instanceof TextChannel)
+      publicChannel.createMessage({ embed: embed.code })
+
+    if (message instanceof Message) {
+      embed.setThumbnail(message.author.avatarURL)
+      if (message.attachments.length) embed.setImage(message.attachments[0].url)
+      if (message.content) {
+        embed.addField(language(`moderation/logs:MESSAGE_CONTENT`), message.content.substring(0, 1024))
+        if (message.content.length > 1024)
+          embed.addField(language(`moderation/logs:MESSAGE_CONTENT_CONTINUED`), message.content.substring(1024))
+      }
+
+      const auditLogEntry = auditlogs.entries.find(e => e.targetID === message.author.id)
+      if (auditLogEntry) {
+        embed
+          .setAuthor(auditLogEntry.user.username, auditLogEntry.user.avatarURL)
+          .addField(language(`moderation/logs:REASON`), auditLogEntry.reason || language(`common:NONE`))
+      }
+    }
+
+    // Send the finalized embed to the log channel
+    if (logChannel instanceof TextChannel) {
+      const botPerms = logChannel.permissionsOf(Gamer.user.id)
+      if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
+        logChannel.createMessage({ embed: embed.code })
+    }
+  }
+}
