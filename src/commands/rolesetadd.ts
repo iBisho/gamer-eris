@@ -1,8 +1,6 @@
 import { Command } from 'yuuko'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
-import { GamerRoleset } from '../lib/types/gamer'
 
 export default new Command([`rolesetadd`, `rsa`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -11,9 +9,9 @@ export default new Command([`rolesetadd`, `rsa`], async (message, args, context)
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -24,23 +22,23 @@ export default new Command([`rolesetadd`, `rsa`], async (message, args, context)
   if (!name || (!message.roleMentions.length && !roleIDsOrNames.length))
     return helpCommand.execute(message, [`rolesetadd`], context)
 
-  const roleIDs: string[] = [...message.roleMentions]
+  const roleIDs = message.roleMentions
   for (const roleIDOrName of roleIDsOrNames) {
     const role =
       message.channel.guild.roles.get(roleIDOrName) ||
       message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
-    if (!role) continue
+    if (!role || roleIDs.includes(role.id)) continue
     roleIDs.push(role.id)
   }
 
-  const roleset = (await Gamer.database.models.roleset.findOne({
+  const roleset = await Gamer.database.models.roleset.findOne({
     guildID: message.channel.guild.id,
-    name
-  })) as GamerRoleset | null
+    name: name.toLowerCase()
+  })
 
-  if (!roleset) return message.channel.createMessage(language(`roles/rolesetadd:INVALID_NAME`))
+  if (!roleset) return message.channel.createMessage(language(`roles/rolesetadd:INVALID_NAME`, { name }))
 
-  const uniqueRoleIDs = new Set(...roleset.roleIDs, ...roleIDs)
+  const uniqueRoleIDs = new Set([...roleset.roleIDs, ...roleIDs])
   roleset.roleIDs = [...uniqueRoleIDs]
   roleset.save()
 

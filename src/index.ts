@@ -64,6 +64,23 @@ Gamer.globalCommandRequirements = {
       return false
     }
 
+    // If the user is using commands within 2 seconds ignore it
+    if (Gamer.slowmode.some(user => user.id === message.author.id)) {
+      // Cleans up spam command messages from users
+      if (botPerms.has('manageMessages')) message.delete().catch(() => null)
+      return false
+    }
+
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    if (!guildSettings) return true
+
+    // If it is the support channel and NOT a server admin do not allow command
+    if (
+      message.channel.id === guildSettings.mails.supportChannelID &&
+      !Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)
+    )
+      return false
+
     return true
   }
 }

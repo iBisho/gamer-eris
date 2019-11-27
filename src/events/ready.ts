@@ -182,8 +182,8 @@ export default class extends Event {
 
     // Clears out any user who is past the slowmode of 2 seconds
     setInterval(() => {
-      const now = Date.now()
       if (!Gamer.slowmode.length) return
+      const now = Date.now()
 
       Gamer.slowmode = Gamer.slowmode.filter(user => now - user.timestamp < 2000)
     }, milliseconds.SECOND)

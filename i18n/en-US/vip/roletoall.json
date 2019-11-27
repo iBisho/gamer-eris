@@ -9,12 +9,12 @@
 	"EXTENDED_LINE_6": "**{{prefix}}roletoall [@Role | Role ID | RoleName]** ~ Gives the role to everyone in the server.",
 	"EXTENDED_LINE_7": "**{{prefix}}roletoall [@Role | Role ID | RoleName] [@Role | Role ID | RoleName]** ~ Everyone who has the second role will receive the first role.",
 	"USAGE": "{{prefix}}roletoall [@Role | Role ID | RoleName] [@Role | Role ID | RoleName]",
-	"ALIASES": "{{prefix}}ar | {{prefix}}oprahrole",
+	"ALIASES": "{{prefix}}oprahrole",
 	"PATIENCE": "Please wait while I give the role {{role}} to {{amount}} members.",
 	"FILTER": "Users who have the role {{role}} will be skipped.",
 	"TIME": "This may take a while depending on how many members are affected.",
 	"REASON": "{{user}}, added role using roletoall command",
-	"SUCCESS": "All specified members now have the new role! Thank you for your patience.",
+	"SUCCESS": "{{mention}}, All specified members now have the new role! Thank you for your patience.",
 	"MISSING_PERM": "You do not have the permissions needed to give roles or the role you are trying to give is higher than your highest role.",
 	"NEED_VIP": "This command will only work for a VIP server. To become a VIP, you must be nitro boosting our support server and use the vipregister command."
 }

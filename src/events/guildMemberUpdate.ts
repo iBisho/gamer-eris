@@ -15,7 +15,6 @@ export default class extends Event {
     if (!oldMember) return
 
     const Gamer = guild.shard.client as GamerClient
-
     const botMember = guild.members.get(Gamer.user.id)
     if (!botMember) return
 
@@ -23,8 +22,6 @@ export default class extends Event {
     if (!language) return
 
     const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
-    // If no custom guild settings cancel out
-    if (!guildSettings) return
 
     const embed = new GamerEmbed()
       .setTitle(language(`moderation/logs:MEMBER_UPDATED`))
@@ -36,7 +33,7 @@ export default class extends Event {
 
     // Nickname changed
 
-    if (member.nick !== oldMember.nick && guildSettings.moderation.logs.serverlogs.members.channelID) {
+    if (guildSettings && member.nick !== oldMember.nick && guildSettings.moderation.logs.serverlogs.members.channelID) {
       embed.addField(language(`moderation/logs:NICKNAME`), `${oldMember.nick} **=>** ${member.nick}`, true)
 
       const logs = guildSettings.moderation.logs
@@ -79,7 +76,7 @@ export default class extends Event {
     // Server logs feature
 
     // If there is no channel set for logging this cancel
-    if (!guildSettings.moderation.logs.serverlogs.roles.channelID) return
+    if (!guildSettings?.moderation.logs.serverlogs.roles.channelID) return
 
     embed.addField(
       language(`moderation/logs:ROLE_UPDATED`),

@@ -9,13 +9,17 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
   const Gamer = context.client as GamerClient
 
   const gamerGuild = Gamer.guilds.get(constants.general.gamerServerID)
-  if (!gamerGuild) return message.channel.createMessage('1')
+  if (!gamerGuild) return
 
   const gamerMember = gamerGuild.members.get(message.author.id)
-  if (!gamerMember) return message.channel.createMessage('2')
+  if (!gamerMember) return
+
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
 
   // User is not a server booster trying to use a vip only command
-  if (!gamerMember.roles.includes(constants.general.nitroBoosterRoleID)) return message.channel.createMessage('3')
+  if (!gamerMember.roles.includes(constants.general.nitroBoosterRoleID))
+    return message.channel.createMessage(language(`vip/vipregister:MISSING_BOOST_ROLE`))
 
   const userSettings =
     (await Gamer.database.models.user.findOne({
@@ -26,7 +30,8 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
     }))
 
   // They have already registered a VIP server.
-  if (userSettings.vip.guildsRegistered.length) return message.channel.createMessage('4')
+  if (userSettings.vip.guildsRegistered.length)
+    return message.channel.createMessage(language(`vip/vipregister:ALREADY_VIP`))
 
   const guildSettings =
     (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) ||
@@ -41,9 +46,6 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
 
   userSettings.vip.guildsRegistered.push(message.channel.guild.id)
   userSettings.save()
-
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return message.channel.createMessage('6')
 
   return message.channel.createMessage(language(`vip/vipregister:REGISTERED_VIP`))
 })

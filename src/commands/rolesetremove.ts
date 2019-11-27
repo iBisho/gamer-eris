@@ -1,8 +1,6 @@
 import { Command } from 'yuuko'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
-import { GamerRoleset } from '../lib/types/gamer'
 
 export default new Command([`rolesetremove`, `rsr`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -11,9 +9,9 @@ export default new Command([`rolesetremove`, `rsr`], async (message, args, conte
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -33,12 +31,12 @@ export default new Command([`rolesetremove`, `rsr`], async (message, args, conte
     roleIDs.push(role.id)
   }
 
-  const roleset = (await Gamer.database.models.roleset.findOne({
+  const roleset = await Gamer.database.models.roleset.findOne({
     guildID: message.channel.guild.id,
-    name
-  })) as GamerRoleset | null
+    name: name.toLowerCase()
+  })
 
-  if (!roleset) return message.channel.createMessage(language(`roles/rolesetadd:INVALID_NAME`))
+  if (!roleset) return message.channel.createMessage(language(`roles/rolesetadd:INVALID_NAME`, { name }))
 
   roleset.roleIDs = roleset.roleIDs.filter(id => !roleIDs.includes(id))
   roleset.save()
