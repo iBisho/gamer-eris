@@ -68,8 +68,7 @@ export default new Command(
         value = err
       }
       // Now we can edit the message with the promise's resolved result(s).
-      const newContent = outputMsg.content.split('\n')
-      newContent.splice(-1, 0, '// Resolved to:', value)
+      const newContent = value
       try {
         await outputMsg.edit(newContent.join('\n'))
       } catch (_) {
