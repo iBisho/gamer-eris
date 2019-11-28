@@ -3,7 +3,6 @@ import GamerClient from '../structures/GamerClient'
 import { GuildSettings } from '../types/settings'
 import { GamerModlog } from '../types/gamer'
 import GamerEmbed from '../structures/GamerEmbed'
-import constants from '../../constants'
 import { modlogTypes } from '../types/enums/moderation'
 import { TFunction } from 'i18next'
 
@@ -54,23 +53,26 @@ export default class {
     if (!guildSettings?.moderation.logs.modlogsChannelID) return 0
 
     // Generate a modlogid
-    const modlogs = (await this.Gamer.database.models.modlog.find({
+    const modlogs = await this.Gamer.database.models.modlog.find({
       guildID: message.channel.guild.id
-    })) as GamerModlog[]
+    })
     const modlogID = this.createNewID(modlogs)
 
-    const payload = new this.Gamer.database.models.modlog({
+    const payload = await this.Gamer.database.models.modlog.create({
       action,
       guildID: message.channel.guild.id,
       modID: message.author.id,
       modlogID,
       messageID: undefined,
-      duration,
       reason,
       timestamp: message.timestamp,
-      userID: user.id,
-      needsUnmute: duration && action === `mute`
-    }) as GamerModlog
+      userID: user.id
+    })
+
+    if (action === `mute` && duration) {
+      payload.duration = duration
+      payload.needsUnmute = true
+    }
 
     const embed = this.createEmbed(message, user, payload, language)
 
@@ -140,26 +142,29 @@ export default class {
         break
     }
 
-    const duration = logData.duration ? ` ${constants.emojis.hourglass} [${logData.duration}]` : ``
-    const author = `${this.Gamer.helpers.transform.toTitleCase(logData.action)} ${duration}`
-
-    return new GamerEmbed()
-      .setAuthor(author, user.avatarURL)
-      .setColor(color)
-      .setDescription(
-        [
-          `**${language(`common:MODERATOR`)}** ${message.author.username || ``} *(${message.author.id})*`,
-          `**${language(`moderation/modlog:MEMBER`)}** ${user.username || ``} *(${user.id})*`,
-          `**${language(`common:REASON`)}** ${logData.reason}`
-        ].join(`\n`)
+    const description = [
+      `**${language(`common:MODERATOR`)}** ${message.author.username || ``} *(${message.author.id})*`,
+      `**${language(`moderation/modlog:MEMBER`)}** ${user.username || ``} *(${user.id})*`,
+      `**${language(`common:REASON`)}** ${logData.reason}`
+    ]
+    if (logData.duration) {
+      description.push(
+        `**${language(`moderation/modlog:DURATION`)}** ${this.Gamer.helpers.transform.humanizeMilliseconds(
+          logData.duration
+        )}`
       )
+    }
+    return new GamerEmbed()
+      .setAuthor(this.Gamer.helpers.transform.toTitleCase(logData.action), user.avatarURL)
+      .setColor(color)
+      .setDescription(description.join(`\n`))
       .setThumbnail(image)
       .setFooter(language(`moderation/modlog:CASE`, { id: logData.modlogID }))
       .setTimestamp()
   }
 
   async processMutes() {
-    const mutedLogs = (await this.Gamer.database.models.modlog.find({ needsUnmute: true })) as GamerModlog[]
+    const mutedLogs = await this.Gamer.database.models.modlog.find({ needsUnmute: true })
 
     const now = Date.now()
     for (const log of mutedLogs) {
@@ -167,9 +172,7 @@ export default class {
       // If the time has not completed yet skip
       if (now < log.timestamp + log.duration) continue
       // Get the guild settings to get the mute role id
-      const guildSettings = (await this.Gamer.database.models.guild.findOne({
-        id: log.guildID
-      })) as GuildSettings | null
+      const guildSettings = await this.Gamer.database.models.guild.findOne({ id: log.guildID })
       // If there is no guildsettings or no role id skip
       if (!guildSettings?.moderation.roleIDs.mute) continue
       // Since the time has fully elapsed we need to remove the role on the user

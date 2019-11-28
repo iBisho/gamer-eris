@@ -51,7 +51,7 @@ export default class extends Event {
         const joinReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `reaction`)
         if (!joinReaction) return
         const joinReactors = await message.getReaction(joinReaction).catch(() => [])
-        if (joinReactors.find(user => user.id === userID)) message.removeReaction(joinReaction)
+        if (joinReactors.find(user => user.id === userID)) message.removeReaction(joinReaction, userID)
 
         const response = Gamer.helpers.events.joinEvent(event, userID, language)
         message.channel.createMessage(response).then(msg => setTimeout(() => msg.delete(), 10000))
@@ -60,7 +60,7 @@ export default class extends Event {
         const denyReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.redX, `reaction`)
         if (!denyReaction) return
         const denyReactors = await message.getReaction(denyReaction).catch(() => [])
-        if (denyReactors.find(user => user.id === userID)) message.removeReaction(denyReaction)
+        if (denyReactors.find(user => user.id === userID)) message.removeReaction(denyReaction, userID)
 
         Gamer.helpers.events.denyEvent(event, userID)
         message.channel

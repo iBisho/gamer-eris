@@ -33,7 +33,9 @@ import {
   GamerTradingCard,
   GamerReactionRole,
   GamerEvent,
-  GamerRoleset
+  GamerRoleset,
+  GamerModlog,
+  GamerLevel
 } from '../lib/types/gamer'
 
 const connectionString = config.mongoConnectionString
@@ -47,11 +49,11 @@ class Database {
     feedback: mongoose.model<GamerFeedback>('Feedback', FeedbackSchema),
     guild: mongoose.model<GuildSettings>('Guild', GuildSchema),
     label: mongoose.model<GamerMailLabel>('Label', LabelSchema),
-    level: mongoose.model('Level', LevelSchema),
+    level: mongoose.model<GamerLevel>('Level', LevelSchema),
     mail: mongoose.model<GamerMail>('Mail', MailSchema),
     member: mongoose.model<MemberSettings>('Member', MemberSchema),
     mission: mongoose.model('Mission', MissionSchema),
-    modlog: mongoose.model('Modlog', ModlogSchema),
+    modlog: mongoose.model<GamerModlog>('Modlog', ModlogSchema),
     reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),
     roleMessages: mongoose.model<GamerRoleMessage>('RoleMessage', RoleMessageSchema),
     roleset: mongoose.model<GamerRoleset>('Roleset', RolesetSchema),

@@ -97,9 +97,9 @@ export interface GuildSettings extends mongoose.Document {
   modules: string[]
   moderation: {
     roleIDs: {
-      autorole: string
+      autorole?: string
       public: string[]
-      mute: string
+      mute?: string
     }
     users: {
       mutedUserIDs: string[]

@@ -207,8 +207,14 @@ export default class {
       .addText(event.platform, 35, 261)
       .setColor(`#4C4C4C`)
       .setTextFont(`13px SFTHeavy`)
-    // .addText(event.description.substring(0, 100), 35, 286)
 
+      .addText(event.description.substring(0, 100), 35, 286)
+
+    const platformWidth = canvas.setTextFont(`18px SFTHeavy`).measureText(event.platform)
+    console.log(platformWidth)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    canvas.setTextFont(`13px SFTHeavy`).addText(event.activity, platformWidth.width, 261)
     if (event.showAttendees) canvas.addText(attendees.join(', ').substring(0, 100), 35, 311)
 
     if (event.isRecurring) {
@@ -340,7 +346,7 @@ export default class {
     for (const event of events) {
       if (event.end < now) eventsToEnd.push(event)
       else if (event.start < now && !event.hasStarted && event.end > now) eventsToStart.push(event)
-      else if (event.start > now && !event.hasStarted && event.attendees.length) eventsToStart.push(event)
+      else if (event.start > now && !event.hasStarted && event.attendees.length) eventsToRemind.push(event)
     }
 
     for (const event of eventsToEnd) this.endEvent(event)
@@ -425,8 +431,10 @@ export default class {
     const guild = this.Gamer.guilds.get(event.guildID)
     if (!guild) return
 
+    const now = Date.now()
+
     const reminder = event.reminders.find(
-      reminder => !event.executedReminders.includes(reminder) && event.start - Date.now() > reminder
+      reminder => !event.executedReminders.includes(reminder) && event.start - now < reminder
     )
     if (!reminder) return
     event.executedReminders.push(reminder)
@@ -435,7 +443,7 @@ export default class {
     const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
     if (!language) return
 
-    const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(Date.now() - event.start)
+    const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(event.start - now)
 
     const embed = new GamerEmbed()
       .setAuthor(language(`events/events:REMIND`, { eventID: event.id }))

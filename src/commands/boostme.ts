@@ -42,7 +42,11 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
     }
 
     // Add an activated default booster to the user
-    userSettings.leveling.boosts.filter(boost => boost.timestamp && Date.now() < boost.timestamp).push(newBoost)
+    userSettings.leveling.boosts = userSettings.leveling.boosts.filter(
+      boost => boost.timestamp && Date.now() < boost.timestamp
+    )
+    userSettings.leveling.boosts.push(newBoost)
+
     availableBoost = newBoost
   }
 

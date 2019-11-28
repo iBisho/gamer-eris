@@ -58,5 +58,5 @@ export default new Command([`kick`, `k`], async (message, args, context) => {
 
   Gamer.helpers.moderation.createModlog(message, guildSettings, language, user, `kick`, reason)
 
-  return message.channel.createMessage(language(`moderation/kick:SUCCESS`, { user: user.mention, reason }))
+  return message.channel.createMessage(language(`moderation/kick:SUCCESS`, { user: user.username, reason }))
 })

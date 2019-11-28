@@ -1,8 +1,7 @@
 import { Member } from 'eris'
-import { MemberSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
-import { GamerLevel, GamerMission } from '../types/gamer'
+import { GamerMission } from '../types/gamer'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -32,12 +31,13 @@ export default class {
     const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
 
     let multiplier = 1
-    if (userSettings)
+    if (userSettings) {
       for (const boost of userSettings.leveling.boosts) {
         if (!boost.active || !boost.activatedAt) continue
         if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
         multiplier += boost.multiplier
       }
+    }
 
     const totalXP = xpAmountToAdd * multiplier + memberSettings.leveling.xp
     memberSettings.leveling.xp = totalXP
@@ -63,11 +63,8 @@ export default class {
     // Add one level and set the XP to whatever is left
     memberSettings.leveling.level = newLevel.level
     memberSettings.save()
-
-    // Now we need to check if the user went up a level
-
     // Fetch all custom guild levels data
-    const allGuildLevels = (await this.Gamer.database.models.level.find({ guildID: member.guild.id })) as GamerLevel[]
+    const allGuildLevels = await this.Gamer.database.models.level.find({ guildID: member.guild.id })
     if (!allGuildLevels) return
     // Find if this level has any custom data
     const levelData = allGuildLevels.find(data => data.level === newLevel.level)
@@ -148,7 +145,7 @@ export default class {
   async removeXP(member: Member, xpAmountToRemove = 1) {
     if (xpAmountToRemove < 1) return
 
-    const settings = (await this.Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings | null
+    const settings = await this.Gamer.database.models.member.findOne({ id: member.id })
     if (!settings) return
 
     // If the XP is less than 0 after removing then set it to 0
@@ -175,7 +172,7 @@ export default class {
     if (!oldLevel || !bot || !bot.permission.has('manageRoles')) return
 
     // Fetch all custom guild levels data
-    const allGuildLevels = (await this.Gamer.database.models.level.find({ guildID: member.guild.id })) as GamerLevel[]
+    const allGuildLevels = await this.Gamer.database.models.level.find({ guildID: member.guild.id })
     if (!allGuildLevels) return
     // Find if this level has any custom data
     const levelData = allGuildLevels.find(data => data.level === oldLevel.level)

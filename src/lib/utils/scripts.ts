@@ -218,4 +218,49 @@ export default class {
 
     guildSettings.save()
   }
+
+  // Create the mute system
+  async createMuteSystem(guild: Guild, guildSettings: GuildSettings) {
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+    if (!language) return
+
+    // If the role is already set cancel creation
+    if (guildSettings.moderation.roleIDs.mute && guild.roles.has(guildSettings.moderation.roleIDs.mute)) return
+
+    // Create a new role
+    const muteRole = await guild.createRole(
+      {
+        name: language(`moderation/mute:ROLE_NAME`)
+      },
+      language(`moderation/mute:SETUP_CREATED`)
+    )
+    guildSettings.moderation.roleIDs.mute = muteRole.id
+    guildSettings.save()
+
+    for (const channel of guild.channels.values()) {
+      // Skip if the verify category
+      if (
+        (channel.parentID && channel.parentID === guildSettings.verify.categoryID) ||
+        channel.id === guildSettings.verify.categoryID
+      )
+        continue
+
+      const botPerms = channel.permissionsOf(this.Gamer.user.id)
+      // If no permissions in this channel to manage it skip
+      if (!botPerms.has(`manageChannels`) || !botPerms.has(`manageRoles`)) continue
+
+      // If the permissions are synced with the category channel skip
+      if (channel.parentID) {
+        const category = guild.channels.get(channel.parentID)
+        if (!category) continue
+
+        if (category.permissionOverwrites === channel.permissionOverwrites) continue
+      }
+
+      // Update the channel perms
+      channel.editPermission(muteRole.id, 0, 1024, `role`, language(`moderation/mute:MUTE_ROLE_REASON`))
+    }
+
+    return muteRole
+  }
 }

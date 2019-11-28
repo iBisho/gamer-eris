@@ -16,9 +16,11 @@ export default new Command(`setverify`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
   if (!guildSettings) guildSettings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
 
-  const [action] = args
-
   const helpCommand = Gamer.commandForName('help')
+  if (!helpCommand) return
+
+  const [action] = args
+  if (!action) return helpCommand.execute(message, [`setverify`], context)
 
   switch (action.toLowerCase()) {
     case 'enable':

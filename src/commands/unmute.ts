@@ -2,8 +2,6 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
-import { GamerModlog } from '../lib/types/gamer'
 
 export default new Command(`unmute`, async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || !message.member) return
@@ -12,23 +10,33 @@ export default new Command(`unmute`, async (message, args, context) => {
   const botMember = message.channel.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+
+  const guildSettings = await Gamer.database.models.guild.findOne({
+    id: message.channel.guild.id
+  })
   // If there is default settings the mute role won't exist
-  if (!guildSettings) return message.channel.createMessage(language(`moderation/unmute:NEED_MUTE_ROLE`))
+  if (!guildSettings || !guildSettings.moderation.roleIDs.mute)
+    return message.channel.createMessage(language(`moderation/unmute:NEED_MUTE_ROLE`))
 
   // Check if the bot has the ban permissions
   if (!botMember.permission.has('manageRoles'))
-    return message.channel.createMessage(language(`moderation/mute:NEED_MANAGE_ROLES`))
+    return message.channel.createMessage(language(`moderation/unmute:NEED_MANAGE_ROLES`))
 
   if (
     !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
   )
     return
+
+  // Check if the mute role exists
+  const muteRole = message.channel.guild.roles.get(guildSettings.moderation.roleIDs.mute)
+  if (!muteRole) return
+
+  const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
+  if (botsHighestRole.position <= muteRole.position)
+    return message.channel.createMessage(language(`moderation/unmute:BOT_TOO_LOW`))
 
   const [userID] = args
   args.shift()
@@ -46,6 +54,9 @@ export default new Command(`unmute`, async (message, args, context) => {
 
   const member = message.channel.guild.members.get(user.id)
   if (!member) return
+
+  if (!member.roles.includes(muteRole.id)) return message.channel.createMessage(language(`moderation/unmute:NOT_MUTED`))
+
   // Checks if the bot is higher than the user
   if (!Gamer.helpers.discord.compareMemberPosition(botMember, member))
     return message.channel.createMessage(language(`moderation/unmute:BOT_TOO_LOW`))
@@ -53,26 +64,21 @@ export default new Command(`unmute`, async (message, args, context) => {
   if (!Gamer.helpers.discord.compareMemberPosition(message.member, member))
     return message.channel.createMessage(language(`moderation/unmute:USER_TOO_LOW`))
 
-  // Check if the mute role exists
-  const muteRole = message.channel.guild.roles.get(guildSettings.moderation.roleIDs.mute)
-  if (!muteRole) return
-
   await member.removeRole(guildSettings.moderation.roleIDs.mute)
 
   const embed = new GamerEmbed()
-    .setDescription(language(`moderation/unmute:TITLE`, { guildName: message.channel.guild.name, user: user.username }))
+    .setDescription(
+      language(`moderation/unmute:TITLE`, { guildName: message.channel.guild.name, username: user.username })
+    )
     .setThumbnail(user.avatarURL)
     .setTimestamp()
-    .addField(
-      language(`common:REASON`),
-      language(`moderation/unmute:REASON`, { user: message.author.username, reason })
-    )
+    .addField(language(`common:REASON`), reason)
 
   // Send the user a message. AWAIT to make sure message is sent before they are banned and lose access
   const dmChannel = await user.getDMChannel().catch(() => undefined)
   if (dmChannel) dmChannel.createMessage({ embed: embed.code }).catch(() => undefined)
 
-  const modlogID = Gamer.helpers.moderation.createModlog(
+  const modlogID = await Gamer.helpers.moderation.createModlog(
     message,
     guildSettings,
     language,
@@ -96,12 +102,13 @@ export default new Command(`unmute`, async (message, args, context) => {
   message.channel.createMessage({ embed: response.code })
 
   // Set this users mute log to no no longer need to unmute the user
-  const log = (await Gamer.database.models.modlog.findOne({
+  const log = await Gamer.database.models.modlog.findOne({
     action: `mute`,
     userID: member.id,
     guildID: member.guild.id,
-    needUnmute: true
-  })) as GamerModlog | null
+    needsUnmute: true
+  })
+
   if (!log) return
   log.needsUnmute = false
   return log.save()

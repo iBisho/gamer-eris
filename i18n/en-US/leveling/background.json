@@ -15,8 +15,7 @@
 	"PREVIEW_BASIC": "{{greenTick}} Yes\n{{redX}} No",
 	"PREVIEW_VIP": "{{sunglasses}} **Dark** theme\n{{flashlight}} **Light** theme.",
 	"SAVED": "You have successfully changed your background. Loading your profile now...",
-	"VIP_THEME": "Sorry, but the dark theme is only for VIP subscribers. If you want to become VIP, please pledge to our [Patreon](https://www.patreon.com/g4m3r).",
-	"VIP_BACKGROUND": "⭐ That background is only for VIP subscribers. If you want to become VIP please pledge to our [Patreon](https://www.patreon.com/g4m3r).",
+	"VIP_THEME": "⭐ Sorry, but the dark theme is only for VIP users. If you want to become VIP, join the gamer server with the invite command and boost the gamer server.",
 	"UNLOCKABLE": "Background #{{id}} is not unlockable with currency.",
 	"NEED_MONEY": "You do not have enough Gamer Coins to buy this background. This background costs {{cost}} and you only have {{currency}}. You need {{needed}} more Gamer Coins.",
 	"BOUGHT": "You just bought the #{{name}} background pack. You can now use the background command to equip your backgrounds."
