@@ -23,9 +23,13 @@ export default new Command(`embed`, async (message, args, context) => {
 
   const emojis = await Gamer.database.models.emoji.find()
 
+  const [firstWord] = args
+  const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(firstWord)
+  if (user) args.shift()
+
   const transformed = Gamer.helpers.transform.variables(
     args.join(' '),
-    message.mentions[0],
+    user,
     message.channel.guild,
     message.author,
     emojis
@@ -33,6 +37,7 @@ export default new Command(`embed`, async (message, args, context) => {
 
   const embedCode = JSON.parse(transformed)
   if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
+  console.log(embedCode)
   message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode }).catch(error => {
     const embed = new GamerEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)

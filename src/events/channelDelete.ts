@@ -1,5 +1,5 @@
 import Event from '../lib/structures/Event'
-import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel, AnyGuildChannel, Constants } from 'eris'
+import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel, Constants } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
@@ -60,15 +60,16 @@ export default class extends Event {
     // If public logs are enabled properly then send the embed there
     if (logs.serverlogs.channels.createPublicEnabled && logs.publiclogsChannelID) {
       const publicLogChannel = channel.guild.channels.get(logs.publiclogsChannelID)
-      if (publicLogChannel instanceof TextChannel) {
+      if (publicLogChannel && publicLogChannel instanceof TextChannel) {
         const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
-        if (publicLogChannel && botPerms.has('embedLinks')) publicLogChannel.createMessage({ embed: embed.code })
+        if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
+          publicLogChannel.createMessage({ embed: embed.code })
       }
     }
 
     // Fetch the auditlogs and add the author to the embed of the one who made the role and the reason it was made.
     const auditlogs = await channel.guild.getAuditLogs(undefined, undefined, Constants.AuditLogActions.CHANNEL_DELETE)
-    const auditLogEntry = auditlogs.entries.find(e => (e.target as AnyGuildChannel).id === channel.id)
+    const auditLogEntry = auditlogs.entries.find(e => e.targetID === channel.id)
     if (auditLogEntry) {
       embed
         .setAuthor(auditLogEntry.user.username, auditLogEntry.user.avatarURL)
@@ -77,7 +78,7 @@ export default class extends Event {
 
     // Send the finalized embed to the log channel
     const logChannel = channel.guild.channels.get(guildSettings.moderation.logs.serverlogs.channels.channelID)
-    if (logChannel instanceof TextChannel) {
+    if (logChannel && logChannel instanceof TextChannel) {
       const botPerms = logChannel.permissionsOf(Gamer.user.id)
       if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
         logChannel.createMessage({ embed: embed.code })

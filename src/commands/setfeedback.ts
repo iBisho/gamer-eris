@@ -27,7 +27,7 @@ export default new Command(`setfeedback`, async (message, args, context) => {
   switch (type.toLowerCase()) {
     // Create the feedback system if the user types setup
     case 'setup':
-      return Gamer.helpers.scripts.createFeedbackSystem(Gamer, language, message.channel.guild, guildSettings)
+      return Gamer.helpers.scripts.createFeedbackSystem(message.channel.guild, guildSettings)
     case 'logchannel':
       if (!message.channelMentions || !message.channelMentions.length)
         return message.channel.createMessage(language(`settings/setfeedback:NEED_CHANNEL`))

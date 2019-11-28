@@ -1,0 +1,9 @@
+{
+	"DESCRIPTION": "Export all the feedback into a CSV file after a certain feedback message using the feedback id.",
+	"EXTENDED": "$t(export:EXTENDED_LINE_1)\n$t(export:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**${prefix}export [Message ID] [#Channel]** ~ Exports all feedback sent in that channel after the feedback with ID of 1",
+	"EXTENDED_LINE_2": "Note: The Channel option will only accept either the bug channel or the idea channel from your feedback. Also due to discord limits, we can only export a maximum of 100 messages.",
+	"USAGE": "{{prefix}}export [Message ID] [#Channel]",
+	"ALIASES": "Export does not have any aliases.",
+	"CSV": "Here is your CSV file to easily export your feedback. Cheers!"
+}

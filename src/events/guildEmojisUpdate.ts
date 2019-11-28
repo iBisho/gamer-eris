@@ -28,12 +28,6 @@ export default class extends Event {
     const embed = new GamerEmbed()
       .setTitle(language(emojiCreated ? `moderation/logs:EMOJI_CREATED` : `moderation/logs:EMOJI_DELETED`), emojiURL)
       .addField(language(`moderation/logs:EMOJI_ANIMATED`), emoji.animated.toString(), true)
-      .addField(
-        language(`moderation/logs:USER`),
-        `<@${emoji.user.id}> (${emoji.user.name}#${emoji.user.discriminator})`,
-        true
-      )
-      .addField(language(`moderation/logs:USER_ID`), emoji.user.id, true)
       .addField(language(`moderation/logs:NAME`), emoji.name, true)
       .addField(language(`moderation/logs:TOTAL_EMOJIS`), emojis.length.toString(), true)
       .setFooter(emoji.name, guild.iconURL)
@@ -45,15 +39,16 @@ export default class extends Event {
     // If public logs are enabled properly then send the embed there
     if (logs.serverlogs.emojis.createPublicEnabled && logs.publiclogsChannelID) {
       const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
-      if (publicLogChannel instanceof TextChannel) {
+      if (publicLogChannel && publicLogChannel instanceof TextChannel) {
         const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
-        if (publicLogChannel && botPerms.has('embedLinks')) publicLogChannel.createMessage({ embed: embed.code })
+        if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
+          publicLogChannel.createMessage({ embed: embed.code })
       }
     }
 
     // Send the finalized embed to the log channel
     const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.emojis.channelID)
-    if (logChannel instanceof TextChannel) {
+    if (logChannel && logChannel instanceof TextChannel) {
       const botPerms = logChannel.permissionsOf(Gamer.user.id)
       if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
         logChannel.createMessage({ embed: embed.code })

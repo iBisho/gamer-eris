@@ -21,7 +21,6 @@ export default class extends Event {
       .setTitle(language(`moderation/logs:MESSAGE_DELETED`))
       .addField(language(`moderation/logs:MESSAGE_ID`), message.id, true)
       .addField(language(`moderation/logs:CHANNEL`), message.channel.mention, true)
-      .setFooter(language(`moderation/logs:MESSAGE_WARNING`), message.channel.guild.iconURL)
       .setTimestamp()
 
     const logs = guildSettings.moderation.logs
@@ -36,14 +35,14 @@ export default class extends Event {
       Constants.AuditLogActions.MESSAGE_DELETE
     )
 
-    const logChannel = logs.serverlogs.members.channelID
-      ? message.channel.guild.channels.get(logs.serverlogs.members.channelID)
+    const logChannel = logs.serverlogs.messages.channelID
+      ? message.channel.guild.channels.get(logs.serverlogs.messages.channelID)
       : undefined
 
     if (logs.serverlogs.messages.deletedPublicEnabled && publicChannel && publicChannel instanceof TextChannel)
       publicChannel.createMessage({ embed: embed.code })
 
-    if (message instanceof Message) {
+    if (message instanceof Message && message.channel instanceof TextChannel) {
       embed.setThumbnail(message.author.avatarURL)
       if (message.attachments.length) embed.setImage(message.attachments[0].url)
       if (message.content) {
@@ -57,11 +56,12 @@ export default class extends Event {
         embed
           .setAuthor(auditLogEntry.user.username, auditLogEntry.user.avatarURL)
           .addField(language(`moderation/logs:REASON`), auditLogEntry.reason || language(`common:NONE`))
+          .setFooter(language(`moderation/logs:MESSAGE_WARNING`), message.channel.guild.iconURL)
       }
     }
 
     // Send the finalized embed to the log channel
-    if (logChannel instanceof TextChannel) {
+    if (logChannel && logChannel instanceof TextChannel) {
       const botPerms = logChannel.permissionsOf(Gamer.user.id)
       if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
         logChannel.createMessage({ embed: embed.code })

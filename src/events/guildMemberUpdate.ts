@@ -48,7 +48,7 @@ export default class extends Event {
       }
 
       const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)
-      if (logChannel instanceof TextChannel) {
+      if (logChannel && logChannel instanceof TextChannel) {
         const botPerms = logChannel.permissionsOf(Gamer.user.id)
         if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
           logChannel.createMessage({ embed: embed.code })
@@ -106,7 +106,7 @@ export default class extends Event {
 
     // Send the finalized embed to the log channel
     const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.roles.channelID)
-    if (logChannel instanceof TextChannel) {
+    if (logChannel && logChannel instanceof TextChannel) {
       const botPerms = logChannel.permissionsOf(Gamer.user.id)
       if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
         logChannel.createMessage({ embed: embed.code })

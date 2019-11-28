@@ -68,7 +68,7 @@ export default class GamerClient extends Client {
     mail: new MailHelper(this),
     moderation: new ModerationHelper(this),
     profiles: new ProfileHelper(),
-    scripts: new ScriptsHelper(),
+    scripts: new ScriptsHelper(this),
     transform: new TransformHelper(this),
     utils: new UtilsHelper(this)
   }

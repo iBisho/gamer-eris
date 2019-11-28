@@ -46,7 +46,8 @@ const categories = [
       `setlanguage`,
       `setprefix`,
       `setmail`,
-      `setcapture`
+      `setcapture`,
+      `setlogs`
     ]
   },
   { name: `utility`, commands: [`imgur`] },
@@ -90,11 +91,12 @@ const categories = [
     commands: [`purge`, `nick`, `ban`, `unban`, `kick`, `mute`, `unmute`, `warn`, `modlog`, `reason`]
   },
   { name: `mails`, commands: [`mail`, `label`] },
-  { name: `vip`, commands: [`vipregister`, `roletoall`] },
+  { name: `vip`, commands: [`vipregister`, `roletoall`, `export`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`] },
   { name: `gaming`, commands: [`twitch`] },
   { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`] },
-  { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] }
+  { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] },
+  { name: `tags`, commands: [`tagcreate`, `tagdelete`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {

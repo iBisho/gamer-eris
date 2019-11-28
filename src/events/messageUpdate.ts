@@ -20,11 +20,16 @@ export default class extends Event {
     if (message.channel instanceof PrivateChannel) return
     // Valid message object so we can simply run the monitors
     if (message instanceof Message) {
+      // Most embeds will always trigger a messageUpdate
+      if (!message.editedTimestamp) return
       this.handleServerLogs(message, oldMessage)
       return Gamer.runMonitors(message)
     }
     // Since we only have a partial message because the edited message was uncached we need to fetch it
     const messageToProcess = await message.channel.getMessage(message.id)
+    // Most embeds will always trigger a messageUpdate
+    if (!messageToProcess.editedTimestamp) return
+    this.handleServerLogs(messageToProcess, oldMessage)
     Gamer.runMonitors(messageToProcess)
   }
 
@@ -43,11 +48,10 @@ export default class extends Event {
       .addField(language(`moderation/logs:USER_ID`), message.author.id, true)
       .addField(language(`moderation/logs:MESSAGE_ID`), message.id, true)
       .addField(language(`moderation/logs:CHANNEL`), message.channel.mention, true)
-      .addField(language(`moderation/logs:LINK_TO_MESSAGE`), urlToMessage, true)
-      .setFooter(language(`moderation/logs:MESSAGE_WARNING`), message.channel.guild.iconURL)
+      .addField(language(`moderation/logs:LINK_TO_MESSAGE`), urlToMessage)
       .setTimestamp()
 
-    if (oldMessage) {
+    if (oldMessage && oldMessage.content) {
       embed.addField(language(`moderation/logs:OLD_CONTENT`), oldMessage.content.substring(0, 1024))
       if (oldMessage.content.length > 1024)
         embed.addField(language(`moderation/logs:MESSAGE_CONTENT_CONTINUED`), oldMessage.content.substring(1024))

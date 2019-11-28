@@ -175,6 +175,7 @@ export default class extends Event {
           .setAuthor(language(`gaming/capture:GUESS`), Gamer.user.avatarURL)
           .setTitle(language(`gaming/capture:TITLE`, { prefix: Gamer.guildPrefixes.get(guild.id) || Gamer.prefix }))
           .setImage(randomCard.image)
+          .setFooter(`Add this game to your server to capture more cards with the invite command.`)
 
         channel.createMessage({ embed: embed.code })
       }

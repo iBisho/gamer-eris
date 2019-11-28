@@ -11,7 +11,7 @@ export default class extends Event {
     // Create the base embed that first can be sent to public logs
     const embed = new GamerEmbed()
       .setTitle(language(`moderation/logs:ROLE_DELETED`))
-      .addField(language(`moderation/logs:ROLE_NAME`), role.mention, true)
+      .addField(language(`moderation/logs:ROLE_NAME`), role.name, true)
       .addField(language(`moderation/logs:ROLE_ID`), role.id, true)
       .addField(language(`moderation/logs:TOTAL_ROLES`), role.guild.roles.size.toString(), true)
       .setFooter(role.name, `https://i.imgur.com/iZPBVKB.png`)

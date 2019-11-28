@@ -1,6 +1,10 @@
 import { Command } from 'yuuko'
 import * as util from 'util'
 
+const inspectOptions = {
+  depth: 1
+}
+
 export default new Command(
   ['debug', `eval`],
   async function debug(message, args, context) {
@@ -27,15 +31,13 @@ export default new Command(
       // Sweet. Wait for that to resolve.
       let value
       try {
-        value = util.inspect(await result, {
-          depth: 1
-        })
+        value = util.inspect(await result, inspectOptions)
       } catch (err) {
         value = err
       }
-      response.splice(1, 0, value.substring(0, 1985))
+      response.splice(1, 0, util.inspect(value, inspectOptions).substring(0, 1985))
     } else {
-      response.splice(1, 0, String(result).substring(0, 1985))
+      response.splice(1, 0, String(util.inspect(result)).substring(0, 1985))
     }
 
     await message.channel.createMessage(response.join('\n'))

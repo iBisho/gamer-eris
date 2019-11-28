@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
+import { milliseconds } from '../lib/types/enums/time'
 
 export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || !message.member) return
@@ -24,10 +25,22 @@ export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args
 
   const messages = await message.channel.getMessages(500)
 
-  const filteredMessages =
-    filter && message.mentions.length
-      ? messages.filter(msg => message.mentions.some(user => user.id === msg.author.id))
-      : messages
+  const now = Date.now()
+  const maxAge = milliseconds.WEEK * 2
+
+  const filteredMessages = messages.filter(msg => {
+    // Discord does not allow deleting messages over 2 weeks old
+    if (now - msg.timestamp > maxAge) return false
+    // if users were mentioned we remove any message that isn't one of theirs
+    if (message.mentions.some(user => user.id === msg.author.id)) return false
+    // Check the filter types
+    if (filter === `links`) return /https?:\/\/[^ /.]+\.[^ /.]+/.test(msg.content)
+    if (filter === `invites`)
+      return /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/.+/.test(msg.content)
+    if (filter === `bots`) return msg.author.bot
+    if (filter === `upload` || filter === 'images') return msg.attachments.length
+    return true
+  })
 
   const messagesToDelete = filteredMessages.splice(0, amount)
 
