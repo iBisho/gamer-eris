@@ -1,13 +1,12 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`setcapital`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 
-  let settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 

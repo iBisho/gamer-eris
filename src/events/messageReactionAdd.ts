@@ -46,21 +46,25 @@ export default class extends Event {
       Gamer.helpers.discord.convertEmoji(e, `id`)
     )
 
+    const denyReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.redX, `reaction`)
+    if (!denyReaction) return
+
+    const joinReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `reaction`)
+    if (!joinReaction) return
+
     switch (emoji.id) {
       case joinEmojiID:
-        const joinReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `reaction`)
-        if (!joinReaction) return
-        const joinReactors = await message.getReaction(joinReaction).catch(() => [])
-        if (joinReactors.find(user => user.id === userID)) message.removeReaction(joinReaction, userID)
+        const denyReactors = await message.getReaction(denyReaction).catch(() => [])
+        if (denyReactors.find(user => user.id === userID)) message.removeReaction(denyReaction, userID)
+        if (event.attendees.includes(userID)) return
 
         const response = Gamer.helpers.events.joinEvent(event, userID, language)
         message.channel.createMessage(response).then(msg => setTimeout(() => msg.delete(), 10000))
         break
       case denyEmojiID:
-        const denyReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.redX, `reaction`)
-        if (!denyReaction) return
-        const denyReactors = await message.getReaction(denyReaction).catch(() => [])
-        if (denyReactors.find(user => user.id === userID)) message.removeReaction(denyReaction, userID)
+        const joinReactors = await message.getReaction(joinReaction).catch(() => [])
+        if (joinReactors.find(user => user.id === userID)) message.removeReaction(joinReaction, userID)
+        if (event.denials.includes(userID)) return
 
         Gamer.helpers.events.denyEvent(event, userID)
         message.channel

@@ -1,13 +1,12 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, Role } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`public`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel) return
 
-  let settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
@@ -41,7 +40,7 @@ export default new Command(`public`, async (message, args, context) => {
 
   if (!validRoles.size) return message.channel.createMessage(language(`roles/public:NO_VALID_ROLES`))
 
-  if (!settings) settings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
+  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
   const roleIDs = [...validRoles].map(role => role.id)
   const roleNames = [...validRoles].map(role => role.name)
 

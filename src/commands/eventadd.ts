@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventadd`, `eadd`], async (message, args, context) => {
@@ -9,9 +8,9 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
 
   const Gamer = context.client as GamerClient
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return

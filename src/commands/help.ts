@@ -2,7 +2,6 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 import Constants from '../constants/index'
 
 const categories = [
@@ -105,7 +104,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
     return message.channel.createMessage(`Please use this command in a server. Thank you!`)
 
   const Gamer = context.client as GamerClient
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || 'en-US')
   if (!language) return

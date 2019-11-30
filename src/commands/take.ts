@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`take`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -9,7 +8,7 @@ export default new Command(`take`, async (message, args, context) => {
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   // If the user does not have a modrole or admin role quit out
   if (

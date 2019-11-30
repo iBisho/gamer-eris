@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import { GuildSettings, MemberSettings } from '../lib/types/settings'
+import { MemberSettings } from '../lib/types/settings'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
@@ -7,11 +7,11 @@ export default new Command(`xpreset`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || !message.member) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
-  if (!Gamer.helpers.discord.isAdmin(message, guildSettings ? guildSettings.staff.adminRoleID : undefined)) return
+  if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return

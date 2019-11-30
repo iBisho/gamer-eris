@@ -18,7 +18,7 @@ export default class {
     // DM will be in english always
     const english = this.Gamer.i18n.get(`en-US`)
     if (!english) return
-    const mails = (await this.Gamer.database.models.mail.find({ userID: message.author.id })) as GamerMail[]
+    const mails = await this.Gamer.database.models.mail.find({ userID: message.author.id })
     // If the user has no mails and hes trying to create a mail it needs to error because mails must be created within a guild.
     if (!mails.length) return message.channel.createMessage(english(`mails/mail:NEW_MAIL_IN_DM_ERROR`))
 
@@ -46,7 +46,7 @@ export default class {
     const guild = this.Gamer.guilds.get(mail.guildID)
     if (!guild) return
 
-    const guildSettings = (await this.Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null
+    const guildSettings = await this.Gamer.database.models.guild.findOne({ id: guild.id })
 
     const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
     if (!language) return

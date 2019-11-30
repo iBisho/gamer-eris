@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, TextChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { GamerEmoji } from '../lib/types/database'
 
@@ -28,7 +27,7 @@ export default new Command(`embededit`, async (message, args, context) => {
   const [embed] = messageToUse.embeds
   if (!embed) return
 
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   // If the user does not have a modrole or admin role quit out
   if (
     !settings ||

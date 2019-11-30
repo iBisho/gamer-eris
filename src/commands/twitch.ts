@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`twitch`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -13,9 +12,9 @@ export default new Command(`twitch`, async (message, args, context) => {
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return

@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command([`nick`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || !message.member) return
@@ -10,9 +9,9 @@ export default new Command([`nick`], async (message, args, context) => {
   const botMember = message.channel.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return

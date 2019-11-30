@@ -3,7 +3,6 @@
 import Monitor from '../lib/structures/Monitor'
 import { Message, PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -19,9 +18,9 @@ export default class extends Monitor {
       return
 
     // Get the verification category id so we dont assign the role while they are chatting in verification
-    const guildSettings = (await Gamer.database.models.guild.findOne({
+    const guildSettings = await Gamer.database.models.guild.findOne({
       id: message.channel.guild.id
-    })) as GuildSettings | null
+    })
     // If the guild has default settings then they dont have verification or autorole enabled
     if (!guildSettings) return
 

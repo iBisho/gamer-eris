@@ -43,7 +43,7 @@ export default new Command([`advice`, `ad`], async (message, _args, context) => 
   const [user] = message.mentions
   const embed = new GamerEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
-    .setDescription(`${user ? user.mention : message.author.mention}, ${advice}`)
+    .setDescription(`${user?.mention || message.author.mention}, ${advice}`)
 
   message.channel.createMessage({ embed: embed.code })
 

@@ -2,14 +2,13 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, TextChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
 import { FeedbackCollectorData } from '../lib/types/gamer'
 
 export default new Command([`bugs`, `bug`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || !message.member) return
 
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return null

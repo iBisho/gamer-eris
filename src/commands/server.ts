@@ -2,9 +2,7 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings, GuildSettingsDefault } from '../lib/types/settings'
 import Constants from '../constants/index'
-import GuildDefaults from '../constants/settings/guild'
 
 export default new Command(
   [`server`, `si`, `sinfo`, `serverinfo`, `gi`, `ginfo`, `guildinfo`],
@@ -13,20 +11,18 @@ export default new Command(
     if (message.channel instanceof PrivateChannel) return
 
     const guild = message.channel.guild
-    const settings =
-      ((await Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null) ||
-      (GuildDefaults as GuildSettingsDefault)
+    const settings = await Gamer.database.models.guild.findOne({ id: guild.id })
 
     const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language || !settings) return null
+    if (!language) return null
 
     const owner = Gamer.users.get(guild.ownerID)
     const relevantPersonality = Constants.personalities.find(
-      personality => personality.id === (settings ? settings.language : 'en-US')
+      personality => personality.id === (settings?.language || 'en-US')
     )
     const languageName = relevantPersonality ? relevantPersonality.name : `Unknown`
-    const verifyCategory = settings.verify.categoryID ? guild.channels.get(settings.verify.categoryID) : undefined
-    const mailCategory = settings.mails.categoryID ? guild.channels.get(settings.mails.categoryID) : undefined
+    const verifyCategory = settings?.verify.categoryID ? guild.channels.get(settings.verify.categoryID) : undefined
+    const mailCategory = settings?.mails.categoryID ? guild.channels.get(settings.mails.categoryID) : undefined
 
     const NONE = language(`common:NONE`)
     const ENABLED = language(`common:ENABLED`)
@@ -41,19 +37,19 @@ export default new Command(
 
     const serverSettings = {
       language: languageName,
-      modRoles: settings.staff.modRoleIDs.length
+      modRoles: settings?.staff.modRoleIDs.length
         ? settings.staff.modRoleIDs.map((roleID: string) => `<@&${roleID}>`).join(` `)
         : NONE,
-      admins: settings.staff.adminRoleID ? `<@${settings.staff.adminRoleID}>` : NONE,
-      ideaEnabled: settings.feedback.idea.channelID ? ENABLED : DISABLED,
-      bugsEnabled: settings.feedback.bugs.channelID ? ENABLED : DISABLED,
-      autorole: settings.moderation.roleIDs.autorole ? `<@&${settings.moderation.roleIDs.autorole}>` : NONE,
-      publicRoles: settings.moderation.roleIDs.public.length
+      admins: settings?.staff.adminRoleID ? `<@${settings.staff.adminRoleID}>` : NONE,
+      ideaEnabled: settings?.feedback.idea.channelID ? ENABLED : DISABLED,
+      bugsEnabled: settings?.feedback.bugs.channelID ? ENABLED : DISABLED,
+      autorole: settings?.moderation.roleIDs.autorole ? `<@&${settings.moderation.roleIDs.autorole}>` : NONE,
+      publicRoles: settings?.moderation.roleIDs.public.length
         ? settings.moderation.roleIDs.public.map((roleID: string) => `<@&${roleID}>`).join(` `)
         : NONE,
-      verifyRole: settings.verify.roleID ? `<@&${settings.verify.roleID}>` : NONE,
+      verifyRole: settings?.verify.roleID ? `<@&${settings.verify.roleID}>` : NONE,
       verifyCategory: verifyCategory ? verifyCategory.name : NONE,
-      verificationChannels: settings.verify.channelIDs.length,
+      verificationChannels: settings?.verify.channelIDs.length || 0,
       mailCategory: mailCategory ? mailCategory.name : NONE
     }
 
