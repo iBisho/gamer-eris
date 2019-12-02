@@ -55,6 +55,7 @@
   "AUTOMOD_NAUGHTY": "Zu viele anstößige Wörter!",
   "AUTOMOD_CAPITALS": "Diese Nachricht hat zuviele Großbuchstaben enthalten.",
   "AUTOMOD_URLS": "Das Teilen von einheitlichen Ressourcenzeiger (URLs) ist hier eingeschränkt möglich.",
+  "MENTION_PREFIX": "Das Präfix auf diesem Server ist auf **{{prefix}}** festgelegt.",
   "GLOBAL_OPTIONS": ["G", "Global"],
   "VOICE_OPTIONS": ["S", "Sprach"],
   "CANCEL_OPTIONS": ["Q", "Quittieren"]
