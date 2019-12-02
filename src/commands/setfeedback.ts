@@ -27,7 +27,9 @@ export default new Command(`setfeedback`, async (message, args, context) => {
   switch (type.toLowerCase()) {
     // Create the feedback system if the user types setup
     case 'setup':
-      return Gamer.helpers.scripts.createFeedbackSystem(message.channel.guild, guildSettings)
+      message.channel.createMessage(language(`settings/setfeedback:PATIENCE`))
+      await Gamer.helpers.scripts.createFeedbackSystem(message.channel.guild, guildSettings)
+      return message.channel.createMessage(language(`settings/setfeedback:SETUP`, { mention: message.author.mention }))
     case 'logchannel':
       if (!message.channelMentions || !message.channelMentions.length)
         return message.channel.createMessage(language(`settings/setfeedback:NEED_CHANNEL`))

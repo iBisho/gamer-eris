@@ -50,7 +50,7 @@ const categories = [
     ]
   },
   { name: `utility`, commands: [`imgur`] },
-  { name: `feedback`, commands: [`bugs`, `idea`, `feedback`] },
+  { name: `feedback`, commands: [`bugs`, `idea`] },
   {
     name: `roles`,
     commands: [

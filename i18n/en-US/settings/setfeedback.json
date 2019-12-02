@@ -48,5 +48,7 @@
   "SETUP_REASON": "setfeedback setup command ran.",
   "IDEA_CHANNEL_NAME": "suggestions-ideas",
   "BUGS_CHANNEL_NAME": "bug-reports",
-  "NEED_QUESTION": "You did not provide any question."
+  "NEED_QUESTION": "You did not provide any question.",
+  "PATIENCE": "Please hold on while I create the entire feedback system on the server.",
+  "SETUP": "{{mention}}, the feedback system has been created on your server."
 }

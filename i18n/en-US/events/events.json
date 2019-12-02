@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "View, create, join and manage events.",
-  "EXTENDED": "**{{prefix}}events** ~ Lists all current events on the server.",
+  "EXTENDED": "**{{prefix}}events** ~ Lists all current events on the server. [Click Here To Learn More](https://gamer.netlify.com/lfg-events-feature)",
   "USAGE": "{{prefix}}events",
   "ALIASES": "{{prefix}}e",
   "INVALID_EVENT": "There was no event able to be found with the ID number you provided.",
