@@ -142,16 +142,18 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
 
   const command = Gamer.commandForName(commandName)
   if (!command) return message.channel.createMessage(language(`basic/help:UNKNOWN`, { name: commandName }))
-  const category = categories.find(c => c.commands.includes(command.name.toLowerCase())) || { name: `basic` }
 
-  const EXTENDED = language(`${category.name}/${command.name}:EXTENDED`, { prefix })
-  const USAGE = language(`${category.name}/${command.name}:USAGE`, { prefix })
-  const ALIASES = language(`${category.name}/${command.name}:ALIASES`, { prefix })
+  const name = command.names[0].toLowerCase()
+  const category = categories.find(c => c.commands.includes(name)) || { name: `basic` }
+
+  const EXTENDED = language(`${category.name}/${name}:EXTENDED`, { prefix })
+  const USAGE = language(`${category.name}/${name}:USAGE`, { prefix })
+  const ALIASES = language(`${category.name}/${name}:ALIASES`, { prefix })
   const NO_EXTENDED = language('basic/help:NO_EXTENDED')
 
   const embed = new GamerEmbed()
     .setAuthor(
-      language('basic/help:AUTHOR', { commandName: command.name }),
+      language('basic/help:AUTHOR', { commandName: name }),
       Gamer.user.avatarURL,
       Constants.general.gamerServerInvite
     )
