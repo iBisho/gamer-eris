@@ -1,7 +1,7 @@
 // This monitor will automatically assign the auto assign roles to a user when they send a message and dont have that role.
 // This is because by default forcibly adding a role to a user overrides the built in discord verification.
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Monitor {
@@ -11,6 +11,7 @@ export default class extends Monitor {
     // The message type helps ignore other messages like discord default welcome messages
     if (
       message.channel instanceof PrivateChannel ||
+      message.channel instanceof GroupChannel ||
       message.type !== 0 ||
       !message.member ||
       message.member.roles.length > 1

@@ -2,7 +2,7 @@ import { Client, ClientOptions } from 'yuuko'
 import i18n from '../../i18next'
 import { TFunction } from 'i18next'
 import * as glob from 'glob'
-import { PrivateChannel, Message } from 'eris'
+import { PrivateChannel, Message, GroupChannel } from 'eris'
 import { Collector, Mission, GamerTag, Slowmode } from '../types/gamer'
 import * as fs from 'fs'
 import { join } from 'path'
@@ -134,7 +134,7 @@ export default class GamerClient extends Client {
   }
 
   async runMonitors(message: Message) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     for (const monitor of Gamer.monitors.values()) {
       if (monitor.ignoreBots && message.author.bot) continue
       if (monitor.ignoreDM && message.channel instanceof PrivateChannel) continue

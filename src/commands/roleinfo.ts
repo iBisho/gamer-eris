@@ -1,11 +1,11 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`roleinfo`, `ri`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const roleIDOrName = args.join(' ')
   const [roleID] = message.roleMentions

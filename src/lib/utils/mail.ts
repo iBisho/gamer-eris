@@ -1,4 +1,14 @@
-import { Message, PrivateChannel, Guild, CategoryChannel, Constants, Overwrite, TextChannel, User } from 'eris'
+import {
+  Message,
+  PrivateChannel,
+  Guild,
+  CategoryChannel,
+  Constants,
+  Overwrite,
+  TextChannel,
+  User,
+  GroupChannel
+} from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerMail, GamerTag } from '../types/gamer'
@@ -56,7 +66,7 @@ export default class {
   }
 
   async handleSupportChannel(message: Message, content: string, guildSettings: GuildSettings) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     const mail = await this.Gamer.database.models.mail.findOne({
       guildID: message.channel.guild.id,
       userID: message.author.id
@@ -73,7 +83,7 @@ export default class {
   }
 
   async createMail(message: Message, content: string, guildSettings: GuildSettings | null, user?: User) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     const mailUser = user || message.author
 
     const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
@@ -244,7 +254,7 @@ export default class {
   }
 
   async replyToMail(message: Message, content: string, guildSettings: GuildSettings | null, mail: GamerMail) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const tag = (await this.Gamer.database.models.tag.findOne({
       guildID: message.channel.guild.id,
@@ -327,7 +337,7 @@ export default class {
 
   async close(message: Message, content: string, guildSettings: GuildSettings | null, mail: GamerMail) {
     // If an empty string is passed cancel the command
-    if (message.channel instanceof PrivateChannel || !content) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !content) return
 
     const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
     if (!language) return

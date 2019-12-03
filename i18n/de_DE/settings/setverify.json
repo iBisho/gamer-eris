@@ -27,6 +27,6 @@
   "REASON": "Kanal für setverify-Konfigurationsverwendung erstellt.",
   "INVALID_JSON_MESSAGE": "Die von Dir angegebene Nachricht scheint kein gültiger JSON-Code zu sein. Bitte stelle sicher, dass Du den Einbettungsbuilder verwendest. Verwende den unten gezeigten Befehl **help embed**, um sicherzustellen, dass Deine Einbettung funktioniert.",
   "JSON_MESSAGE_SET": "Die JSON-Nachricht – die gesendet wird – wenn ein Benutzer den Verifizierungsprozess startet, wurde erfolgreich aktualisiert.",
-  "INTERNAL_ENABLED": "Die interne Verifizierung von Discord wird nun von G4M3R durchgeführt.",
+  "INTERNAL_ENABLED": "Die interne Verifizierung von Discord wird nun von Gamer durchgeführt.",
   "INTERNAL_DISABLED": "WARNUNG! Die interne Discord-Verifizierung wurde deaktiviert. Durch Deaktivieren dieser Option wird dem Benutzer nach erfolgreichem Abschluss der Verifizierung automatisch der Autorolle zugewiesen. Auf diese Weise können Benutzer jedoch die interne Discord-Verifizierung umgehen, bei der überprüft wird, ob eine E-Mail-/Handy-Verifizierung vorliegt. Durch Deaktivieren dieser Option werden alle Türen offen für alternativen Accounts – stummgeschalteter/verbannte Benutzer – stehen, um wieder Probleme auf Deinen Server zu verursachen. **Wenn Du dies nicht möchtest, tippe bitte den Befehl **{{prefix}}setverify internal**."
 }

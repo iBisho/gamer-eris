@@ -1,5 +1,5 @@
 import Event from '../lib/structures/Event'
-import { PrivateChannel, Message, Attachment, Embed, User, TextChannel } from 'eris'
+import { PrivateChannel, Message, Attachment, Embed, User, TextChannel, GroupChannel } from 'eris'
 import Gamer from '..'
 import { PartialMessage } from '../lib/types/discord'
 import GamerEmbed from '../lib/structures/GamerEmbed'
@@ -17,7 +17,7 @@ export interface OldMessage {
 
 export default class extends Event {
   async execute(message: Message | PartialMessage, oldMessage: OldMessage | null) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     // Valid message object so we can simply run the monitors
     if (message instanceof Message) {
       // Most embeds will always trigger a messageUpdate
@@ -34,7 +34,7 @@ export default class extends Event {
   }
 
   async handleServerLogs(message: Message, oldMessage: OldMessage | null) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return
 

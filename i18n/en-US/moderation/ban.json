@@ -2,7 +2,7 @@
 	"DESCRIPTION": "Bans a user from the server.",
 	"EXTENDED": "$t(moderation/ban:EXTENDED_LINE_1)\n$t(moderation/ban:EXTENDED_LINE_2)",
 	"EXTENDED_LINE_1": "**{{prefix}}ban @user reason** ~ Bans the user from the server.",
-	"EXTENDED_LINE_2": "The role of G4M3R needs to be above the highest role to moderate effectively. Make sure the bot has the permissions to ban on your server.",
+	"EXTENDED_LINE_2": "The role of Gamer needs to be above the highest role to moderate effectively. Make sure the bot has the permissions to ban on your server.",
 	"USAGE": "{{prefix}}ban [User] [Reason]",
 	"ALIASES": "{{prefix}}b",
 	"NEED_BAN_PERMS": "I do not have the Ban Members permission.",

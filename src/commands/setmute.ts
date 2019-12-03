@@ -1,9 +1,9 @@
 import { Command } from 'yuuko'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`setmute`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   const Gamer = context.client as GamerClient
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)

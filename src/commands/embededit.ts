@@ -1,12 +1,12 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, TextChannel } from 'eris'
+import { PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { GamerEmoji } from '../lib/types/database'
 
 export default new Command(`embededit`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return

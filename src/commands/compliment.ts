@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 const gifs = [
   `https://media.giphy.com/media/MU3YUgsJONTzzIT9wd/giphy.gif`,
@@ -44,7 +44,7 @@ const gifs = [
 ]
 
 export default new Command([`compliment`, `comp`], (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)

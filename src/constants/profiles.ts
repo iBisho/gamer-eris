@@ -6,10 +6,10 @@ const assetsFolder = join(rootFolder, `assets`)
 
 export default {
   clanDefaults: {
-    logo: join(assetsFolder, `profile/g4m3r.png`),
+    logo: join(assetsFolder, `profile/gamer.png`),
     text: `The Bot For Every Gamer`,
     url: `https://gamer.netlify.com`,
-    name: `G4M3R`
+    name: `Gamer`
   },
   whiteMode: {
     username: `#000`,

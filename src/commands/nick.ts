@@ -1,9 +1,9 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`nick`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
   const botMember = message.channel.guild.members.get(Gamer.user.id)

@@ -1,11 +1,11 @@
 import { Command } from 'yuuko'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GamerEmoji } from '../lib/types/database'
 
 export default new Command([`emojis`, `em`], async (message, _args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return

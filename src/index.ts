@@ -1,6 +1,6 @@
 import config from '../config'
 import GamerClient from './lib/structures/GamerClient'
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import { Canvas } from 'canvas-constructor'
 import { join } from 'path'
 import GamerEmbed from './lib/structures/GamerEmbed'
@@ -49,7 +49,7 @@ const Gamer = new GamerClient({
 Gamer.globalCommandRequirements = {
   async custom(message: Message) {
     // DM should have necessary perms already
-    if (message.channel instanceof PrivateChannel) return true
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return true
 
     // Check if have send messages perms. Check before fetching guild data to potentially save a fetch
     const botPerms = message.channel.permissionsOf(Gamer.user.id)
@@ -92,7 +92,7 @@ Gamer.addCommandDir(`${__dirname}/commands`)
 
 Gamer.prefixes((message: Message) => {
   // If in DM use the default prefix
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   // If in a server who has not customized their prefix, use the default prefix
   const prefix = Gamer.guildPrefixes.get(message.channel.guild.id)
   if (!prefix) return

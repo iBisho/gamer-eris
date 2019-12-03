@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import Constants from '../constants/index'
 
@@ -100,7 +100,7 @@ const categories = [
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
   // Gamers goal is to increase activity in a server not in a DM.
-  if (message.channel instanceof PrivateChannel)
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
     return message.channel.createMessage(`Please use this command in a server. Thank you!`)
 
   const Gamer = context.client as GamerClient
@@ -113,7 +113,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   const FEATURES = language(`basic/help:FEATURES`, { prefix })
   const VIPFEATURES = language(`basic/help:VIPFEATURES`, { prefix })
   const CHECKWIKI = language(`basic/help:CHECK_WIKI`)
-  const LINKSVALUE = language(`basic/help:LINKS_VALUE`, { patreon: Constants.emojis.patreon })
+  const LINKSVALUE = language(`basic/help:LINKS_VALUE`)
 
   if (!args.length) {
     // Create the main help embed

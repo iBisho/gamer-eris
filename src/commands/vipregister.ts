@@ -1,10 +1,10 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import constants from '../constants'
 
 export default new Command([`vipregister`, `vipr`], async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 

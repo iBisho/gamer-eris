@@ -1,6 +1,6 @@
 import { Canvas } from 'canvas-constructor'
 import fetch from 'node-fetch'
-import { Message, Member, PrivateChannel } from 'eris'
+import { Message, Member, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import { MemberSettings, UserSettings } from '../types/settings'
 import Constants from '../../constants/index'
@@ -14,7 +14,7 @@ interface ProfileCanvasOptions {
 
 export default class {
   public async makeCanvas(message: Message, member: Member, Gamer: GamerClient, options?: ProfileCanvasOptions) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const memberSettings =
       ((await Gamer.database.models.member.findOne({

@@ -16,7 +16,7 @@
   "EXTENDED_NAME": "» Aide étendue",
   "NO_EXTENDED": "Pas d'aide étendue disponible.",
   "MORE": "Toujours besoin d'aide?",
-  "ALL": "Voici toutes les commandes de G4M3R",
+  "ALL": "Voici toutes les commandes de Gamer",
   "ALL_FOOTER": "Ecrivez \"{{prefix}}help Nom de commande\" (ex: \"{{prefix}}help ping\").",
   "SUPPORT": "Si vous avez besoin d'aide, veuillez consulter notre [Wiki](https://gamer.netlify.com) car nous avons des explications avec des images et des guides.\n\nPour voir la liste des commandes disponible, écrivez \"{{prefix}}help all\"\n\nSi vous avez besoin de plus d'aide, veuillez nous contacter sur notre [Serveur support](http://support.gamer.netlify.com) Anglais",
   "FEATURES": "$t(basic/help:FEATURES_LINE_1)\n$t(basic/help:FEATURES_LINE_2)\n$t(basic/help:FEATURES_LINE_3)\n$t(basic/help:FEATURES_LINE_4)\n$t(basic/help:FEATURES_LINE_5)\n$t(basic/help:FEATURES_LINE_6)\n$t(basic/help:FEATURES_LINE_7)\n$t(basic/help:FEATURES_LINE_8)\n$t(basic/help:FEATURES_LINE_9)",
@@ -36,9 +36,8 @@
   "SEE_ALL": "Pour voir toutes les commandes:",
   "CHECK_WIKI": "il y a des centaines de commandes ce qui peut causer du spam. Veuillez aller sur notre [Wiki](https://gamer.netlify.com) pour voir la liste entière ou écrivez **{{prefix}}help all**.",
   "LINKS": "**__Liens importants__**",
-  "LINKS_VALUE": "$t(basic/help:LINKS_VALUE_LINE_1)\n$t(basic/help:LINKS_VALUE_LINE_2)\n$t(basic/help:LINKS_VALUE_LINE_3)",
+  "LINKS_VALUE": "$t(basic/help:LINKS_VALUE_LINE_1)\n$t(basic/help:LINKS_VALUE_LINE_2)",
   "LINKS_VALUE_LINE_1": "**»** 🌐 **Wiki:** Ecrivez {{prefix}}help ou allez sur notre wiki: <https://gamer.netlify.com>.",
-  "LINKS_VALUE_LINE_2": "**»** {{patreon}} **Patreon**: <https://www.patreon.com/g4m3r>",
-  "LINKS_VALUE_LINE_3": "**»** <:g4m3rblue:443416157597466636> **Serveur Support**: <https://discord.gg/J4NqJ72>",
+  "LINKS_VALUE_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Serveur Support**: <https://discord.gg/J4NqJ72>",
   "UNKNOWN": "Impossible de trouver la commande nommée **{{name}}**."
 }

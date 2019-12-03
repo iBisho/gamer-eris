@@ -1,5 +1,5 @@
 // Logs that a command run (even if it was inhibited)
-import { PossiblyUncachedMessage, Message, PrivateChannel } from 'eris'
+import { PossiblyUncachedMessage, Message, PrivateChannel, GroupChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
@@ -32,7 +32,8 @@ export default class extends Event {
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (!message.author.bot || message.channel instanceof PrivateChannel) return
+    if (!message.author.bot || message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
+      return
     const event = (await Gamer.database.models.event.findOne({ adMessageID: message.id })) as GamerEvent | null
     if (!event) return
 
@@ -51,7 +52,7 @@ export default class extends Event {
   }
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const guild = Gamer.guilds.get(message.channel.guild.id)
     if (!guild) return
@@ -84,7 +85,7 @@ export default class extends Event {
   }
 
   async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 

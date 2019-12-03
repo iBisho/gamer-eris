@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Eine einfache Möglichkeit, den G4M3R-Dashboard-Link mit anderen zu teilen.",
+  "DESCRIPTION": "Eine einfache Möglichkeit, den Gamer-Dashboard-Link mit anderen zu teilen.",
   "EXTENDED": "**{{prefix}}invite** ~ Zeigt den Einladungslink für den Bot, um es auf Deinen Server hinzuzufügen und einen Link, um dem Support-Server beizutreten, wenn Du Hilfe benötigst.",
   "USAGE": "{{prefix}}einladen",
   "ALIASES": "{{prefix}}beitreten",

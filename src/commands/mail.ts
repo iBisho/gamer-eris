@@ -1,12 +1,13 @@
 import { Command } from 'yuuko'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`mail`, `m`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
 
   const content = args.join(' ')
-  if (message.channel instanceof PrivateChannel) return Gamer.helpers.mail.handleDM(message, content)
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
+    return Gamer.helpers.mail.handleDM(message, content)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id

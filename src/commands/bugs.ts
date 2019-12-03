@@ -1,12 +1,12 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, TextChannel } from 'eris'
+import { PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import { FeedbackCollectorData } from '../lib/types/gamer'
 
 export default new Command([`bugs`, `bug`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
@@ -78,7 +78,7 @@ export default new Command([`bugs`, `bug`], async (message, args, context) => {
         question
       },
       callback: async (msg, collector) => {
-        if (!msg.member || msg.channel instanceof PrivateChannel) return
+        if (!msg.member || msg.channel instanceof PrivateChannel || msg.channel instanceof GroupChannel) return
         const CANCEL_OPTIONS = language(`common:CANCEL_OPTIONS`, { returnObjects: true })
         if (CANCEL_OPTIONS.includes(msg.content)) {
           message.channel.createMessage(language(`feedback/bugs:CANCELLED`, { mention: msg.author.mention }))

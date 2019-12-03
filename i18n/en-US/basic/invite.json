@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "An easy way of sharing the G4M3R dashboard link.",
+  "DESCRIPTION": "An easy way of sharing the Gamer dashboard link.",
   "EXTENDED": "**{{prefix}}invite** ~ Displays the invite link for the bot to invite it to your server and also a link to join the Support server if you need help.",
   "USAGE": "{{prefix}}invite",
   "ALIASES": "{{prefix}}join",

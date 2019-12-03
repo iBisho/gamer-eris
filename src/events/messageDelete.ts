@@ -1,12 +1,12 @@
 import Event from '../lib/structures/Event'
-import { TextChannel, Constants, Message, PrivateChannel } from 'eris'
+import { TextChannel, Constants, Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PartialMessage } from '../lib/types/discord'
 
 export default class extends Event {
   async execute(message: Message | PartialMessage) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const Gamer = message.channel.guild.shard.client as GamerClient
     const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)

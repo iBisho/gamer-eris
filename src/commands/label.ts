@@ -1,12 +1,13 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, CategoryChannel } from 'eris'
+import { PrivateChannel, CategoryChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`label`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
 
   const content = args.join(' ')
-  if (message.channel instanceof PrivateChannel) return Gamer.helpers.mail.handleDM(message, content)
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
+    return Gamer.helpers.mail.handleDM(message, content)
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return

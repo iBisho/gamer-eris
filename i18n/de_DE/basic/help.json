@@ -16,7 +16,7 @@
   "EXTENDED_NAME": "» Erweiterte Hilfe:",
   "NO_EXTENDED": "Keine erweiterte Hilfe verfügbar.",
   "MORE": "Benötigst Du noch weitere Hilfe?",
-  "ALL": "Alle Befehle für G4M3R",
+  "ALL": "Alle Befehle für Gamer",
   "ALL_FOOTER": "Tippe „{{prefix}}help Befehlsname\" (beispielweise „{{prefix}}help ping\").",
   "SUPPORT": "Wenn Du Hilfe benötigst, siehe Dir doch unser [Wiki](https://gamer.netlify.com) an, da wir hilfreiche Erklärungen mit Bildern und Leitfäden haben.\n\nUm eine Liste mit unseren Befehlen anzusehen, bitte tippe „{{prefix}}help all“\n\nWenn Du weitere Hilfe benötigst, wende Dich bitte an unseren [Support Server](http://support.gamer.netlify.com)",
   "FEATURES": "$t(basic/help:FEATURES_LINE_1)\n$t(basic/help:FEATURES_LINE_2)\n$t(basic/help:FEATURES_LINE_3)\n$t(basic/help:FEATURES_LINE_4)\n$t(basic/help:FEATURES_LINE_5)\n$t(basic/help:FEATURES_LINE_6)\n$t(basic/help:FEATURES_LINE_7)\n$t(basic/help:FEATURES_LINE_8)\n$t(basic/help:FEATURES_LINE_9)",
@@ -38,7 +38,6 @@
   "LINKS": "**__Wichtigste Links__**",
   "LINKS_VALUE": "$t(basic/help:LINKS_VALUE_LINE_1)\n$t(basic/help:LINKS_VALUE_LINE_2)\n$t(basic/help:LINKS_VALUE_LINE_3)",
   "LINKS_VALUE_LINE_1": "**»**  🌐 **Wiki:** Tippe {{prefix}}help oder siehe Dir unser Wiki an: <https://gamer.netlify.com>.",
-  "LINKS_VALUE_LINE_2": "**»** {{patreon}} **Patreon**: <https://www.patreon.com/g4m3r>",
-  "LINKS_VALUE_LINE_3": "**»**<:g4m3rblue:443416157597466636> **Support Server**: <https://discord.gg/J4NqJ72>",
+
   "UNKNOWN": "Es konnte kein Befehl mit dem Namen **{{name}}** gefunden werden."
 }

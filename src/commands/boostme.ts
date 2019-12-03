@@ -1,11 +1,11 @@
 import { Command } from 'yuuko'
 import { UserSettings, Boost } from '../lib/types/settings'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (message, _args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return

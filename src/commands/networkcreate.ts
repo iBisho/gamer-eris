@@ -1,12 +1,12 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, Constants } from 'eris'
+import { PrivateChannel, Constants, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import constants from '../constants'
 
 export default new Command(`networkcreate`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   // Make sure the bot has the permissions to create channels
   const botMember = message.channel.guild.members.get(Gamer.user.id)

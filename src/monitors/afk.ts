@@ -1,5 +1,5 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { UserSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
@@ -7,7 +7,7 @@ import { GamerEmoji } from '../lib/types/database'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const authorSettings = (await Gamer.database.models.user.findOne({ id: message.author.id })) as UserSettings | null
     if (authorSettings && authorSettings.afk.enabled) {

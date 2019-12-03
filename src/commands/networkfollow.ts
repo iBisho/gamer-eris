@@ -1,10 +1,10 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel, TextChannel } from 'eris'
 
 export default new Command([`networkfollow`, `follow`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -61,9 +61,22 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
 
   targetUsersProfileGuildSettings.save()
 
-  return message.channel.createMessage(
+  message.channel.createMessage(
     language(isAlreadyFollowing ? `network/networkfollow:UNFOLLOWED` : `network/networkfollow:FOLLOWED`, {
       user: user.username
+    })
+  )
+
+  const notificationChannel = targetUsersProfileGuildSettings.network.channelIDs.notifications
+    ? Gamer.getChannel(targetUsersProfileGuildSettings.network.channelIDs.notifications)
+    : undefined
+
+  if (!notificationChannel || !(notificationChannel instanceof TextChannel)) return
+
+  return notificationChannel.createMessage(
+    language(isAlreadyFollowing ? `network/networkfollow:ADD_FOLLOWER` : `network/networkfollow:LOSE_FOLLOWER`, {
+      username: `${user.username}#${user.discriminator}`,
+      id: user.id
     })
   )
 })

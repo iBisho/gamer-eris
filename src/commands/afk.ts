@@ -1,10 +1,10 @@
 import { Command } from 'yuuko'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { UserSettings } from '../lib/types/settings'
 
 export default new Command(`afk`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 

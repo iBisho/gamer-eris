@@ -1,4 +1,4 @@
-import { PossiblyUncachedMessage, Message, PrivateChannel, User, TextChannel } from 'eris'
+import { PossiblyUncachedMessage, Message, PrivateChannel, User, TextChannel, GroupChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
@@ -35,7 +35,8 @@ export default class extends Event {
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (!message.author.bot || message.channel instanceof PrivateChannel) return
+    if (!message.author.bot || message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
+      return
     const event = (await Gamer.database.models.event.findOne({ adMessageID: message.id })) as GamerEvent | null
     if (!event) return
 
@@ -75,7 +76,7 @@ export default class extends Event {
   }
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const guild = Gamer.guilds.get(message.channel.guild.id)
     if (!guild) return
@@ -108,7 +109,12 @@ export default class extends Event {
   }
 
   async handleProfileReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (message.channel instanceof PrivateChannel || user.id !== Gamer.user.id) return
+    if (
+      message.channel instanceof PrivateChannel ||
+      message.channel instanceof GroupChannel ||
+      user.id !== Gamer.user.id
+    )
+      return
 
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
     if (constants.emojis.discord !== fullEmojiName || !message.embeds.length || !message.attachments.length) return
@@ -130,7 +136,7 @@ export default class extends Event {
   }
 
   async handleNetworkReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
     if (!networkReactions.includes(fullEmojiName) || !message.embeds.length) return
@@ -282,7 +288,14 @@ export default class extends Event {
               username: user.username
             })
           )
-          return setTimeout(() => response.delete(), 10000)
+          setTimeout(() => response.delete(), 10000)
+
+          return notificationChannel.createMessage(
+            language(
+              isAlreadyFollowing ? `network/networkfollow:ADD_FOLLOWER` : `network/networkfollow:LOSE_FOLLOWER`,
+              { username: `${user.username}#${user.discriminator}`, id: user.id }
+            )
+          )
         }
         default:
           return null
@@ -298,7 +311,7 @@ export default class extends Event {
   }
 
   async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
     if (!message.embeds.length || message.author.id !== Gamer.user.id) return

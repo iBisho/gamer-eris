@@ -15,7 +15,6 @@ export default {
   mailbox: `<:mail:638772218192592906>`,
   members: `<:event_members:473797560587255810>`,
   online: `<:online:398045782390865920>`,
-  patreon: `<:patreon:494050000536338453>`,
   plus: `<:plusy:647528275538739200>`,
   questionMark: `<:huh:638772219945943080>`,
   redX: `<:red_tick:448082952824422400>`,

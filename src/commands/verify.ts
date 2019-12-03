@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, Message, TextChannel, CategoryChannel } from 'eris'
+import { PrivateChannel, Message, TextChannel, CategoryChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { Canvas } from 'canvas-constructor'
 
@@ -47,7 +47,7 @@ const createCaptcha = async (message: Message) => {
 
 export default new Command(`verify`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -97,7 +97,7 @@ export default new Command(`verify`, async (message, args, context) => {
           }
           // Success With Captcha
 
-          if (msg.channel instanceof PrivateChannel || !msg.member) return
+          if (msg.channel instanceof PrivateChannel || msg.channel instanceof GroupChannel || !msg.member) return
           const bot = msg.channel.guild.members.get(Gamer.user.id)
           if (!bot) return
           // Remove the verify role

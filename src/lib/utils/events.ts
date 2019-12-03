@@ -1,4 +1,4 @@
-import { Message, PrivateChannel, TextChannel } from 'eris'
+import { Message, PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerEvent } from '../types/gamer'
@@ -19,7 +19,7 @@ export default class {
   }
 
   async createNewEvent(message: Message, templateName = ``, guildSettings: GuildSettings | null) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const events = (await this.Gamer.database.models.event.find({ guildID: message.channel.guild.id })) as GamerEvent[]
 

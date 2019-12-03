@@ -1,11 +1,11 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, TextChannel } from 'eris'
+import { PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command(`embedshow`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const [channelID] = message.channelMentions
   const channel = channelID ? message.channel.guild.channels.get(channelID) : message.channel

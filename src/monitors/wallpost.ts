@@ -1,5 +1,5 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel, TextChannel } from 'eris'
+import { Message, PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import constants from '../constants'
@@ -18,7 +18,7 @@ const postPermissions = [
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
     // Network features only work in dms
-    if (message.channel instanceof PrivateChannel || !message.member) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
     // Check if bot has necessary permissions
     if (!Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, postPermissions)) return
     // Only server admins can post in the wall channels

@@ -1,5 +1,5 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
@@ -8,7 +8,7 @@ import getURLs from 'get-urls'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (message.channel instanceof PrivateChannel || !message.member) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
     const settings = await Gamer.database.models.guild.findOne({
       id: message.channel.guild.id

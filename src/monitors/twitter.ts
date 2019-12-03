@@ -2,7 +2,7 @@ import Monitor from '../lib/structures/Monitor'
 import { Message, TextChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
-// The commented version is for testing on g4m3r server
+// The commented version is for testing on gamer server
 // const channelsToPostTweets = [{ name: 'news', id: '450355369475047426' }, { name: 'status', id: '277925597815242762' }, { name: 'esports', id: '447453377358725120' }];
 const channelsToPostTweets = [
   { name: `news`, id: `363285672406286337` },

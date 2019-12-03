@@ -1,12 +1,12 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GamerTag } from '../lib/types/gamer'
 import constants from '../constants'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const lowercaseContent = message.content.toLowerCase()
     const [firstWord] = lowercaseContent.split(' ')

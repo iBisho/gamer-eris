@@ -47,7 +47,7 @@
   "APPROVAL_QUESTION": "$t(common:APPROVAL_QUESTION_1)\n\n$t(common:APPROVAL_QUESTION_2)",
   "APPROVAL_QUESTION_1": ":warning::warning::warning: Cette action **NE PEUT PAS** être annulée.",
   "APPROVAL_QUESTION_2": "Ecrivez [Y]es pour confirmer ou [N]o pour annuler.",
-  "VIP_ONLY": "Désolé, mais cette fonctionnalité est réservé aux VIP. Si vous souhaitez devenir un VIP, rendez-vous sur notre [Patreon](https://www.patreon.com/g4m3r).",
+  "VIP_ONLY": "Désolé, mais cette fonctionnalité est réservé aux VIP. Si vous souhaitez devenir un VIP, rendez-vous sur notre.",
   "DANGEROUS": ":warning: :warning: :warning: Cette commande est plutôt **PUISSANTE** et dangereuse. Ecrivez [**Y**]es pour confirmer ou [**N**]o pour annuler.",
   "INVALID": "ATTENTION: Utilisation incorrecte d'une commande dangereuse!",
   "CLOSE_MENU": "Je viens de fermer l'invité pour vous. 👌",

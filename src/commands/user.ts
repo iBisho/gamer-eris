@@ -1,13 +1,13 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel, Role } from 'eris'
+import { PrivateChannel, Role, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { UserSettings } from '../lib/types/settings'
 import UserDefaults from '../constants/settings/user'
 
 export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, _args, context) => {
   const user = message.mentions.length ? message.mentions[0] : message.author
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 

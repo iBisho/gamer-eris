@@ -2,10 +2,10 @@ import { Command } from 'yuuko'
 import fetch from 'node-fetch'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TenorGif } from '../lib/types/tenor'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`gif`, async (message, args) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
   if (!message.channel.nsfw) return
 
   const data: TenorGif | null = await fetch(`https://api.tenor.com/v1/search?q=${args[0]}&key=LIVDSRZULELA&limit=50`)

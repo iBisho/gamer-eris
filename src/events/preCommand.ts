@@ -1,5 +1,5 @@
 // Logs that a command run (even if it was inhibited)
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import { Command, CommandContext } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
@@ -7,7 +7,9 @@ import GamerClient from '../lib/structures/GamerClient'
 export default class extends Event {
   async execute(command: Command, message: Message, args: string[], context: CommandContext) {
     const guildInfo =
-      message.channel instanceof PrivateChannel ? `DM` : ` ${message.channel.guild.name} (${message.channel.guild.id}).`
+      message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel
+        ? `DM`
+        : ` ${message.channel.guild.name} (${message.channel.guild.id}).`
 
     const Gamer = context.client as GamerClient
 
@@ -16,7 +18,7 @@ export default class extends Event {
     )
     Gamer.helpers.logger.blue(`Args: ${args.length ? args : 'No args provided.'}`)
 
-    if (message.channel instanceof PrivateChannel || !message.member) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
     Gamer.amplitude.push({
       authorID: message.author.id,

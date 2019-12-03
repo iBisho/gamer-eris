@@ -1,4 +1,4 @@
-import { Message, User, PrivateChannel, TextChannel } from 'eris'
+import { Message, User, PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import { GuildSettings } from '../types/settings'
 import { GamerModlog } from '../types/gamer'
@@ -22,7 +22,7 @@ export default class {
     reason: string,
     duration?: number
   ) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const member = message.channel.guild.members.get(user.id)
     if (member) {

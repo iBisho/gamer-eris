@@ -1,13 +1,13 @@
 import { Command } from 'yuuko'
 import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import { parse } from 'url'
 import config from '../../config'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command(`imgur`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   const Gamer = context.client as GamerClient
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
