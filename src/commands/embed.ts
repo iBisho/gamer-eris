@@ -9,6 +9,12 @@ export default new Command(`embed`, async (message, args, context) => {
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
+
+  if (!args.length) return helpCommand.execute(message, [`embed`], context)
+
   const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   // If the user does not have a modrole or admin role quit out
@@ -37,8 +43,8 @@ export default new Command(`embed`, async (message, args, context) => {
 
   const embedCode = JSON.parse(transformed)
   if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
-  console.log(embedCode)
-  message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode }).catch(error => {
+
+  return message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode }).catch(error => {
     const embed = new GamerEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .setTitle(language(`embedding/embed:BAD_EMBED`))
