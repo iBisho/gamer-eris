@@ -113,7 +113,9 @@ process.on('unhandledRejection', error => {
   if (!error) return
 
   const embed = new GamerEmbed()
-    .setDescription(['```js', String(error), '```'].join(`\n`))
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    .setDescription(['```js', error.stack, '```'].join(`\n`))
     .setTimestamp()
     .setFooter('Unhandled Rejection Error Occurred')
   // Send error to the log channel on the gamerbot server
