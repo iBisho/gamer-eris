@@ -102,27 +102,26 @@ export default new Command([`bugs`, `bug`], async (message, args, context) => {
         // Cancel out as the user is using it wrongly
         else return
         // If more questions create another collector
-        if (embed.code.fields.length !== questions.length) {
-          const currentIndex = questions.findIndex(q => data.question === q)
-          // Something is very wrong quit out
-          if (currentIndex < 0) return
-
-          const nextQuestion = questions[currentIndex + 1]
-          // Send the message asking the user next question
-          message.channel.createMessage(`${message.author.mention}, ${nextQuestion}`)
-          // Update the collectors data
-          collector.createdAt = Date.now()
-          if (collector.data) data.question = nextQuestion
-          Gamer.collectors.set(message.author.id, collector)
+        if (embed.code.fields.length === questions.length) {
+          // This was the final question so now we need to post the feedback
+          Gamer.helpers.feedback.sendBugReport(message, channel, embed, settings)
+          return Gamer.helpers.levels.completeMission(msg.member, `bugs`, msg.channel.guild.id)
         }
 
-        // This was the final question so now we need to post the feedback
-        Gamer.helpers.feedback.sendBugReport(message, channel, embed, settings)
-        return Gamer.helpers.levels.completeMission(msg.member, `bugs`, msg.channel.guild.id)
+        const currentIndex = questions.findIndex(q => data.question === q)
+        // Something is very wrong quit out
+        if (currentIndex < 0) return
+
+        const nextQuestion = questions[currentIndex + 1]
+        // Send the message asking the user next question
+        message.channel.createMessage(`${message.author.mention}, ${nextQuestion}`)
+        // Update the collectors data
+        collector.createdAt = Date.now()
+        if (collector.data) data.question = nextQuestion
+        Gamer.collectors.set(message.author.id, collector)
       }
     })
   }
 
-  Gamer.helpers.feedback.sendBugReport(message, channel, embed, settings)
-  return Gamer.helpers.levels.completeMission(message.member, `bugs`, message.channel.guild.id)
+  return
 })

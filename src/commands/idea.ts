@@ -103,29 +103,28 @@ export default new Command(`idea`, async (message, args, context) => {
         // Cancel out as the user is using it wrongly
         else return
 
-        // If more questions create another collector
-        if (embed.code.fields.length < questions.length) {
-          const currentIndex = questions.findIndex(q => data.question === q)
-          // Something is very wrong quit out
-          if (currentIndex < 0) return
-
-          const nextQuestion = questions[currentIndex + 1]
-          // Send the message asking the user next question
-          message.channel.createMessage(`${message.author.mention}, ${nextQuestion}`)
-          // Update the collectors data
-          collector.createdAt = Date.now()
-          if (collector.data) data.question = nextQuestion
-          Gamer.collectors.set(message.author.id, collector)
-          return
+        // This was the final question so now we need to post the feedback
+        if (embed.code.fields.length === questions.length) {
+          Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
+          return Gamer.helpers.levels.completeMission(msg.member, `idea`, msg.channel.guild.id)
         }
 
-        // This was the final question so now we need to post the feedback
-        Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
-        return Gamer.helpers.levels.completeMission(msg.member, `idea`, msg.channel.guild.id)
+        // If more questions create another collector
+        const currentIndex = questions.findIndex(q => data.question === q)
+        // Something is very wrong quit out
+        if (currentIndex < 0) return
+
+        const nextQuestion = questions[currentIndex + 1]
+        // Send the message asking the user next question
+        message.channel.createMessage(`${message.author.mention}, ${nextQuestion}`)
+        // Update the collectors data
+        collector.createdAt = Date.now()
+        if (collector.data) data.question = nextQuestion
+        Gamer.collectors.set(message.author.id, collector)
+        return
       }
     })
   }
 
-  Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
-  return Gamer.helpers.levels.completeMission(message.member, `idea`, message.channel.guild.id)
+  return
 })
