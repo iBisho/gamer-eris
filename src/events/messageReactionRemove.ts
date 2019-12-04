@@ -18,10 +18,17 @@ export default class extends Event {
       }
     }
 
+    if (rawMessage.channel instanceof PrivateChannel || rawMessage.channel instanceof GroupChannel) return
+
     const user = Gamer.users.get(userID)
     if (!user) return
 
     if (user.bot) return
+
+    // Need read message history perms to get the messages
+    const botPerms = rawMessage.channel.permissionsOf(Gamer.user.id)
+    if (!botPerms.has('readMessageHistory')) return
+
     // If it is an uncached message we need to fetch the message
     const message =
       rawMessage instanceof Message ? rawMessage : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id)
