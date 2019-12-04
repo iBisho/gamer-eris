@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "Create a new event in your server so people can RSVP.",
-  "EXTENDED": "$t(eventcreate:EXTENDED_LINE_1)\n$t(eventcreate:EXTENDED_LINE_2)\n$t(eventcreate:EXTENDED_LINE_3)\n$t(eventcreate:EXTENDED_LINE_4)\n\n$t(eventcreate:EXTENDED_LINE_5)\n$t(eventcreate:EXTENDED_LINE_6)\n$t(eventcreate:EXTENDED_LINE_7)\n$t(eventcreate:EXTENDED_LINE_8)\n$t(eventcreate:EXTENDED_LINE_9)\n$t(eventcreate:EXTENDED_LINE_10)\n$t(eventcreate:EXTENDED_LINE_11)\n\n$t(eventcreate:EXTENDED_LINE_12)\n$t(eventcreate:EXTENDED_LINE_13)\n$t(eventcreate:EXTENDED_LINE_14)",
+  "EXTENDED": "$t(events/eventcreate:EXTENDED_LINE_1)\n$t(events/eventcreate:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}eventcreate** ~ Creates a brand new event using the default template.",
   "EXTENDED_LINE_2": "**{{prefix}}eventcreate [Template Name]** ~ Creates an event from an existing template.",
   "USAGE": "{{prefix}}eventcreate *[Tempate Name]*",

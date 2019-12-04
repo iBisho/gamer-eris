@@ -13,7 +13,7 @@
 	"EXTENDED_LINE_10": "**%guild%** ~ Displays the server's name.",
 	"EXTENDED_LINE_11": "**%guildimage%** ~ Displays the server's image in an image field.",
 	"EXTENDED_LINE_12": "**»** User variables only work when mentioning a user together with the command.",
-	"EXTENDED_LINE_14": "**CREATE YOUR EMBED OBJECT ON THIS WEBSITE: <https://embedbuilder.nadekobot.me/>**.",
+	"EXTENDED_LINE_13": "**CREATE YOUR EMBED OBJECT ON THIS WEBSITE: <https://embedbuilder.nadekobot.me/>**.",
 	"USAGE": "{{prefix}}embed [@User] {object}",
 	"ALIASES": "Embed does not have any aliases.",
 	"BAD_EMBED": "This was not a **valid embed object**. Best is to use the embed builder <https://embedbuilder.nadekobot.me/>!"
