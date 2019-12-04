@@ -20,7 +20,7 @@ export default new Command([`rolesetdelete`, `rsd`], async (message, args, conte
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [name] = args
-  if (!name) return helpCommand.execute(message, [`rolesetcreate`], context)
+  if (!name) return helpCommand.execute(message, [`rolesetdelete`], context)
 
   const deleted = await Gamer.database.models.roleset.findOneAndDelete({
     guildID: message.channel.guild.id,
