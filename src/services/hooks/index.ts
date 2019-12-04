@@ -3,9 +3,7 @@ import twitchRouters from './../twitch/hooks'
 import helmet from 'fastify-helmet'
 
 const fastify = fastifyBuilder({
-  logger: {
-    prettyPrint: true
-  }
+  logger: false
 })
 
 fastify.register(helmet, {
