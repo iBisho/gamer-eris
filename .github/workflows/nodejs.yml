@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - run: echo ${{github.ref}}
       - name: Install dependencies
         run: npm install
       - name: Setup project
@@ -38,7 +39,6 @@ jobs:
       - uses: webfactory/ssh-agent@v0.1.1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - run: echo ${{github.ref}}
       - name: Deploy Master To Beta
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
