@@ -21,7 +21,7 @@ export default class {
     if (!overrideCooldown && this.checkCooldown(member)) return
 
     const memberSettings =
-      (await this.Gamer.database.models.member.findOne({ memberID: member.id })) ||
+      (await this.Gamer.database.models.member.findOne({ memberID: member.id, guildID: member.guild.id })) ||
       (await this.Gamer.database.models.member.create({
         memberID: member.id,
         guildID: member.guild.id,
