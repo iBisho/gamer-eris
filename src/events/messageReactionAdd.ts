@@ -349,6 +349,9 @@ export default class extends Event {
 
     const feedbackMember = message.channel.guild.members.get(feedback.authorID)
 
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+    if (!language) return
+
     switch (fullEmojiName) {
       // This case will run if the reaction was the Mailbox reaction
       case constants.emojis.mailbox:
@@ -388,7 +391,7 @@ export default class extends Event {
 
         // Send a DM to the user telling them it was solved
         const embed = new GamerEmbed()
-          .setDescription(guildSettings.feedback.solvedMessage)
+          .setDescription(guildSettings.feedback.solvedMessage || language(`feedback/idea:DEFAULT_SOLVED`))
           .setAuthor(`Feedback From ${message.channel.guild.name}`, message.channel.guild.iconURL)
           .setTimestamp()
 
@@ -424,7 +427,7 @@ export default class extends Event {
 
         // Send a DM to the user telling them it was solved
         const rejectedEmbed = new GamerEmbed()
-          .setDescription(guildSettings.feedback.rejectedMessage)
+          .setDescription(guildSettings.feedback.rejectedMessage || language(`feedback/idea:DEFAULT_REJECTED`))
           .setAuthor(`Feedback From ${message.channel.guild.name}`, message.channel.guild.iconURL)
           .setTimestamp()
 

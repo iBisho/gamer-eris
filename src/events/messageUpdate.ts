@@ -18,6 +18,10 @@ export interface OldMessage {
 export default class extends Event {
   async execute(message: Message | PartialMessage, oldMessage: OldMessage | null) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    // Need message history perms to handle it properly below
+    const botPerms = message.channel.permissionsOf(Gamer.user.id)
+    if (!botPerms.has('readMessageHistory')) return
+
     // Valid message object so we can simply run the monitors
     if (message instanceof Message) {
       // Most embeds will always trigger a messageUpdate
@@ -25,6 +29,7 @@ export default class extends Event {
       this.handleServerLogs(message, oldMessage)
       return Gamer.runMonitors(message)
     }
+
     // Since we only have a partial message because the edited message was uncached we need to fetch it
     const messageToProcess = await message.channel.getMessage(message.id)
     // Most embeds will always trigger a messageUpdate
