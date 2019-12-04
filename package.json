@@ -7,7 +7,7 @@
     "test": "tsc --noEmit && eslint '*/**/*.ts'",
     "lint": "tsc --noEmit && eslint '*/**/*.ts' --quiet --fix",
     "start": "node production/src/index",
-    "build": "npm run clean && tsc",
+    "build": "tsc",
     "build:watch": "tsc --watch --preserveWatchOutput",
     "clean": "rimraf production",
     "dev": "npm run develop",
