@@ -30,7 +30,12 @@ export default class extends Event {
     if (!botPerms.has('readMessageHistory')) return
 
     // If it is an uncached message we need to fetch the message
-    const message = rawMessage instanceof Message ? rawMessage : await rawMessage.channel.getMessage(rawMessage.id)
+    const message =
+      rawMessage instanceof Message
+        ? rawMessage
+        : await rawMessage.channel.getMessage(rawMessage.id).catch(() => undefined)
+    // Incase another bot deletes the message we catch it
+    if (!message) return
 
     if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
     this.handleReactionRole(message, emoji, userID)

@@ -31,7 +31,11 @@ export default class extends Event {
 
     // If it is an uncached message we need to fetch the message
     const message =
-      rawMessage instanceof Message ? rawMessage : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id)
+      rawMessage instanceof Message
+        ? rawMessage
+        : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id).catch(() => undefined)
+    // Incase another bot deletes the message we catch it
+    if (!message) return
 
     if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
     this.handleReactionRole(message, emoji, userID)
