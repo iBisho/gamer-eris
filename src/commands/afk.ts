@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { UserSettings } from '../lib/types/settings'
 
 export default new Command(`afk`, async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
@@ -11,10 +10,10 @@ export default new Command(`afk`, async (message, args, context) => {
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
-  let userSettings = (await Gamer.database.models.user.findOne({
-    userID: message.author.id
-  })) as UserSettings | null
-  if (!userSettings) userSettings = new Gamer.database.models.user({ userID: message.author.id }) as UserSettings
+  const userSettings =
+    (await Gamer.database.models.user.findOne({
+      userID: message.author.id
+    })) || (await Gamer.database.models.user.create({ userID: message.author.id }))
 
   // If no message is provided then toggle the afk status
   if (!args.length) {
