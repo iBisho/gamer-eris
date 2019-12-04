@@ -30,6 +30,7 @@ export default class extends Event {
       return Gamer.runMonitors(message)
     }
 
+    console.log('message update bug debugging', message)
     // Since we only have a partial message because the edited message was uncached we need to fetch it
     const messageToProcess = await message.channel.getMessage(message.id)
     // Most embeds will always trigger a messageUpdate
