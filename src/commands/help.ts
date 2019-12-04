@@ -30,7 +30,7 @@ const categories = [
   },
   {
     name: `leveling`,
-    commands: [`background`, `boostme`, `daily`, `leaderboard`, `levelrole`, `profile`, `xp`, `xpreset`]
+    commands: [`background`, `boostme`, `daily`, `leaderboard`, `levelrole`, `profile`, `xp`, `xpreset`, `xpresetvoice`]
   },
   {
     name: `settings`,
