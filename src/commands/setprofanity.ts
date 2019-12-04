@@ -7,14 +7,19 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
+
+  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
 
   const [type] = args
+  if (!type) helpCommand.execute(message, [`setprofanity`], context)
   // Remove the type and the leftover should be all words
   args.shift()
 
