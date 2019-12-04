@@ -86,7 +86,10 @@ export default class extends Monitor {
           const reposted = await feedChannel.createMessage({ embed: embed.code })
 
           // This is waterfall for consistency. We want the reactions to be in a specific order
-          for (const reaction of postReactions) await reposted.addReaction(reaction)
+          for (const reaction of postReactions) {
+            const validReaction = Gamer.helpers.discord.convertEmoji(reaction, `reaction`)
+            if (validReaction) reposted.addReaction(validReaction)
+          }
         })
       )
 
