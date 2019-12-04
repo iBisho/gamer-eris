@@ -41,14 +41,15 @@ export default new Command(`embed`, async (message, args, context) => {
     emojis
   )
 
-  const embedCode = JSON.parse(transformed)
-  if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
-
-  return message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode }).catch(error => {
+  try {
+    const embedCode = JSON.parse(transformed)
+    if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
+    return message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })
+  } catch (error) {
     const embed = new GamerEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .setTitle(language(`embedding/embed:BAD_EMBED`))
       .setDescription(['```js', error, '```'].join('\n'))
-    message.channel.createMessage({ embed: embed.code })
-  })
+    return message.channel.createMessage({ embed: embed.code })
+  }
 })
