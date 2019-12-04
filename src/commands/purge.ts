@@ -42,7 +42,7 @@ export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args
     return true
   })
 
-  const messagesToDelete = filteredMessages.splice(0, amount)
+  const messagesToDelete = filteredMessages.splice(0, amount + 1)
 
   message.channel.deleteMessages(messagesToDelete.map(m => m.id))
 
