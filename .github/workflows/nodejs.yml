@@ -1,6 +1,6 @@
 name: Lint & Deployment
 
-on: [pull_request, issues]
+on: [push]
 
 jobs:
   lint:
