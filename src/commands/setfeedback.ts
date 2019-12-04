@@ -6,13 +6,17 @@ export default new Command(`setfeedback`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
+
+  const helpCommand = Gamer.commandForName('help')
+  if (!helpCommand) return
+
   const guildSettings =
     (await Gamer.database.models.guild.findOne({
       id: message.channel.guild.id
     })) || (await Gamer.database.models.guild.create({ id: message.channel.guild.id }))
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
   // If the user is not an admin cancel out
   if (
     !Gamer.helpers.discord.isModerator(message, guildSettings.staff.modRoleIDs) &&
@@ -21,6 +25,8 @@ export default new Command(`setfeedback`, async (message, args, context) => {
     return
 
   const [type, action] = args
+  if (!type) return helpCommand.execute(message, [`setfeedback`], context)
+
   const isIdea = type.toLowerCase() === `idea`
 
   // First check the menus that would not need `idea` or `bug`
@@ -152,7 +158,5 @@ export default new Command(`setfeedback`, async (message, args, context) => {
 
   await message.channel.createMessage(language(`settings/setfeedback:INVALID_USE`))
 
-  const helpCommand = Gamer.commandForName('help')
-  if (!helpCommand) return
   return helpCommand.execute(message, [`setfeedback`], context)
 })
