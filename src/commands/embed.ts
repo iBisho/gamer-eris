@@ -44,6 +44,7 @@ export default new Command(`embed`, async (message, args, context) => {
   try {
     const embedCode = JSON.parse(transformed)
     if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
+    if (embedCode.timestamp) embedCode.timestamp = new Date().toISOString()
     return message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })
   } catch (error) {
     const embed = new GamerEmbed()
