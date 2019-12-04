@@ -24,7 +24,8 @@ const categories = [
       `tickle`,
       `advice`,
       `wisdom`,
-      `urban`
+      `urban`,
+      `gif`
     ]
   },
   {
@@ -46,7 +47,8 @@ const categories = [
       `setprefix`,
       `setmail`,
       `setcapture`,
-      `setlogs`
+      `setlogs`,
+      `setmute`
     ]
   },
   { name: `utility`, commands: [`imgur`] },
