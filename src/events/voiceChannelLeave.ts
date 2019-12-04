@@ -1,16 +1,15 @@
 import { Member, VoiceChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import Gamer from '../index'
-import { MemberSettings } from '../lib/types/settings'
 
 export default class extends Event {
-  async execute(member: Member, channel: VoiceChannel) {
-    if (member.bot) return
+  async execute(member: Member | null, channel: VoiceChannel) {
+    if (!member || member.bot) return
 
-    const memberSettings = (await Gamer.database.models.member.findOne({
+    const memberSettings = await Gamer.database.models.member.findOne({
       memberID: member.id,
       guildID: member.guild.id
-    })) as MemberSettings | null
+    })
     if (!memberSettings) return
 
     // If they don't have a joinedat then cancel.

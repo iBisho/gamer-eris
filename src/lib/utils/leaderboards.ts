@@ -130,9 +130,9 @@ export default class {
   }
 
   public async makeVoiceCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
-    const allRelevantUsers = (await this.Gamer.database.models.member
-      .find()
-      .sort(`-leveling.voicexp`)) as MemberSettings[]
+    const allRelevantUsers = await this.Gamer.database.models.member
+      .find({ guildID: member.guild.id })
+      .sort(`-leveling.voicexp`)
 
     const index = allRelevantUsers.findIndex(data => data.memberID === member.id)
     const memberSettings = allRelevantUsers[index]
