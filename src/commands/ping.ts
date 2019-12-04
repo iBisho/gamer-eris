@@ -16,9 +16,9 @@ export default new Command([`ping`, `pong`], async (message, _args, context) => 
     language(`basic/ping:STATS_VALUE`, {
       id: message.channel instanceof TextChannel ? message.channel.guild.shard.id : 0,
       discord: `<:discord:494050000779608064>`,
-      guilds: context.client.guilds.size,
-      users: context.client.users.size
-    }) as string
+      guilds: context.client.guilds.size.toLocaleString(),
+      users: context.client.users.size.toLocaleString()
+    })
   )
 
   return message.channel.createMessage({ embed: embed.code })
