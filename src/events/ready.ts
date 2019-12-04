@@ -217,6 +217,8 @@ export default class extends Event {
     for (const settings of allGuildSettings) {
       if (settings.prefix !== Gamer.prefix) Gamer.guildPrefixes.set(settings.id, settings.prefix)
       if (settings.language !== `en-US`) Gamer.guildLanguages.set(settings.id, settings.language)
+      if (settings.mails.supportChannelID)
+        Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
     }
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)

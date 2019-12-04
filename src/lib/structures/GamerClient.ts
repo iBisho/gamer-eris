@@ -126,6 +126,8 @@ export default class GamerClient extends Client {
   guildPrefixes: Map<string, string> = new Map()
   // The languages set. Cached because they are the most often reason to fetch guild settings
   guildLanguages: Map<string, string> = new Map()
+  // The guild support channel ids. This is needed on every single message sent so we cache it
+  guildSupportChannelIDs: Map<string, string> = new Map()
 
   constructor(options: ClientOptions) {
     super(options)

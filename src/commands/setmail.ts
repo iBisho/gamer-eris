@@ -46,7 +46,9 @@ export default new Command(`setmail`, async (message, args, context) => {
       settings.save()
       return message.channel.createMessage(language(`settings/setmail:DISABLED`))
     case `channel`:
-      settings.mails.supportChannelID = message.channelMentions.length ? message.channelMentions[0] : message.channel.id
+      const channelID = message.channelMentions.length ? message.channelMentions[0] : message.channel.id
+      settings.mails.supportChannelID = channelID
+      Gamer.guildSupportChannelIDs.set(message.channel.guild.id, channelID)
       settings.save()
       return message.channel.createMessage(language(`settings/setmail:SUPPORT_CHANNEL_SET`))
     case `roles`:
