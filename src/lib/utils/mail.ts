@@ -79,7 +79,7 @@ export default class {
     // User does have an open mail
     this.sendToMods(message, message.channel.guild, guildSettings, content, mail)
     const response = await message.channel.createMessage(language(`mails/mail:REPLY_SENT_TO_MODS`))
-    return setTimeout(() => response.delete(), 10000)
+    return setTimeout(() => response.delete().catch(() => undefined), 10000)
   }
 
   async createMail(message: Message, content: string, guildSettings: GuildSettings | null, user?: User) {
