@@ -40,11 +40,13 @@ export default class extends Event {
       guild.members.map(async member => {
         if (!member.permission.has('manageGuild') && !member.permission.has('administrator')) return
 
-        // Member has permissions to manage guild so send dm. Catch incase they have blocked dms
+        // Member has permissions to manage guild so send dm
         try {
           const dmChannel = await member.user.getDMChannel()
           dmChannel.createMessage({ embed: embed.code })
-        } catch {}
+        } catch {
+          // Catch incase they have dms blocked
+        }
       })
     )
   }
