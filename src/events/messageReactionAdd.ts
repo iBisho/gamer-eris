@@ -65,6 +65,7 @@ export default class extends Event {
         if (event.attendees.includes(userID)) return
 
         const response = Gamer.helpers.events.joinEvent(event, userID, language)
+        event.save()
         message.channel.createMessage(response).then(msg => setTimeout(() => msg.delete(), 10000))
         break
       case denyEmojiID:

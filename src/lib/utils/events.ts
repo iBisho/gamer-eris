@@ -274,7 +274,6 @@ export default class {
       event.denials = event.denials.filter(d => d !== userID)
       event.waitingList = event.waitingList.filter(w => w !== userID)
       event.attendees = [...event.attendees, userID]
-      event.save()
 
       this.advertiseEvent(event)
       return language(`events/eventjoin:SUCCESSFULLY_JOINED`)
@@ -286,7 +285,6 @@ export default class {
     // add user to waiting list
     event.denials = event.denials.filter(d => d !== userID)
     event.waitingList = [...event.waitingList, userID]
-    event.save()
 
     this.advertiseEvent(event)
 

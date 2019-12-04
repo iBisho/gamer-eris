@@ -43,6 +43,6 @@ export default new Command([`eventjoin`, `ej`], async (message, args, context) =
   }
 
   const response = Gamer.helpers.events.joinEvent(event, message.author.id, language)
-
+  event.save()
   return message.channel.createMessage(response)
 })

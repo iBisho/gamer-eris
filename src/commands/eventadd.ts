@@ -57,5 +57,7 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
     }
   }
 
+  event.save()
+
   return message.channel.createMessage(language(`events/eventadd:ADDED`, { mention: message.author.mention }))
 })
