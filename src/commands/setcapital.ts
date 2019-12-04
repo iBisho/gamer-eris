@@ -13,7 +13,7 @@ export default new Command(`setcapital`, async (message, args, context) => {
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
 
-  const [type, number] = args
+  const [type] = args
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
@@ -32,7 +32,7 @@ export default new Command(`setcapital`, async (message, args, context) => {
       settings.save()
       return message.channel.createMessage(language(`settings/setcapital:ENABLED_DEFAULT`))
     default:
-      const amount = parseInt(number, 10)
+      const amount = parseInt(type, 10)
       if (!amount || amount > 100 || amount < 40)
         return message.channel.createMessage(language(`settings/setcapital:INVALID_AMOUNT`))
       settings.moderation.filters.capital = amount
