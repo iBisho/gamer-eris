@@ -391,7 +391,7 @@ export default class extends Event {
 
         // Send a DM to the user telling them it was solved
         const embed = new GamerEmbed()
-          .setDescription(guildSettings.feedback.solvedMessage || language(`feedback/idea:DEFAULT_SOLVED`))
+          .setDescription(guildSettings.feedback.solvedMessage || language(`feedback/idea:SOLVED_DEFAULT`))
           .setAuthor(`Feedback From ${message.channel.guild.name}`, message.channel.guild.iconURL)
           .setTimestamp()
 
@@ -427,7 +427,7 @@ export default class extends Event {
 
         // Send a DM to the user telling them it was solved
         const rejectedEmbed = new GamerEmbed()
-          .setDescription(guildSettings.feedback.rejectedMessage || language(`feedback/idea:DEFAULT_REJECTED`))
+          .setDescription(guildSettings.feedback.rejectedMessage || language(`feedback/idea:REJECTED_DEFAULT`))
           .setAuthor(`Feedback From ${message.channel.guild.name}`, message.channel.guild.iconURL)
           .setTimestamp()
 
