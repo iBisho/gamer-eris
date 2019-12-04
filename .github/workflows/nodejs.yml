@@ -43,12 +43,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
             cd gamer-eris
-            # Delete package-lock to avoid conflicts
-            rm package-lock.json -f -r || true
             git pull
-            # Check out package-lock back again
-            git checkout package-lock.json
-            npm run clean
+            npm ci
             npm run build
             pm2 restart gamer-beta
           EOF
