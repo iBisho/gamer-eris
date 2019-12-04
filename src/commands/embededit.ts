@@ -51,7 +51,9 @@ export default new Command(`embededit`, async (message, args, context) => {
   try {
     const embedCode = JSON.parse(transformed)
     if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
+    if (typeof embedCode.thumbnail === 'string') embedCode.thumbnail = { url: embedCode.thumbnail }
     if (embedCode.timestamp) embedCode.timestamp = new Date().toISOString()
+    if (embedCode.color === 'RANDOM') embedCode.color = Math.floor(Math.random() * (0xffffff + 1))
     return messageToUse.edit({ content: embedCode.plaintext, embed: embedCode })
   } catch (error) {
     const embed = new GamerEmbed()

@@ -25,8 +25,11 @@ export default new Command([`leaderboard`, `lb`], async (message, args, context)
   if ((id && globalTypes.includes(id.toLowerCase())) || (type && globalTypes.includes(type.toLowerCase()))) {
     buffer = await Gamer.helpers.leaderboards.makeGlobalCanvas(message, member, NO_POINTS, NOT_ENOUGH)
   } else if ((id && voiceTypes.includes(id.toLowerCase())) || (type && voiceTypes.includes(type.toLowerCase()))) {
+    if ([].includes(message.channel.guild.id)) {
+      if (![].includes(message.channel.id)) return
+    }
     buffer = await Gamer.helpers.leaderboards.makeVoiceCanvas(message, member, NO_POINTS, NOT_ENOUGH)
-  } else {
+  } else {s
     buffer = await Gamer.helpers.leaderboards.makeLocalCanvas(message, member, NO_POINTS, NOT_ENOUGH)
   }
 

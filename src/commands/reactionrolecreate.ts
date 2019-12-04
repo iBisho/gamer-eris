@@ -22,7 +22,8 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
   if (!messageID || !name || !emoji) return helpCommand.execute(message, [`reactionrolecreate`], context)
 
   const messageToUse =
-    message.channel.messages.get(messageID) || (await Gamer.getMessage(message.channel.id, messageID))
+    message.channel.messages.get(messageID) || (await message.channel.getMessage(messageID).catch(() => undefined))
+  if (!messageToUse) return helpCommand.execute(message, [`reactionrolecreate`], context)
 
   const validEmoji = await Gamer.database.models.emoji.findOne({
     name: emoji.toLowerCase()
