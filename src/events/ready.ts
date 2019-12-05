@@ -213,7 +213,7 @@ export default class extends Event {
     }
 
     // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
-    const allGuildSettings = (await Gamer.database.models.guild.find()) as GuildSettings[]
+    const allGuildSettings = await Gamer.database.models.guild.find()
     for (const settings of allGuildSettings) {
       if (settings.prefix !== Gamer.prefix) Gamer.guildPrefixes.set(settings.id, settings.prefix)
       if (settings.language !== `en-US`) Gamer.guildLanguages.set(settings.id, settings.language)

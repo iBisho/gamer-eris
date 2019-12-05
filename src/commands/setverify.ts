@@ -19,8 +19,13 @@ export default new Command(`setverify`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const [action] = args
+  const [action, roleIDOrName] = args
   if (!action) return helpCommand.execute(message, [`setverify`], context)
+
+  const role = roleIDOrName
+    ? message.channel.guild.roles.get(roleIDOrName) ||
+      message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
+    : undefined
 
   switch (action.toLowerCase()) {
     case 'enable':
@@ -53,11 +58,9 @@ export default new Command(`setverify`, async (message, args, context) => {
         )
       )
     case 'role':
-      const [roleID] = message.roleMentions
-      const role = message.channel.guild.roles.get(roleID)
       if (!role) return message.channel.createMessage(language(`settings/setverify:NEED_ROLE`))
 
-      guildSettings.verify.roleID = roleID
+      guildSettings.verify.roleID = role.id
       return message.channel.createMessage(language(`settings/setverify:ROLE_SET`, { role: role.name }))
     case 'message':
       args.shift()
@@ -89,6 +92,11 @@ export default new Command(`setverify`, async (message, args, context) => {
         return message.channel.createMessage(language(`settings/setverify:MISSING_PERMS`))
 
       return Gamer.helpers.scripts.createVerificationSystem(message.channel.guild, guildSettings)
+    case 'autorole':
+      if (!role) return message.channel.createMessage(language(`settings/setverify:NEED_AUTOROLE`))
+
+      guildSettings.moderation.roleIDs.autorole = role.id
+      return message.channel.createMessage(language(`settings/setverify:AUTOROLE_SET`, { role: role.name }))
   }
 
   await message.channel.createMessage(language(`settings/setverify:INVALID_USE`))
