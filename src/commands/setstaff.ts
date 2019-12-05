@@ -49,6 +49,7 @@ export default new Command(`setstaff`, async (message, args, context) => {
       const exists = guildSettings.staff.modRoleIDs.includes(role.id)
       if (exists) guildSettings.staff.modRoleIDs = guildSettings.staff.modRoleIDs.filter(id => id !== role.id)
       else guildSettings.staff.modRoleIDs.push(role.id)
+      guildSettings.save()
       return message.channel.createMessage(
         language(exists ? `settings/setstaff:MODROLE_REMOVED` : `settings/setstaff:MODROLE_ADDED`)
       )
