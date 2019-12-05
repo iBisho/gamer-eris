@@ -61,6 +61,7 @@ export default new Command(`setverify`, async (message, args, context) => {
       if (!role) return message.channel.createMessage(language(`settings/setverify:NEED_ROLE`))
 
       guildSettings.verify.roleID = role.id
+      guildSettings.save()
       return message.channel.createMessage(language(`settings/setverify:ROLE_SET`, { role: role.name }))
     case 'message':
       args.shift()
@@ -96,6 +97,7 @@ export default new Command(`setverify`, async (message, args, context) => {
       if (!role) return message.channel.createMessage(language(`settings/setverify:NEED_AUTOROLE`))
 
       guildSettings.moderation.roleIDs.autorole = role.id
+      guildSettings.save()
       return message.channel.createMessage(language(`settings/setverify:AUTOROLE_SET`, { role: role.name }))
   }
 
