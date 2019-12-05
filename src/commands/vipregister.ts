@@ -45,6 +45,7 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
   guildSettings.save()
 
   userSettings.vip.guildsRegistered.push(message.channel.guild.id)
+  userSettings.vip.isVIP = true
   userSettings.save()
 
   return message.channel.createMessage(language(`vip/vipregister:REGISTERED_VIP`))
