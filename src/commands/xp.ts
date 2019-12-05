@@ -23,11 +23,10 @@ export default new Command(`xp`, async (message, args, context) => {
 
   const memberID = message.mentions.length ? message.mentions[0].id : userID
 
-  const member = message.channel.guild.members.get(memberID)
-  if (!member) return
+  const member = message.channel.guild.members.get(memberID) || message.member
 
-  if (isAdding) Gamer.helpers.levels.addLocalXP(message.member, amount, true)
-  else if (type.toLowerCase() === `remove`) Gamer.helpers.levels.removeXP(message.member, amount)
+  if (isAdding) Gamer.helpers.levels.addLocalXP(member, amount, true)
+  else if (type.toLowerCase() === `remove`) Gamer.helpers.levels.removeXP(member, amount)
   // Cancel out if not add or remove
   else return
   // Respond telling the user how much they gained
