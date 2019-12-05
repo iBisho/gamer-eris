@@ -58,6 +58,7 @@ export default new Command(`setmail`, async (message, args, context) => {
           settings.mails.alertRoleIDs = settings.mails.alertRoleIDs.filter(roleID => roleID !== id)
         else settings.mails.alertRoleIDs.push(id)
       }
+      settings.save()
       return message.channel.createMessage(language(`settings/setmail:ALERT_ROLES_UPDATED`))
     case `category`: // This normally doesnt need to be run by a user but in debug scenarios
       // In case this is a category type this will require a category id be passed by the user
