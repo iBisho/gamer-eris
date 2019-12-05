@@ -37,7 +37,7 @@
     "mongoose": "^5.7.13",
     "node-fetch": "^2.6.0",
     "pino-pretty": "^3.5.0",
-    "typescript": "^3.7.2",
+    "typescript": "^3.7.3",
     "yuuko": "github:Skillz4Killz/yuuko#fix-event-listener-typings"
   },
   "devDependencies": {
