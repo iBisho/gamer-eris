@@ -29,15 +29,12 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
       userID: message.author.id
     }))
 
-  // They have already registered a VIP server.
-  if (userSettings.vip.guildsRegistered.length)
-    return message.channel.createMessage(language(`vip/vipregister:ALREADY_VIP`))
-
   const guildSettings =
     (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) ||
     (await Gamer.database.models.guild.create({ id: message.channel.guild.id }))
 
-  if (guildSettings.vip.isVIP) return message.channel.createMessage('5')
+  // They have already registered a VIP server.
+  if (guildSettings.vip.isVIP) return message.channel.createMessage(language(`vip/vipregister:ALREADY_VIP`))
 
   guildSettings.vip.isVIP = true
   guildSettings.vip.registeredAt = message.timestamp
