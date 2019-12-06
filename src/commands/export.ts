@@ -46,11 +46,11 @@ export default new Command(`export`, async (message, args, context) => {
   const [embed] = feedbackMessage.embeds
   if (!embed || !embed.fields) return
 
-  const csvArray = [embed.fields.map(field => field.name).join(`,`), embed.fields.map(field => field.value).join(`,`)]
+  const csvArray = [embed.fields.map(field => field.name).join(`;`), embed.fields.map(field => field.value).join(`;`)]
   for (const msg of feedbackMessages) {
     const [msgEmbed] = msg.embeds
     if (!msgEmbed || !msgEmbed.fields) continue
-    csvArray.push(msgEmbed.fields.map(field => field.value).join(','))
+    csvArray.push(msgEmbed.fields.map(field => field.value).join(';'))
   }
 
   return message.channel.createMessage(language(`vip/export:CSV`), {
