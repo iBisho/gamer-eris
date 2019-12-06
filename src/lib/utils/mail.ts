@@ -397,7 +397,9 @@ export default class {
       dmChannel.createMessage({ embed: dmEmbed.code })
     } catch {}
 
-    message.channel.delete(language(`mails/mail:CHANNEL_DELETE_REASON`, { user: message.author.username }))
+    message.channel.delete(
+      language(`mails/mail:CHANNEL_DELETE_REASON`, { user: encodeURIComponent(message.author.username) })
+    )
 
     if (!guildSettings?.moderation.logs.modlogsChannelID) return
 
