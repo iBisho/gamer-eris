@@ -64,7 +64,7 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
     if (!member.guild.roles.has(role.id)) break
 
     // Need this await to make the loop async so that if a user deletes a role it will break in the check above
-    await member.addRole(role.id, REASON)
+    await member.addRole(role.id, REASON).catch(() => undefined)
 
     Gamer.amplitude.push({
       authorID: message.author.id,
