@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, GroupChannel } from 'eris'
-import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventdelete`, `ed`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
@@ -29,15 +28,17 @@ export default new Command([`eventdelete`, `ed`], async (message, args, context)
   if (!eventID) return helpCommand.execute(message, [`eventdelete`], context)
 
   // Get the event from this server using the id provided
-  const event = (await Gamer.database.models.event.findOne({
+  const event = await Gamer.database.models.event.findOne({
     id: eventID,
     guildID: message.channel.guild.id
-  })) as GamerEvent | null
+  })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   // Delete the event ad as well
   const eventMessage =
-    event.adChannelID && event.adMessageID ? await Gamer.getMessage(event.adChannelID, event.adMessageID) : undefined
+    event.adChannelID && event.adMessageID
+      ? await Gamer.getMessage(event.adChannelID, event.adMessageID).catch(() => undefined)
+      : undefined
   if (eventMessage) eventMessage.delete()
 
   // Delete the event itself from the database

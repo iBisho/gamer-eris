@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Set the events settings.",
+  "EXTENDED": "$t(settings/setevents:EXTENDED_LINE_1)\n$t(settings/setevents:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}setevents channel [#Channel]** ~ Sets the default event advertisement channel.",
+  "EXTENDED_LINE_2": "**{{prefix}}setevents removechannel** ~ Disables the default event advertisement channel.",
+  "USAGE": "{{prefix}}setevents [channel | removechannel] *[#Channel]*",
+  "ALIASES": "Setevents does not have any aliases.",
+  "NEED_CHANNEL": "You did not provide a channel to use as the default event advertisement channel.",
+  "SET_ADCHANNEL": "The default event advertisement channel has been set to {{channel}}.",
+  "RESET_ADCHANNEL": "The default event advertisement channel has been removed."
+}

@@ -14,9 +14,9 @@ export default new Command([`emojis`, `em`], async (message, _args, context) => 
   if (!emojis.length) return message.channel.createMessage(language(`emojis/emojis:NONE`))
   let response = ``
   for (const emoji of emojis) {
-    if (response.length === 2048) break
+    if (response.length === 2000) break
     const text = `${emoji.fullCode} **${emoji.name}**\n`
-    if (response.length + text.length >= 2048) break
+    if (response.length + text.length >= 2000) break
     response += text
   }
 

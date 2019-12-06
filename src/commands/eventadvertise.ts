@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, GroupChannel } from 'eris'
-import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventadvertise`, `ead`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
@@ -28,15 +27,17 @@ export default new Command([`eventadvertise`, `ead`], async (message, args, cont
 
   if (!eventID) return helpCommand.execute(message, [`eventadvertise`], context)
   // Get the event from this server using the id provided
-  const event = (await Gamer.database.models.event.findOne({
+  const event = await Gamer.database.models.event.findOne({
     id: eventID,
     guildID: message.channel.guild.id
-  })) as GamerEvent | null
+  })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
+  // Some channel names have odd characters that we need to handle
+  const channelName = encodeURIComponent(message.channel.name)
   // If an old event card exists in a different channel get rid of it
   if (event.adChannelID && event.adMessageID && event.adChannelID !== message.channel.id) {
-    Gamer.deleteMessage(event.adChannelID, event.adMessageID, `Event card moved to ${message.channel.name}`)
+    Gamer.deleteMessage(event.adChannelID, event.adMessageID, `Event card moved to ${channelName}`)
   }
 
   const channelID = message.channelMentions?.length ? message.channelMentions[0] : message.channel.id

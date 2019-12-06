@@ -95,35 +95,44 @@ export default class {
   }
 
   stringToMilliseconds(text: string) {
-    // Finds the first of these letters
-    const match = /(w|d|h|m|s)/.exec(text)
-    // if none of them were found cancel
-    if (!match) return
-    // Get the number which should be before the index of that match
-    const number = text.substring(0, match.index)
-    // Get the letter that was found
-    const [letter] = match
-    if (!number || !letter) return
+    const matches = text.match(/(\d+[w|d|h|m]{1})/g)
+    if (!matches) return
 
-    let multiplier = milliseconds.SECOND
-    switch (letter.toLowerCase()) {
-      case `w`:
-        multiplier = milliseconds.WEEK
-        break
-      case `d`:
-        multiplier = milliseconds.DAY
-        break
-      case `h`:
-        multiplier = milliseconds.HOUR
-        break
-      case `m`:
-        multiplier = milliseconds.MINUTE
-        break
+    let total = 0
+
+    for (const match of matches) {
+      // Finds the first of these letters
+      const validMatch = /(w|d|h|m|s)/.exec(match)
+      // if none of them were found cancel
+      if (!validMatch) return
+      // Get the number which should be before the index of that match
+      const number = match.substring(0, validMatch.index)
+      // Get the letter that was found
+      const [letter] = validMatch
+      if (!number || !letter) return
+
+      let multiplier = milliseconds.SECOND
+      switch (letter.toLowerCase()) {
+        case `w`:
+          multiplier = milliseconds.WEEK
+          break
+        case `d`:
+          multiplier = milliseconds.DAY
+          break
+        case `h`:
+          multiplier = milliseconds.HOUR
+          break
+        case `m`:
+          multiplier = milliseconds.MINUTE
+          break
+      }
+
+      const amount = parseInt(number, 10)
+      if (!parseInt) return
+
+      total += amount * multiplier
     }
 
-    const amount = parseInt(number, 10)
-    if (!parseInt) return
-
-    return amount * multiplier
+    return total
   }
 }

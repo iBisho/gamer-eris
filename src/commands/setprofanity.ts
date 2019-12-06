@@ -19,7 +19,7 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
 
   const [type] = args
-  if (!type) helpCommand.execute(message, [`setprofanity`], context)
+  if (!type) return helpCommand.execute(message, [`setprofanity`], context)
   // Remove the type and the leftover should be all words
   args.shift()
 
@@ -41,7 +41,7 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
     case `add`:
       if (!args.length) return message.channel.createMessage(language(`settings/setprofanity:NO_WORDS`))
 
-      const softwords = new Set([...args, ...settings.moderation.filters.profanity.words])
+      const softwords = new Set([...args.map(arg => arg.toLowerCase()), ...settings.moderation.filters.profanity.words])
       settings.moderation.filters.profanity.words = [...softwords]
       settings.save()
       return message.channel.createMessage(language(`settings/setprofanity:ADDED`))

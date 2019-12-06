@@ -43,7 +43,8 @@ export default class extends Event {
         // Member has permissions to manage guild so send dm
         try {
           const dmChannel = await member.user.getDMChannel()
-          dmChannel.createMessage({ embed: embed.code })
+          // Need await to be able to catch and ingore the dm closed error
+          await dmChannel.createMessage({ embed: embed.code })
         } catch {
           // Catch incase they have dms blocked
         }

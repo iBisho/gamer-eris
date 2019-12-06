@@ -48,7 +48,8 @@ const categories = [
       `setmail`,
       `setcapture`,
       `setlogs`,
-      `setmute`
+      `setmute`,
+      `setevents`
     ]
   },
   { name: `utility`, commands: [`imgur`] },

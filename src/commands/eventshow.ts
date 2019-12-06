@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, GroupChannel } from 'eris'
-import { GamerEvent } from '../lib/types/gamer'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`eventshow`, `es`], async (message, args, context) => {
@@ -25,10 +24,10 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
   if (!eventID) return message.channel.createMessage(language(`events/events:NEED_EVENT_ID`))
 
   // Get the event from this server using the id provided
-  const event = (await Gamer.database.models.event.findOne({
+  const event = await Gamer.database.models.event.findOne({
     id: eventID,
     guildID: message.channel.guild.id
-  })) as GamerEvent | null
+  })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   const attendees = Gamer.helpers.discord.idsToUserTag(event.attendees)
@@ -36,18 +35,13 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
   const denials = Gamer.helpers.discord.idsToUserTag(event.denials)
 
   const NONE = language(`common:NONE`)
+  const ENABLED = language(`common:ENABLED`)
+  const DISABLED = language(`common:DISABLED`)
 
   const embed = new GamerEmbed()
     .setAuthor(message.author.username, message.author.avatarURL)
-    .setTitle(event.title)
-    .setDescription(event.description)
-    // .addField(
-    //   language(`events/eventshow:BASIC_EMOJI`),
-    //   language(`events/eventshow:BASIC`, {
-    //     title: event.title,
-    //     tags: event.tags.length ? event.tags.join(`, `) : language('common:NONE')
-    //   })
-    // )
+    .setTitle(`[1] ${event.title}`)
+    .setDescription(`**[2]** ${event.description}`)
     .addField(
       language(`events/eventshow:TIME_EMOJI`),
       language(`events/eventshow:TIME`, { duration: Gamer.helpers.transform.humanizeMilliseconds(event.duration) })
@@ -65,6 +59,14 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
     .addField(
       language(`events/eventshow:GAMING_EMOJI`),
       language(`events/eventshow:GAMING`, { platform: event.platform, game: event.game, activity: event.activity })
+    )
+    .addField(
+      language(`events/eventshow:BASIC_EMOJI`),
+      language(`events/eventshow:BASIC`, {
+        dm: event.dmReminders ? ENABLED : DISABLED,
+        allowedRoles: event.allowedRoleIDs.length ? event.allowedRoleIDs.map(id => `<@&${id}>`).join(' ') : NONE,
+        alertRoles: event.alertRoleIDs.length ? event.alertRoleIDs.map(id => `<@&${id}>`).join(' ') : NONE
+      })
     )
     .setFooter(language(`events/eventshow:STARTS_AT`))
     .setTimestamp(event.start)

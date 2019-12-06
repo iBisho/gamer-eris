@@ -199,7 +199,7 @@ export default class extends Event {
 
           // Send a response like post delete it
           const liked = await message.channel.createMessage(language(`network/reaction:THANKS_LIKED`))
-          return setTimeout(() => liked.delete(), 10000)
+          return setTimeout(() => liked.delete().catch(() => undefined), 10000)
         }
         case constants.emojis.repeat: {
           const userSettings = await Gamer.database.models.user.findOne({

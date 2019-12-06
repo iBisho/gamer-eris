@@ -64,6 +64,10 @@ export default class extends Monitor {
 
       try {
         const json = JSON.parse(transformed)
+        if (typeof json.image === 'string') json.image = { url: json.image }
+        if (typeof json.thumbnail === 'string') json.thumbnail = { url: json.thumbnail }
+        if (json.color === 'RANDOM') json.color = Math.floor(Math.random() * (0xffffff + 1))
+        if (json.timestamp) json.timestamp = new Date().toISOString()
         message.channel.createMessage({ content: json.plaintext, embed: json })
       } catch {}
 

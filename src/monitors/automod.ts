@@ -105,9 +105,11 @@ export default class extends Monitor {
 
     if (content === message.content) return
 
+    const botPerms = message.channel.permissionsOf(Gamer.user.id)
     // If the message can be deleted, delete it
-    if (message.channel.permissionsOf(Gamer.user.id).has('manageMessages'))
-      message.delete(language(`common:AUTOMOD_DELETE_REASON`)).catch(() => null)
+    if (botPerms.has('manageMessages')) message.delete(language(`common:AUTOMOD_DELETE_REASON`)).catch(() => null)
+    // Need send and embed perms to send the clean response
+    if (!botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
 
     embed.setDescription(content)
 

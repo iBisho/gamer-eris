@@ -341,6 +341,8 @@ export default class {
     const eventsToRemind: GamerEvent[] = []
 
     for (const event of events) {
+      // Ignore all events that are template events
+      if (event.templateName) continue
       if (event.end < now) eventsToEnd.push(event)
       else if (event.start < now && !event.hasStarted && event.end > now) eventsToStart.push(event)
       else if (event.start > now && !event.hasStarted && event.attendees.length) eventsToRemind.push(event)

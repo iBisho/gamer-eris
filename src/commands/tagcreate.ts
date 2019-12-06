@@ -44,6 +44,11 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
       emojis
     )
     const embedCode = JSON.parse(transformed)
+    if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
+    if (typeof embedCode.thumbnail === 'string') embedCode.thumbnail = { url: embedCode.thumbnail }
+    if (embedCode.color === 'RANDOM') embedCode.color = Math.floor(Math.random() * (0xffffff + 1))
+    if (embedCode.timestamp) embedCode.timestamp = new Date().toISOString()
+
     message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })
     const payload = {
       embedCode: text.join(' '),
