@@ -60,6 +60,9 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
       await Gamer.helpers.utils.sleep(5)
       counter = 0
     }
+    // Incase the role gets deleted during the loop
+    if (!member.guild.roles.has(role.id)) continue
+
     member.addRole(role.id, REASON)
 
     Gamer.amplitude.push({
