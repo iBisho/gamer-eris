@@ -62,7 +62,8 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
     }
     // Incase the role gets deleted during the loop
     if (!member.guild.roles.has(role.id)) break
-
+    // Increment the counter
+    counter++
     // Need this await to make the loop async so that if a user deletes a role it will break in the check above
     await member.addRole(role.id, REASON).catch(() => undefined)
 
