@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Quote a message with a message id.",
+	"EXTENDED": "$t(utility/quote:EXTENDED_LINE_1)\n$t(utility/quote:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}quote [message id]** ~ Quote a message from the current channel using the message id.",
+	"EXTENDED_LINE_2": "**{{prefix}}quote [message id] [#Channel]** ~ Quote a message from another channel using the message id.",
+	"USAGE": "{{prefix}}quote [Message ID] *[Channel]* ",
+	"ALIASES": "Quote has no aliases.",
+	"CLICK_HERE": "[Click Here To Go To Message]({{url}})",
+	"EMBED": "The message is an embedded message so I can not quote it. You can use the link above to go to it."
+}

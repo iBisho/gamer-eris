@@ -52,7 +52,7 @@ const categories = [
       `setevents`
     ]
   },
-  { name: `utility`, commands: [`imgur`] },
+  { name: `utility`, commands: [`imgur`, `quote`] },
   { name: `feedback`, commands: [`bugs`, `idea`] },
   {
     name: `roles`,
