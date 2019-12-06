@@ -303,7 +303,7 @@ export default class extends Event {
 
           return notificationChannel.createMessage(
             language(
-              isAlreadyFollowing ? `network/networkfollow:ADD_FOLLOWER` : `network/networkfollow:LOSE_FOLLOWER`,
+              isAlreadyFollowing ? `network/networkfollow:LOSE_FOLLOWER` : `network/networkfollow:ADD_FOLLOWER`,
               { username: `${user.username}#${user.discriminator}`, id: user.id }
             )
           )
