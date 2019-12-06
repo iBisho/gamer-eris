@@ -44,6 +44,7 @@
   "MODERATOR": "Moderator:",
   "SERVER": "Server:",
   "REASON": "Reason:",
+  "RESET": "Reset",
   "AUTOMOD_DELETE_REASON": "Automoderation triggered. Message did not comply with the servers settings.",
   "TOO_MUCH_WRONG": "Automod: Failed to comply with rules for several reasons.",
   "INVALID": "WARNING: Incorrect usage of Dangerous Command!",

@@ -95,7 +95,7 @@ const categories = [
   { name: `mails`, commands: [`mail`, `label`] },
   { name: `vip`, commands: [`vipregister`, `roletoall`, `export`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`] },
-  { name: `gaming`, commands: [`twitch`] },
+  { name: `gaming`, commands: [`twitch`, `capture`] },
   { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`] },
   { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] },
   { name: `tags`, commands: [`tagcreate`, `tagdelete`] }

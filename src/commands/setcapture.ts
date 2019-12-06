@@ -17,18 +17,26 @@ export default new Command(`setcapture`, async (message, args, context) => {
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
 
-  const [game] = args
+  const [game, reset] = args
   const validGames = [`arenaofvalor`, `mobilelegends`, `rulesofsurvival`]
   if (!game || !validGames.includes(game.toLowerCase()))
     return message.channel.createMessage(
       language(`settings/setcapture:INVALID_GAME`, { validGames: validGames.join(', ') })
     )
+
   const channelID = message.channelMentions.length ? message.channelMentions[0] : message.channel.id
 
   let gameSettings = await Gamer.database.models.tradingCard.findOne({
     guildID: message.channel.guild.id,
     game: game.toLowerCase()
   })
+
+  if ([`reset`, language(`common:RESET`).toLowerCase()].includes(reset.toLowerCase())) {
+    if (!gameSettings) return message.channel.createMessage(language('settings/setcapture:NOT_SETUP'))
+    await Gamer.database.models.tradingCard.deleteOne({ _id: gameSettings._id })
+    return message.channel.createMessage(language(`settings/setcapture:RESET`))
+  }
+
   if (!gameSettings) {
     gameSettings = await Gamer.database.models.tradingCard.create({
       game: game.toLowerCase(),
