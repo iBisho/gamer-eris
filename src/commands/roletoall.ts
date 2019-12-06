@@ -61,9 +61,10 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
       counter = 0
     }
     // Incase the role gets deleted during the loop
-    if (!member.guild.roles.has(role.id)) continue
+    if (!member.guild.roles.has(role.id)) break
 
-    member.addRole(role.id, REASON)
+    // Need this await to make the loop async so that if a user deletes a role it will break in the check above
+    await member.addRole(role.id, REASON)
 
     Gamer.amplitude.push({
       authorID: message.author.id,
