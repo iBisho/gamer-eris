@@ -17,6 +17,10 @@ export default class extends Monitor {
     if (!mailCommand) return
 
     const prefix = Gamer.guildPrefixes.get(message.channel.guild.id) || Gamer.prefix
+    Gamer.helpers.logger.green(
+      `Mail from support channel by ${message.author.username} ${message.channel.name} in ${message.channel.guild.name} guild.`
+    )
+
     // Run the mail command for this user
     mailCommand.execute(message, [message.content], { client: Gamer, commandName: `mail`, prefix })
   }

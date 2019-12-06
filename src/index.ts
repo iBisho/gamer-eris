@@ -47,7 +47,7 @@ const Gamer = new GamerClient({
 })
 
 Gamer.globalCommandRequirements = {
-  async custom(message: Message) {
+  async custom(message, _args, context) {
     // DM should have necessary perms already
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return true
 
@@ -77,6 +77,7 @@ Gamer.globalCommandRequirements = {
     // If it is the support channel and NOT a server admin do not allow command
     if (
       message.channel.id === guildSettings.mails.supportChannelID &&
+      context.commandName !== 'mail' &&
       !Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)
     )
       return false
