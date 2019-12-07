@@ -25,12 +25,19 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
 
-  const [roleIDOrName] = args
+  // Join() because role names can have spaces in it
+  const roleIDOrName = args.join(' ')
+
   const role = message.roleMentions.length
-    ? message.channel.guild.roles.get(message.roleMentions[0])
-    : message.channel.guild.roles.find(
-        r => r.id === roleIDOrName || r.name.toLowerCase() === roleIDOrName.toLowerCase()
-      )
+    ? // If a role was mentioned use it
+      message.channel.guild.roles.get(message.roleMentions[0])
+    : // ELse if a role id or name was provided
+    roleIDOrName
+    ? // Check if its a valid role id
+      message.channel.guild.roles.get(roleIDOrName) ||
+      // Check for the role by its name
+      message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
+    : undefined
   if (!role) return message.channel.createMessage(language(`vip/roletoall:NEED_ROLE`))
 
   const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
