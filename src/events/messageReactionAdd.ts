@@ -471,12 +471,14 @@ export default class extends Event {
             `Removing points due to feedback reaction on ${message.channel.guild.name} discord server.`
           )
 
+          Gamer.helpers.levels.completeMission(feedbackMember, `votefeedback`, feedbackMember.guild.id)
           return Gamer.helpers.levels.removeXP(feedbackMember, 3)
         } else if (upEmojis.includes(fullEmojiName)) {
           Gamer.helpers.logger.green(
             `Adding points due to feedback reaction on ${message.channel.guild.name} discord server.`
           )
 
+          Gamer.helpers.levels.completeMission(feedbackMember, `votefeedback`, feedbackMember.guild.id)
           return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
         }
     }

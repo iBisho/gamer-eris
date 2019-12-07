@@ -10,5 +10,6 @@ export default [
   { amount: 5, commandName: `profile`, title: `View 5 People Profile`, reward: 150 },
   { amount: 3, commandName: `role`, title: `Assign any role to yourself 3 times`, reward: 30 },
   { amount: 5, commandName: `user`, title: `Use the user command 5 times to check other's info.`, reward: 70 },
-  { amount: 10, commandName: `wisdom`, title: `Share 10 wisdom with others.`, reward: 30 }
+  { amount: 10, commandName: `wisdom`, title: `Share 10 wisdom with others.`, reward: 30 },
+  { amount: 3, commandName: `votefeedback`, title: `Vote 3 times on feedback.`, reward: 10 }
 ]
