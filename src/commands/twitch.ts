@@ -6,27 +6,50 @@ export default new Command(`twitch`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
+  const guildID = message.channel.guild.id
+
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(guildID) || `en-US`)
   if (!language) return
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: guildID
   })
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
-  const [type, username, game] = args
-  if (!type || !username) return helpCommand.execute(message, [`twitch`], context)
+  const [type, username, ...gameName] = args
+  if (!type) return helpCommand.execute(message, [`twitch`], context)
+
+  if (type && type.toLowerCase() === `list`) {
+    const twitchSubs = await Gamer.database.models.subscription.find({ guildID })
+    if (!twitchSubs.length) return message.channel.createMessage(language(`gaming/twitch:NONE`))
+    let response = ``
+    for (const sub of twitchSubs) {
+      if (response.length === 2000) break
+      const listener = sub.subs.find(s => s.guildID === guildID)
+      if (!listener) continue
+
+      const text = `${sub.username} <#${listener.channelID}>\n`
+      if (response.length + text.length > 2000) break
+      response += text
+    }
+
+    return message.channel.createMessage(response)
+  }
 
   // Fetch this username from subscriptions specifically for twitch
   const userSubscription = await Gamer.database.models.subscription.findOne({
     username,
     type: `twitch`
   })
+
+  if (!username) return helpCommand.execute(message, [`twitch`], context)
+
+  const game = gameName.join(' ')
   const subPayload = {
     game: game?.toLowerCase() ?? null,
     guildID: message.channel.guild.id,
