@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Une façon facile de partager le lien du tableau de bord de Gamer.",
+  "DESCRIPTION": "Un moyen facile de partager le lien du tableau de bord de Gamer !",
   "EXTENDED": "**{{prefix}}invite** ~ Affiche le lien d'invitation pour le bot, pour l'inviter sur votre serveur et affiche aussi le lien d'invitation pour le serveur de Support.",
   "USAGE": "{{prefix}}invite",
   "ALIASES": "{{prefix}}join",
