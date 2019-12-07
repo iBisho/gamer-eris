@@ -175,8 +175,23 @@ export default class {
       const guildSettings = await this.Gamer.database.models.guild.findOne({ id: log.guildID })
       // If there is no guildsettings or no role id skip
       if (!guildSettings?.moderation.roleIDs.mute) continue
+
+      const guild = this.Gamer.guilds.get(log.guildID)
+      if (!guild) continue
+
+      const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+      if (!language) continue
+
+      const member = guild.members.get(log.userID)
+      if (!member) continue
+
       // Since the time has fully elapsed we need to remove the role on the user
-      this.Gamer.removeGuildMemberRole(log.guildID, log.userID, guildSettings?.moderation.roleIDs.mute)
+      this.Gamer.removeGuildMemberRole(
+        log.guildID,
+        log.userID,
+        guildSettings.moderation.roleIDs.mute,
+        language(`moderation/unmute:TASK_REASON`)
+      )
       // Label this log as unmuted so we don't need to fetch it next time
       log.needsUnmute = false
       log.save()
