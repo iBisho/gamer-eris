@@ -1,8 +1,11 @@
 {
   "DESCRIPTION": "Enregistre votre serveur en tant que VIP.",
   "EXTENDED": "$t(vip/vipregister:EXTENDED_LINE_1)\n$t(vip/vipregister:EXTENDED_LINE_2)",
-  "EXTENDED_LINE_1": "Cette commande ne peut être utilisée que si vous boostez le serveur support de Gamer. Pour recevoir une invitation sur ce serveur, écrivez **{{prefix}}invite**",
+  "EXTENDED_LINE_1": "Cette commande ne peut être utilisée que si vous boostez le serveur support de G4M3R. Pour recevoir une invitation sur ce serveur, écrivez **{{prefix}}invite**",
   "EXTENDED_LINE_2": "**{{prefix}}vipregister** ~ Utilise votre status de Booster du serveur de support pour rendre ce serveur en tant que VIP.",
   "USAGE": "{{prefix}}vipregister",
-  "ALIASES": "{{prefix}}vipr"
+  "ALIASES": "{{prefix}}vipr",
+  "MISSING_BOOST_ROLE": "Pour pouvoir enregistrer un serveur en tant que VIP, vous devez booster le serveur de support Gamer. Veuillez utiliser la commande **invite** pour pouvoir rejoindre celui-ci.",
+  "ALREADY_VIP": "Ce serveur est déjà enregistré en tant que VIP! 🎉",
+  "REGISTERED_VIP": "🎉 Ce serveur vient d'être enregistré en tant que VIP! 🎉 Vous pouvez maintenant utiliser toutes les fonctionnalités VIP! 🎉"
 }
