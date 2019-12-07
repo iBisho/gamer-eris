@@ -1,7 +1,6 @@
 import { Member } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
-import { GamerMission } from '../types/gamer'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -145,7 +144,7 @@ export default class {
   async removeXP(member: Member, xpAmountToRemove = 1) {
     if (xpAmountToRemove < 1) return
 
-    const settings = await this.Gamer.database.models.member.findOne({ id: member.id })
+    const settings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
     if (!settings) return
 
     // If the XP is less than 0 after removing then set it to 0
@@ -172,10 +171,11 @@ export default class {
     if (!oldLevel || !bot || !bot.permission.has('manageRoles')) return
 
     // Fetch all custom guild levels data
-    const allGuildLevels = await this.Gamer.database.models.level.find({ guildID: member.guild.id })
-    if (!allGuildLevels) return
-    // Find if this level has any custom data
-    const levelData = allGuildLevels.find(data => data.level === oldLevel.level)
+    const levelData = await this.Gamer.database.models.level.findOne({
+      guildID: member.guild.id,
+      level: oldLevel.level
+    })
+
     // If it has roles to give then give them to the user
     if (!levelData || !levelData.roleIDs.length) return
 
@@ -233,15 +233,22 @@ export default class {
     if (!mission) return
 
     // Find the data for this user regarding this mission or make it for them
-    const missionData = ((await this.Gamer.database.models.mission.findOne({
+    const missionData = await this.Gamer.database.models.mission.findOne({
       userID: member.id,
       commandName: commandName
-    })) ||
-      new this.Gamer.database.models.mission({
+    })
+
+    // If there was no data create it
+    if (!missionData) {
+      await this.Gamer.database.models.mission.create({
         userID: member.id,
         commandName,
-        guildID
-      })) as GamerMission
+        guildID,
+        amount: 1
+      })
+      // Return void to prevent collectors from breaking
+      return
+    }
 
     // If the user already got the rewards for this mission
     if (missionData.completed) return

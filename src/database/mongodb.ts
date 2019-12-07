@@ -35,7 +35,8 @@ import {
   GamerEvent,
   GamerRoleset,
   GamerModlog,
-  GamerLevel
+  GamerLevel,
+  GamerMission
 } from '../lib/types/gamer'
 
 const connectionString = config.mongoConnectionString
@@ -52,7 +53,7 @@ class Database {
     level: mongoose.model<GamerLevel>('Level', LevelSchema),
     mail: mongoose.model<GamerMail>('Mail', MailSchema),
     member: mongoose.model<MemberSettings>('Member', MemberSchema),
-    mission: mongoose.model('Mission', MissionSchema),
+    mission: mongoose.model<GamerMission>('Mission', MissionSchema),
     modlog: mongoose.model<GamerModlog>('Modlog', ModlogSchema),
     reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),
     roleMessages: mongoose.model<GamerRoleMessage>('RoleMessage', RoleMessageSchema),

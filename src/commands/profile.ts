@@ -5,7 +5,6 @@ import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import UserDefaults from '../constants/settings/user'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { GamerMission } from '../lib/types/gamer'
 
 export default new Command([`profile`, `p`, `prof`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -24,9 +23,9 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
 
   const fileName = `profile.jpg`
 
-  const missionData = (await Gamer.database.models.mission.find({
+  const missionData = await Gamer.database.models.mission.find({
     userID: member.id
-  })) as GamerMission[]
+  })
 
   const embed = new GamerEmbed()
     .setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
@@ -38,6 +37,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
 
           if (relevantMission.amount < mission.amount)
             return `${relevantMission.amount} / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
+
           return `${constants.emojis.greenTick}: ${mission.title} **[${mission.reward}] XP**`
         })
         .join('\n')
