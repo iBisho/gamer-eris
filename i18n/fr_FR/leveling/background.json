@@ -3,7 +3,7 @@
 	"EXTENDED": "$t(leveling/background:EXTENDED_LINE_1)\n$t(leveling/background:EXTENDED_LINE_2)\n$t(leveling/background:EXTENDED_LINE_3)\n\n$t(leveling/background:EXTENDED_LINE_4)",
 	"EXTENDED_LINE_1": "**{{prefix}}background set [ID Arrière-plan] [black ou white]** ~ Définir un arrière-plan et un thème.",
 	"EXTENDED_LINE_2": "**{{prefix}}background view [ID Arrière-plan] [black ou white]** ~ Prévisualiser un arrière-plan + le thème avant de le valider.",
-	"EXTENDED_LINE_3": "» Pour pouvoir mettre un arrière-plan personnalisé, vous devez être un Nitro Booster sur le serveur de support Gamer. Veuillez utiliser la commande invite pour rejoindre le serveur pour plus de détails",
+	"EXTENDED_LINE_3": "» Pour pouvoir mettre un arrière-plan personnalisé, vous devez être un Nitro Booster sur le serveur de support G4M3R. Veuillez utiliser la commande invite pour rejoindre le serveur pour plus de détails",
 	"EXTENDED_LINE_4": "» Pour voir tous les arrières-plan disponible, veuillez consulter notre Wiki.",
 	"USAGE": "{{prefix}}background *[Nom de catégorie OU ID d'arrière-plan]*",
 	"ALIASES": "{{prefix}}bg",
@@ -15,8 +15,7 @@
 	"PREVIEW_BASIC": "{{greenTick}} Oui\n{{redX}} Non",
 	"PREVIEW_VIP": "{{sunglasses}} Thème **sombre**\n{{flashlight}} Thème **clair**.",
 	"SAVED": "L'arrière-plan a bien été changé. Chargement de votre profil en cours...",
-	"VIP_THEME": "Désolé, mais le thème sombre est réservé aux VIP. Si vous souhaitez devenir VIP, veuillez booster notre serveur de support.",
-	"VIP_BACKGROUND": "⭐ Cet arrière-plan est réservé aux VIP. Si vous souhaitez devenir VIP, rendez-vous sur notre page.",
+	"VIP_THEME": "⭐ Désolé, le thème sombre est réservé aux VIP. Si vous voulez devenir VIP, rejoignez le serveur de gamer via la commande .invite et boostez le serveur.",
 	"UNLOCKABLE": "L'arrière-plan #{{id}} n'est pas débloquable avec cette devise.",
 	"NEED_MONEY": "Vous n'avez pas assez de Gamer Coins pour acheter cet arrière-plan. Celui-ci coûte {{cost}} mais vous n'avez que {{currency}} Gamer Coins. Il vous manque donc {{needed}} Gamer Coins. ",
 	"BOUGHT": "Vous venez d'acheter l'arrière-plan #{{name}}. Vous pouvez maintenant utiliser la commande background pour l'équiper."
