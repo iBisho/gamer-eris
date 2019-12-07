@@ -2,19 +2,17 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel, Role, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { UserSettings } from '../lib/types/settings'
-import UserDefaults from '../constants/settings/user'
 
-export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, _args, context) => {
-  const user = message.mentions.length ? message.mentions[0] : message.author
+export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
   const guild = message.channel.guild
-  const userSettings =
-    ((await Gamer.database.models.user.findOne({ id: user.id })) as UserSettings | null) || UserDefaults
+  const [id] = args
+  const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(id) || message.author
 
+  const userSettings = await Gamer.database.models.user.findOne({ userID: user.id })
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return null
 
@@ -37,8 +35,10 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     guildDate: new Date(member.joinedAt).toISOString().substr(0, 10)
   })
   const SETTINGS_VALUE = language(`basic/user:SETTINGS_VALUES`, {
-    afk: userSettings.afk.enabled,
-    afkMessage: userSettings.afk.message
+    afk: userSettings ? userSettings.afk.enabled : false,
+    afkMessage: userSettings
+      ? userSettings.afk.message
+      : `Hi 👋, I am AFK at the moment. I will get back to you as soon as possible. 😄`
   })
 
   const nickname = member?.nick ? language(`basic/user:NICKNAME`, { nickname: member.nick }) : ``
