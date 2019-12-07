@@ -2,7 +2,6 @@ import { Canvas } from 'canvas-constructor'
 import fetch from 'node-fetch'
 import { Message, Member, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
-import { MemberSettings, UserSettings } from '../types/settings'
 import Constants from '../../constants/index'
 import MemberDefaults from '../../constants/settings/member'
 import UserDefaults from '../../constants/settings/user'
@@ -17,11 +16,10 @@ export default class {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const memberSettings =
-      ((await Gamer.database.models.member.findOne({
+      (await Gamer.database.models.member.findOne({
         id: `${member.guild.id}.${member.id}`
-      })) as MemberSettings | null) || MemberDefaults
-    const userSettings =
-      ((await Gamer.database.models.user.findOne({ userID: member.id })) as UserSettings | null) || UserDefaults
+      })) || MemberDefaults
+    const userSettings = (await Gamer.database.models.user.findOne({ userID: member.id })) || UserDefaults
     // Select the background theme & id from their settings if no override options were provided
     const style = (options && options.style) || userSettings.profile.theme
     const backgroundID = (options && options.backgroundID) || userSettings.profile.backgroundID
