@@ -25,7 +25,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  if (!eventID || !type) return helpCommand.execute(message, [`eventadd`], context)
+  if (!eventID || !type) return helpCommand.execute(message, [`eventedit`], context)
 
   // toggles dont need a value
   if (!fullValue.length && ![`repeat`, `remove`, `dm`, `dms`, `showattendees`].includes(type.toLowerCase())) return
