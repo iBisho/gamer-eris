@@ -22,14 +22,12 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
       return message.channel.createMessage(language(`leveling/boostme:ALREADY_BOOSTED`, { name: boost.name }))
 
     availableBoost = boost
+    break
   }
 
   if (availableBoost) availableBoost.active = true
+  // Buy a boost for the user using XP
   else {
-    // If the user did not want to force
-    // if (type.toLowerCase() !== 'buy') return message.channel.createMessage(language(`leveling/boostme:NO_BOOSTS`))
-
-    // Buy a boost for the user using XP
     // If the user does not have enough xp to buy a boost cancel out
     if (userSettings.leveling.xp < 100) return message.channel.createMessage(language(`leveling/boostme:NEED_XP`))
 
