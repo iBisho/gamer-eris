@@ -13,7 +13,7 @@ import ModlogSchema from './schemas/modlog'
 import ReactionRoleSchema from './schemas/reactionrole'
 import RolesetSchema from './schemas/roleset'
 import RoleMessageSchema, { GamerRoleMessage } from './schemas/rolemessage'
-import ShortcutSchema from './schemas/shortcut'
+import ShortcutSchema, { GamerShortcut } from './schemas/shortcut'
 import SubscriptionSchema, { GamerSubscription } from './schemas/subscription'
 import SurveySchema from './schemas/survey'
 import TagSchema from './schemas/tag'
@@ -58,7 +58,7 @@ class Database {
     reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),
     roleMessages: mongoose.model<GamerRoleMessage>('RoleMessage', RoleMessageSchema),
     roleset: mongoose.model<GamerRoleset>('Roleset', RolesetSchema),
-    shortcut: mongoose.model('Shortcut', ShortcutSchema),
+    shortcut: mongoose.model<GamerShortcut>('Shortcut', ShortcutSchema),
     subscription: mongoose.model<GamerSubscription>('Subscription', SubscriptionSchema),
     survey: mongoose.model('Survey', SurveySchema),
     tag: mongoose.model<GamerTag>('Tag', TagSchema),

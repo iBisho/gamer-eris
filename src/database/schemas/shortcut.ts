@@ -16,3 +16,15 @@ export default new mongoose.Schema({
   // The name of the shortcut
   name: String
 })
+
+export interface GamerShortcut extends mongoose.Document {
+  actions: ShortcutAction[]
+  deleteTrigger: boolean
+  guildID: string
+  name: string
+}
+
+export interface ShortcutAction {
+  command: string
+  args: string[]
+}

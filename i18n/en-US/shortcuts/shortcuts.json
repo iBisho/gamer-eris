@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Shows a list of all your shortcuts.",
+	"EXTENDED": "**{{prefix}}shortcuts** ~ Lists all the shortcuts created on this server.",
+	"USAGE": "{{prefix}}shortcuts",
+	"ALIASES": "Shortcuts does not have any aliases.",
+	"NONE": "You have not created any shortcuts."
+}
+

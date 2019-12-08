@@ -1,9 +1,7 @@
 import { Command } from 'yuuko'
-import { UserSettings } from '../lib/types/settings'
 import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
-import UserDefaults from '../constants/settings/user'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`profile`, `p`, `prof`], async (message, args, context) => {
@@ -33,12 +31,14 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
       Gamer.missions
         .map(mission => {
           const relevantMission = missionData.find(m => m.commandName === mission.commandName)
-          if (!relevantMission) return `0 / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
+          if (!relevantMission) return `0 / ${mission.amount} : ${language(mission.title)} **[${mission.reward}] XP**`
 
           if (relevantMission.amount < mission.amount)
-            return `${relevantMission.amount} / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
+            return `${relevantMission.amount} / ${mission.amount} : ${language(mission.title)} **[${
+              mission.reward
+            }] XP**`
 
-          return `${constants.emojis.greenTick}: ${mission.title} **[${mission.reward}] XP**`
+          return `${constants.emojis.greenTick}: ${language(mission.title)} **[${mission.reward}] XP**`
         })
         .join('\n')
     )
@@ -47,12 +47,13 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
 
   const response = await message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
 
-  const userSettings =
-    ((await Gamer.database.models.user.findOne({
-      id: message.channel.guild.id
-    })) as UserSettings) || UserDefaults
+  const userSettings = await Gamer.database.models.user.findOne({
+    id: message.channel.guild.id
+  })
 
-  const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === userSettings.profile.backgroundID)
+  const backgroundID = userSettings?.profile.backgroundID || 1
+
+  const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === backgroundID)
 
   const isDefaultBackground = backgroundData && backgroundData.name === constants.profiles.defaultBackground
 
