@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Définissez un prefix personnalisé pour votre serveur.",
+	"EXTENDED": "$t(settings/setprefix:EXTENDED_LINE_1)\n$t(settings/setprefix:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}setprefix** ~ Réinitialise le prefix sur votre serveur.",
+	"EXTENDED_LINE_2": "**{{prefix}}setprefix [Nouveau Prefix]** ~ Défini le prefix spécifié sur votre serveur.",
+	"USAGE": "{{prefix}}setprefix *[Nouveau Prefix]*",
+	"ALIASES": "Setprefix n'a pas d'alias.",
+	"UPDATED": "Le prefix sur ce serveur a bien été modifié.",
+	"RESET": "Le préfix sur ce serveur a bien été réinitialisé."
+}
