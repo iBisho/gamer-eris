@@ -1,10 +1,14 @@
 {
-	"DESCRIPTION": "Gérer les récompenses de niveaux pour votre système de niveau.",
-	"EXTENDED": "$t(leveling/levelrole:EXTENDED_LINE_1)\n$t(leveling/levelrole:EXTENDED_LINE_2)\n\n$t(leveling/levelrole:EXTENDED_LINE_3)",
-	"EXTENDED_LINE_1": "**{{prefix}}levelrole [#] [rôle]** ~ Donne un rôle quand un utilisateur atteint le niveau **#**.",
-	"EXTENDED_LINE_2": "**{{prefix}}levelrole [#] [rôle] [rôle2]** ~ Donne plusieurs rôles à un utilisateur quand ils atteignent le niveau **#** .",
-	"EXTENDED_LINE_3": "• Avancé: Vous pouvez utiliser les sets de rôle pour que vos utilisateurs n'ai qu'1 seul rôle à la fois.",
-	"USAGE": "{{prefix}}levelrole [Nombre du niveau] [Rôles]",
-	"ALIASES": "Levelrole n'a pas d'alias.",
-	"SUCCESS": "La récompense de niveau pour le niveau #{{level}} a bien été mise à jour et donnera désormais le rôle {{roles}}."
+  "DESCRIPTION": "Gérer les récompenses de niveaux pour votre système de niveau.",
+  "EXTENDED": "$t(leveling/levelrole:EXTENDED_LINE_1)\n$t(leveling/levelrole:EXTENDED_LINE_2)\n$t(leveling/levelrole:EXTENDED_LINE_3)\n\n$t(leveling/levelrole:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}levelrole create [#] [rôle]** ~ Donne un rôle quand un membre atteint le niveau spécifié.",
+  "EXTENDED_LINE_2": "**{{prefix}}levelrole add [#] [rôle]** ~ Ajoute un autre rôle qui sera donné en plus quand un membre atteint ce niveau. Le niveau doit déjà être existant.",
+  "EXTENDED_LINE_3": "**{{prefix}}levelrole remove [#] [rôle] [rôle2]** ~ Retire les rôles donnés au niveau spécifié. Le niveau doit déjà être existant.",
+  "EXTENDED_LINE_4": "• Avancé: Vous pouvez utiliser les sets de rôle pour que vos utilisateurs n'ai qu'1 seul rôle à la fois.",
+  "USAGE": "{{prefix}}levelrole [create | add | remove] [Niveau] [Rôles]",
+  "ALIASES": "Levelrole n'a pas d'alias.",
+  "CREATED": "La récompense de niveau pour le niveau #{{level}} a bien été créé.",
+  "ROLES_ADDED": "Le rôle a bien été ajouté en tant que récompense pour ce niveau.",
+	"ROLES_REMOVED": "Le rôle a bien été retiré des récompenses pour ce niveau.",
+	"EXISTS": "La configuration levelrole est déjà existante sur ce serveur ."
 }
