@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Vous affiche les informations concernant un rôle.",
+  "EXTENDED": "**{{prefix}}roleinfo [rôle]** ~ Affiche tous les membres possédant le rôle spécifié.",
+  "USAGE": "{{prefix}}roleinfo [Rôle]",
+  "ALIASES": "{{prefix}}ri",
+  "ROLE_NAME": "Nom du rôle:",
+  "ROLE_ID": "ID du rôle:",
+  "ROLE_COLOR": "Couleur du rôle:",
+  "ROLE_SEPARATE": "Afficher séparement:",
+  "ROLE_MENTIONABLE": "Mentionnable:",
+  "ROLE_POSITION": "Position:",
+  "ROLE_MEMBERS": "Membres avec ce rôle:",
+  "CREATED_AT": "Créé le:"
+}
