@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "Voir, créer, rejoindre et modifier des évènements.",
-  "EXTENDED": "**{{prefix}}events** ~ Affiche tous les évènements en cours/à venir sur le serveur.",
+  "EXTENDED": "**{{prefix}}events** ~ Affiche tous les évènements en cours sur ce serveur. [Cliquez ici pour en savoir plus](https://gamer.netlify.com/lfg-events-feature)",
   "USAGE": "{{prefix}}events",
   "ALIASES": "{{prefix}}e",
   "INVALID_EVENT": "Impossible de trouver un évènement avec l'ID fourni.",
@@ -10,6 +10,7 @@
   "TITLE": "Nom de l'évènement:",
   "STARTS_IN": "L'évènement débute dans:",
   "REMIND_FOOTER": "Serveur: {{guildName}}",
-  "SHOW_NONE": "Désolé, il n'y a pas membres à afficher.",
-  "NEED_EVENT_ID": "Un ID d'évènement est nécessaire pour la recherche."
+  "SHOW_NONE": "Désolé, il n'y a pas de membres à afficher.",
+  "NEED_EVENT_ID": "Un ID d'évènement est nécessaire pour la recherche.",
+  "NONE": "Impossible de trouver un évènement sur ce serveur. Veuillez utiliser la commande **eventcreate** pour créer un nouvel évènement."
 }
