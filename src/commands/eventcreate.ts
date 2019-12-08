@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, GroupChannel } from 'eris'
-import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventcreate`, `ec`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
@@ -32,10 +31,10 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
   if (!eventshowCommand) return
   eventshowCommand.execute(message, [eventID.toString()], context)
 
-  const event = (await Gamer.database.models.event.findOne({
+  const event = await Gamer.database.models.event.findOne({
     id: eventID,
     guildID: message.channel.guild.id
-  })) as GamerEvent | null
+  })
   if (!event) return
   return Gamer.helpers.events.advertiseEvent(event)
 })

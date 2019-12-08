@@ -118,20 +118,34 @@ export default class {
       : event.adChannelID
       ? this.Gamer.getChannel(event.adChannelID)
       : undefined
-    if (adChannel && adChannel instanceof TextChannel) {
-      const adCardMessage = event.adMessageID
-        ? adChannel.messages.get(event.adMessageID) ||
-          (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
-        : undefined
 
-      if (adCardMessage) adCardMessage.edit({ embed: embed.code })
-      else {
-        const card = await adChannel.createMessage({ embed: embed.code })
-        event.adChannelID = adChannel.id
-        event.adMessageID = card.id
-        event.save()
-        for (const emoji of eventCardReactions) await card.addReaction(emoji).catch(() => null)
-      }
+    if (!adChannel || !(adChannel instanceof TextChannel)) return
+
+    if (
+      !this.Gamer.helpers.discord.checkPermissions(adChannel, this.Gamer.user.id, [
+        `readMessages`,
+        `sendMessages`,
+        `embedLinks`,
+        `attachFiles`,
+        `readMessageHistory`,
+        `addReactions`,
+        `externalEmojis`
+      ])
+    )
+      return
+
+    const adCardMessage = event.adMessageID
+      ? adChannel.messages.get(event.adMessageID) ||
+        (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
+      : undefined
+
+    if (adCardMessage) adCardMessage.edit({ embed: embed.code })
+    else {
+      const card = await adChannel.createMessage({ embed: embed.code })
+      event.adChannelID = adChannel.id
+      event.adMessageID = card.id
+      event.save()
+      for (const emoji of eventCardReactions) await card.addReaction(emoji).catch(() => null)
     }
   }
 

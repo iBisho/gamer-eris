@@ -84,6 +84,8 @@ export default new Command(`setfeedback`, async (message, args, context) => {
   }
 
   const currentChannelID = isIdea ? guildSettings.feedback.idea.channelID : guildSettings.feedback.bugs.channelID
+
+  if (!action) return helpCommand.execute(message, [`setfeedback`], context)
   // These menus require the user type .setfeedback `idea` or `bug`
   switch (action.toLowerCase()) {
     case 'channel':

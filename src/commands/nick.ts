@@ -20,7 +20,7 @@ export default new Command([`nick`], async (message, args, context) => {
   if (!botMember.permission.has('manageNicknames'))
     return message.channel.createMessage(language(`moderation/nick:NEED_NICK_PERMS`))
 
-  const REASON = language(`moderation/nick:REASON`, { user: message.author.username })
+  const REASON = language(`moderation/nick:REASON`, { user: encodeURIComponent(message.author.username) })
 
   // They provided no arguments which means we need to reset the user nickname
   if (!args.length) {
