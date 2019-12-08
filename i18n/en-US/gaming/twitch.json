@@ -10,5 +10,6 @@
   "NOT_SUBSCRIBED": "The {{username}} has no subscriptions set up for twitch at this time.",
   "NOT_SUBBED": "The {{username}} has no subscriptions set up for this channel at this time.",
   "ALREADY_SUBBED": "The {{username}} is already subscribed to send alerts in this channel.",
-  "TITLE": "{{emoji}} {{username}} is streaming on Twitch right now!"
+  "TITLE": "{{emoji}} {{username}} is streaming on Twitch right now!",
+  "NONE": "I was unable to find any twitch users that this server has subscribed to."
 }

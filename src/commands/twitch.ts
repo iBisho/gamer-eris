@@ -25,8 +25,8 @@ export default new Command(`twitch`, async (message, args, context) => {
   if (!type) return helpCommand.execute(message, [`twitch`], context)
 
   if (type && type.toLowerCase() === `list`) {
-    const twitchSubs = await Gamer.database.models.subscription.find({ guildID })
-    if (!twitchSubs.length) return message.channel.createMessage(language(`gaming/twitch:NONE`))
+    const twitchSubs = await Gamer.database.models.subscription.find()
+
     let response = ``
     for (const sub of twitchSubs) {
       if (response.length === 2000) break
@@ -38,6 +38,7 @@ export default new Command(`twitch`, async (message, args, context) => {
       response += text
     }
 
+    if (!response.length) return message.channel.createMessage(language(`gaming/twitch:NONE`))
     return message.channel.createMessage(response)
   }
 
