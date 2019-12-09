@@ -11,15 +11,6 @@ const networkReactions = [constants.emojis.heart, constants.emojis.repeat, const
 
 export default class extends Event {
   async execute(rawMessage: PossiblyUncachedMessage, emoji: ReactionEmoji, userID: string) {
-    if (!eventEmojis.length) {
-      const emojis = [constants.emojis.greenTick, constants.emojis.redX]
-
-      for (const emoji of emojis) {
-        const id = Gamer.helpers.discord.convertEmoji(emoji, `id`)
-        if (id) eventEmojis.push(id)
-      }
-    }
-
     if (rawMessage.channel instanceof PrivateChannel || rawMessage.channel instanceof GroupChannel) return
 
     const user = Gamer.users.get(userID)
@@ -37,7 +28,7 @@ export default class extends Event {
     // Incase another bot deletes the message we catch it
     if (!message) return
 
-    if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
+    this.handleEventReaction(message, emoji, userID)
     this.handleReactionRole(message, emoji, userID)
     this.handleProfileReaction(message, emoji, user)
     this.handleNetworkReaction(message, emoji, user)
@@ -45,6 +36,15 @@ export default class extends Event {
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
+    if (!eventEmojis.length) {
+      const emojis = [constants.emojis.greenTick, constants.emojis.redX]
+
+      for (const emoji of emojis) {
+        const id = Gamer.helpers.discord.convertEmoji(emoji, `id`)
+        if (id) eventEmojis.push(id)
+      }
+    }
+
     if (!message.author.bot || message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
       return
     const event = (await Gamer.database.models.event.findOne({ adMessageID: message.id })) as GamerEvent | null
