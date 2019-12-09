@@ -28,7 +28,10 @@ export default class extends Event {
     if (!message) return
 
     // Some odd bug removing channel on getMessage
-    if (rawMessage instanceof Message) message.channel = rawMessage.channel
+    if (rawMessage instanceof Message) {
+      if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+      if (!message.channel.guild) message.channel = rawMessage.channel
+    }
 
     // Message might be from other users
     this.handleReactionRole(message, emoji, userID)
