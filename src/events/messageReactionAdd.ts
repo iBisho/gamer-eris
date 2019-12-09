@@ -28,6 +28,9 @@ export default class extends Event {
     // Incase another bot deletes the message we catch it
     if (!message) return
 
+    // Some odd bug removing channel on getMessage
+    if (rawMessage instanceof Message) message.channel = rawMessage.channel
+
     // Message might be from other users
     this.handleReactionRole(message, emoji, userID)
 
@@ -93,6 +96,7 @@ export default class extends Event {
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    console.log(message.channel.guild.id, userID)
     if (!message.channel.guild) return console.log('rr guild undefined', message)
 
     const guild = Gamer.guilds.get(message.channel.guild.id)
