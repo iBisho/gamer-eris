@@ -28,19 +28,7 @@ export default class extends Event {
     if (!message) return
 
     // Some odd bug removing channel on getMessage
-    if (rawMessage instanceof Message) {
-      if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-      if (!message.channel.guild) {
-        message.channel = rawMessage.channel
-        if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-        if (!message.channel.guild) {
-          console.log('userID', userID)
-          console.log('emoji', emoji)
-          console.log('rr guild undefined error', message)
-          return console.log('something went wrong here')
-        }
-      }
-    }
+    if (!(rawMessage instanceof Message)) message.channel = rawMessage.channel
 
     // Message might be from other users
     this.handleReactionRole(message, emoji, userID)
@@ -107,7 +95,11 @@ export default class extends Event {
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
+    if (!message.channel.guild) {
+      console.log('userID', userID)
+      console.log('emoji', emoji)
+      console.log('rr guild undefined error', message)
+    }
     const guild = Gamer.guilds.get(message.channel.guild.id)
     if (!guild) return
 
