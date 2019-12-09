@@ -74,5 +74,7 @@ export default class extends Monitor {
       // Only ever run one tag at a time to prevent spam so we need return here
       return
     }
+
+    return
   }
 }

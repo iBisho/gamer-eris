@@ -55,7 +55,8 @@ export default class extends Monitor {
     const naughtyWordCleanup = this.naughtyWordFilter(content, settings)
     if (naughtyWordCleanup) {
       const naughtyReason = language(`common:AUTOMOD_NAUGHTY`)
-      for (const word of naughtyWordCleanup.naughtyWords) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for (const _word of naughtyWordCleanup.naughtyWords) {
         if (!reasons.includes(naughtyReason)) reasons.push(naughtyReason)
         // Remove 5 XP per word used
         Gamer.helpers.levels.removeXP(message.member, 5)

@@ -5,7 +5,7 @@ import { Command, CommandContext } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Event {
-  async execute(command: Command, message: Message, args: string[], context: CommandContext) {
+  async execute(command: Command, message: Message, _args: string[], context: CommandContext) {
     const Gamer = context.client as GamerClient
 
     const [name] = command.names
