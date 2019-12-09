@@ -92,10 +92,6 @@ export default class extends Monitor {
           }
         })
       )
-
-      Gamer.helpers.logger.green(
-        `New Post In Wall Channel By ${message.author.username} in ${message.channel.guild.name} and send to ${guildSettings.network.channelIDs.followers.length} followers.`
-      )
     } catch (error) {
       Gamer.emit('error', error)
     }

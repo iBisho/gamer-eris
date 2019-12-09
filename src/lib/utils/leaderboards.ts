@@ -260,9 +260,7 @@ export default class {
       try {
         const avatarBuffer = await fetch(userData.avatarUrl).then(res => res.buffer())
         canvas.addCircularImage(avatarBuffer, 315, userY - 10, 20, true)
-      } catch (error) {
-        this.Gamer.helpers.logger.yellow(`Error while fetching avatar url in leaderboard ${userData.avatarUrl}`)
-      }
+      } catch {}
 
       const currentLevel =
         constants.levels.find(level => level.xpNeeded > userData.currentXP) ||

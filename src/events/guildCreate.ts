@@ -9,8 +9,6 @@ export default class extends Event {
     const Gamer = guild.shard.client as GamerClient
 
     // Contact all Server Managers
-    // Fetch all guild members since we don't cache them
-    Gamer.helpers.logger.green(`Gamer joined new guild: ${guild.name} with ${guild.members.size} members.`)
 
     // DONT NEED TRANSLATING BECAUSE BY DEFAULT ALL GUILDS START IN ENGLISH LANGUAGE
     // Create the embed that will be sent to all the server managers

@@ -131,21 +131,8 @@ export default class extends Event {
     const downEmojis = [guildSettings.feedback.idea.emojis.down, guildSettings.feedback.bugs.emojis.down]
     const upEmojis = [guildSettings.feedback.idea.emojis.up, guildSettings.feedback.bugs.emojis.up]
 
-    if (upEmojis.includes(fullEmojiName)) {
-      Gamer.helpers.logger.green(
-        `Removing points due to feedback reaction on ${message.channel.guild.name} discord server.`
-      )
-
-      return Gamer.helpers.levels.removeXP(feedbackMember, 3)
-    }
-
-    if (downEmojis.includes(fullEmojiName)) {
-      Gamer.helpers.logger.green(
-        `Adding points due to feedback reaction on ${message.channel.guild.name} discord server.`
-      )
-
-      return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
-    }
+    if (upEmojis.includes(fullEmojiName)) return Gamer.helpers.levels.removeXP(feedbackMember, 3)
+    if (downEmojis.includes(fullEmojiName)) return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
     return
   }
 }

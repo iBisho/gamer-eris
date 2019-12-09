@@ -150,7 +150,6 @@ export default class extends Event {
       type: 'PROFILE_INVITE'
     })
 
-    Gamer.helpers.logger.green(`${user.username} just reacted to a profile discord invite <3`)
     try {
       const dmChannel = await user.getDMChannel()
       dmChannel.createMessage(`Interested in Shop Titans? Check out https://discord.gg/shoptitans`)
@@ -377,8 +376,6 @@ export default class extends Event {
         // Server has not enabled mails
         if (!guildSettings.mails.enabled || !guildSettings.mails.categoryID) return
 
-        Gamer.helpers.logger.green(`Sending a mail from feedback reaction`)
-
         const openMail = await Gamer.database.models.mail.findOne({
           guildID: message.channel.guild.id,
           userID: feedback.authorID
@@ -403,8 +400,6 @@ export default class extends Event {
       case constants.emojis.greenTick:
         // If the user is not atleast a mod cancel everything
         if (!reactorIsAdmin && !reactorIsMod) return
-
-        Gamer.helpers.logger.green(`Adding points due to feedback solved reaction.`)
 
         // Send a DM to the user telling them it was solved
         const embed = new GamerEmbed()
@@ -439,8 +434,6 @@ export default class extends Event {
       case constants.emojis.redX:
         // If the user is not atleast a mod cancel everything
         if (!reactorIsAdmin && !reactorIsMod) return
-
-        Gamer.helpers.logger.green(`Adding points due to feedback solved reaction.`)
 
         // Send a DM to the user telling them it was solved
         const rejectedEmbed = new GamerEmbed()
@@ -478,17 +471,9 @@ export default class extends Event {
         const downEmojis = [guildSettings.feedback.idea.emojis.down, guildSettings.feedback.bugs.emojis.down]
         const upEmojis = [guildSettings.feedback.idea.emojis.up, guildSettings.feedback.bugs.emojis.up]
         if (downEmojis.includes(fullEmojiName)) {
-          Gamer.helpers.logger.green(
-            `Removing points due to feedback reaction on ${message.channel.guild.name} discord server.`
-          )
-
           Gamer.helpers.levels.completeMission(feedbackMember, `votefeedback`, feedbackMember.guild.id)
           return Gamer.helpers.levels.removeXP(feedbackMember, 3)
         } else if (upEmojis.includes(fullEmojiName)) {
-          Gamer.helpers.logger.green(
-            `Adding points due to feedback reaction on ${message.channel.guild.name} discord server.`
-          )
-
           Gamer.helpers.levels.completeMission(feedbackMember, `votefeedback`, feedbackMember.guild.id)
           return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
         }

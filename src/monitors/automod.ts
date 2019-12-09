@@ -39,9 +39,6 @@ export default class extends Monitor {
     if (capitalSpamCleanup) {
       content = capitalSpamCleanup
       // Remove 3 XP for using capital letters
-      Gamer.helpers.logger.green(
-        `Deleted a Capital Spam message on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
-      )
       Gamer.helpers.levels.removeXP(message.member, 3)
       Gamer.amplitude.push({
         authorID: message.author.id,
@@ -60,10 +57,6 @@ export default class extends Monitor {
       const naughtyReason = language(`common:AUTOMOD_NAUGHTY`)
       for (const word of naughtyWordCleanup.naughtyWords) {
         if (!reasons.includes(naughtyReason)) reasons.push(naughtyReason)
-        // Log each cleaned word
-        Gamer.helpers.logger.green(
-          `Deleted [${word}] naughty word on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
-        )
         // Remove 5 XP per word used
         Gamer.helpers.levels.removeXP(message.member, 5)
         Gamer.amplitude.push({
@@ -86,10 +79,8 @@ export default class extends Monitor {
     if (linkFilterCleanup) {
       content = linkFilterCleanup.content
 
-      for (const url of linkFilterCleanup.filteredURLs) {
-        Gamer.helpers.logger.green(
-          `Deleted a blacklisted URL ${url} on ${message.channel.guild.name} server in ${message.channel.name} channel by ${message.author.username}`
-        )
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for (const _url of linkFilterCleanup.filteredURLs) {
         Gamer.helpers.levels.removeXP(message.member, 5)
         Gamer.amplitude.push({
           authorID: message.author.id,

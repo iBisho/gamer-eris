@@ -6,19 +6,9 @@ import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Event {
   async execute(command: Command, message: Message, args: string[], context: CommandContext) {
-    const guildInfo =
-      message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel
-        ? `DM`
-        : ` ${message.channel.guild.name} (${message.channel.guild.id}).`
-
     const Gamer = context.client as GamerClient
 
     const [name] = command.names
-
-    Gamer.helpers.logger.blue(
-      `${name.toUpperCase()} Command Ran by ${message.author.username} (${message.author.id}) in ${guildInfo}`
-    )
-    Gamer.helpers.logger.blue(`Args: ${args.length ? args : 'No args provided.'}`)
 
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 

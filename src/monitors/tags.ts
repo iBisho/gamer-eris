@@ -72,9 +72,7 @@ export default class extends Monitor {
       } catch {}
 
       // Only ever run one tag at a time to prevent spam so we need return here
-      return Gamer.helpers.logger.green(
-        `Tag ${tag.name} of type ${tag.type} ran in ${message.channel.name} channel in ${message.channel.guild.name} by ${message.author.username}`
-      )
+      return
     }
   }
 }
