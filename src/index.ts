@@ -123,4 +123,21 @@ process.on('unhandledRejection', error => {
   Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
 })
 
+process.on('uncaughtException', error => {
+  // Don't send errors for non production bots
+  // Check !Gamer incase the errors are before bots ready
+  if (!Gamer || Gamer.user.id !== constants.general.gamerID) return console.error(error)
+  // An unhandled error occurred on the bot in production
+  console.error(error || `An uncaughtException error occurred but error was null or undefined`)
+
+  if (!error) return
+
+  const embed = new GamerEmbed()
+    .setDescription(['```js', error.stack, '```'].join(`\n`))
+    .setTimestamp()
+    .setFooter('Uncaught Exception Error Occurred')
+  // Send error to the log channel on the gamerbot server
+  Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
+})
+
 export default Gamer
