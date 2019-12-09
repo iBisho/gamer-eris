@@ -28,9 +28,14 @@ export default class extends Event {
     // Incase another bot deletes the message we catch it
     if (!message) return
 
-    this.handleEventReaction(message, emoji, userID)
+    // Message might be from other users
     this.handleReactionRole(message, emoji, userID)
+
+    // Messages must be from Gamer
+    if (message.author.id !== Gamer.user.id) return
+
     this.handleProfileReaction(message, emoji, user)
+    this.handleEventReaction(message, emoji, userID)
     this.handleNetworkReaction(message, emoji, user)
     this.handleFeedbackReaction(message, emoji, user)
   }
