@@ -3,7 +3,6 @@ import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
-import { GamerEvent, GamerReactionRole } from '../lib/types/gamer'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 const eventEmojis: string[] = []
@@ -55,7 +54,7 @@ export default class extends Event {
 
     if (!message.author.bot || message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
       return
-    const event = (await Gamer.database.models.event.findOne({ adMessageID: message.id })) as GamerEvent | null
+    const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
     if (!event) return
 
     const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
@@ -96,8 +95,6 @@ export default class extends Event {
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-    console.log(message.channel.guild.id, userID)
-    if (!message.channel.guild) return console.log('rr guild undefined', message)
 
     const guild = Gamer.guilds.get(message.channel.guild.id)
     if (!guild) return
@@ -110,9 +107,9 @@ export default class extends Event {
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
 
-    const reactionRole = (await Gamer.database.models.reactionRole.findOne({
+    const reactionRole = await Gamer.database.models.reactionRole.findOne({
       messageID: message.id
-    })) as GamerReactionRole | null
+    })
     if (!reactionRole) return
 
     const emojiKey = `${emoji.name}:${emoji.id}`
