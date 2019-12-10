@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "Setup twitch alerts for your server.",
-  "EXTENDED": "$t(gaming/twitch:EXTENDED_LINE_1)\n$t(gaming/twitch:EXTENDED_LINE_2)\n$t(gaming/twitch:EXTENDED_LINE_3)",
+  "EXTENDED": "$t(gaming/twitch:EXTENDED_LINE_1)\n$t(gaming/twitch:EXTENDED_LINE_2)\n$t(gaming/twitch:EXTENDED_LINE_3)\n$t(gaming/twitch:EXTENDED_LINE_4)",
   "EXTENDED_LINE_1": "**{{prefix}}twitch subscribe [Twitch Username]** ~ Subscribes to a twitch streamer.",
   "EXTENDED_LINE_2": "**{{prefix}}twitch unsubscribe [Twitch Username]** ~ Removes the subscription to a twitch streamer.",
   "EXTENDED_LINE_3": "**{{prefix}}twitch subscribe [Twitch Username] [Twitch Game]** ~ Subscribes to a twitch stream **ONLY** when they stream this game.",
