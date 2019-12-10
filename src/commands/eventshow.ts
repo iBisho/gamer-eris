@@ -7,16 +7,6 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
   const Gamer = context.client as GamerClient
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })
-
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
-
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
