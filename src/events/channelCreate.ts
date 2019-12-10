@@ -27,7 +27,7 @@ export default class extends Event {
       if (guildSettings.moderation.roleIDs.mute)
         channel.editPermission(
           guildSettings.moderation.roleIDs.mute,
-          1024,
+          0,
           2099264,
           `role`,
           language(`moderation/mute:PERMISSION`)
