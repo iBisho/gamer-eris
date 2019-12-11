@@ -132,6 +132,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       if (!start) return helpCommand.execute(message, [`eventedit`], context)
 
       event.start = Date.now() + start
+      event.end = event.start + event.duration
       response = `events/eventedit:START_UPDATED`
       break
     case `allowedrole`:

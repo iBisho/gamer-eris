@@ -344,7 +344,7 @@ export default class {
 
   async process() {
     // First fetch all the events from the database
-    const events = (await this.Gamer.database.models.event.find()) as GamerEvent[]
+    const events = await this.Gamer.database.models.event.find()
     // If there are no events or some error happened just cancel out
     if (!events.length) return
     // Create the timestamp for right now so we can reuse it
@@ -377,7 +377,7 @@ export default class {
           : undefined
       if (card) card.delete()
       // Deletes the event from the database
-      return this.Gamer.database.models.event.deleteOne({ id: event.id, guildID: event.guildID })
+      return this.Gamer.database.models.event.deleteOne({ id: event._id })
     }
 
     // add new event to events array to be sent to amplitude for product analytics
