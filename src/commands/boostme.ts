@@ -16,10 +16,19 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
   // const [type] = args
 
   let availableBoost: Boost | undefined = undefined
+
   for (const boost of userSettings.leveling.boosts) {
     // If the user is already boosted then cancel out because we dont allow multiple boosts at the same time
-    if (boost.active)
-      return message.channel.createMessage(language(`leveling/boostme:ALREADY_BOOSTED`, { name: boost.name }))
+    if (boost.active && boost.activatedAt && boost.timestamp) {
+      // Check if this active boost has expired
+      if (boost.activatedAt + boost.timestamp > message.timestamp)
+        return message.channel.createMessage(language(`leveling/boostme:ALREADY_BOOSTED`, { name: boost.name }))
+
+      // Since the boost expired we need to remove it
+      userSettings.leveling.boosts = userSettings.leveling.boosts.filter(b => !b.active)
+      userSettings.save()
+      continue
+    }
 
     availableBoost = boost
     break

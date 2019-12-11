@@ -265,28 +265,4 @@ export default class {
     this.addLocalXP(member, mission.reward, true)
     this.addGlobalXP(member, mission.reward, true)
   }
-
-  async processBoosts() {
-    const now = Date.now()
-
-    const allUserSettings = await this.Gamer.database.models.user.find()
-    for (const userSetting of allUserSettings) {
-      console.log('processing boost 1')
-      // If no boosts skip
-      if (!userSetting.leveling.boosts.length) continue
-      console.log('processing boost 2')
-      // See if any boosts are active
-      const boost = userSetting.leveling.boosts.find(b => b.active)
-      if (!boost) continue
-      console.log('processing boost 3')
-
-      // Check if this active boost has expired
-      if (!boost.activatedAt || !boost.timestamp) continue
-      if (boost.activatedAt + boost.timestamp > now) continue
-
-      // Since the boost expired we need to remove it
-      userSetting.leveling.boosts = userSetting.leveling.boosts.filter(b => !b.active)
-      userSetting.save()
-    }
-  }
 }

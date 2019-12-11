@@ -135,9 +135,6 @@ export default class extends Event {
     // Process all gamer events once per minute
     setInterval(() => Gamer.helpers.events.process(), milliseconds.MINUTE)
 
-    // Reset all boosts once they expire
-    // setInterval(() => Gamer.helpers.levels.processBoosts(), milliseconds.MINUTE)
-
     // Process all mutes
     setInterval(() => Gamer.helpers.moderation.processMutes(), milliseconds.MINUTE)
 
