@@ -377,7 +377,7 @@ export default class {
           : undefined
       if (card) card.delete()
       // Deletes the event from the database
-      return this.Gamer.database.models.event.deleteOne({ id: event._id })
+      return this.Gamer.database.models.event.deleteOne({ _id: event._id })
     }
 
     // add new event to events array to be sent to amplitude for product analytics
