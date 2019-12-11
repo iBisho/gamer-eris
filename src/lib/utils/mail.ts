@@ -394,7 +394,7 @@ export default class {
       // Alerts the user that mail closed
       // If the tag was sent still send this because it tells the user who sent them the message above
       // because the tag might not be clear and that the mail is closed
-      dmChannel.createMessage({ embed: dmEmbed.code })
+      await dmChannel.createMessage({ embed: dmEmbed.code })
     } catch {}
 
     message.channel.delete(

@@ -44,12 +44,14 @@ export default new Command(`embed`, async (message, args, context) => {
     if (typeof embedCode.thumbnail === 'string') embedCode.thumbnail = { url: embedCode.thumbnail }
     if (embedCode.color === 'RANDOM') embedCode.color = Math.floor(Math.random() * (0xffffff + 1))
     if (embedCode.timestamp) embedCode.timestamp = new Date().toISOString()
-    return message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })
+    await message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })
   } catch (error) {
     const embed = new GamerEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .setTitle(language(`embedding/embed:BAD_EMBED`))
       .setDescription(['```js', error, '```'].join('\n'))
-    return message.channel.createMessage({ embed: embed.code })
+    message.channel.createMessage({ embed: embed.code })
   }
+
+  return
 })

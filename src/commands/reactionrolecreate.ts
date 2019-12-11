@@ -9,12 +9,21 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
+
+  const hasPermissions = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
+    `addReactions`,
+    `externalEmojis`,
+    `readMessageHistory`
+  ])
+
+  if (!hasPermissions) return message.channel.createMessage(language(`role/reactionrolecreate:NEED_PERMS`))
+
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
   })
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 

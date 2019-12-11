@@ -6,9 +6,13 @@ export default new Command(`give`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
+
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   // If the user does not have a modrole or admin role quit out
   if (
@@ -32,6 +36,8 @@ export default new Command(`give`, async (message, args, context) => {
   if (!member) return message.channel.createMessage(language(`roles/give:NEED_USER`))
   // if a role is mentioned use the mentioned role else see if a role id or role name was provided
   const [roleID] = message.roleMentions
+
+  if (!roleNameOrID && !roleID) return helpCommand.execute(message, [`give`], context)
   const role = roleID
     ? message.channel.guild.roles.get(roleID)
     : message.channel.guild.roles.find(
