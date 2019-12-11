@@ -13,5 +13,6 @@
   "SELF_ASSIGN": "User used the role command to assign this role.",
   "REMOVED": "The {{role}} role has been removed from you as per your wishes sire.",
   "ADDED": "The {{role}} role has been given to you. It's time to boogie!",
-  "AVAILABLE": "Available Roles To Assign:"
+  "AVAILABLE": "Available Roles To Assign:",
+  "NOT_PUBLIC": "This role is not a public role so it can not be assigned to yourself."
 }
