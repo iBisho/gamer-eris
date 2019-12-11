@@ -86,7 +86,6 @@ export default class {
       .limit(1000)
 
     const index = allRelevantUsers.findIndex(data => data.userID === member.id)
-    const userData = allRelevantUsers[index]
 
     const memberPosition = index >= 0 ? index + 1 : '1000+'
     const nextRankUserData =
@@ -131,7 +130,7 @@ export default class {
       username,
       member.user.discriminator,
       memberPosition,
-      userData.leveling.xp,
+      userSettings.leveling.xp,
       rankText,
       topUserData
     )
