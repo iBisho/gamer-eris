@@ -2,14 +2,7 @@ import { Canvas } from 'canvas-constructor'
 import fetch from 'node-fetch'
 import GamerClient from '../structures/GamerClient'
 import { Message, Member } from 'eris'
-import { MemberSettings, UserSettings } from '../types/settings'
 import constants from '../../constants'
-
-// Canvas.registerFont(join(assetsFolder, `fonts/SF-Pro-Text-Heavy.otf`), `SFTHeavy`)
-// Canvas.registerFont(join(assetsFolder, `fonts/SF-Pro-Text-Light.otf`), `SFTLight`)
-// Canvas.registerFont(join(assetsFolder, `fonts/SF-Pro-Text-Bold.otf`), `SFTBold`)
-// Canvas.registerFont(join(assetsFolder, `fonts/SF-Pro-Text-Regular.otf`), `SFTRegular`)
-// Canvas.registerFont(join(assetsFolder, `fonts/SF-Pro-Text-Medium.otf`), `SFTMedium`)
 
 export default class {
   Gamer: GamerClient
@@ -19,11 +12,11 @@ export default class {
   }
 
   async makeLocalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
-    const allRelevantMembers = (await this.Gamer.database.models.member
+    const allRelevantMembers = await this.Gamer.database.models.member
       .find({
         guildID: member.guild.id
       })
-      .sort(`-leveling.xp`)) as MemberSettings[]
+      .sort(`-leveling.xp`)
 
     const index = allRelevantMembers.findIndex(data => data.memberID === member.id)
     const memberSettings = allRelevantMembers[index]
@@ -33,12 +26,18 @@ export default class {
     }
 
     const memberPosition = index >= 0 ? index + 1 : this.Gamer.users.size
-    const nextRankUserData = index === 0 ? null : allRelevantMembers[index - 1]
+    const nextRankUserData = index === 0 ? undefined : allRelevantMembers[index - 1]
     const prevRankUserData = allRelevantMembers[index + 1]
     if (!nextRankUserData && !prevRankUserData) {
       message.channel.createMessage(NOT_ENOUGH)
       return
     }
+
+    const rankText = nextRankUserData
+      ? `${this.transformXP(nextRankUserData.leveling.xp - memberSettings.leveling.xp)} EXP Behind`
+      : prevRankUserData
+      ? `${this.transformXP(memberSettings.leveling.xp - prevRankUserData.leveling.xp)} EXP Ahead`
+      : 'Unknown'
 
     const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
     const username = member.user.username.replace(
@@ -69,42 +68,47 @@ export default class {
       member.user.discriminator,
       memberPosition,
       memberSettings.leveling.xp,
-      nextRankUserData,
-      memberSettings,
-      prevRankUserData,
+      rankText,
       topUserData
     )
   }
 
   async makeGlobalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
-    // const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
-    const allRelevantUsers = await this.Gamer.database.models.user
-      .find({ 'leveling.xp': { $gte: 1 } })
-      .sort(`-leveling.xp`)
-
-    const index = allRelevantUsers.findIndex(data => data.userID === member.id)
-    const userData = allRelevantUsers[index]
-    if (!userData) {
+    const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
+    if (!userSettings?.leveling.xp) {
       message.channel.createMessage(NO_POINTS)
       return
     }
 
-    const memberPosition = index >= 0 ? index + 1 : this.Gamer.users.size
-    const nextRankUserData = index === 0 ? null : allRelevantUsers[index - 1]
-    const prevRankUserData = allRelevantUsers[index + 1]
+    const allRelevantUsers = await this.Gamer.database.models.user
+      .find({ 'leveling.xp': { $gte: 1 } })
+      .sort(`-leveling.xp`)
+      .limit(1000)
+
+    const index = allRelevantUsers.findIndex(data => data.userID === member.id)
+    const userData = allRelevantUsers[index]
+
+    const memberPosition = index >= 0 ? index + 1 : '1000+'
+    const nextRankUserData =
+      index < 0 ? allRelevantUsers[allRelevantUsers.length - 1] : index >= 1 ? allRelevantUsers[index - 1] : undefined
+    const prevRankUserData = index >= 0 ? allRelevantUsers[index + 1] : undefined
     if (!nextRankUserData && !prevRankUserData) {
       message.channel.createMessage(NOT_ENOUGH)
       return
     }
+
+    const rankText = nextRankUserData
+      ? `${this.transformXP(nextRankUserData.leveling.xp - userSettings.leveling.xp)} EXP Behind`
+      : prevRankUserData
+      ? `${this.transformXP(userSettings.leveling.xp - prevRankUserData.leveling.xp)} EXP Ahead`
+      : 'Unknown'
+
     const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
     const username = member.user.username.replace(
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
       ``
     )
-    const topUsers = await this.Gamer.database.models.user
-      .find()
-      .sort(`-leveling.xp`)
-      .limit(3)
+    const topUsers = allRelevantUsers.slice(0, 3)
 
     const topUserData = []
     // Run a loop for the top 3 users
@@ -128,9 +132,7 @@ export default class {
       member.user.discriminator,
       memberPosition,
       userData.leveling.xp,
-      nextRankUserData,
-      userData,
-      prevRankUserData,
+      rankText,
       topUserData
     )
   }
@@ -147,12 +149,18 @@ export default class {
       return
     }
     const memberPosition = index >= 0 ? index + 1 : this.Gamer.users.size
-    const nextRankUserData = index === 0 ? null : allRelevantUsers[index - 1]
+    const nextRankUserData = index === 0 ? undefined : allRelevantUsers[index - 1]
     const prevRankUserData = allRelevantUsers[index + 1]
     if (!nextRankUserData && !prevRankUserData) {
       message.channel.createMessage(NOT_ENOUGH)
       return
     }
+
+    const rankText = nextRankUserData
+      ? `${this.transformXP(nextRankUserData.leveling.voicexp - memberSettings.leveling.voicexp)} EXP Behind`
+      : prevRankUserData
+      ? `${this.transformXP(memberSettings.leveling.voicexp - prevRankUserData.leveling.voicexp)} EXP Ahead`
+      : 'Unknown'
 
     const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
     const username = member.user.username.replace(
@@ -184,9 +192,7 @@ export default class {
       member.user.discriminator,
       memberPosition,
       memberSettings.leveling.voicexp,
-      nextRankUserData,
-      memberSettings,
-      prevRankUserData,
+      rankText,
       topUserData
     )
   }
@@ -196,11 +202,9 @@ export default class {
     avatarBuffer: Buffer,
     username: string,
     discriminator: string,
-    memberPosition: number,
+    memberPosition: number | string,
     userXP: number,
-    nextRankUserData: MemberSettings | UserSettings | null,
-    memberData: MemberSettings | UserSettings,
-    prevRankUserData: MemberSettings | UserSettings,
+    rankText: string,
     topUsers: TopUserLeaderboard[]
   ) {
     const canvas = new Canvas(636, 358)
@@ -235,13 +239,7 @@ export default class {
       .setColor(`#ffffff`)
       .setTextFont(`14px SFTBold`)
       .setTextAlign(`center`)
-      .addText(
-        nextRankUserData
-          ? `${this.transformXP(nextRankUserData.leveling.xp)} EXP Behind`
-          : `${this.transformXP(memberData.leveling.xp - prevRankUserData.leveling.xp)} EXP Ahead`,
-        120,
-        300
-      )
+      .addText(rankText, 120, 300)
 
       // HEADER
       .setColor(`#2c2c2c`)
