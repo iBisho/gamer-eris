@@ -18,8 +18,12 @@ export default new Command(`twitch`, async (message, args, context) => {
     id: guildID
   })
 
-  // If the user is not an admin cancel out
-  if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
+  // If the user is not an admin/mod cancel out
+  if (
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
+    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
+  )
+    return
 
   const [type, username, ...gameName] = args
   if (!type) return helpCommand.execute(message, [`twitch`], context)
