@@ -77,7 +77,10 @@ export default class {
   }
 
   async makeGlobalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
-    const allRelevantUsers = (await this.Gamer.database.models.user.find().sort(`-leveling.xp`)) as UserSettings[]
+    // const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
+    const allRelevantUsers = await this.Gamer.database.models.user
+      .find({ 'leveling.xp': { $gte: 1 } })
+      .sort(`-leveling.xp`)
 
     const index = allRelevantUsers.findIndex(data => data.userID === member.id)
     const userData = allRelevantUsers[index]
@@ -98,7 +101,10 @@ export default class {
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
       ``
     )
-    const topUsers = allRelevantUsers.slice(0, 3)
+    const topUsers = await this.Gamer.database.models.user
+      .find()
+      .sort(`-leveling.xp`)
+      .limit(3)
 
     const topUserData = []
     // Run a loop for the top 3 users
