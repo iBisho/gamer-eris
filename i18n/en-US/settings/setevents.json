@@ -7,5 +7,8 @@
   "ALIASES": "Setevents does not have any aliases.",
   "NEED_CHANNEL": "You did not provide a channel to use as the default event advertisement channel.",
   "SET_ADCHANNEL": "The default event advertisement channel has been set to {{channel}}.",
-  "RESET_ADCHANNEL": "The default event advertisement channel has been removed."
+  "RESET_ADCHANNEL": "The default event advertisement channel has been removed.",
+  "NEED_ROLE": "You did not provide a role. In order to set the role required to create events on this server, you must provide a valid role.",
+  "SET_ROLE": "The role required to create events on this server has been set.",
+  "RESET_ROLE": "The role required to create events on this server has been removed. Only mods or admins will be able to make events now."
 }

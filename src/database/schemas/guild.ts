@@ -239,5 +239,9 @@ export default new mongoose.Schema({
       feed: String,
       photos: String
     }
+  },
+
+  roleIDs: {
+    eventsCreate: String
   }
 })

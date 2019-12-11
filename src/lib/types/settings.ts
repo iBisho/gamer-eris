@@ -223,6 +223,9 @@ export interface GuildSettings extends mongoose.Document {
       photos?: string
     }
   }
+  roleIDs: {
+    eventsCreate?: string
+  }
 }
 
 export interface GuildSettingsDefault {
