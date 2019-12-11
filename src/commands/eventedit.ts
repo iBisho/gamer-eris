@@ -124,6 +124,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       if (!duration) return helpCommand.execute(message, [`eventedit`], context)
 
       event.duration = duration
+      event.end = event.start + event.duration
       response = `events/eventedit:DURATION_UPDATED`
       break
     case `start`:
