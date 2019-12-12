@@ -52,11 +52,11 @@ export default new Command([`reactionroleadd`, `rra`], async (message, args, con
   if (!reaction) return
 
   reactionRole.reactions.push({
-    reaction: reaction,
+    reaction,
     roleIDs
   })
 
-  reactionRole.save()
+  await reactionRole.save()
 
   const messageToUse = await Gamer.getMessage(reactionRole.channelID, reactionRole.messageID)
   if (!messageToUse) return

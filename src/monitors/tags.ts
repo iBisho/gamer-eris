@@ -8,6 +8,13 @@ export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
+    const hasPermissions = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
+      `sendMessages`,
+      `embedLinks`,
+      `externalEmojis`
+    ])
+    if (!hasPermissions) return
+
     const lowercaseContent = message.content.toLowerCase()
     const [firstWord] = lowercaseContent.split(' ')
 
@@ -68,7 +75,7 @@ export default class extends Monitor {
         if (typeof json.thumbnail === 'string') json.thumbnail = { url: json.thumbnail }
         if (json.color === 'RANDOM') json.color = Math.floor(Math.random() * (0xffffff + 1))
         if (json.timestamp) json.timestamp = new Date().toISOString()
-        message.channel.createMessage({ content: json.plaintext, embed: json })
+        await message.channel.createMessage({ content: json.plaintext, embed: json })
       } catch {}
 
       // Only ever run one tag at a time to prevent spam so we need return here

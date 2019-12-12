@@ -80,26 +80,36 @@ export default class {
       return
     }
 
-    const allRelevantUsers = await this.Gamer.database.models.user
-      .find({ 'leveling.xp': { $gte: 1 } })
-      .sort(`-leveling.xp`)
-      .limit(1000)
+    const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
+      this.Gamer.database.models.user.find({ 'leveling.xp': { $gt: userSettings.leveling.xp } }).countDocuments(),
+      this.Gamer.database.models.user
+        .find({
+          'leveling.xp': { $gt: userSettings.leveling.xp }
+        })
+        .sort('leveling.xp')
+        .limit(1),
+      this.Gamer.database.models.user
+        .find({ 'leveling.xp': { $lt: userSettings.leveling.xp } })
+        .sort('-leveling.xp')
+        .limit(1),
+      this.Gamer.database.models.user
+        .find()
+        .sort('-leveling.xp')
+        .limit(3)
+    ])
 
-    const index = allRelevantUsers.findIndex(data => data.userID === member.id)
+    const [nextUser] = nextUsers
+    const [prevUser] = prevUsers
 
-    const memberPosition = index >= 0 ? index + 1 : '1000+'
-    const nextRankUserData =
-      index < 0 ? allRelevantUsers[allRelevantUsers.length - 1] : index >= 1 ? allRelevantUsers[index - 1] : undefined
-    const prevRankUserData = index >= 0 ? allRelevantUsers[index + 1] : undefined
-    if (!nextRankUserData && !prevRankUserData) {
+    if (!nextUser && !prevUser) {
       message.channel.createMessage(NOT_ENOUGH)
       return
     }
 
-    const rankText = nextRankUserData
-      ? `${this.transformXP(nextRankUserData.leveling.xp - userSettings.leveling.xp)} EXP Behind`
-      : prevRankUserData
-      ? `${this.transformXP(userSettings.leveling.xp - prevRankUserData.leveling.xp)} EXP Ahead`
+    const rankText = nextUser
+      ? `${this.transformXP(nextUser.leveling.xp - userSettings.leveling.xp)} EXP Behind`
+      : prevUser
+      ? `${this.transformXP(userSettings.leveling.xp - prevUser.leveling.xp)} EXP Ahead`
       : 'Unknown'
 
     const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
@@ -107,7 +117,6 @@ export default class {
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
       ``
     )
-    const topUsers = allRelevantUsers.slice(0, 3)
 
     const topUserData = []
     // Run a loop for the top 3 users
@@ -129,7 +138,7 @@ export default class {
       userAvatar,
       username,
       member.user.discriminator,
-      memberPosition,
+      rank + 1,
       userSettings.leveling.xp,
       rankText,
       topUserData

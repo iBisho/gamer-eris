@@ -24,9 +24,10 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
 
   const fileName = `${member.id}.png`
 
+  const memberPerms = member.permission.json
   // If the key is enabled then keep it because the user has this permission
-  const permOverview = Object.keys(member.permission.json)
-    .filter(key => member.permission.json[key])
+  const permOverview = Object.keys(memberPerms)
+    .filter(key => memberPerms[key])
     .map(key => Gamer.helpers.transform.splitCamelCase(key))
 
   const JOINED_VALUE = language(`basic/user:JOINED_VALUE`, {
