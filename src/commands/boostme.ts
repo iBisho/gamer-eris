@@ -26,7 +26,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
 
       // Since the boost expired we need to remove it
       userSettings.leveling.boosts = userSettings.leveling.boosts.filter(b => !b.active)
-      userSettings.save()
+      await userSettings.save()
       continue
     }
 
