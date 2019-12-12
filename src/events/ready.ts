@@ -30,11 +30,11 @@ export default class extends Event {
     // Clean up inactive verification channels
     setInterval(async () => {
       // Fetch this guilds settings
-      const allGuildSettings = await Gamer.database.models.guild.find()
+      const allGuildSettings = await Gamer.database.models.guild.find({ 'verify.enabled': true })
       // We only loop over saved settings guilds because if they use defaults they they wont have verify enabled anyway
       const promises = allGuildSettings.map(async guildSettings => {
         // If this server does not enable the verification system skip or if they have no verification channels.
-        if (!guildSettings.verify.enabled || !guildSettings.verify.channelIDs.length) return
+        if (!guildSettings.verify.channelIDs.length) return
 
         const guild = Gamer.guilds.get(guildSettings.id)
         if (!guild) return
@@ -44,7 +44,7 @@ export default class extends Event {
           if (!(channel instanceof TextChannel)) continue
 
           // If missing channel perms exit out
-          if (channel.permissionsOf(Gamer.user.id).has('manageChannels')) continue
+          if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) continue
 
           const message =
             channel.messages.get(channel.lastMessageID) ||
@@ -62,7 +62,7 @@ export default class extends Event {
       })
 
       Promise.all(promises)
-    }, milliseconds.MINUTE * 10)
+    }, 2000)
 
     // Randomly select 3 new missions to use every day
     setInterval(() => {
