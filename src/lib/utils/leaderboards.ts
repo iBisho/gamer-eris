@@ -74,7 +74,6 @@ export default class {
   }
 
   async makeGlobalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
-    const rightNowRiya = Date.now()
     const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
     if (!userSettings?.leveling.xp) {
       message.channel.createMessage(NO_POINTS)
@@ -98,9 +97,6 @@ export default class {
         .sort('-leveling.xp')
         .limit(3)
     ])
-
-    const imDone = Date.now() - rightNowRiya
-    console.log(imDone)
 
     const [nextUser] = nextUsers
     const [prevUser] = prevUsers
