@@ -30,7 +30,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
         return role.name
       })
 
-      const text = `${level.level} ${roles.join(' ')}\n`
+      const text = `**#${level.level}:** ${roles.join(' ')}\n`
       if (response.length + text.length > 2000) break
       response += text
     }
