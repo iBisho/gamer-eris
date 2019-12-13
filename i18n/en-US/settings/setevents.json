@@ -1,9 +1,11 @@
 {
   "DESCRIPTION": "Set the events settings.",
-  "EXTENDED": "$t(settings/setevents:EXTENDED_LINE_1)\n$t(settings/setevents:EXTENDED_LINE_2)",
+  "EXTENDED": "$t(settings/setevents:EXTENDED_LINE_1)\n$t(settings/setevents:EXTENDED_LINE_2)\n$t(settings/setevents:EXTENDED_LINE_3)\n$t(settings/setevents:EXTENDED_LINE_4)",
   "EXTENDED_LINE_1": "**{{prefix}}setevents channel [#Channel]** ~ Sets the default event advertisement channel.",
   "EXTENDED_LINE_2": "**{{prefix}}setevents removechannel** ~ Disables the default event advertisement channel.",
-  "USAGE": "{{prefix}}setevents [channel | removechannel] *[#Channel]*",
+  "EXTENDED_LINE_3": "**{{prefix}}setevents role [@Role | Role ID | Role Name]** ~ Sets the role necessary to create events on the server.",
+  "EXTENDED_LINE_4": "**{{prefix}}setevents removerole** ~ Disables the role necessary to create events.",
+  "USAGE": "{{prefix}}setevents [channel | removechannel | role | removerole] *[#Channel | @Role]*",
   "ALIASES": "Setevents does not have any aliases.",
   "NEED_CHANNEL": "You did not provide a channel to use as the default event advertisement channel.",
   "SET_ADCHANNEL": "The default event advertisement channel has been set to {{channel}}.",
