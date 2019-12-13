@@ -41,7 +41,7 @@ export default class extends Event {
 
         for (const channelID of guildSettings.verify.channelIDs) {
           const channel = guild.channels.get(channelID)
-          if (!(channel instanceof TextChannel)) continue
+          if (!channel || !(channel instanceof TextChannel)) continue
 
           // If missing channel perms exit out
           if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) continue
