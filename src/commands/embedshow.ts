@@ -14,7 +14,8 @@ export default new Command(`embedshow`, async (message, args, context) => {
   const [messageID] = args
   if (!messageID) return
 
-  const messageToUse = channel.messages.get(messageID) || (await Gamer.getMessage(channel.id, messageID))
+  const messageToUse =
+    channel.messages.get(messageID) || (await Gamer.getMessage(channel.id, messageID).catch(() => undefined))
   if (!messageToUse) return
 
   const [embed] = messageToUse.embeds
