@@ -18,7 +18,7 @@ export default new Command(`rolesets`, async (message, _args, context) => {
     return
 
   const rolesets = await Gamer.database.models.roleset.find({ guildID: message.channel.guild.id })
-  if (!rolesets.length) return message.channel.createMessage(language(`rolesets/rolesets:NONE`))
+  if (!rolesets.length) return message.channel.createMessage(language(`roles/rolesets:NONE`))
 
   let response = ``
   const guildRoles = message.channel.guild.roles
