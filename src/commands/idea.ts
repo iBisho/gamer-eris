@@ -33,10 +33,8 @@ export default new Command(`idea`, async (message, args, context) => {
   if (!channel.permissionsOf(Gamer.user.id).has('externalEmojis'))
     return message.channel.createMessage(language(`feedback/idea:MISSING_EXTERNAL`))
 
-  const content = args.join(' ')
   if (!settings.feedback.idea.questions.length)
     return message.channel.createMessage(language(`feedback/idea:NO_QUESTIONS`))
-  if (!content) return message.channel.createMessage(language(`feedback/idea:NO_CONTENT`))
 
   const embed = new GamerEmbed()
     .setThumbnail(message.author.avatarURL)
@@ -46,16 +44,11 @@ export default new Command(`idea`, async (message, args, context) => {
     )
     .setTimestamp()
 
-  const splitContent = content.split(` | `)
+  const splitContent = args.join(' ').split(` | `)
 
   for (const [index, question] of settings.feedback.idea.questions.entries()) {
     if (splitContent.length && splitContent[index]) {
       embed.addField(question, splitContent[index])
-      continue
-    }
-
-    if (index === 0 && content.length) {
-      embed.addField(question, content)
       continue
     }
 
