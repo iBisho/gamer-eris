@@ -14,6 +14,31 @@ export default new Command(`levelrole`, async (message, args, context) => {
 
   const [type, number, ...roleIDsOrNames] = args
   if (!type) return helpCommand.execute(message, [`levelrole`], context)
+
+  if (type.toLowerCase() === `list`) {
+    const levelroles = await Gamer.database.models.level.find({ guildID: message.channel.guild.id })
+
+    const guildRoles = message.channel.guild.roles
+
+    let response = ``
+    for (const level of levelroles) {
+      if (response.length === 2000) break
+
+      const roles = level.roleIDs.map(id => {
+        const role = guildRoles.get(id)
+        if (!role) return id
+        return role.name
+      })
+
+      const text = `${level.level} ${roles.join(' ')}\n`
+      if (response.length + text.length > 2000) break
+      response += text
+    }
+
+    if (!response.length) return message.channel.createMessage(language(`leveling/levelrole:NONE`))
+    return message.channel.createMessage(response)
+  }
+
   const levelID = parseInt(number, 10)
   if (!levelID) return helpCommand.execute(message, [`levelrole`], context)
 

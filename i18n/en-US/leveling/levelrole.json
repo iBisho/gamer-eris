@@ -10,5 +10,6 @@
   "CREATED": "The role rewards for level #{{level}} have been created.",
   "ROLES_ADDED": "The role has been added to the role rewards for this level.",
 	"ROLES_REMOVED": "The role has been removed from the role rewards for this level.",
-	"EXISTS": "There is already a levelrole setup for this server."
+  "EXISTS": "There is already a levelrole setup for this server.",
+  "NONE": "You have not created any levelroles on this server."
 }
