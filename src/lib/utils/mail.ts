@@ -11,9 +11,8 @@ import {
 } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import { GamerMail, GamerTag } from '../types/gamer'
+import { GamerMail } from '../types/gamer'
 import GamerEmbed from '../structures/GamerEmbed'
-import { GamerEmoji } from '../types/database'
 
 const channelNameRegex = /^-+|[^\w-]|-+$/g
 
