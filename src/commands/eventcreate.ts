@@ -11,14 +11,15 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
     id: message.channel.guild.id
   })
 
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
-
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+
+  if (
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
+    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID) &&
+    (!guildSettings?.roleIDs.eventsCreate || !message.member.roles.includes(guildSettings.roleIDs.eventsCreate))
+  )
+    return
 
   const [templateName] = args
   // create new event based on input
