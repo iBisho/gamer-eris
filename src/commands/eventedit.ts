@@ -130,9 +130,11 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `start`:
     case `11`:
       const start = Gamer.helpers.transform.stringToMilliseconds(value)
-      if (!start) return helpCommand.execute(message, [`eventedit`], context)
+      const startTime = new Date(fullValue.join(' ')).getTime()
 
-      event.start = Date.now() + start
+      if (!start && !startTime) return helpCommand.execute(message, [`eventedit`], context)
+
+      event.start = start ? Date.now() + start : startTime
       event.end = event.start + event.duration
       response = `events/eventedit:START_UPDATED`
       break
