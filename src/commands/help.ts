@@ -69,7 +69,8 @@ const categories = [
       `rolesetcreate`,
       `rolesetdelete`,
       `rolesetadd`,
-      `rolesetremove`
+      `rolesetremove`,
+      `rolesets`
     ]
   },
   {
