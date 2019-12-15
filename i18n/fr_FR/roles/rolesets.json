@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Affiche tous les sets de rôle sur votre serveur.",
+	"EXTENDED": "**{{prefix}}rolesets** ~ Affiche tous les sets de rôle sur votre serveur.",
+	"USAGE": "{{prefix}}rolesets",
+	"ALIASES": "Rolesets n'a pas d'alias.",
+	"NONE": "Vous n'avez pas créé de sets de rôle sur ce serveur. Veuillez utiliser la commande **rolesetcreate** pour créer un set de rôle."
+}
