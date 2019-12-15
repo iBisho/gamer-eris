@@ -36,14 +36,15 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
   }
 
   const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(userID)
-  if (!user) return message.channel.createMessage(language(`moderation/modlog:NEED_USER`))
 
   const modlogs = await Gamer.database.models.modlog.find({
     guildID: message.channel.guild.id,
-    userID: user.id
+    userID: user?.id || userID
   })
   if (!modlogs.length)
-    return message.channel.createMessage(language(`moderation/modlog:NO_LOGS`, { user: user.mention }))
+    return message.channel.createMessage(
+      language(`moderation/modlog:NO_LOGS`, { user: user?.mention || 'Unknown User' })
+    )
   // Sort modlogs by latest modlog as first in the array
   const sortedModLogs = modlogs.sort((a, b) => b.id - a.id)
   const modlogTypes = {
@@ -92,9 +93,9 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
   }
 
   const embed = new GamerEmbed()
-    .setAuthor(language(`moderation/modlog:USER_HISTORY`, { user: user.username }), user.avatarURL)
+    .setAuthor(language(`moderation/modlog:USER_HISTORY`, { user: user?.username || 'Unknown User' }), user?.avatarURL)
     .setDescription(description.join(`\n`))
-    .setThumbnail(user.avatarURL)
+  if (user) embed.setThumbnail(user.avatarURL)
 
   for (const log of sortedModLogs) {
     if (embed.code.fields.length === 25) {
