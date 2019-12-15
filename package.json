@@ -29,7 +29,7 @@
     "chalk": "^3.0.0",
     "confusables": "^0.3.3",
     "eris": "github:caf203/eris#dev",
-    "fastify": "^2.10.0",
+    "fastify": "^2.11.0",
     "fastify-helmet": "^3.0.2",
     "get-urls": "^9.2.0",
     "i18next": "^19.0.1",
