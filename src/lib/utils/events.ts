@@ -1,4 +1,4 @@
-import { Message, PrivateChannel, TextChannel } from 'eris'
+import { Message, PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerEvent } from '../types/gamer'
@@ -19,7 +19,7 @@ export default class {
   }
 
   async createNewEvent(message: Message, templateName = ``, guildSettings: GuildSettings | null) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const events = (await this.Gamer.database.models.event.find({ guildID: message.channel.guild.id })) as GamerEvent[]
 
@@ -67,7 +67,7 @@ export default class {
       showAttendees: true
     }
 
-    this.Gamer.database.models.event.create(newEvent)
+    await this.Gamer.database.models.event.create(newEvent)
 
     // add new event to events array to be sent to amplitude for product analytics
     this.Gamer.amplitude.push({
@@ -118,20 +118,34 @@ export default class {
       : event.adChannelID
       ? this.Gamer.getChannel(event.adChannelID)
       : undefined
-    if (adChannel && adChannel instanceof TextChannel) {
-      const adCardMessage = event.adMessageID
-        ? adChannel.messages.get(event.adMessageID) ||
-          (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
-        : undefined
 
-      if (adCardMessage) adCardMessage.edit({ embed: embed.code })
-      else {
-        const card = await adChannel.createMessage({ embed: embed.code })
-        event.adChannelID = adChannel.id
-        event.adMessageID = card.id
-        event.save()
-        for (const emoji of eventCardReactions) await card.addReaction(emoji).catch(() => null)
-      }
+    if (!adChannel || !(adChannel instanceof TextChannel)) return
+
+    if (
+      !this.Gamer.helpers.discord.checkPermissions(adChannel, this.Gamer.user.id, [
+        `readMessages`,
+        `sendMessages`,
+        `embedLinks`,
+        `attachFiles`,
+        `readMessageHistory`,
+        `addReactions`,
+        `externalEmojis`
+      ])
+    )
+      return
+
+    const adCardMessage = event.adMessageID
+      ? adChannel.messages.get(event.adMessageID) ||
+        (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
+      : undefined
+
+    if (adCardMessage) adCardMessage.edit({ embed: embed.code })
+    else {
+      const card = await adChannel.createMessage({ embed: embed.code })
+      event.adChannelID = adChannel.id
+      event.adMessageID = card.id
+      event.save()
+      for (const emoji of eventCardReactions) await card.addReaction(emoji).catch(() => null)
     }
   }
 
@@ -180,7 +194,7 @@ export default class {
       .setTextAlign(`left`)
       .setColor(`#FFFFFF`)
       .setTextFont(`26px SFTHeavy`)
-      .addMultilineText(event.title, 30, 70)
+      .addMultilineText(event.title, 30, 90)
 
       // event author
       .setTextFont(`14px SFTHeavy`)
@@ -207,13 +221,18 @@ export default class {
       .addText(event.platform, 35, 261)
       .setColor(`#4C4C4C`)
       .setTextFont(`13px SFTHeavy`)
+
     // .addText(event.description.substring(0, 100), 35, 286)
 
-    if (event.showAttendees) canvas.addText(attendees.join(', ').substring(0, 100), 35, 311)
+    const platformWidth = canvas.setTextFont(`18px SFTHeavy`).measureText(event.platform)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    canvas.setTextFont(`13px SFTHeavy`).addText(event.activity, 15 + 35 + platformWidth.width, 261)
+    if (event.showAttendees) canvas.addText(attendees.join(', ').substring(0, 95), 35, 311)
 
     if (event.isRecurring) {
       canvas
-        .addImage(this.Gamer.buffers.events.recurring, 68, 29)
+        .addImage(this.Gamer.buffers.events.recurring, 30, 29)
         .setColor(`#FFFFFF`)
         .setTextAlign(`center`)
         .setTextFont(`18px SFTHeavy`)
@@ -269,7 +288,6 @@ export default class {
       event.denials = event.denials.filter(d => d !== userID)
       event.waitingList = event.waitingList.filter(w => w !== userID)
       event.attendees = [...event.attendees, userID]
-      event.save()
 
       this.advertiseEvent(event)
       return language(`events/eventjoin:SUCCESSFULLY_JOINED`)
@@ -281,7 +299,6 @@ export default class {
     // add user to waiting list
     event.denials = event.denials.filter(d => d !== userID)
     event.waitingList = [...event.waitingList, userID]
-    event.save()
 
     this.advertiseEvent(event)
 
@@ -327,7 +344,7 @@ export default class {
 
   async process() {
     // First fetch all the events from the database
-    const events = (await this.Gamer.database.models.event.find()) as GamerEvent[]
+    const events = await this.Gamer.database.models.event.find()
     // If there are no events or some error happened just cancel out
     if (!events.length) return
     // Create the timestamp for right now so we can reuse it
@@ -338,9 +355,11 @@ export default class {
     const eventsToRemind: GamerEvent[] = []
 
     for (const event of events) {
+      // Ignore all events that are template events
+      if (event.templateName) continue
       if (event.end < now) eventsToEnd.push(event)
       else if (event.start < now && !event.hasStarted && event.end > now) eventsToStart.push(event)
-      else if (event.start > now && !event.hasStarted && event.attendees.length) eventsToStart.push(event)
+      else if (event.start > now && !event.hasStarted && event.attendees.length) eventsToRemind.push(event)
     }
 
     for (const event of eventsToEnd) this.endEvent(event)
@@ -358,7 +377,7 @@ export default class {
           : undefined
       if (card) card.delete()
       // Deletes the event from the database
-      return this.Gamer.database.models.event.deleteOne({ id: event.id, guildID: event.guildID })
+      return this.Gamer.database.models.event.deleteOne({ _id: event._id })
     }
 
     // add new event to events array to be sent to amplitude for product analytics
@@ -398,8 +417,8 @@ export default class {
     if (!language) return
 
     const embed = new GamerEmbed()
-      .setAuthor(language(`events/event:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
-      .setTitle(language(`events/event:STARTING_TITLE`, { title: event.title }))
+      .setAuthor(language(`events/events:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
+      .setTitle(language(`events/events:STARTING_TITLE`, { title: event.title }))
       .addField(language(`events/eventshow:RSVP_EMOJI`), `${event.attendees.length} / ${event.maxAttendees}`)
       .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
 
@@ -425,8 +444,10 @@ export default class {
     const guild = this.Gamer.guilds.get(event.guildID)
     if (!guild) return
 
+    const now = Date.now()
+
     const reminder = event.reminders.find(
-      reminder => !event.executedReminders.includes(reminder) && event.start - Date.now() > reminder
+      reminder => !event.executedReminders.includes(reminder) && event.start - now < reminder
     )
     if (!reminder) return
     event.executedReminders.push(reminder)
@@ -435,14 +456,14 @@ export default class {
     const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
     if (!language) return
 
-    const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(Date.now() - event.start)
+    const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(event.start - now)
 
     const embed = new GamerEmbed()
-      .setAuthor(language(`events/event:REMIND`, { eventID: event.id }))
+      .setAuthor(language(`events/events:REMIND`, { eventID: event.id }))
       .setDescription(event.description)
-      .addField(language(`events/event:TITLE`), event.title, true)
-      .addField(language(`events/event:STARTS_IN`), startsIn, true)
-      .setFooter(language(`events/event:REMIND_FOOTER`, { guildName: guild.name }))
+      .addField(language(`events/events:TITLE`), event.title, true)
+      .addField(language(`events/events:STARTS_IN`), startsIn, true)
+      .setFooter(language(`events/events:REMIND_FOOTER`, { guildName: guild.name }))
     if (guild.iconURL) embed.setThumbnail(guild.iconURL)
 
     if (event.dmReminders) {

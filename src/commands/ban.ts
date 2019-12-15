@@ -1,23 +1,22 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`ban`, `b`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
   const botMember = message.channel.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+
+  const guildSettings = await Gamer.database.models.guild.findOne({
+    id: message.channel.guild.id
+  })
 
   // Check if the bot has the ban permissions
   if (!botMember.permission.has('banMembers'))
@@ -52,10 +51,12 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
   }
 
   const embed = new GamerEmbed()
-    .setDescription(language(`moderation/ban:TITLE`, { guildName: message.channel.guild.name, user: user.username }))
+    .setDescription(
+      language(`moderation/ban:TITLE`, { guildName: message.channel.guild.name, username: user.username })
+    )
     .setThumbnail(user.avatarURL)
     .setTimestamp()
-    .addField(language(`common:REASON`), language(`moderation/ban:REASON`, { user: message.author.username, reason }))
+    .addField(language(`common:REASON`), reason)
 
   // Send the user a message. AWAIT to make sure message is sent before they are banned and lose access
   const dmChannel = await user.getDMChannel().catch(() => undefined)
@@ -65,5 +66,5 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
 
   Gamer.helpers.moderation.createModlog(message, guildSettings, language, user, `ban`, reason)
 
-  return message.channel.createMessage(language(`moderation/ban:SUCCESS`, { user: user.mention, reason }))
+  return message.channel.createMessage(language(`moderation/ban:SUCCESS`, { user: user.username, reason }))
 })

@@ -1,18 +1,19 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, Role } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, Role, GroupChannel } from 'eris'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`role`, `rank`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // If there are no settings then there are no public roles
-  if (!settings) return message.channel.createMessage(language(`roles/role:NO_PUBLIC_ROLES`))
+  if (!settings || !settings.moderation.roleIDs.public.length)
+    return message.channel.createMessage(language(`roles/role:NO_PUBLIC_ROLES`))
   // Check if the bot has the permission to manage roles
   const bot = message.channel.guild.members.get(Gamer.user.id)
   if (!bot || !bot.permission.has('manageRoles'))
@@ -21,6 +22,16 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   const [roleNameOrID] = args
   // if a role is mentioned use the mentioned role else see if a role id or role name was provided
   const [roleID] = message.roleMentions
+  // No args were provided so we just list the public roles
+  if (!args.length) {
+    // Send in an embed so the role @ do not go through
+    const embed = new GamerEmbed()
+      .setAuthor(message.author.username, message.author.avatarURL)
+      .setTitle(language(`roles/role:AVAILABLE`))
+      .setDescription(settings.moderation.roleIDs.public.map(id => `<@&${id}>`).join(' '))
+    return message.channel.createMessage({ embed: embed.code })
+  }
+
   const role = roleID
     ? message.channel.guild.roles.get(roleID)
     : message.channel.guild.roles.find(

@@ -1,5 +1,5 @@
 // Logs that a command run (even if it was inhibited)
-import { PossiblyUncachedMessage, Message, PrivateChannel } from 'eris'
+import { PossiblyUncachedMessage, Message, PrivateChannel, GroupChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
@@ -18,16 +18,33 @@ export default class extends Event {
       }
     }
 
+    if (rawMessage.channel instanceof PrivateChannel || rawMessage.channel instanceof GroupChannel) return
+
+    const user = Gamer.users.get(userID)
+    if (!user) return
+
+    if (user.bot) return
+
+    // Need read message history perms to get the messages
+    const botPerms = rawMessage.channel.permissionsOf(Gamer.user.id)
+    if (!botPerms.has('readMessageHistory')) return
+
     // If it is an uncached message we need to fetch the message
     const message =
-      rawMessage instanceof Message ? rawMessage : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id)
+      rawMessage instanceof Message
+        ? rawMessage
+        : await Gamer.getMessage(rawMessage.channel.id, rawMessage.id).catch(() => undefined)
+    // Incase another bot deletes the message we catch it
+    if (!message) return
 
     if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
     this.handleReactionRole(message, emoji, userID)
+    this.handleFeedbackReaction(message, emoji, userID)
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (!message.author.bot || message.channel instanceof PrivateChannel) return
+    if (!message.author.bot || message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
+      return
     const event = (await Gamer.database.models.event.findOne({ adMessageID: message.id })) as GamerEvent | null
     if (!event) return
 
@@ -46,7 +63,7 @@ export default class extends Event {
   }
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const guild = Gamer.guilds.get(message.channel.guild.id)
     if (!guild) return
@@ -76,5 +93,46 @@ export default class extends Event {
       if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
       else member.addRole(roleID, `Added roles for clicking a reaction role message.`)
     }
+  }
+
+  async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, userID: string) {
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+
+    const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
+
+    if (!message.embeds.length || message.author.id !== Gamer.user.id) return
+
+    // Check if this message is a feedback message
+    const feedback = await Gamer.database.models.feedback.findOne({ id: message.id })
+    if (!feedback) return
+    // Fetch the guild settings for this guild
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    if (!guildSettings) return
+
+    // Check if valid feedback channel
+    if (![guildSettings.feedback.idea.channelID, guildSettings.feedback.bugs.channelID].includes(message.channel.id))
+      return
+    // Check if a valid emoji was used
+    const feedbackReactions: string[] = []
+    if (feedback.isBugReport)
+      feedbackReactions.push(guildSettings.feedback.bugs.emojis.down, guildSettings.feedback.bugs.emojis.up)
+    else feedbackReactions.push(guildSettings.feedback.idea.emojis.down, guildSettings.feedback.idea.emojis.up)
+
+    if (!feedbackReactions.includes(fullEmojiName)) return
+
+    const reactorMember = message.channel.guild.members.get(userID)
+    if (!reactorMember) return
+
+    const feedbackMember = message.channel.guild.members.get(feedback.authorID)
+
+    // If the user is no longer in the server we dont need to grant any xp
+    if (!feedbackMember) return
+
+    const downEmojis = [guildSettings.feedback.idea.emojis.down, guildSettings.feedback.bugs.emojis.down]
+    const upEmojis = [guildSettings.feedback.idea.emojis.up, guildSettings.feedback.bugs.emojis.up]
+
+    if (upEmojis.includes(fullEmojiName)) return Gamer.helpers.levels.removeXP(feedbackMember, 3)
+    if (downEmojis.includes(fullEmojiName)) return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
+    return
   }
 }

@@ -1,6 +1,8 @@
 {
   "DESCRIPTION": "Set a language/personality for your server.",
-  "EXTENDED": "**{{prefix}}setlanguage french** ~ Sets a language/personality.",
+  "EXTENDED": "$t(settings/setlanguage:EXTENDED_LINE_1)\n$t(settings/setlanguage:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}setlanguage french** ~ Sets the french language.",
+  "EXTENDED_LINE_2": "**{{prefix}}setlanguage german** ~ Sets the german language.",
   "USAGE": "{{prefix}}setlanguage [Language Name]",
   "ALIASES": "Setlanguage does not have any aliases.",
   "INVALID_NAME": "There was no language/personality found for **{{name}}**. If you are looking to create this language please contact us on our support server using the invite command.",

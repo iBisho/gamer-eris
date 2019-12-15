@@ -2,7 +2,7 @@
   "DESCRIPTION": "Shows you information about a role.",
   "EXTENDED": "**{{prefix}}roleinfo [role]** ~ Shows all members with the specified role.",
   "USAGE": "{{prefix}}roleinfo [Role]",
-  "ALIASES": "{{prefix}}rm",
+  "ALIASES": "{{prefix}}ri",
   "ROLE_NAME": "Role Name:",
   "ROLE_ID": "Role ID:",
   "ROLE_COLOR": "Role Color:",

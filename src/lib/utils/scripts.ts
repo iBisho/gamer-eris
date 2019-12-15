@@ -1,20 +1,23 @@
 import { Guild, CategoryChannel, Permission, Overwrite } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import i18next = require('i18next')
 import GamerEmbed from '../structures/GamerEmbed'
 import constants from '../../constants'
 
 export default class {
-  async createVerificationSystem(
-    Gamer: GamerClient,
-    language: i18next.TFunction,
-    guild: Guild,
-    guildSettings: GuildSettings
-  ) {
+  Gamer: GamerClient
+
+  constructor(client: GamerClient) {
+    this.Gamer = client
+  }
+
+  async createVerificationSystem(guild: Guild, guildSettings: GuildSettings) {
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+    if (!language) return
+
     const REASON = language(`settings/setverify:REASON`)
     const overwrites: Overwrite[] = [
-      { id: Gamer.user.id, allow: 3072, deny: 0, type: 'member' },
+      { id: this.Gamer.user.id, allow: 3072, deny: 0, type: 'member' },
       { id: guild.id, allow: 0, deny: 1024, type: 'role' }
     ]
     if (guildSettings.staff.adminRoleID)
@@ -59,7 +62,7 @@ export default class {
     for (const channel of guild.channels.values()) {
       if (channel.parentID === category.id || channel.id === category.id) continue
 
-      if (!channel.permissionsOf(Gamer.user.id).has(`manageChannels`)) continue
+      if (!channel.permissionsOf(this.Gamer.user.id).has(`manageChannels`)) continue
 
       if (channel.parentID) {
         const parent = guild.channels.get(channel.parentID) as CategoryChannel
@@ -91,19 +94,17 @@ export default class {
     return true
   }
 
-  async createFeedbackSystem(
-    Gamer: GamerClient,
-    language: i18next.TFunction,
-    guild: Guild,
-    guildSettings: GuildSettings
-  ) {
+  async createFeedbackSystem(guild: Guild, guildSettings: GuildSettings) {
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+    if (!language) return
+
     const REASON = language(`settings/setfeedback:SETUP_REASON`)
     // Create the category first and edit its permissions so that the other two channels can be syned easily
-    const category = await guild.createChannel(`Feedback`, 4, {
+    const category = await guild.createChannel(language(`settings/setfeedback:CATEGORY_NAME`), 4, {
       reason: REASON,
       permissionOverwrites: [
         { id: guild.id, allow: 0, deny: 2112, type: `role` },
-        { id: Gamer.user.id, allow: 347200, deny: 0, type: `member` }
+        { id: this.Gamer.user.id, allow: 347200, deny: 0, type: `member` }
       ]
     })
 
@@ -135,20 +136,20 @@ export default class {
     ]
     guildSettings.save()
 
-    const gamertag = `${Gamer.user.username}#${Gamer.user.discriminator}`
+    const gamertag = `${this.Gamer.user.username}#${this.Gamer.user.discriminator}`
 
     const embed = new GamerEmbed()
-      .setAuthor(language(`settings/setfeedback:IDEA_FROM`, { user: gamertag }), Gamer.user.avatarURL)
-      .setThumbnail(Gamer.user.avatarURL)
+      .setAuthor(language(`settings/setfeedback:IDEA_FROM`, { user: gamertag }), this.Gamer.user.avatarURL)
+      .setThumbnail(this.Gamer.user.avatarURL)
       .addField(language(`settings/setfeedback:IDEA_QUESTION_1`), language(`settings/setfeedback:IDEA_ANSWER_1`))
       .addField(language(`settings/setfeedback:IDEA_QUESTION_2`), language(`settings/setfeedback:IDEA_ANSWER_2`))
       .setImage('https://i.imgur.com/2L9ePkb.png')
       .setTimestamp()
 
     const bugsEmbed = new GamerEmbed()
-      .setAuthor(language(`settings/setfeedback:BUGS_FROM`, { user: gamertag }), Gamer.user.avatarURL)
+      .setAuthor(language(`settings/setfeedback:BUGS_FROM`, { user: gamertag }), this.Gamer.user.avatarURL)
       .setColor(`#F44A41`)
-      .setThumbnail(Gamer.user.avatarURL)
+      .setThumbnail(this.Gamer.user.avatarURL)
       .addField(language(`settings/setfeedback:BUGS_QUESTION_1`), language(`settings/setfeedback:BUGS_ANSWER_1`))
       .addField(language(`settings/setfeedback:BUGS_QUESTION_2`), language(`settings/setfeedback:BUGS_ANSWER_2`))
       .setImage(`https://i.imgur.com/lQr66JV.png`)
@@ -157,5 +158,109 @@ export default class {
     ideaChannel.createMessage({ embed: embed.code })
     // Send example bug
     bugsChannel.createMessage({ embed: bugsEmbed.code })
+  }
+
+  async createLogSystem(guild: Guild, guildSettings: GuildSettings) {
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+    if (!language) return
+
+    const REASON = language(`settings/setlogs:REASON`)
+    const overwrites: Overwrite[] = [
+      { id: this.Gamer.user.id, allow: 3072, deny: 0, type: 'member' },
+      { id: guild.id, allow: 0, deny: 1024, type: 'role' }
+    ]
+
+    if (guildSettings.staff.adminRoleID)
+      overwrites.push({ id: guildSettings.staff.adminRoleID, allow: 3072, deny: 0, type: 'role' })
+    for (const id of guildSettings.staff.modRoleIDs) overwrites.push({ id, allow: 3072, deny: 0, type: 'role' })
+
+    const category = await guild.createChannel(language(`settings/setlogs:CATEGORY_NAME`), 4, {
+      reason: REASON,
+      permissionOverwrites: overwrites
+    })
+
+    const [roleLogsChannel, memberLogs, messageLogs, otherLogs, channelLogs, publicLogs] = await Promise.all([
+      guild.createChannel(language(`settings/setlogs:ROLE_CHANNEL_NAME`), 0, { parentID: category.id }),
+      guild.createChannel(language(`settings/setlogs:MEMBER_CHANNEL_NAME`), 0, { parentID: category.id }),
+      guild.createChannel(language(`settings/setlogs:MESSAGE_CHANNEL_NAME`), 0, { parentID: category.id }),
+      guild.createChannel(language(`settings/setlogs:OTHER_CHANNEL_NAME`), 0, { parentID: category.id }),
+      guild.createChannel(language(`settings/setlogs:CHANNEL_CHANNEL_NAME`), 0, { parentID: category.id }),
+      guild.createChannel(language(`settings/setlogs:PUBLIC_CHANNEL_NAME`), 0, { parentID: category.id })
+    ])
+
+    guildSettings.moderation.logs.publiclogsChannelID = publicLogs.id
+    guildSettings.moderation.logs.serverlogs.channels.channelID = channelLogs.id
+    guildSettings.moderation.logs.serverlogs.channels.createPublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.channels.deletePublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.channels.updatePublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.emojis.channelID = otherLogs.id
+    guildSettings.moderation.logs.serverlogs.emojis.createPublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.emojis.deletePublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.emojis.updatePublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.members.channelID = memberLogs.id
+    guildSettings.moderation.logs.serverlogs.members.addPublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.members.nicknamePublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.messages.channelID = messageLogs.id
+    guildSettings.moderation.logs.serverlogs.messages.deletedPublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.roles.channelID = roleLogsChannel.id
+    guildSettings.moderation.logs.serverlogs.roles.createPublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.roles.deletePublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.roles.updatePublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.roles.memberPublicEnabled = true
+
+    if (!guildSettings.moderation.logs.modlogsChannelID) {
+      const modlogChannel = await guild.createChannel(language(`settings/setlogs:MODLOG_CHANNEL_NAME`), 0, {
+        parentID: category.id
+      })
+
+      guildSettings.moderation.logs.modlogsChannelID = modlogChannel.id
+    }
+
+    guildSettings.save()
+  }
+
+  // Create the mute system
+  async createMuteSystem(guild: Guild, guildSettings: GuildSettings) {
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+    if (!language) return
+
+    // If the role is already set cancel creation
+    if (guildSettings.moderation.roleIDs.mute && guild.roles.has(guildSettings.moderation.roleIDs.mute)) return
+
+    // Create a new role
+    const muteRole = await guild.createRole(
+      {
+        name: language(`moderation/mute:ROLE_NAME`)
+      },
+      language(`moderation/mute:SETUP_CREATED`)
+    )
+    guildSettings.moderation.roleIDs.mute = muteRole.id
+    guildSettings.save()
+
+    for (const channel of guild.channels.values()) {
+      // Skip if the verify category
+      if (
+        (channel.parentID && channel.parentID === guildSettings.verify.categoryID) ||
+        channel.id === guildSettings.verify.categoryID
+      )
+        continue
+
+      const botPerms = channel.permissionsOf(this.Gamer.user.id)
+      // If no permissions in this channel to manage it skip
+      if (!botPerms.has(`manageChannels`) || !botPerms.has(`manageRoles`)) continue
+
+      // If the permissions are synced with the category channel skip
+      if (channel.parentID) {
+        const category = guild.channels.get(channel.parentID)
+        if (!category) continue
+
+        if (category.permissionOverwrites === channel.permissionOverwrites) continue
+      }
+
+      // Update the channel perms
+      channel.editPermission(muteRole.id, 0, 1024, `role`, language(`moderation/mute:MUTE_ROLE_REASON`))
+    }
+
+    return muteRole
   }
 }

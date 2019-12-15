@@ -23,7 +23,7 @@ export default class {
         if (!word.startsWith('{') || !word.endsWith(`}`) || !emojis) return word
 
         const name = word.substring(1, word.length - 1)
-        const foundEmoji = emojis.find(e => e.name === name)
+        const foundEmoji = emojis.find(e => e.name === name.toLowerCase())
         if (!foundEmoji) return word
 
         return foundEmoji.fullCode
@@ -95,54 +95,44 @@ export default class {
   }
 
   stringToMilliseconds(text: string) {
-    // Accepts 5h or 5 h
-    const [number, letter] = text.split(text.length === 2 ? `` : ` `)
-    if (!number || !letter) return
+    const matches = text.match(/(\d+[w|d|h|m]{1})/g)
+    if (!matches) return
 
-    let multiplier = milliseconds.SECOND
-    switch (letter.toLowerCase()) {
-      case `w`:
-      case `week`:
-      case `weeks`:
-        multiplier = milliseconds.WEEK
-        break
-      case `d`:
-      case `day`:
-      case `days`:
-        multiplier = milliseconds.DAY
-      case `h`:
-      case `hour`:
-      case `hours`:
-        multiplier = milliseconds.HOUR
-        break
-      case `m`:
-      case `minute`:
-      case `minutes`:
-        multiplier = milliseconds.MINUTE
-        break
+    let total = 0
+
+    for (const match of matches) {
+      // Finds the first of these letters
+      const validMatch = /(w|d|h|m|s)/.exec(match)
+      // if none of them were found cancel
+      if (!validMatch) return
+      // Get the number which should be before the index of that match
+      const number = match.substring(0, validMatch.index)
+      // Get the letter that was found
+      const [letter] = validMatch
+      if (!number || !letter) return
+
+      let multiplier = milliseconds.SECOND
+      switch (letter.toLowerCase()) {
+        case `w`:
+          multiplier = milliseconds.WEEK
+          break
+        case `d`:
+          multiplier = milliseconds.DAY
+          break
+        case `h`:
+          multiplier = milliseconds.HOUR
+          break
+        case `m`:
+          multiplier = milliseconds.MINUTE
+          break
+      }
+
+      const amount = parseInt(number, 10)
+      if (!parseInt) return
+
+      total += amount * multiplier
     }
 
-    const amount = parseInt(number, 10)
-    if (!parseInt) return
-
-    return amount * multiplier
+    return total
   }
-
-  // async stringToEmbed(text: string) {
-  //   // If this throws then handle it where the function is called to show error to user of why their json failed
-  //   const json = JSON.parse(text) as EmbedBase
-
-  //   const embed = new GamerEmbed()
-  //   if (json.timestamp) embed.setTimestamp()
-  //   if (json.description) embed.setDescription(json.description)
-  //   if (json.title) embed.setTitle(json.title)
-
-  //   if (json.author && json.author.name) embed.setAuthor(json.author.name, json.author.icon_url, json.author.url)
-
-  //   if (json.footer && json.footer.text) embed.setFooter(json.footer.text, json.footer.icon_url)
-
-  //   if (json.fields) for (const field of json.fields) embed.addField(field.name, field.value, field.inline)
-
-  //   return embed
-  // }
 }

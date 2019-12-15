@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Create a global emoji you can use on any discord server.",
+  "EXTENDED": "**{{prefix}}emojicreate [Name] [Emoji]** ~ Create a global emoji you can use on any discord server with the unique name and emoji.",
+  "USAGE": "{{prefix}}emojicreate [Name] [Emoji]",
+  "ALIASES": "{{prefix}}emc",
+  "NEED_NAME": "You did not provide any name to assign to the emoji. Names must be unique when creating an emoji.",
+  "NEED_EMOJI": "You did not provide the emoji to create globally. You must provide a unique custom emoji from any server.",
+  "NEED_VALID_EMOJI": "The emoji you provided does not appear to be a valid emoji. Please try using another emoji. If you believe the emoji is valid and this is an error please use the **invite** command to contact my developers on the support server.",
+  "EMOJI_EXISTS": "The emoji you are using already exists under the name: {{name}}",
+  "NAME_EXISTS": "{{name}} is already being used for another emoji. Please provide another name, as the emoji names must always be unique.",
+  "CREATED": "You have successfully created the {{emoji}} emoji with the name **{{name}}**"
+}

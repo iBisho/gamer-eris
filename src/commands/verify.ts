@@ -1,9 +1,7 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, Message, TextChannel, CategoryChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, Message, TextChannel, CategoryChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { Canvas } from 'canvas-constructor'
-import { GamerEmoji } from '../lib/types/database'
 
 const createCaptcha = async (message: Message) => {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
@@ -49,15 +47,16 @@ const createCaptcha = async (message: Message) => {
 
 export default new Command(`verify`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
-
-  const guildSettings =
-    ((await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
-    })) as GuildSettings | null) || (new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings)
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
+
+  const guildSettings = await Gamer.database.models.guild.findOne({
+    id: message.channel.guild.id
+  })
+  // If no custom settings verification won't be enabled
+  if (!guildSettings) return message.channel.createMessage(language(`basic/verify:DISABLED`))
 
   const content = args.join(` `)
   switch (content) {
@@ -89,7 +88,7 @@ export default new Command(`verify`, async (message, args, context) => {
         callback: async msg => {
           // The text did not match so it cancel out
           if (msg.content !== captchaCode) {
-            await msg.channel.createMessage(language(`verify:INVALID_CAPTCHA_CODE`, { code: captchaCode }))
+            await msg.channel.createMessage(language(`basic/verify:INVALID_CAPTCHA_CODE`, { code: captchaCode }))
             // Run the command again for them to generate a new captcha code
             const verifyCommand = Gamer.commandForName(`verify`)
             if (!verifyCommand) return
@@ -98,7 +97,7 @@ export default new Command(`verify`, async (message, args, context) => {
           }
           // Success With Captcha
 
-          if (msg.channel instanceof PrivateChannel || !msg.member) return
+          if (msg.channel instanceof PrivateChannel || msg.channel instanceof GroupChannel || !msg.member) return
           const bot = msg.channel.guild.members.get(Gamer.user.id)
           if (!bot) return
           // Remove the verify role
@@ -148,13 +147,10 @@ export default new Command(`verify`, async (message, args, context) => {
       const channelName = Gamer.helpers.discord.userToChannelName(message.author.username, message.author.discriminator)
       // Check if another channels with that name exists in the verify channels category
       const channelExists = message.channel.guild.channels.find(
-        channel =>
-          channel.name === channelName.toLowerCase() &&
-          channel.parentID === guildSettings.verify.categoryID &&
-          channel instanceof TextChannel
-      ) as TextChannel
+        channel => channel.name === channelName.toLowerCase() && channel.parentID === guildSettings.verify.categoryID
+      )
 
-      if (channelExists) {
+      if (channelExists && channelExists instanceof TextChannel) {
         // If the channel exists send error
         if (channelExists.id !== message.channel.id)
           message.channel
@@ -171,30 +167,24 @@ export default new Command(`verify`, async (message, args, context) => {
       const categoryChannel = guildSettings.verify.categoryID
         ? message.channel.guild.channels.get(guildSettings.verify.categoryID)
         : undefined
-      if (!categoryChannel)
+      if (!categoryChannel || !(categoryChannel instanceof CategoryChannel))
         return message.channel
           .createMessage(language(`basic/verify:MISSING_CATEGORY`))
           .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
 
-      if (
-        categoryChannel &&
-        categoryChannel instanceof CategoryChannel &&
-        categoryChannel.channels &&
-        categoryChannel.channels.size === 50
-      )
+      if (categoryChannel && categoryChannel.channels && categoryChannel.channels.size === 50)
         return message.channel
           .createMessage(language(`basic/verify:MAXED`))
           .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
 
-      const newChannel = await message.channel.guild.createChannel(
-        channelName,
-        0,
-        language(`basic/verify:VERIFY_CHANNEL`),
-        categoryChannel.id
-      )
+      const newChannel = await message.channel.guild.createChannel(channelName, 0, {
+        reason: language(`basic/verify:VERIFY_CHANNEL`),
+        parentID: categoryChannel.id
+      })
+      newChannel.editPermission(message.author.id, 1024, 0, `member`)
 
       // Convert all the %variables%
-      const emojis = (await Gamer.database.models.emoji.find()) as GamerEmoji[]
+      const emojis = await Gamer.database.models.emoji.find()
       const transformed = Gamer.helpers.transform.variables(
         guildSettings.verify.firstMessageJSON,
         message.author,

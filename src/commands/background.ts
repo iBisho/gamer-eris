@@ -1,25 +1,33 @@
 import { Command } from 'yuuko'
-import { UserSettings } from '../lib/types/settings'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
+import config from '../../config'
 
 export default new Command([`background`, `bg`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || !message.member) return
-
-  const userSettings = ((await Gamer.database.models.user.findOne({
-    id: message.author.id
-  })) || new Gamer.database.models.user({ userID: message.author.id })) as UserSettings
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
+  const userSettings =
+    (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
+    (await Gamer.database.models.user.create({ userID: message.author.id }))
+
   const [type, id, color] = args
 
-  const theme = color.toLowerCase() === `black` ? `black` : `white`
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
+
+  const profileCommand = Gamer.commandForName(`profile`)
+  if (!profileCommand) return
+
+  if (!type || !id) return helpCommand.execute(message, [`background`], context)
+
+  const theme = color && color.toLowerCase() === `black` ? `black` : `white`
   // If the user try dark theme but are not vip cancel out
-  if (theme === `black` && !userSettings.vip.isVIP)
+  if (theme === `black` && !userSettings.vip.isVIP && !config.staff.developers.includes(message.author.id))
     return message.channel.createMessage(language(`leveling/background:VIP_THEME`))
   // Convert the string id into a number
   const backgroundID = parseInt(id, 10)
@@ -32,17 +40,22 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       // If the id is an invalid background send the user a link to the wiki page to find a valid id
       if (!constants.profiles.backgrounds.find(bg => bg.id === backgroundID))
         return message.channel.createMessage(language(`leveling/background:INVALID`, { id }))
+
       // If there was no theme or differnet theme but a valid id was provided just save the id
       if (!theme || theme === userSettings.profile.theme) {
         userSettings.profile.backgroundID = backgroundID
         userSettings.save()
-        return message.channel.createMessage(language(`leveling/background:SAVED`))
+        message.channel.createMessage(language(`leveling/background:SAVED`))
+        profileCommand.execute(message, [], context)
+        return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
       }
       // Update the theme and id
       userSettings.profile.backgroundID = backgroundID
       userSettings.profile.theme = theme
       userSettings.save()
       message.channel.createMessage(language(`leveling/background:SAVED`))
+
+      profileCommand.execute(message, [], context)
       return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
     case `view`:
       const buffer = await Gamer.helpers.profiles.makeCanvas(message, message.member, Gamer, {
@@ -54,7 +67,5 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
   }
 
-  const helpCommand = Gamer.commandForName(`help`)
-  if (!helpCommand) return
   return helpCommand.execute(message, [`background`], context)
 })

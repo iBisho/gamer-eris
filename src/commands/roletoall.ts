@@ -1,10 +1,9 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`roletoall`, `oprahrole`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
@@ -12,25 +11,32 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
   if (!botMember || !botMember.permission.has('manageRoles')) return
   if (!message.member.permission.has(`manageRoles`)) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
+
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   // If they are using default settings, they won't be vip server
-  if (!guildSettings || !guildSettings.vip.isVIP) return
+  if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`vip/roletoall:NEED_VIP`))
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  // Join() because role names can have spaces in it
+  const roleIDOrName = args.join(' ')
 
-  const [roleIDOrName] = args
   const role = message.roleMentions.length
-    ? message.channel.guild.roles.get(message.roleMentions[0])
-    : message.channel.guild.roles.find(
-        r => r.id === roleIDOrName || r.name.toLowerCase() === roleIDOrName.toLowerCase()
-      )
+    ? // If a role was mentioned use it
+      message.channel.guild.roles.get(message.roleMentions[0])
+    : // ELse if a role id or name was provided
+    roleIDOrName
+    ? // Check if its a valid role id
+      message.channel.guild.roles.get(roleIDOrName) ||
+      // Check for the role by its name
+      message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
+    : undefined
   if (!role) return message.channel.createMessage(language(`vip/roletoall:NEED_ROLE`))
 
   const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
@@ -60,7 +66,12 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
       await Gamer.helpers.utils.sleep(5)
       counter = 0
     }
-    member.addRole(role.id, REASON)
+    // Incase the role gets deleted during the loop
+    if (!member.guild.roles.has(role.id)) continue
+    // Increment the counter
+    counter++
+    // Need this await to make the loop async so that if a user deletes a role it will break in the check above
+    await member.addRole(role.id, REASON).catch(() => undefined)
 
     Gamer.amplitude.push({
       authorID: message.author.id,
@@ -73,5 +84,5 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
     })
   }
 
-  return message.channel.createMessage(language(`vip/vipregister:SUCCESS`, { mention: message.author.mention }))
+  return message.channel.createMessage(language(`vip/roletoall:SUCCESS`, { mention: message.author.mention }))
 })

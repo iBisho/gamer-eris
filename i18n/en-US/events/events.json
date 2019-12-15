@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "View, create, join and manage events.",
-  "EXTENDED": "**{{prefix}}events** ~ Lists all current events on the server.",
+  "EXTENDED": "**{{prefix}}events** ~ Lists all current events on the server. [Click Here To Learn More](https://gamer.netlify.com/lfg-events-feature)",
   "USAGE": "{{prefix}}events",
   "ALIASES": "{{prefix}}e",
   "INVALID_EVENT": "There was no event able to be found with the ID number you provided.",
@@ -11,5 +11,6 @@
   "STARTS_IN": "Event Starts In:",
   "REMIND_FOOTER": "Server: {{guildName}}",
   "SHOW_NONE": "Sorry, there are no members to display.",
-  "NEED_EVENT_ID": "I need an event ID to search for."
+  "NEED_EVENT_ID": "I need an event ID to search for.",
+  "NONE": "There were no events found on this server. Please use the **eventcreate** command to make a new event."
 }

@@ -1,7 +1,7 @@
 {
   "DESCRIPTION": "Gives information about the bot.",
   "EXTENDED": "$t(basic/ping:EXTENDED_LINE_1)\n$t(basic/ping:EXTENDED_LINE_2)",
-  "EXTENDED_LINE_1": "**{{prefix}}ping** ~ Shows important information like G4M3R's heartbeat (ping).",
+  "EXTENDED_LINE_1": "**{{prefix}}ping** ~ Shows important information like Gamer's heartbeat (ping).",
   "EXTENDED_LINE_2": "General Bot Stats : Shard | Discord Guilds | User Count",
   "USAGE": "{{prefix}}ping",
   "ALIASES": "{{prefix}}pong",

@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 export default new mongoose.Schema({
   // The action that was taken for this modlog
   action: String,
+  // The amount of time a user is punished for. Used for temporary timed mutes.
+  duration: Number,
   // The guild id where the modlog was created
   guildID: String,
   // The message id that created this modlog

@@ -1,13 +1,12 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, Role } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, Role, GroupChannel } from 'eris'
 
 export default new Command(`public`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-  let settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
@@ -22,15 +21,11 @@ export default new Command(`public`, async (message, args, context) => {
 
   const bot = message.channel.guild.members.get(Gamer.user.id)
   if (!bot) return
-  // Check if the bots role is high enough to manage the role
-  const botsRoles = bot.roles.sort(
-    (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
-  )
-  const [botsHighestRoleID] = botsRoles
-  const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
+
+  const botsHighestRole = Gamer.helpers.discord.highestRole(bot)
   if (!botsHighestRole) return
 
-  for (const roleNameOrID of args) {
+  for (const roleNameOrID of [...args, ...message.roleMentions]) {
     const role =
       message.channel.guild.roles.get(roleNameOrID) ||
       message.channel.guild.roles.find(
@@ -43,9 +38,9 @@ export default new Command(`public`, async (message, args, context) => {
     validRoles.add(role)
   }
 
-  if (!validRoles.size) return message.channel.createMessage(`roles/public:NO_VALID_ROLES`)
+  if (!validRoles.size) return message.channel.createMessage(language(`roles/public:NO_VALID_ROLES`))
 
-  if (!settings) settings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
+  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
   const roleIDs = [...validRoles].map(role => role.id)
   const roleNames = [...validRoles].map(role => role.name)
 

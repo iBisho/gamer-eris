@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Add a role to a roleset.",
+  "EXTENDED": "$t(roles/rolesetadd:EXTENDED_LINE_1)\n$t(roles/rolesetadd:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}rolesetadd [Name] [@Role | Role ID | Role Name]** ~ Adds a role to an existing roleset.",
+  "EXTENDED_LINE_2": "The roleset that you are trying to add the role to must already have been created with the {{prefix}}rolesetcreate command.",
+  "USAGE": "{{prefix}}rolesetadd [Name] [@Role | Role ID | Role Name]",
+  "ALIASES": "{{prefix}}rsa",
+  "INVALID_NAME": "No roleset was found with the name {{name}} on this server. To add a role to a roleset, you must  first create a roleset with the **rolesetcreate** command.",
+  "ADDED": "The role has been added to the roleset."
+}

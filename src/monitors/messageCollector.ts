@@ -7,7 +7,6 @@ export default class extends Monitor {
     const collector = Gamer.collectors.get(message.author.id)
     // This user has no collectors pending or the message is in a different channel
     if (!collector || message.channel.id !== collector.channelID) return
-
     // This message is a response to a collector
     const callback = collector.callback
 

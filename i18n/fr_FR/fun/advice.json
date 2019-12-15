@@ -1,7 +1,7 @@
 {
   "DESCRIPTION": "Recevoir une astuce aléatoire dans le chat.",
   "EXTENDED": "$t(fun/advice:EXTENDED_LINE_1)\n$t(fun/advice:EXTENDED_LINE_2)",
-  "EXTENDED_LINE_1": "**{{prefix}}advice** ~ G4M3R postera des astuces dans le chat.",
+  "EXTENDED_LINE_1": "**{{prefix}}advice** ~ Gamer affichera des astuces dans le chat.",
   "EXTENDED_LINE_2": "**{{prefix}}advice @membre** ~ Envoyer des astuces à un membre.",
   "USAGE": "{{prefix}}advice *[@Utilisateur | ID d'utilisateur]*",
   "ALIASES": "{{prefix}}ad"

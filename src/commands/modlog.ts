@@ -1,18 +1,16 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
-import { GamerModlog } from '../lib/types/gamer'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`modlog`, `ml`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -23,14 +21,27 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
   )
     return
 
-  const [userID] = args
+  const [userID, caseID] = args
+  if (userID && userID.toLowerCase() === `remove`) {
+    if (!caseID) return message.channel.createMessage(language(`moderation/modlog:NEED_CASE_ID`))
+    const modlogID = parseInt(caseID, 10)
+    if (!modlogID) return message.channel.createMessage(language(`moderation/modlog:INVALID_CASE_ID`, { id: caseID }))
+    const deleted = await Gamer.database.models.modlog.findOneAndDelete({
+      guildID: message.channel.guild.id,
+      modlogID: modlogID
+    })
+    return message.channel.createMessage(
+      language(deleted ? `moderation/modlog:REMOVED` : `moderation/modlog:INVALID_CASE_ID`, { id: modlogID })
+    )
+  }
+
   const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(userID)
   if (!user) return message.channel.createMessage(language(`moderation/modlog:NEED_USER`))
 
-  const modlogs = (await Gamer.database.models.modlog.find({
+  const modlogs = await Gamer.database.models.modlog.find({
     guildID: message.channel.guild.id,
     userID: user.id
-  })) as GamerModlog[]
+  })
   if (!modlogs.length)
     return message.channel.createMessage(language(`moderation/modlog:NO_LOGS`, { user: user.mention }))
   // Sort modlogs by latest modlog as first in the array

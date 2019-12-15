@@ -1,15 +1,12 @@
 import { Command } from 'yuuko'
-import { UserSettings } from '../lib/types/settings'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
-import UserDefaults from '../constants/settings/user'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { GamerMission } from '../lib/types/gamer'
 
 export default new Command([`profile`, `p`, `prof`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -24,9 +21,9 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
 
   const fileName = `profile.jpg`
 
-  const missionData = (await Gamer.database.models.mission.find({
-    userID: message.author.id
-  })) as GamerMission[]
+  const missionData = await Gamer.database.models.mission.find({
+    userID: member.id
+  })
 
   const embed = new GamerEmbed()
     .setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
@@ -34,11 +31,14 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
       Gamer.missions
         .map(mission => {
           const relevantMission = missionData.find(m => m.commandName === mission.commandName)
-          if (!relevantMission) return `0 / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
+          if (!relevantMission) return `0 / ${mission.amount} : ${language(mission.title)} **[${mission.reward}] XP**`
 
-          if (!relevantMission.completed)
-            return `${relevantMission.amount} / ${mission.amount} : ${mission.title} **[${mission.reward}] XP**`
-          return `${constants.emojis.greenTick}: ${mission.title} **[${mission.reward}] XP**`
+          if (relevantMission.amount < mission.amount)
+            return `${relevantMission.amount} / ${mission.amount} : ${language(mission.title)} **[${
+              mission.reward
+            }] XP**`
+
+          return `${constants.emojis.greenTick}: ${language(mission.title)} **[${mission.reward}] XP**`
         })
         .join('\n')
     )
@@ -47,17 +47,27 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
 
   const response = await message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
 
-  const userSettings =
-    ((await Gamer.database.models.user.findOne({
-      id: message.channel.guild.id
-    })) as UserSettings) || UserDefaults
+  const userSettings = await Gamer.database.models.user.findOne({
+    id: message.channel.guild.id
+  })
 
-  const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === userSettings.profile.backgroundID)
+  const backgroundID = userSettings?.profile.backgroundID || 1
+
+  const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === backgroundID)
 
   const isDefaultBackground = backgroundData && backgroundData.name === constants.profiles.defaultBackground
 
-  const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.discord, `reaction`)
-  if (isDefaultBackground && reaction) response.addReaction(reaction)
+  const hasPermission = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
+    `addReactions`,
+    `externalEmojis`,
+    `readMessageHistory`
+  ])
+
+  if (hasPermission) {
+    const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.discord, `reaction`)
+    if (message.channel.permissionsOf(Gamer.user.id).has('addReactions') && isDefaultBackground && reaction)
+      response.addReaction(reaction)
+  }
 
   return Gamer.helpers.levels.completeMission(message.member, `profile`, message.channel.guild.id)
 })

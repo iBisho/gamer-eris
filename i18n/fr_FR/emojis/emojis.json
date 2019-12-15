@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Affiche une liste de tous vos émojis sauvegardé dans la base de données.",
+	"EXTENDED": "**{{prefix}}emojis** ~ Affiche tous vos émojis.",
+	"USAGE": "{{prefix}}emojis",
+	"ALIASES": "{{prefix}}em",
+	"NONE": "Vous n'avez créé aucun emojis global personnalisé."
+}
+

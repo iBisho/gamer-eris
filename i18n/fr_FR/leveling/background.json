@@ -15,9 +15,8 @@
 	"PREVIEW_BASIC": "{{greenTick}} Oui\n{{redX}} Non",
 	"PREVIEW_VIP": "{{sunglasses}} Thème **sombre**\n{{flashlight}} Thème **clair**.",
 	"SAVED": "L'arrière-plan a bien été changé. Chargement de votre profil en cours...",
-	"VIP_THEME": "Désolé, mais le thème sombre est réservé aux VIP. Si vous souhaitez devenir VIP, veuillez booster notre serveur de support [](https://www.patreon.com/g4m3r).",
-	"VIP_BACKGROUND": "⭐ Cet arrière-plan est réservé aux VIP. Si vous souhaitez devenir VIP, rendez-vous sur notre page [Patreon](https://www.patreon.com/g4m3r).",
+	"VIP_THEME": "⭐ Désolé, le thème sombre est réservé aux VIP. Si vous voulez devenir VIP, rejoignez le serveur de gamer via la commande .invite et boostez le serveur.",
 	"UNLOCKABLE": "L'arrière-plan #{{id}} n'est pas débloquable avec cette devise.",
-	"NEED_MONEY": "Vous n'avez pas assez de Gamer Coins pour acheter cet arrière-plan. Cet arrière-plan coûte {{cost}} et vous n'avez que {{currency}} Gamer Coins. Vous avez donc besoin de {{needed}} Gamer Coins supplémentaire.",
+	"NEED_MONEY": "Vous n'avez pas assez de Gamer Coins pour acheter cet arrière-plan. Celui-ci coûte {{cost}} mais vous n'avez que {{currency}} Gamer Coins. Il vous manque donc {{needed}} Gamer Coins. ",
 	"BOUGHT": "Vous venez d'acheter l'arrière-plan #{{name}}. Vous pouvez maintenant utiliser la commande background pour l'équiper."
 }

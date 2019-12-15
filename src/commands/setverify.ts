@@ -1,30 +1,31 @@
 import { Command } from 'yuuko'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 
 export default new Command(`setverify`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-  let guildSettings = (await Gamer.database.models.guild.findOne({
+  let guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
-  if (!guildSettings) guildSettings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
   // If the user is not an admin cancel out
-  if (
-    !message.member ||
-    !message.member.permission.has('administrator') ||
-    (guildSettings.staff.adminRoleID && !message.member.roles.includes(guildSettings.staff.adminRoleID))
-  )
-    return
-
-  const [action] = args
+  if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
+  if (!guildSettings) guildSettings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
 
   const helpCommand = Gamer.commandForName('help')
+  if (!helpCommand) return
+
+  const [action, roleIDOrName] = args
+  if (!action) return helpCommand.execute(message, [`setverify`], context)
+
+  const role = roleIDOrName
+    ? message.channel.guild.roles.get(roleIDOrName) ||
+      message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
+    : undefined
 
   switch (action.toLowerCase()) {
     case 'enable':
@@ -57,11 +58,10 @@ export default new Command(`setverify`, async (message, args, context) => {
         )
       )
     case 'role':
-      const [roleID] = message.roleMentions
-      const role = message.channel.guild.roles.get(roleID)
       if (!role) return message.channel.createMessage(language(`settings/setverify:NEED_ROLE`))
 
-      guildSettings.verify.roleID = roleID
+      guildSettings.verify.roleID = role.id
+      guildSettings.save()
       return message.channel.createMessage(language(`settings/setverify:ROLE_SET`, { role: role.name }))
     case 'message':
       args.shift()
@@ -92,7 +92,13 @@ export default new Command(`setverify`, async (message, args, context) => {
       if (!bot.permission.has('manageRoles') || !bot.permission.has('manageChannels'))
         return message.channel.createMessage(language(`settings/setverify:MISSING_PERMS`))
 
-      return Gamer.helpers.scripts.createVerificationSystem(Gamer, language, message.channel.guild, guildSettings)
+      return Gamer.helpers.scripts.createVerificationSystem(message.channel.guild, guildSettings)
+    case 'autorole':
+      if (!role) return message.channel.createMessage(language(`settings/setverify:NEED_AUTOROLE`))
+
+      guildSettings.moderation.roleIDs.autorole = role.id
+      guildSettings.save()
+      return message.channel.createMessage(language(`settings/setverify:AUTOROLE_SET`, { role: role.name }))
   }
 
   await message.channel.createMessage(language(`settings/setverify:INVALID_USE`))

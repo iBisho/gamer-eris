@@ -1,17 +1,16 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, GroupChannel } from 'eris'
 import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventadd`, `eadd`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -24,13 +23,16 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
 
   const [number, ...roleIDsOrNames] = args
   const eventID = parseInt(number, 10)
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
 
+  if (!eventID) return helpCommand.execute(message, [`eventadd`], context)
   // Get the event from this server using the id provided
   const event = (await Gamer.database.models.event.findOne({
     id: eventID,
     guildID: message.channel.guild.id
   })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   message.channel.createMessage(language(`events/eventadd:PATIENCE`))
 
@@ -54,6 +56,8 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
       Gamer.helpers.events.joinEvent(event, member.id, language)
     }
   }
+
+  event.save()
 
   return message.channel.createMessage(language(`events/eventadd:ADDED`, { mention: message.author.mention }))
 })

@@ -1,19 +1,18 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`kick`, `k`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
   const botMember = message.channel.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -59,5 +58,5 @@ export default new Command([`kick`, `k`], async (message, args, context) => {
 
   Gamer.helpers.moderation.createModlog(message, guildSettings, language, user, `kick`, reason)
 
-  return message.channel.createMessage(language(`moderation/kick:SUCCESS`, { user: user.mention, reason }))
+  return message.channel.createMessage(language(`moderation/kick:SUCCESS`, { user: user.username, reason }))
 })

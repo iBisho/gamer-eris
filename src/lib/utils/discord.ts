@@ -13,7 +13,7 @@ export default class {
     return botOwners.includes(message.author.id) || botMods.includes(message.author.id)
   }
 
-  isModerator(message: Message, roleIDs: string[]) {
+  isModerator(message: Message, roleIDs: string[] = []) {
     return roleIDs.some(id => message.member && message.member.roles.includes(id))
   }
 
@@ -59,7 +59,7 @@ export default class {
   }
 
   checkPermissions(channel: AnyGuildChannel, userID: string, permissions: string[]) {
-    return !!permissions.some(permission => !channel.permissionsOf(userID).has(permission))
+    return !permissions.some(permission => !channel.permissionsOf(userID).has(permission))
   }
 
   idsToUserTag(ids: string[]) {

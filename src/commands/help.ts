@@ -1,8 +1,7 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 import Constants from '../constants/index'
 
 const categories = [
@@ -25,12 +24,13 @@ const categories = [
       `tickle`,
       `advice`,
       `wisdom`,
-      `urban`
+      `urban`,
+      `gif`
     ]
   },
   {
     name: `leveling`,
-    commands: [`background`, `boostme`, `daily`, `leaderboard`, `levelrole`, `profile`, `xp`, `xpreset`]
+    commands: [`background`, `boostme`, `daily`, `leaderboard`, `levelrole`, `profile`, `xp`, `xpreset`, `xpresetvoice`]
   },
   {
     name: `settings`,
@@ -44,12 +44,35 @@ const categories = [
       `setmodlogs`,
       `setstaff`,
       `setlanguage`,
-      `setprefix`
+      `setprefix`,
+      `setmail`,
+      `setcapture`,
+      `setlogs`,
+      `setmute`,
+      `setevents`
     ]
   },
-  { name: `utility`, commands: [`imgur`] },
-  { name: `feedback`, commands: [`bugs`, `idea`, `feedback`] },
-  { name: `roles`, commands: [`give`, `public`, `role`, `take`, `roleinfo`] },
+  { name: `utility`, commands: [`imgur`, `quote`] },
+  { name: `feedback`, commands: [`bugs`, `idea`] },
+  {
+    name: `roles`,
+    commands: [
+      `give`,
+      `public`,
+      `role`,
+      `take`,
+      `roleinfo`,
+      `reactionrolecreate`,
+      `reactionroledelete`,
+      `reactionroleadd`,
+      `reactionroleremove`,
+      `rolesetcreate`,
+      `rolesetdelete`,
+      `rolesetadd`,
+      `rolesetremove`,
+      `rolesets`
+    ]
+  },
   {
     name: `events`,
     commands: [
@@ -66,16 +89,27 @@ const categories = [
       `eventshow`
     ]
   },
-  { name: `moderation`, commands: [`purge`] }
+  {
+    name: `moderation`,
+    commands: [`purge`, `nick`, `ban`, `unban`, `kick`, `mute`, `unmute`, `warn`, `modlog`, `reason`]
+  },
+  { name: `mails`, commands: [`mail`, `label`] },
+  { name: `vip`, commands: [`vipregister`, `roletoall`, `export`] },
+  { name: `network`, commands: [`networkcreate`, `networkfollow`] },
+  { name: `gaming`, commands: [`twitch`, `capture`] },
+  { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`] },
+  { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] },
+  { name: `tags`, commands: [`tagcreate`, `tagdelete`, `tagshow`] },
+  { name: `shortcuts`, commands: [`shortcutcreate`, `shortcutremove`, `shortcuts`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
   // Gamers goal is to increase activity in a server not in a DM.
-  if (message.channel instanceof PrivateChannel)
-    return message.channel.createMessage(`Please use this command on a guild. Thank you!`)
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
+    return message.channel.createMessage(`Please use this command in a server. Thank you!`)
 
   const Gamer = context.client as GamerClient
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || 'en-US')
   if (!language) return
@@ -84,7 +118,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   const FEATURES = language(`basic/help:FEATURES`, { prefix })
   const VIPFEATURES = language(`basic/help:VIPFEATURES`, { prefix })
   const CHECKWIKI = language(`basic/help:CHECK_WIKI`)
-  const LINKSVALUE = language(`basic/help:LINKS_VALUE`, { patreon: Constants.emojis.patreon })
+  const LINKSVALUE = language(`basic/help:LINKS_VALUE`)
 
   if (!args.length) {
     // Create the main help embed
@@ -113,16 +147,18 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
 
   const command = Gamer.commandForName(commandName)
   if (!command) return message.channel.createMessage(language(`basic/help:UNKNOWN`, { name: commandName }))
-  const category = categories.find(c => c.commands.includes(command.name.toLowerCase())) || { name: `basic` }
 
-  const EXTENDED = language(`${category.name}/${command.name}:EXTENDED`, { prefix })
-  const USAGE = language(`${category.name}/${command.name}:USAGE`, { prefix })
-  const ALIASES = language(`${category.name}/${command.name}:ALIASES`, { prefix })
+  const name = command.names[0].toLowerCase()
+  const category = categories.find(c => c.commands.includes(name)) || { name: `basic` }
+
+  const EXTENDED = language(`${category.name}/${name}:EXTENDED`, { prefix })
+  const USAGE = language(`${category.name}/${name}:USAGE`, { prefix })
+  const ALIASES = language(`${category.name}/${name}:ALIASES`, { prefix })
   const NO_EXTENDED = language('basic/help:NO_EXTENDED')
 
   const embed = new GamerEmbed()
     .setAuthor(
-      language('basic/help:AUTHOR', { commandName: command.name }),
+      language('basic/help:AUTHOR', { commandName: name }),
       Gamer.user.avatarURL,
       Constants.general.gamerServerInvite
     )

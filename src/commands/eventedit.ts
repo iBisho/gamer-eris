@@ -1,17 +1,15 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
-import { GamerEvent } from '../lib/types/gamer'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`eventedit`, `ee`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -22,40 +20,51 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   )
     return
 
-  const [number, type, value] = args
+  const [number, type, ...fullValue] = args
   const eventID = parseInt(number, 10)
-  if (!eventID || !type || !value) return
-
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
+  if (!eventID || !type) return helpCommand.execute(message, [`eventedit`], context)
+
+  // toggles dont need a value
+  if (!fullValue.length && ![`repeat`, `remove`, `dm`, `dms`, `showattendees`].includes(type.toLowerCase())) return
+  const [value] = fullValue
+
   // Get the event from this server using the id provided
-  const event = (await Gamer.database.models.event.findOne({
+  const event = await Gamer.database.models.event.findOne({
     id: eventID,
     guildID: message.channel.guild.id
-  })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  })
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
+
+  const roleID = message.roleMentions.length ? message.roleMentions[0] : value
 
   let response = `events/eventedit:TITLE_UPDATED`
   switch (type.toLowerCase()) {
     case `title`:
-      event.title = value
+    case `1`:
+      event.title = fullValue.join(' ')
+      break
+    case `description`:
+    case `2`:
+      event.description = fullValue.join(' ')
+      response = `events/eventedit:DESCRIPTION_UPDATED`
       break
     case `platform`:
-      event.platform = value
+    case `5`:
+      event.platform = fullValue.join(' ')
       response = `events/eventedit:PLATFORM_UPDATED`
       break
     case `game`:
-      event.game = value
+    case `6`:
+      event.game = fullValue.join(' ')
       response = `events/eventedit:GAME_UPDATED`
       break
     case `activity`:
-      event.activity = value
+    case `7`:
+      event.activity = fullValue.join(' ')
       response = `events/eventedit:ACTIVITY_UPDATED`
-      break
-    case `description`:
-      event.description = value
-      response = `events/eventedit:DESCRIPTION_UPDATED`
       break
     case `tags`:
       const tagName = value.toLowerCase()
@@ -70,6 +79,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       response = `events/eventedit:BACKGROUND_UPDATED`
       break
     case `attendees`:
+    case `4`:
       const maxAttendees = parseInt(value, 10)
       if (!maxAttendees) return
       event.maxAttendees = maxAttendees
@@ -85,8 +95,13 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     case `dm`:
     case `dms`:
+    case `8`:
       event.dmReminders = !event.dmReminders
       response = `events/eventedit:DM_UPDATED`
+      break
+    case `showattendees`:
+      event.showAttendees = !event.showAttendees
+      response = `events/eventedit:SHOWATTENDEES_UPDATED`
       break
     case `reminder`:
       const reminder = Gamer.helpers.transform.stringToMilliseconds(value)
@@ -104,34 +119,30 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       response = `events/eventedit:FREQUENCY_UPDATED`
       break
     case `duration`:
+    case `3`:
       const duration = Gamer.helpers.transform.stringToMilliseconds(value)
       if (!duration) return helpCommand.execute(message, [`eventedit`], context)
 
       event.duration = duration
+      event.end = event.start + event.duration
       response = `events/eventedit:DURATION_UPDATED`
       break
     case `start`:
+    case `11`:
       const start = Gamer.helpers.transform.stringToMilliseconds(value)
-      if (!start) return helpCommand.execute(message, [`eventedit`], context)
+      const startTime = new Date(fullValue.join(' ')).getTime()
 
-      event.start = start
+      if (!start && !startTime) return helpCommand.execute(message, [`eventedit`], context)
+
+      event.start = start ? Date.now() + start : startTime
+      event.end = event.start + event.duration
       response = `events/eventedit:START_UPDATED`
       break
-    case `alertrole`:
-      const roleToAlert =
-        message.channel.guild.roles.get(value) ||
-        message.channel.guild.roles.find(r => r.name.toLowerCase() === value.toLowerCase())
-      if (!roleToAlert) return helpCommand.execute(message, [`eventedit`], context)
-
-      if (event.alertRoleIDs.includes(roleToAlert.id))
-        event.alertRoleIDs = event.alertRoleIDs.filter(id => id !== roleToAlert.id)
-      else event.alertRoleIDs.push(roleToAlert.id)
-      response = `events/eventedit:ALERTROLE_UPDATED`
-      break
     case `allowedrole`:
+    case `9`:
       const allowedRole =
-        message.channel.guild.roles.get(value) ||
-        message.channel.guild.roles.find(r => r.name.toLowerCase() === value.toLowerCase())
+        message.channel.guild.roles.get(roleID) ||
+        message.channel.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
       if (!allowedRole) return helpCommand.execute(message, [`eventedit`], context)
 
       if (event.allowedRoleIDs.includes(allowedRole.id))
@@ -139,13 +150,22 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       else event.allowedRoleIDs.push(allowedRole.id)
       response = `events/eventedit:ALLOWEDROLE_UPDATED`
       break
+    case `alertrole`:
+    case `10`:
+      const roleToAlert =
+        message.channel.guild.roles.get(roleID) ||
+        message.channel.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
+      if (!roleToAlert) return helpCommand.execute(message, [`eventedit`], context)
+
+      if (event.alertRoleIDs.includes(roleToAlert.id))
+        event.alertRoleIDs = event.alertRoleIDs.filter(id => id !== roleToAlert.id)
+      else event.alertRoleIDs.push(roleToAlert.id)
+      response = `events/eventedit:ALERTROLE_UPDATED`
+      break
+
     case `template`:
       event.templateName = value
       response = `events/eventedit:TEMPLATE_UPDATED`
-      break
-    case `showattendees`:
-      event.showAttendees = !event.showAttendees
-      response = `events/eventedit:SHOWATTENDEES_UPDATED`
       break
     default:
       // If they used the command wrong show them the help

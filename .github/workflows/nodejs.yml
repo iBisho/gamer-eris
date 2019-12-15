@@ -1,27 +1,52 @@
-name: Node CI
+name: Lint & Deployment
 
 on: [push]
 
 jobs:
-  build:
-
+  lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    env:
+      CI: true
 
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: echo ${{github.ref}}
+      - name: Install dependencies
+        run: npm install
+      - name: Setup project
+        run: cp config.ts.example config.ts
+      - name: Run tests
+        run: npm run test
+      - name: Run Lint
+        run: npm run lint
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    needs: lint
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [12.x]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install, tsc and lint
-      run: |
-        npm i
-        cp config.ts.example config.ts
-        npm run test
-        npm run lint
-      env:
-        CI: true
+      - uses: actions/checkout@v1
+      - uses: webfactory/ssh-agent@v0.1.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Deploy Master To Beta
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER}}@${{ secrets.SSH_HOST }} << EOF
+            cd gamer-eris
+            git pull
+            npm ci
+            npm run build
+            pm2 restart gamer-beta
+          EOF
+        env:
+          CI: true

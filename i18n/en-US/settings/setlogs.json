@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "Set the logs feature on your server.",
+  "EXTENDED": "$t(settings/setlogs:EXTENDED_LINE_1)",
+  "EXTENDED_LINE_1": "**{{prefix}}setlogs setup** ~ Setups the entire serverlog feature on your server.",
+  "USAGE": "{{prefix}}setlogs [setup]",
+  "ALIASES": "Setlogs does not have any aliases",
+  "SETUP": "The server logs channels have been set up and will now log everything for you. The public logs channel is still private and all default logs have been set up to log publically in this channel. Once you feel it is ready, feel free to make this channel readable by everyone to show how active your server is.",
+  "REASON": "Channel created for setlogs setup usage.",
+  "CATEGORY_NAME": "Server-Logs",
+  "ROLE_CHANNEL_NAME": "role-logs",
+  "MEMBER_CHANNEL_NAME": "member-logs",
+  "MESSAGE_CHANNEL_NAME": "message-logs",
+  "OTHER_CHANNEL_NAME": "other-logs",
+  "CHANNEL_CHANNEL_NAME": "channel-logs",
+  "PUBLIC_CHANNEL_NAME": "public-logs",
+  "MODLOG_CHANNEL_NAME": "mod-logs"
+}

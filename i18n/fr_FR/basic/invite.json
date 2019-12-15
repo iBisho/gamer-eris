@@ -1,9 +1,9 @@
 {
-  "DESCRIPTION": "Une façon facile de partager le lien du tableau de bord de G4M3R.",
+  "DESCRIPTION": "Un moyen facile de partager le lien du tableau de bord de Gamer !",
   "EXTENDED": "**{{prefix}}invite** ~ Affiche le lien d'invitation pour le bot, pour l'inviter sur votre serveur et affiche aussi le lien d'invitation pour le serveur de Support.",
   "USAGE": "{{prefix}}invite",
   "ALIASES": "{{prefix}}join",
-  "EMBED_DESCRIPTION": "Visitez notre sur sur **https://gamer.netlify.com** pour ajouter le bot à votre serveur !",
+  "EMBED_DESCRIPTION": "Visitez notre site web **https://gamer.netlify.com** pour ajouter le bot sur votre serveur!",
   "LINKS": "$t(basic/invite:LINKS_LINE_1)\n$t(basic/invite:LINKS_LINE_2)",
   "LINKS_LINE_1": "**»** <:g4m3rwhite:443416083874054145> **Inviter le bot**: [Cliquez ici pour inviter le bot]({{invite}})",
   "LINKS_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Besoin d'aide ?**: [Serveur de Support](https://discord.gg/J4NqJ72)"

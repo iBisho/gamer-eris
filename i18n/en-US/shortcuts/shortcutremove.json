@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Remove a shortcut from your server.",
+	"EXTENDED": "**{{prefix}}shortcutremove [Shortcut Name]** ~ Removes the shortcut from your server.",
+	"USAGE": "{{prefix}}shortcutremove [Shortcut Name]",
+	"ALIASES": "{{prefix}}scr",
+	"INVALID_NAME": "There was no shortcut found on this server with the name: {{name}}",
+	"DELETED": "The shortcut has been removed from the server."
+}

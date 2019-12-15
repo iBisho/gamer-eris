@@ -1,9 +1,18 @@
-import { Message, PrivateChannel, Guild, CategoryChannel, Constants, Overwrite, TextChannel } from 'eris'
+import {
+  Message,
+  PrivateChannel,
+  Guild,
+  CategoryChannel,
+  Constants,
+  Overwrite,
+  TextChannel,
+  User,
+  GroupChannel
+} from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import { GamerMail, GamerMailLabel, GamerTag } from '../types/gamer'
+import { GamerMail } from '../types/gamer'
 import GamerEmbed from '../structures/GamerEmbed'
-import { GamerEmoji } from '../types/database'
 
 const channelNameRegex = /^-+|[^\w-]|-+$/g
 
@@ -16,11 +25,11 @@ export default class {
 
   async handleDM(message: Message, content: string) {
     // DM will be in english always
-    const english = this.Gamer.i18n.get(`en-US`)
-    if (!english) return
-    const mails = (await this.Gamer.database.models.mail.find({ userID: message.author.id })) as GamerMail[]
+    const language = this.Gamer.i18n.get(`en-US`)
+    if (!language) return
+    const mails = await this.Gamer.database.models.mail.find({ userID: message.author.id })
     // If the user has no mails and hes trying to create a mail it needs to error because mails must be created within a guild.
-    if (!mails.length) return message.channel.createMessage(english(`mails/mail:NEW_MAIL_IN_DM_ERROR`))
+    if (!mails.length) return message.channel.createMessage(language(`mails/mail:NEW_MAIL_IN_DM_ERROR`))
 
     let [mail] = mails
     // A user can have multiple mails open in difference servers
@@ -35,7 +44,7 @@ export default class {
             return `**[${index}]** ${guild ? guild.name : mail.guildID}`
           })
           .join('\n')
-        return message.channel.createMessage(english(`mails/mail:NEED_MAIL_ID`, { mails: mailData }))
+        return message.channel.createMessage(language(`mails/mail:NEED_MAIL_ID`, { mails: mailData }))
       }
       // User provided some id number
       mail = mails[id]
@@ -46,21 +55,18 @@ export default class {
     const guild = this.Gamer.guilds.get(mail.guildID)
     if (!guild) return
 
-    const guildSettings = (await this.Gamer.database.models.guild.findOne({ id: guild.id })) as GuildSettings | null
-
-    const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
-    if (!language) return
+    const guildSettings = await this.Gamer.database.models.guild.findOne({ id: guild.id })
 
     this.sendToMods(message, guild, guildSettings, content, mail)
     return message.channel.createMessage(language(`mails/mail:REPLY_SENT_TO_MODS`))
   }
 
-  async handleSupportChannel(message: Message, content: string, guildSettings: GuildSettings | null) {
-    if (message.channel instanceof PrivateChannel) return
-    const mail = (await this.Gamer.database.models.mail.findOne({
+  async handleSupportChannel(message: Message, content: string, guildSettings: GuildSettings) {
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    const mail = await this.Gamer.database.models.mail.findOne({
       guildID: message.channel.guild.id,
       userID: message.author.id
-    })) as GamerMail | null
+    })
     // If the user doesn't have an open mail we need to create one
     if (!mail) return this.createMail(message, content, guildSettings)
 
@@ -69,11 +75,12 @@ export default class {
     // User does have an open mail
     this.sendToMods(message, message.channel.guild, guildSettings, content, mail)
     const response = await message.channel.createMessage(language(`mails/mail:REPLY_SENT_TO_MODS`))
-    return setTimeout(() => response.delete(), 10000)
+    return setTimeout(() => response.delete().catch(() => undefined), 10000)
   }
 
-  async createMail(message: Message, content: string, guildSettings: GuildSettings | null) {
-    if (message.channel instanceof PrivateChannel) return
+  async createMail(message: Message, content: string, guildSettings: GuildSettings | null, user?: User) {
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    const mailUser = user || message.author
 
     const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
     if (!language) return
@@ -84,17 +91,21 @@ export default class {
 
     if (!guildSettings?.mails.enabled) return message.channel.createMessage(language(`mails/mail:DISABLED`))
 
-    const usernameToChannelName = message.author.username.replace(channelNameRegex, ``).toLowerCase()
-    const channelName = `${usernameToChannelName}${message.author.discriminator}`
+    const usernameToChannelName = mailUser.username.replace(channelNameRegex, ``).toLowerCase()
+    const channelName = `${usernameToChannelName}${mailUser.discriminator}`
 
     const [firstWord] = content.split(' ')
-    const label = (await this.Gamer.database.models.label.findOne({
+    const label = await this.Gamer.database.models.label.findOne({
       guildID: message.channel.guild.id,
       name: firstWord.toLowerCase()
-    })) as GamerMailLabel | null
+    })
 
-    const categoryID = label ? label.categoryID : guildSettings.mails.categoryID
-    let category = categoryID ? message.channel.guild.channels.get(categoryID) : undefined
+    let category = label
+      ? message.channel.guild.channels.get(label.categoryID)
+      : guildSettings.mails.categoryID
+      ? message.channel.guild.channels.get(guildSettings.mails.categoryID)
+      : undefined
+
     // create a category if there is no category saved or the saved one is not existing anymore
 
     if (!category || !(category instanceof CategoryChannel)) {
@@ -113,18 +124,17 @@ export default class {
       })
 
       guildSettings.mails.categoryID = category.id
+      guildSettings.save()
     }
 
     // Creates a text channel by default and we move it to the mail category
-    const channel = await message.channel.guild.createChannel(channelName, 0, {
-      parentID: category.id
-    })
+    const channel = await message.channel.guild.createChannel(channelName, 0, { parentID: category.id })
 
     // if channel could not be created send an embed to the user so he can annoy the mods / admins
     if (!channel) return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
 
     this.Gamer.amplitude.push({
-      authorID: message.author.id,
+      authorID: mailUser.id,
       channelID: channel.id,
       guildID: message.channel.guild.id,
       messageID: message.id,
@@ -134,9 +144,9 @@ export default class {
 
     const topic = content.substring(0, content.length > 50 ? 50 : content.length)
 
-    new this.Gamer.database.models.mail({
+    await this.Gamer.database.models.mail.create({
       id: channel.id,
-      userID: message.author.id,
+      userID: mailUser.id,
       guildID: message.channel.guild.id,
       topic
     })
@@ -146,15 +156,15 @@ export default class {
     const embed = new GamerEmbed()
       .setAuthor(
         language(`mails/mail:SENT_BY`, {
-          user: message.member?.nick || message.author.username,
+          user: message.member?.nick || mailUser.username,
           channel: message.channel.name
         }),
-        message.author.avatarURL
+        mailUser.avatarURL
       )
       .setDescription(content)
       .addField(language(`mails/mail:SEND_REPLY`), language(`mails/mail:SEND_REPLY_INFO`, { prefix }), true)
       .addField(language(`mails/mail:CLOSE`), language(`mails/mail:CLOSE_INFO`, { prefix }), true)
-      .setFooter(language(`mails/mail:USERID`, { user: message.author.id }))
+      .setFooter(language(`mails/mail:USERID`, { id: mailUser.id }))
       .setTimestamp()
     if (message.attachments.length) embed.setImage(message.attachments[0].url)
 
@@ -180,6 +190,8 @@ export default class {
       if (!role) continue
       role.edit({ mentionable: false })
     }
+
+    if (!user) message.delete().catch(() => undefined)
 
     const response = await message.channel.createMessage(language(`mails/mail:CREATED`))
     return setTimeout(() => response.delete(), 10000)
@@ -240,13 +252,13 @@ export default class {
   }
 
   async replyToMail(message: Message, content: string, guildSettings: GuildSettings | null, mail: GamerMail) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-    const tag = (await this.Gamer.database.models.tag.findOne({
+    const tag = await this.Gamer.database.models.tag.findOne({
       guildID: message.channel.guild.id,
       mailOnly: true,
       name: content.toLowerCase()
-    })) as GamerTag | null
+    })
 
     const user = this.Gamer.users.get(mail.userID)
     if (!user) return
@@ -257,7 +269,7 @@ export default class {
     // If the moderator is trying to send a tag
     if (tag) {
       // Fetch all emojis to transform variables
-      const emojis = (await this.Gamer.database.models.emoji.find()) as GamerEmoji[]
+      const emojis = await this.Gamer.database.models.emoji.find()
       // Transform the tag string
       const transformed = this.Gamer.helpers.transform.variables(
         tag.embedCode,
@@ -310,7 +322,7 @@ export default class {
 
     try {
       const dmChannel = await user.getDMChannel()
-      dmChannel.createMessage({ embed: embed.code })
+      await dmChannel.createMessage({ embed: embed.code })
     } catch (error) {
       return message.channel.createMessage(language(`mails/mail:DM_FAILED`))
     }
@@ -318,11 +330,14 @@ export default class {
     // Reset the embeds fields
     embed.code.fields = []
 
+    message.delete().catch(() => undefined)
+
     return message.channel.createMessage({ embed: embed.code })
   }
 
   async close(message: Message, content: string, guildSettings: GuildSettings | null, mail: GamerMail) {
-    if (message.channel instanceof PrivateChannel) return
+    // If an empty string is passed cancel the command
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !content) return
 
     const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
     if (!language) return
@@ -333,67 +348,58 @@ export default class {
 
     const prefix = guildSettings?.prefix || this.Gamer.prefix
 
-    const tag = (await this.Gamer.database.models.tag.findOne({
+    const tag = await this.Gamer.database.models.tag.findOne({
       guildID: message.channel.guild.id,
       mailOnly: true,
       name: content.toLowerCase()
-    })) as GamerTag | null
+    })
 
     const user = this.Gamer.users.get(mail.userID)
     if (!user) return
 
     // Delete the mail from the database
-    this.Gamer.database.models.mail.deleteOne({ guildID: message.channel.guild.id, userID: mail.userID })
+    await this.Gamer.database.models.mail.deleteOne({ guildID: message.channel.guild.id, userID: mail.userID })
 
-    // If the moderator is trying to send a tag
-    if (tag) {
-      // Fetch all emojis to transform variables
-      const emojis = (await this.Gamer.database.models.emoji.find()) as GamerEmoji[]
-      // Transform the tag string
-      const transformed = this.Gamer.helpers.transform.variables(
-        tag.embedCode,
-        user,
-        message.channel.guild,
-        message.author,
-        emojis
+    const dmEmbed = new GamerEmbed()
+      .setAuthor(
+        language(`mails/mail:CLOSED_BY`, {
+          user: message.member?.nick || message.author.username,
+          guild: message.channel.guild.name
+        }),
+        message.author.avatarURL
       )
+      .setDescription(content)
+      .addField(language(`mails/mail:CLOSED`), language(`mails/mail:CLOSED_INFO`, { prefix }))
+      .setTimestamp()
 
-      let success = false
-      try {
+    try {
+      // Get the user dm and send the embed
+      const dmChannel = await user.getDMChannel()
+      // If the moderator is trying to send a tag
+      if (tag) {
+        // Fetch all emojis to transform variables
+        const emojis = await this.Gamer.database.models.emoji.find()
+        // Transform the tag string
+        const transformed = this.Gamer.helpers.transform.variables(
+          tag.embedCode,
+          user,
+          message.channel.guild,
+          message.author,
+          emojis
+        )
         // Convert the string to JSON
         const embed = JSON.parse(transformed)
-        // Get the user dm and send the embed
-        const dmChannel = await user.getDMChannel()
         await dmChannel.createMessage({ content: embed.plaintext, embed: embed })
-        // Tell the user who sent them the message above because the tag might not be clear and that the mail is closed
-        const dmEmbed = new GamerEmbed()
-          .setAuthor(
-            language(`mails/mail:CLOSED_BY`, {
-              user: message.member?.nick || message.author.username,
-              guild: message.channel.guild.name
-            }),
-            message.author.avatarURL
-          )
-          .setDescription(content)
-          .addField(language(`mails/mail:CLOSED`), language(`mails/mail:CLOSED_INFO`, { prefix }))
-          .setTimestamp()
-
-        dmChannel.createMessage({ embed: dmEmbed.code })
-        // Tell the mod the message was sent
-        message.channel.createMessage(language(`mails/mail:TAG_SENT`, { name: tag.name }))
-        // Show the tag sent to the mods
-        message.channel.createMessage({ content: embed.plaintext, embed: embed })
-        success = true
-      } catch (error) {
-        // Something went wrong somewhere so show it failed
-        return message.channel.createMessage(language(`mails/mail:DM_FAILED`, { name: tag.name }))
       }
+      // Alerts the user that mail closed
+      // If the tag was sent still send this because it tells the user who sent them the message above
+      // because the tag might not be clear and that the mail is closed
+      await dmChannel.createMessage({ embed: dmEmbed.code })
+    } catch {}
 
-      // Some error happened so cancel out
-      if (!success) return
-    }
-
-    message.channel.delete(language(`mails/mail:CHANNEL_DELETE_REASON`, { user: message.author.username }))
+    message.channel.delete(
+      language(`mails/mail:CHANNEL_DELETE_REASON`, { user: encodeURIComponent(message.author.username) })
+    )
 
     if (!guildSettings?.moderation.logs.modlogsChannelID) return
 

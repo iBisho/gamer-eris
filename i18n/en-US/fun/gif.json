@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Send a random gif by providing a category.",
+  "EXTENDED": "$t(fun/gif:EXTENDED_LINE_1)\n$t(fun/gif:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "If the built-in gif commands are not enough, you can use this command to search for any sort of gif.",
+  "EXTENDED_LINE_2": "**{{prefix}}gif [Topic]** ~ Searches for a random gif related to the topic you provided.",
+  "USAGE": "{{prefix}}gif [Topic]",
+  "ALIASES": "Gif does not have any aliases."
+}

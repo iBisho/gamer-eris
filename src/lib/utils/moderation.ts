@@ -1,9 +1,8 @@
-import { Message, User, PrivateChannel, TextChannel } from 'eris'
+import { Message, User, PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
-import { MemberSettings, GuildSettings } from '../types/settings'
+import { GuildSettings } from '../types/settings'
 import { GamerModlog } from '../types/gamer'
 import GamerEmbed from '../structures/GamerEmbed'
-import constants from '../../constants'
 import { modlogTypes } from '../types/enums/moderation'
 import { TFunction } from 'i18next'
 
@@ -23,27 +22,27 @@ export default class {
     reason: string,
     duration?: number
   ) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const member = message.channel.guild.members.get(user.id)
     if (member) {
-      const memberSettings = (await this.Gamer.database.models.member.findOne({
+      const memberSettings = await this.Gamer.database.models.member.findOne({
         memberID: user.id
-      })) as MemberSettings | null
+      })
       if (memberSettings) {
         const currentXP = memberSettings.leveling.xp
         switch (action) {
           case `kick`: // Remove 50% when kicked
-            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, reason, Math.floor(currentXP / 2))
+            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, Math.floor(currentXP / 2))
             break
           case `warn`:
-            this.Gamer.helpers.levels.removeXP(member, reason, currentXP > 25 ? 25 : currentXP)
+            this.Gamer.helpers.levels.removeXP(member, currentXP > 25 ? 25 : currentXP)
             break
           case `mute`:
-            this.Gamer.helpers.levels.removeXP(member, reason, currentXP > 100 ? 100 : currentXP)
+            this.Gamer.helpers.levels.removeXP(member, currentXP > 100 ? 100 : currentXP)
             break
           case `ban`:
-            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, reason, currentXP)
+            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, currentXP)
             break
           default:
         }
@@ -54,23 +53,26 @@ export default class {
     if (!guildSettings?.moderation.logs.modlogsChannelID) return 0
 
     // Generate a modlogid
-    const modlogs = (await this.Gamer.database.models.modlog.find({
+    const modlogs = await this.Gamer.database.models.modlog.find({
       guildID: message.channel.guild.id
-    })) as GamerModlog[]
+    })
     const modlogID = this.createNewID(modlogs)
 
-    const payload = new this.Gamer.database.models.modlog({
+    const payload = await this.Gamer.database.models.modlog.create({
       action,
       guildID: message.channel.guild.id,
       modID: message.author.id,
       modlogID,
       messageID: undefined,
-      duration,
       reason,
       timestamp: message.timestamp,
-      userID: user.id,
-      needsUnmute: duration && action === `mute`
-    }) as GamerModlog
+      userID: user.id
+    })
+
+    if (action === `mute` && duration) {
+      payload.duration = duration
+      payload.needsUnmute = true
+    }
 
     const embed = this.createEmbed(message, user, payload, language)
 
@@ -140,26 +142,29 @@ export default class {
         break
     }
 
-    const duration = logData.duration ? ` ${constants.emojis.hourglass} [${logData.duration}]` : ``
-    const author = `${this.Gamer.helpers.transform.toTitleCase(logData.action)} ${duration}`
-
-    return new GamerEmbed()
-      .setAuthor(author, user.avatarURL)
-      .setColor(color)
-      .setDescription(
-        [
-          `**${language(`common:MODERATOR`)}** ${message.author.username || ``} *(${message.author.id})*`,
-          `**${language(`moderation/modlog:MEMBER`)}** ${user.username || ``} *(${user.id})*`,
-          `**${language(`common:REASON`)}** ${logData.reason}`
-        ].join(`\n`)
+    const description = [
+      `**${language(`common:MODERATOR`)}** ${message.author.username || ``} *(${message.author.id})*`,
+      `**${language(`moderation/modlog:MEMBER`)}** ${user.username || ``} *(${user.id})*`,
+      `**${language(`common:REASON`)}** ${logData.reason}`
+    ]
+    if (logData.duration) {
+      description.push(
+        `**${language(`moderation/modlog:DURATION`)}** ${this.Gamer.helpers.transform.humanizeMilliseconds(
+          logData.duration
+        )}`
       )
+    }
+    return new GamerEmbed()
+      .setAuthor(this.Gamer.helpers.transform.toTitleCase(logData.action), user.avatarURL)
+      .setColor(color)
+      .setDescription(description.join(`\n`))
       .setThumbnail(image)
       .setFooter(language(`moderation/modlog:CASE`, { id: logData.modlogID }))
       .setTimestamp()
   }
 
   async processMutes() {
-    const mutedLogs = (await this.Gamer.database.models.modlog.find({ needsUnmute: true })) as GamerModlog[]
+    const mutedLogs = await this.Gamer.database.models.modlog.find({ needsUnmute: true })
 
     const now = Date.now()
     for (const log of mutedLogs) {
@@ -167,13 +172,26 @@ export default class {
       // If the time has not completed yet skip
       if (now < log.timestamp + log.duration) continue
       // Get the guild settings to get the mute role id
-      const guildSettings = (await this.Gamer.database.models.guild.findOne({
-        id: log.guildID
-      })) as GuildSettings | null
+      const guildSettings = await this.Gamer.database.models.guild.findOne({ id: log.guildID })
       // If there is no guildsettings or no role id skip
       if (!guildSettings?.moderation.roleIDs.mute) continue
+
+      const guild = this.Gamer.guilds.get(log.guildID)
+      if (!guild) continue
+
+      const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+      if (!language) continue
+
+      const member = guild.members.get(log.userID)
+      if (!member) continue
+
       // Since the time has fully elapsed we need to remove the role on the user
-      this.Gamer.removeGuildMemberRole(log.guildID, log.userID, guildSettings?.moderation.roleIDs.mute)
+      this.Gamer.removeGuildMemberRole(
+        log.guildID,
+        log.userID,
+        guildSettings.moderation.roleIDs.mute,
+        language(`moderation/unmute:TASK_REASON`)
+      )
       // Label this log as unmuted so we don't need to fetch it next time
       log.needsUnmute = false
       log.save()

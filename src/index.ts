@@ -1,10 +1,19 @@
 import config from '../config'
 import GamerClient from './lib/structures/GamerClient'
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import { Canvas } from 'canvas-constructor'
 import { join } from 'path'
 import GamerEmbed from './lib/structures/GamerEmbed'
 import constants from './constants'
+import HooksServices from './services/hooks'
+
+import TwitchService from './services/twitch/index'
+
+// Initiate hooks service
+HooksServices(config.hooks.port)
+
+// Initiate twitch service
+TwitchService()
 
 // Register the assets
 const rootFolder = join(__dirname, `..`, `..`)
@@ -38,9 +47,9 @@ const Gamer = new GamerClient({
 })
 
 Gamer.globalCommandRequirements = {
-  async custom(message: Message) {
+  async custom(message, _args, context) {
     // DM should have necessary perms already
-    if (message.channel instanceof PrivateChannel) return true
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return true
 
     // Check if have send messages perms. Check before fetching guild data to potentially save a fetch
     const botPerms = message.channel.permissionsOf(Gamer.user.id)
@@ -55,6 +64,24 @@ Gamer.globalCommandRequirements = {
       return false
     }
 
+    // If the user is using commands within 2 seconds ignore it
+    if (Gamer.slowmode.some(user => user.id === message.author.id)) {
+      // Cleans up spam command messages from users
+      if (botPerms.has('manageMessages')) message.delete().catch(() => null)
+      return false
+    }
+
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    if (!guildSettings) return true
+
+    // If it is the support channel and NOT a server admin do not allow command
+    if (
+      message.channel.id === guildSettings.mails.supportChannelID &&
+      context.commandName !== 'mail' &&
+      !Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)
+    )
+      return false
+
     return true
   }
 }
@@ -66,7 +93,7 @@ Gamer.addCommandDir(`${__dirname}/commands`)
 
 Gamer.prefixes((message: Message) => {
   // If in DM use the default prefix
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   // If in a server who has not customized their prefix, use the default prefix
   const prefix = Gamer.guildPrefixes.get(message.channel.guild.id)
   if (!prefix) return
@@ -79,14 +106,36 @@ for (const [name, event] of Gamer.events) Gamer.on(name, event.execute.bind(even
 
 process.on('unhandledRejection', error => {
   // Don't send errors for non production bots
-  if (Gamer.user.id !== constants.general.gamerID) return console.error(error)
+  // Check !Gamer incase the errors are before bots ready
+  if (!Gamer || Gamer.user.id !== constants.general.gamerID) return console.error(error)
   // An unhandled error occurred on the bot in production
   console.error(error || `An unhandled rejection error occurred but error was null or undefined`)
 
+  if (!error) return
+
   const embed = new GamerEmbed()
-    .setDescription(['```js', error, '```'].join(`\n`))
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    .setDescription(['```js', error.stack, '```'].join(`\n`))
     .setTimestamp()
     .setFooter('Unhandled Rejection Error Occurred')
+  // Send error to the log channel on the gamerbot server
+  Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
+})
+
+process.on('uncaughtException', error => {
+  // Don't send errors for non production bots
+  // Check !Gamer incase the errors are before bots ready
+  if (!Gamer || Gamer.user.id !== constants.general.gamerID) return console.error(error)
+  // An unhandled error occurred on the bot in production
+  console.error(error || `An uncaughtException error occurred but error was null or undefined`)
+
+  if (!error) return
+
+  const embed = new GamerEmbed()
+    .setDescription(['```js', error.stack, '```'].join(`\n`))
+    .setTimestamp()
+    .setFooter('Uncaught Exception Error Occurred')
   // Send error to the log channel on the gamerbot server
   Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
 })

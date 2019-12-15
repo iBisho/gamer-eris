@@ -1,9 +1,9 @@
 {
-	"DESCRIPTION": "Affiche des informations importantes à propos de votre serveur.",
-	"EXTENDED": "**{{prefix}}server** ~ Affiche des informations importantes à propos du serveur, comme la date de création, le nombre de salons / rôles que vous avez et plus...",
+	"DESCRIPTION": "Affiche des informations importante à propos de votre serveur.",
+	"EXTENDED": "**{{prefix}}server** ~ Affiche des informations importante à propos du serveur, comme la date de création, le nombre de salons / rôles que vous avez et plus...",
 	"USAGE": "{{prefix}}server",
 	"ALIASES": "{{prefix}}si",
-	"MODERATIONNAME": "G4M3R Paramètres de modération",
+	"MODERATIONNAME": "Paramètres de modération de Gamer",
 	"MODERATIONVALUE": "$t(basic/server:MODERATIONVALUE_LINE_1)\n$t(basic/server:MODERATIONVALUE_LINE_2)\n$t(basic/server:MODERATIONVALUE_LINE_3)\n$t(basic/server:MODERATIONVALUE_LINE_4)\n$t(basic/server:MODERATIONVALUE_LINE_5)\n$t(basic/server:MODERATIONVALUE_LINE_6)",
 	"MODERATIONVALUE_LINE_1": "Rôle automatique : {{autoAssignRole}}",
 	"MODERATIONVALUE_LINE_2": "Rôle publiques : {{publicRoles}}",
@@ -15,14 +15,14 @@
 	"STATSVALUE": "$t(basic/server:STATSVALUE_LINE_1)\n$t(basic/server:STATSVALUE_LINE_2)\n$t(basic/server:STATSVALUE_LINE_3)\n$t(basic/server:STATSVALUE_LINE_4)\n$t(basic/server:STATSVALUE_LINE_5)",
 	"STATSVALUE_LINE_1": "Créé le : [**{{createdAt}}**]",
 	"STATSVALUE_LINE_2": "👑 [**{{owner}}**]",
-	"STATSVALUE_LINE_3": "Salons :",
+	"STATSVALUE_LINE_3": "Salons : [**{{channelCount}}**]",
 	"STATSVALUE_LINE_4": "Rôles : [**{{roleCount}}**]",
 	"STATSVALUE_LINE_5": "👥 [**{{memberCount}}**]",
-	"SETTINGSNAME": "Paramètres basiques de G4M3R",
+	"SETTINGSNAME": "Paramètres basiques de Gamer",
 	"SETTINGSVALUE": "$t(basic/server:SETTINGSVALUE_LINE_1)\n$t(basic/server:SETTINGSVALUE_LINE_2)\n$t(basic/server:SETTINGSVALUE_LINE_3)\n$t(basic/server:SETTINGSVALUE_LINE_4)",
-	"SETTINGSVALUE_LINE_1": "Language: {{language}}",
+	"SETTINGSVALUE_LINE_1": "Langue: {{language}}",
 	"SETTINGSVALUE_LINE_2": "Rôles modérateurs : {{modRoles}}",
 	"SETTINGSVALUE_LINE_3": "Utilisateurs Admins : {{admins}}",
 	"SETTINGSVALUE_LINE_4": "Feedback: **Idées:** {{ideaEnabled}} | **Reports de bugs**: {{bugEnabled}}",
-	"TITLE": "Server Stats For »"
+	"TITLE": "Statistiques serveur pour »"
 }

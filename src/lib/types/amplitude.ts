@@ -18,4 +18,8 @@ export interface AmplitudeEvent {
     | 'COMMAND_RAN'
     | 'MAIL_CREATE'
     | 'PROFILE_INVITE'
+    | 'GUILD_ADDED'
+    | 'GUILD_REMOVED'
+    | 'MEMBER_ADDED'
+    | 'MEMBER_REMOVED'
 }

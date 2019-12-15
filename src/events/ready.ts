@@ -7,7 +7,6 @@ import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
-import { GamerTradingCard, GamerTag } from '../lib/types/gamer'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default class extends Event {
@@ -31,30 +30,30 @@ export default class extends Event {
     // Clean up inactive verification channels
     setInterval(async () => {
       // Fetch this guilds settings
-      const allGuildSettings = (await Gamer.database.models.guild.find()) as GuildSettings[]
+      const allGuildSettings = await Gamer.database.models.guild.find({ 'verify.enabled': true })
       // We only loop over saved settings guilds because if they use defaults they they wont have verify enabled anyway
       const promises = allGuildSettings.map(async guildSettings => {
         // If this server does not enable the verification system skip or if they have no verification channels.
-        if (!guildSettings.verify.enabled || !guildSettings.verify.channelIDs.length) return
+        if (!guildSettings.verify.channelIDs.length) return
 
         const guild = Gamer.guilds.get(guildSettings.id)
         if (!guild) return
 
         for (const channelID of guildSettings.verify.channelIDs) {
           const channel = guild.channels.get(channelID)
-          if (!(channel instanceof TextChannel)) return
+          if (!channel || !(channel instanceof TextChannel)) continue
 
           // If missing channel perms exit out
-          if (channel.permissionsOf(Gamer.user.id).has('manageChannels')) return
+          if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) continue
 
           const message =
             channel.messages.get(channel.lastMessageID) ||
             (await channel.getMessage(channel.lastMessageID).catch(() => null))
           // If no message something is very wrong as the first json message should always be there to be safe just cancel
-          if (!message) return
+          if (!message) continue
 
           const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
-          if (!language) return
+          if (!language) continue
 
           // If the channel has gone inactive too long delete it so there is no spam empty unused channels
           if (Date.now() - message.timestamp > milliseconds.MINUTE * 10)
@@ -63,7 +62,7 @@ export default class extends Event {
       })
 
       Promise.all(promises)
-    }, milliseconds.MINUTE * 10)
+    }, 2000)
 
     // Randomly select 3 new missions to use every day
     setInterval(() => {
@@ -106,11 +105,7 @@ export default class extends Event {
           if (daysSinceLastUpdated < guildSettings.xp.inactiveDaysAllowed) continue
 
           // Remove 1% of XP from the user for being inactive today.
-          await Gamer.helpers.levels.removeXP(
-            member,
-            language(`leveling/xp:ROLE_REMOVE_REASON`),
-            Math.floor(memberSettings.leveling.xp * 0.01)
-          )
+          await Gamer.helpers.levels.removeXP(member, Math.floor(memberSettings.leveling.xp * 0.01))
         }
       }
     }, milliseconds.DAY)
@@ -145,7 +140,7 @@ export default class extends Event {
 
     // Run the Trading Card Interval every 20 minutes
     setInterval(async () => {
-      const cardSettings = (await Gamer.database.models.tradingCard.find()) as GamerTradingCard[]
+      const cardSettings = await Gamer.database.models.tradingCard.find()
       const embed = new GamerEmbed()
 
       for (const setting of cardSettings) {
@@ -180,6 +175,7 @@ export default class extends Event {
           .setAuthor(language(`gaming/capture:GUESS`), Gamer.user.avatarURL)
           .setTitle(language(`gaming/capture:TITLE`, { prefix: Gamer.guildPrefixes.get(guild.id) || Gamer.prefix }))
           .setImage(randomCard.image)
+          .setFooter(`Add this game to your server to capture more cards with the invite command.`)
 
         channel.createMessage({ embed: embed.code })
       }
@@ -187,8 +183,8 @@ export default class extends Event {
 
     // Clears out any user who is past the slowmode of 2 seconds
     setInterval(() => {
-      const now = Date.now()
       if (!Gamer.slowmode.length) return
+      const now = Date.now()
 
       Gamer.slowmode = Gamer.slowmode.filter(user => now - user.timestamp < 2000)
     }, milliseconds.SECOND)
@@ -205,7 +201,7 @@ export default class extends Event {
 
     Gamer.helpers.logger.green(`Loading all tags into cache now...`)
     // Set the tags in cache
-    const tags = (await Gamer.database.models.tag.find()) as GamerTag[]
+    const tags = await Gamer.database.models.tag.find()
     for (const tag of tags) Gamer.tags.set(`${tag.guildID}.${tag.name}`, tag)
 
     // Set the missions on startup
@@ -217,10 +213,12 @@ export default class extends Event {
     }
 
     // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
-    const allGuildSettings = (await Gamer.database.models.guild.find()) as GuildSettings[]
+    const allGuildSettings = await Gamer.database.models.guild.find()
     for (const settings of allGuildSettings) {
       if (settings.prefix !== Gamer.prefix) Gamer.guildPrefixes.set(settings.id, settings.prefix)
       if (settings.language !== `en-US`) Gamer.guildLanguages.set(settings.id, settings.language)
+      if (settings.mails.supportChannelID)
+        Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
     }
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)

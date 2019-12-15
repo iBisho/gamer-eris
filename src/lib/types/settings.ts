@@ -29,6 +29,9 @@ export interface UserSettings extends mongoose.Document {
     }
     badgesUnlocked: number
   }
+  network: {
+    guildID?: string
+  }
 }
 
 export interface Boost {
@@ -94,9 +97,9 @@ export interface GuildSettings extends mongoose.Document {
   modules: string[]
   moderation: {
     roleIDs: {
-      autorole: string
+      autorole?: string
       public: string[]
-      mute: string
+      mute?: string
     }
     users: {
       mutedUserIDs: string[]
@@ -210,6 +213,18 @@ export interface GuildSettings extends mongoose.Document {
       second: string
       third: string
     }
+  }
+  network: {
+    channelIDs: {
+      followers: string[]
+      wall?: string
+      notifications?: string
+      feed?: string
+      photos?: string
+    }
+  }
+  roleIDs: {
+    eventsCreate?: string
   }
 }
 

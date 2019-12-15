@@ -1,9 +1,8 @@
 // This monitor will automatically assign the auto assign roles to a user when they send a message and dont have that role.
 // This is because by default forcibly adding a role to a user overrides the built in discord verification.
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -12,6 +11,7 @@ export default class extends Monitor {
     // The message type helps ignore other messages like discord default welcome messages
     if (
       message.channel instanceof PrivateChannel ||
+      message.channel instanceof GroupChannel ||
       message.type !== 0 ||
       !message.member ||
       message.member.roles.length > 1
@@ -19,9 +19,9 @@ export default class extends Monitor {
       return
 
     // Get the verification category id so we dont assign the role while they are chatting in verification
-    const guildSettings = (await Gamer.database.models.guild.findOne({
+    const guildSettings = await Gamer.database.models.guild.findOne({
       id: message.channel.guild.id
-    })) as GuildSettings | null
+    })
     // If the guild has default settings then they dont have verification or autorole enabled
     if (!guildSettings) return
 

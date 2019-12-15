@@ -2,14 +2,16 @@
 	"DESCRIPTION": "Bans a user from the server.",
 	"EXTENDED": "$t(moderation/ban:EXTENDED_LINE_1)\n$t(moderation/ban:EXTENDED_LINE_2)",
 	"EXTENDED_LINE_1": "**{{prefix}}ban @user reason** ~ Bans the user from the server.",
-	"EXTENDED_LINE_2": "The role of G4M3R needs to be above the highest role to moderate effectively. Make sure the bot has the permissions to ban on your server.",
+	"EXTENDED_LINE_2": "The role of Gamer needs to be above the highest role to moderate effectively. Make sure the bot has the permissions to ban on your server.",
 	"USAGE": "{{prefix}}ban [User] [Reason]",
 	"ALIASES": "{{prefix}}b",
-	"HIGHER_ROLE": "Your highest role is not high enough to ban this member.",
-	"UNBANNABLE": "Could not ban this member, make sure that my role is above the highest role of the user you want to ban and try again.",
+	"NEED_BAN_PERMS": "I do not have the Ban Members permission.",
 	"ALREADY_BANNED": "This user is already banned on your server.",
-	"TITLE": "**{{user}}**, you have been banned from [**{{guildName}}**]",
-	"REASON": "{{moderatorName}} has banned this user for: {{reason}}",
-	"SUCCESS": "Banned {{user}} from this server with reason: **{{reason}}**"
+	"NEED_USER": "You did not provide a user to ban.",
+  "NEED_REASON": "You must provide a reason in order to ban the user.",
+	"SUCCESS": "Banned {{user}} from this server with reason: **{{reason}}**",
+	"USER_TOO_LOW": "Your highest role is not high enough to ban this member.",
+  "BOT_TOO_LOW": "Could not ban this member, make sure that my role is above the highest role of the user you want to ban and try again.",
+  "TITLE": "{{username}}, you have been **BANNED** from [{{guildName}}]"
 }
 

@@ -1,10 +1,10 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { TextChannel, PrivateChannel } from 'eris'
+import { TextChannel, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`ping`, `pong`], async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   const ping = Date.now() - message.timestamp
   const Gamer = context.client as GamerClient
 
@@ -16,9 +16,9 @@ export default new Command([`ping`, `pong`], async (message, _args, context) => 
     language(`basic/ping:STATS_VALUE`, {
       id: message.channel instanceof TextChannel ? message.channel.guild.shard.id : 0,
       discord: `<:discord:494050000779608064>`,
-      guilds: context.client.guilds.size,
-      users: context.client.users.size
-    }) as string
+      guilds: context.client.guilds.size.toLocaleString(),
+      users: context.client.users.size.toLocaleString()
+    })
   )
 
   return message.channel.createMessage({ embed: embed.code })

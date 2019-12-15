@@ -1,8 +1,6 @@
-import { Member, Role } from 'eris'
-import { MemberSettings, UserSettings } from '../types/settings'
+import { Member } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
-import { GamerLevel, GamerMission } from '../types/gamer'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -17,26 +15,28 @@ export default class {
   }
 
   // The override cooldown is useful for XP command when you want to force add XP like daily command
-  async addLocalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false, reason?: string) {
+  async addLocalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false) {
     // If the member is in cooldown cancel out
     if (!overrideCooldown && this.checkCooldown(member)) return
 
-    const memberSettings = ((await this.Gamer.database.models.member.findOne({ memberID: member.id })) ||
-      new this.Gamer.database.models.member({
+    const memberSettings =
+      (await this.Gamer.database.models.member.findOne({ memberID: member.id, guildID: member.guild.id })) ||
+      (await this.Gamer.database.models.member.create({
         memberID: member.id,
         guildID: member.guild.id,
         id: `${member.guild.id}.${member.id}`
-      })) as MemberSettings
+      }))
 
-    const userSettings = (await this.Gamer.database.models.user.findOne({ userID: member.id })) as UserSettings | null
+    const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
 
     let multiplier = 1
-    if (userSettings)
+    if (userSettings) {
       for (const boost of userSettings.leveling.boosts) {
         if (!boost.active || !boost.activatedAt) continue
         if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
         multiplier += boost.multiplier
       }
+    }
 
     const totalXP = xpAmountToAdd * multiplier + memberSettings.leveling.xp
     memberSettings.leveling.xp = totalXP
@@ -62,11 +62,8 @@ export default class {
     // Add one level and set the XP to whatever is left
     memberSettings.leveling.level = newLevel.level
     memberSettings.save()
-
-    // Now we need to check if the user went up a level
-
     // Fetch all custom guild levels data
-    const allGuildLevels = (await this.Gamer.database.models.level.find({ guildID: member.guild.id })) as GamerLevel[]
+    const allGuildLevels = await this.Gamer.database.models.level.find({ guildID: member.guild.id })
     if (!allGuildLevels) return
     // Find if this level has any custom data
     const levelData = allGuildLevels.find(data => data.level === newLevel.level)
@@ -76,20 +73,19 @@ export default class {
     const bot = member.guild.members.get(this.Gamer.user.id)
     if (!bot) return
     // Check if the bots role is high enough to manage the role
-    const botsRoles = bot.roles.sort(
-      (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
-    )
-    const [botsHighestRoleID] = botsRoles
-    const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
-    if (!botsHighestRole) return
+    const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
+
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
+    if (!language) return
+    const REASON = language('leveling/xp:ROLE_ADD_REASON')
 
     const rolesToAdd = []
     for (const roleID of levelData.roleIDs) {
       const role = member.guild.roles.get(roleID)
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
-      if (reason) {
-        member.addRole(roleID, reason)
+      if (REASON) {
+        member.addRole(roleID, REASON)
         this.Gamer.amplitude.push({
           authorID: member.id,
           guildID: member.guild.id,
@@ -101,9 +97,8 @@ export default class {
     }
     if (!rolesToAdd.length) return
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
     for (const roleID of rolesToAdd) {
-      member.addRole(roleID, language?.(`leveling/xp:ROLE_ADD_REASON`))
+      member.addRole(roleID, REASON)
       this.Gamer.amplitude.push({
         authorID: member.id,
         guildID: member.guild.id,
@@ -116,8 +111,9 @@ export default class {
 
   async addGlobalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false) {
     if (!overrideCooldown && this.checkCooldown(member, true)) return
-    const userSettings = ((await this.Gamer.database.models.user.findOne({ userID: member.id })) ||
-      new this.Gamer.database.models.user({ userID: member.id })) as UserSettings
+    const userSettings =
+      (await this.Gamer.database.models.user.findOne({ userID: member.id })) ||
+      (await this.Gamer.database.models.user.create({ userID: member.id }))
 
     let multiplier = 1
     if (userSettings)
@@ -129,27 +125,26 @@ export default class {
 
     const totalXP = xpAmountToAdd * multiplier + userSettings.leveling.xp
     userSettings.leveling.xp = totalXP
-    userSettings.save()
 
     // Get the details on the users next level
     const nextLevelInfo = constants.levels.find(lvl => lvl.level === userSettings.leveling.level + 1)
     // User did not level up
-    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) return
+    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) return userSettings.save()
 
     // User did level up
 
     const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
     // Past max xp for highest level so just no more levelups needed
-    if (!newLevel) return
+    if (!newLevel) return userSettings.save()
     // Add one level
     userSettings.leveling.level = newLevel.level
-    userSettings.save()
+    return userSettings.save()
   }
 
-  async removeXP(member: Member, reason: string, xpAmountToRemove = 1) {
+  async removeXP(member: Member, xpAmountToRemove = 1) {
     if (xpAmountToRemove < 1) return
 
-    const settings = (await this.Gamer.database.models.member.findOne({ id: member.id })) as MemberSettings | null
+    const settings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
     if (!settings) return
 
     // If the XP is less than 0 after removing then set it to 0
@@ -176,27 +171,28 @@ export default class {
     if (!oldLevel || !bot || !bot.permission.has('manageRoles')) return
 
     // Fetch all custom guild levels data
-    const allGuildLevels = (await this.Gamer.database.models.level.find({ guildID: member.guild.id })) as GamerLevel[]
-    if (!allGuildLevels) return
-    // Find if this level has any custom data
-    const levelData = allGuildLevels.find(data => data.level === oldLevel.level)
+    const levelData = await this.Gamer.database.models.level.findOne({
+      guildID: member.guild.id,
+      level: oldLevel.level
+    })
+
     // If it has roles to give then give them to the user
     if (!levelData || !levelData.roleIDs.length) return
 
     // Check if the bots role is high enough to manage the role
-    const botsRoles = bot.roles.sort(
-      (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
-    )
-    const [botsHighestRoleID] = botsRoles
-    const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
-    if (!botsHighestRole) return
+    const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
+
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
+    if (!language) return
+
+    const REASON = language('leveling/xp:ROLE_REMOVE_REASON')
 
     for (const roleID of levelData.roleIDs) {
       const role = member.guild.roles.get(roleID)
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
 
-      member.removeRole(roleID, reason)
+      member.removeRole(roleID, REASON)
       this.Gamer.amplitude.push({
         authorID: member.id,
         guildID: member.guild.id,
@@ -237,15 +233,22 @@ export default class {
     if (!mission) return
 
     // Find the data for this user regarding this mission or make it for them
-    const missionData = ((await this.Gamer.database.models.mission.findOne({
+    const missionData = await this.Gamer.database.models.mission.findOne({
       userID: member.id,
       commandName: commandName
-    })) ||
-      new this.Gamer.database.models.mission({
+    })
+
+    // If there was no data create it
+    if (!missionData) {
+      await this.Gamer.database.models.mission.create({
         userID: member.id,
         commandName,
-        guildID
-      })) as GamerMission
+        guildID,
+        amount: 1
+      })
+      // Return void to prevent collectors from breaking
+      return
+    }
 
     // If the user already got the rewards for this mission
     if (missionData.completed) return

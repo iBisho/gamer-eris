@@ -1,0 +1,14 @@
+{
+	"DESCRIPTION": "Affiche votre profil ou celui d'un membre avec son arrière-plan.",
+	"EXTENDED": "$t(leveling/profile:EXTENDED_LINE_1)\n$t(leveling/profile:EXTENDED_LINE_2)\n$t(leveling/profile:EXTENDED_LINE_3)\n$t(leveling/profile:EXTENDED_LINE_4)\n$t(leveling/profile:EXTENDED_LINE_5)\n$t(leveling/profile:EXTENDED_LINE_6)\n$t(leveling/profile:EXTENDED_LINE_7)",
+	"EXTENDED_LINE_1": "» L'image de profil affiche les informations suivante:",
+	"EXTENDED_LINE_2": "  • Niveau d'XP du serveur & global.",
+	"EXTENDED_LINE_3": "  • Statut actuel de votre niveau sur le serveur et global.",
+	"EXTENDED_LINE_4": "  • Les bagdes que vous avez gagné.",
+	"EXTENDED_LINE_5": "  • Les arrières-plan sélectionné par vous.",
+	"EXTENDED_LINE_6": "» Utilisez la commande **{{prefix}}leaderboard** pour voir le classement actuel.",
+	"EXTENDED_LINE_7": "» Utilisez la commande **{{prefix}}background** pour modifier votre image d'arrière-plan.",
+	"USAGE": "{{prefix}}profile *[Membre]*",
+	"ALIASES": "{{prefix}}p",
+	"CURRENT_MISSIONS": "Missions en cours:"
+}

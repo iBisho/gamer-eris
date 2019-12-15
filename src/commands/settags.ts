@@ -1,20 +1,19 @@
 import { Command } from 'yuuko'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { GuildSettings } from '../lib/types/settings'
 import { GamerTag } from '../lib/types/gamer'
 
 export default new Command([`settag`, `settags`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  let guildSettings = (await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
-  })) as GuildSettings | null
-  if (!guildSettings) guildSettings = new Gamer.database.models.guild({ id: message.channel.guild.id }) as GuildSettings
+  const guildSettings =
+    (await Gamer.database.models.guild.findOne({
+      id: message.channel.guild.id
+    })) || (await Gamer.database.models.guild.create({ id: message.channel.guild.id }))
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return

@@ -230,5 +230,18 @@ export default new mongoose.Schema({
       // url image for the third place prize
       third: String
     }
+  },
+  network: {
+    channelIDs: {
+      followers: { type: [String], default: [] },
+      wall: String,
+      notifications: String,
+      feed: String,
+      photos: String
+    }
+  },
+
+  roleIDs: {
+    eventsCreate: String
   }
 })

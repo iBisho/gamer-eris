@@ -1,15 +1,13 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel } from 'eris'
+import { Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { UserSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { GamerEmoji } from '../lib/types/database'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (message.channel instanceof PrivateChannel) return
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-    const authorSettings = (await Gamer.database.models.user.findOne({ id: message.author.id })) as UserSettings | null
+    const authorSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
     if (authorSettings && authorSettings.afk.enabled) {
       // If this user had the afk enabled, disable it now that they are back since they sent a message
       authorSettings.afk.enabled = false
@@ -18,10 +16,7 @@ export default class extends Monitor {
     // If no @ return
     if (!message.mentions.length) return
 
-    const emojis = (await Gamer.database.models.emoji.find().catch(err => {
-      Gamer.emit(`error`, err)
-      return []
-    })) as GamerEmoji[]
+    const emojis = await Gamer.database.models.emoji.find()
 
     const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return
@@ -30,7 +25,7 @@ export default class extends Monitor {
 
     // Loop for each mention in the message
     for (const user of message.mentions) {
-      const userSettings = (await Gamer.database.models.user.findOne({ id: user.id })) as UserSettings | null
+      const userSettings = await Gamer.database.models.user.findOne({ userID: user.id })
       // If the afk is disabled
       if (!userSettings || !userSettings.afk.enabled) continue
 

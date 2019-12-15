@@ -2,17 +2,17 @@ import { Command } from 'yuuko'
 import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`urban`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
   // Check all permissions before running command
-  if (!(message.channel instanceof PrivateChannel)) {
+  if (!(message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)) {
     if (!message.channel.nsfw)
       return message.channel
         .createMessage(language(`fun/urban:NSFW`))

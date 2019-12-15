@@ -1,17 +1,16 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, GroupChannel } from 'eris'
 import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventkick`, `ek`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
-  const guildSettings = (await Gamer.database.models.guild.findOne({
+  const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
-  })) as GuildSettings | null
+  })
 
   if (
     !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
@@ -24,7 +23,10 @@ export default new Command([`eventkick`, `ek`], async (message, args, context) =
 
   const [number, userID] = args
   const eventID = parseInt(number, 10)
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
 
+  if (!eventID) return helpCommand.execute(message, [`eventkick`], context)
   const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(userID)
   if (!user) return message.channel.createMessage(language(`events/eventkick:NEED_USER`))
 
@@ -33,7 +35,7 @@ export default new Command([`eventkick`, `ek`], async (message, args, context) =
     id: eventID,
     guildID: message.channel.guild.id
   })) as GamerEvent | null
-  if (!event) return message.channel.createMessage(language(`events/event:INVALID_EVENT`))
+  if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   if (!event.attendees.includes(user.id) && !event.waitingList.includes(user.id))
     return message.channel.createMessage(language(`events/eventkick:NOT_JOINED`))

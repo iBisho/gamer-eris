@@ -1,12 +1,11 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, TextChannel } from 'eris'
-import { GuildSettings } from '../lib/types/settings'
+import { PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command(`embedshow`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const [channelID] = message.channelMentions
   const channel = channelID ? message.channel.guild.channels.get(channelID) : message.channel
@@ -15,19 +14,22 @@ export default new Command(`embedshow`, async (message, args, context) => {
   const [messageID] = args
   if (!messageID) return
 
-  const messageToUse = channel.messages.get(messageID) || (await Gamer.getMessage(channel.id, messageID))
+  const messageToUse =
+    channel.messages.get(messageID) || (await Gamer.getMessage(channel.id, messageID).catch(() => undefined))
   if (!messageToUse) return
 
   const [embed] = messageToUse.embeds
   if (!embed) return
 
-  const settings = (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null
+  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   // If the user does not have a modrole or admin role quit out
   if (
     !settings ||
-    Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
-    (settings.staff.adminRoleID && Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID))
+    !(
+      Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
+      Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)
+    )
   )
     return
 

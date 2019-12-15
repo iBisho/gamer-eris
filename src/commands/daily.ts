@@ -1,7 +1,5 @@
 import { Command } from 'yuuko'
-import GuildDefaults from '../constants/settings/guild'
-import { GuildSettings, UserSettings } from '../lib/types/settings'
-import { PrivateChannel } from 'eris'
+import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import { milliseconds } from '../lib/types/enums/time'
@@ -10,11 +8,9 @@ const dailyXPGlobalAmount = 10
 
 export default new Command(`daily`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || !message.member) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
-  const guildSettings =
-    ((await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) as GuildSettings | null) ||
-    GuildDefaults
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
@@ -30,14 +26,17 @@ export default new Command(`daily`, async (message, _args, context) => {
     )
   else Gamer.cooldowns.set(cooldownID, now + milliseconds.DAY)
 
-  const userSettings = ((await Gamer.database.models.user.findOne({ id: message.author.id })) ||
-    new Gamer.database.models.user({ userID: message.author.id })) as UserSettings
+  const userSettings =
+    (await Gamer.database.models.user.findOne({ id: message.author.id })) ||
+    (await Gamer.database.models.user.create({ userID: message.author.id }))
 
   userSettings.leveling.currency = userSettings.leveling.currency + 10
   userSettings.save()
 
+  const dailyXP = guildSettings?.xp.daily || 10
+
   // Add XP to the member for the daily amount
-  Gamer.helpers.levels.addLocalXP(message.member, guildSettings.xp.daily, true, language(`leveling/xp:ROLE_ADD_REASON`))
+  Gamer.helpers.levels.addLocalXP(message.member, dailyXP, true)
   // Add XP to the user for the global amount
   Gamer.helpers.levels.addGlobalXP(message.member, dailyXPGlobalAmount)
 
@@ -45,7 +44,7 @@ export default new Command(`daily`, async (message, _args, context) => {
   return message.channel.createMessage(
     language(`leveling/daily:SUCCESS`, {
       mention: message.author.mention,
-      amount: guildSettings.xp.daily,
+      amount: dailyXP,
       emoji: constants.emojis.coin
     })
   )
