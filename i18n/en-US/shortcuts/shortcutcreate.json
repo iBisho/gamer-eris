@@ -9,5 +9,6 @@
   "USAGE": "{{prefix}}shortcutcreate *[deletetrigger]* [Shortcut Name] [Command Name] [Command Arguments]",
 	"ALIASES": "{{prefix}}scc",
 	"NAME_TAKEN": "**{{name}}** is already being used by another shortcut.",
-  "DELETE_TRIGGER_REASON": "{{command}} shortcut trigger deleted as requested."
+  "DELETE_TRIGGER_REASON": "{{command}} shortcut trigger deleted as requested.",
+  "CREATED": "The {{name}} shortcut was created."
 }

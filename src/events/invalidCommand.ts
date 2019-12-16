@@ -8,10 +8,10 @@ export default class extends Event {
   async execute(message: Message, args: string[], context: CommandContext) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-    const shortcuts = await Gamer.database.models.shortcut.find({ guildID: message.channel.guild.id })
-    if (!shortcuts.length) return
-
-    const shortcut = shortcuts.find(s => s.name === context.commandName)
+    const shortcut = await Gamer.database.models.shortcut.findOne({
+      guildID: message.channel.guild.id,
+      name: context.commandName
+    })
     if (!shortcut) return
 
     // Valid shortcut was found now we need to process it
@@ -24,7 +24,7 @@ export default class extends Event {
       for (const [index, arg] of args.entries()) content = content.replace(`{{${index + 1}}}`, arg)
 
       // Execute the command
-      command.execute(message, [content], context)
+      command.execute(message, content.split(' '), context)
 
       // Make the bot wait 2 seconds before running next command so it doesnt get inhibited by the slowmode
       await Gamer.helpers.utils.sleep(2)

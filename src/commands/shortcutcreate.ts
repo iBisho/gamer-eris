@@ -9,18 +9,20 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
+  if (!args.length) return helpCommand.execute(message, [`shortcutcreate`], context)
+
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
+
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id
   })
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   let deleteTrigger = false
   const [trigger] = args
-  if (!trigger) return helpCommand.execute(message, [`shortcutcreate`], context)
   if (trigger.toLowerCase() === 'deletetrigger') {
     args.shift()
     deleteTrigger = true
@@ -28,6 +30,8 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
 
   const [name] = args
   if (!name) return helpCommand.execute(message, [`shortcutcreate`], context)
+  // Remove the shortcut name so first item is the command name
+  args.shift()
 
   const shortcut = await Gamer.database.models.shortcut.findOne({
     guildID: message.channel.guild.id,
