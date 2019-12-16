@@ -99,7 +99,7 @@ const categories = [
   { name: `gaming`, commands: [`twitch`, `capture`] },
   { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`] },
   { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] },
-  { name: `tags`, commands: [`tagcreate`, `tagdelete`, `tagshow`] },
+  { name: `tags`, commands: [`tagcreate`, `tagdelete`, `tagshow`, `taginstall`, `taguninstall`] },
   { name: `shortcuts`, commands: [`shortcutcreate`, `shortcutremove`, `shortcuts`] }
 ]
 

@@ -2,7 +2,6 @@ import Monitor from '../lib/structures/Monitor'
 import { Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GamerTag } from '../lib/types/gamer'
-import constants from '../constants'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -25,12 +24,6 @@ export default class extends Monitor {
       if (tagData.mailOnly) continue
       // Tag name not found in the entire message
       if (!lowercaseContent.includes(tagData.name)) continue
-      // If the tag is not from this server and it is not from a module server skip
-      if (
-        tagData.guildID !== message.channel.guild.id &&
-        constants.modules.servers.find(server => server.id === tagData.guildID)
-      )
-        continue
       // If its basic type and the first word is not the tag name skip
       if (`basic` === tagData.type && firstWord !== tagData.name) continue
       // This should be a valid tag to run
@@ -53,7 +46,7 @@ export default class extends Monitor {
 
     for (const tag of validTags) {
       // This tag is a module tag so check if the module is enabled
-      if (tag.guildID !== message.channel.guild.id && enabledModules.includes(message.channel.guild.id)) continue
+      if (tag.guildID !== message.channel.guild.id && !enabledModules.includes(tag.guildID)) continue
 
       // Valid tag to post
 

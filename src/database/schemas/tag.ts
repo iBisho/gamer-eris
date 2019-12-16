@@ -10,5 +10,7 @@ export default new mongoose.Schema({
   // The name for the tag
   name: String,
   // The type of tag. Basic, advanced, random
-  type: String
+  type: String,
+  // Whether the tag is allowed to be used on other servers
+  isPublic: Boolean
 })

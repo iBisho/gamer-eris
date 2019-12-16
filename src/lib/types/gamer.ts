@@ -144,6 +144,7 @@ export interface GamerTag extends Document {
   guildID: string
   embedCode: string
   mailOnly: boolean
+  isPublic: boolean
 }
 
 export interface GamerMail extends Document {

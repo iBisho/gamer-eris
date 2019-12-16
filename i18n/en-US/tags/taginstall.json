@@ -1,0 +1,9 @@
+{
+  "EXTENDED": "$t(tags/taginstall:EXTENDED_LINE_1)\n$t(tags/taginstall:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}taginstall aov** ~ Import the public tags from the Arena of Valor server.",
+  "EXTENDED_LINE_2": "**{{prefix}}taginstall 223909216866402304** ~ Import the public tags from the any server using the server id.",
+  "EXTENDED_LINE_3": "To create your own custom import name, please contact me on the support server with the **invite** command.",
+  "IMPORTED": "The tags have been successfully imported.",
+  "USAGE": "{{prefix}}taginstall [Server Name | Server ID]",
+  "ALIASES": "Taginstall does not have any aliases."
+}
