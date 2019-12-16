@@ -113,9 +113,8 @@ export default class {
         { id: this.Gamer.user.id, allow: Constants.Permissions.readMessages, deny: 0, type: 'member' },
         { id: message.channel.guild.id, allow: 0, deny: Constants.Permissions.readMessages, type: 'role' }
       ]
-      const ids = [message.channel.guild.id]
+      const ids = guildSettings.staff.modRoleIDs
       if (guildSettings.staff.adminRoleID) ids.push(guildSettings.staff.adminRoleID)
-      if (guildSettings.staff.modRoleIDs) ids.push(...guildSettings.staff.modRoleIDs)
       for (const id of ids) overwrites.push({ id, allow: Constants.Permissions.readMessages, deny: 0, type: 'role' })
 
       category = await message.channel.guild.createChannel(language(`mails/mail:CATEGORY_NAME`), 4, {
