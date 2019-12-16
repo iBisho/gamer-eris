@@ -65,9 +65,11 @@ export default class extends Event {
         embed.addField(language(`moderation/logs:MESSAGE_CONTENT_CONTINUED`), oldMessage.content.substring(1024))
     }
 
-    embed.addField(language(`moderation/logs:NEW_CONTENT`), message.content.substring(0, 1024))
-    if (message.content.length > 1024)
-      embed.addField(language(`moderation/logs:MESSAGE_CONTENT_CONTINUED`), message.content.substring(1024))
+    if (message && message.content.length) {
+      embed.addField(language(`moderation/logs:NEW_CONTENT`), message.content.substring(0, 1024))
+      if (message.content.length > 1024)
+        embed.addField(language(`moderation/logs:MESSAGE_CONTENT_CONTINUED`), message.content.substring(1024))
+    }
 
     const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
     if (!guildSettings) return
