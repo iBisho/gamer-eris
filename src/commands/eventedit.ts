@@ -14,11 +14,18 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
+  // When this boolean is true the user is not a mod/admin so we need to check if they are the event creator
+  let checkCreator = false
+  // Mods/admins are allowed to edit any event
   if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  ) {
+    // If the user is not a mod or admin check the events create rols
+    if (!guildSettings?.roleIDs.eventsCreate) return
+    if (!message.member.roles.includes(guildSettings.roleIDs.eventsCreate)) return
+    checkCreator = true
+  }
 
   const [number, type, ...fullValue] = args
   const eventID = parseInt(number, 10)
@@ -37,6 +44,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     guildID: message.channel.guild.id
   })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
+  if (checkCreator && event.authorID !== message.author.id) return
 
   const roleID = message.roleMentions.length ? message.roleMentions[0] : value
 
