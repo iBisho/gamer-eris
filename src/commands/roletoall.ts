@@ -59,7 +59,7 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
 
   for (const member of message.channel.guild.members.values()) {
     // If the member has the role already skip
-    if (message.member.roles.includes(role.id)) continue
+    if (member.roles.includes(role.id)) continue
 
     if (counter === 3) {
       // Make the bot wait for 5 seconds
