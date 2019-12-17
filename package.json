@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Skillz4Killz/gamer-eris#readme",
   "dependencies": {
-    "canvas": "^2.6.0",
+    "canvas": "^2.6.1",
     "canvas-constructor": "^3.1.0",
     "chalk": "^3.0.0",
     "confusables": "^0.3.3",
