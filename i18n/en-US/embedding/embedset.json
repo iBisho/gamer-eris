@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Edit any element (for example the description) of an existing embed that was originally sent by Gamer bot.",
+  "EXTENDED": "$t(embedding/embedset:EXTENDED_LINE_1)\n$t(embedding/embedset:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "To get the ID of a message, make sure that Developer Mode is on in your client and right click the message whose code you'd like to copy and select **Copy ID**.",
+  "EXTENDED_LINE_2": "**{{prefix}}embedset [Message ID] [Embed Element] [New Value] ** ~ Updates the Element you provided to the new value you provided.",
+  "USAGE": "{{prefix}}embedset [Message ID] [Embed Element] [New Value]",
+  "ALIASES": "Embedset does not have any aliases.",
+  "NO_EMBED": "The message you provided is not an embed I can edit.",
+  "SUCCESS": "The {{type}} has succesfully been updated!",
+  "NEED_ARGS": "Invalid Input, please consult the help page and try again."
+}
