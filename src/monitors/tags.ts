@@ -46,7 +46,12 @@ export default class extends Monitor {
 
     for (const tag of validTags) {
       // This tag is a module tag so check if the module is enabled
-      if (tag.guildID !== message.channel.guild.id && !enabledModules.includes(tag.guildID)) continue
+      if (tag.guildID !== message.channel.guild.id) {
+        // This servers tags were not installed so skip
+        if (!enabledModules.includes(tag.guildID)) continue
+        // Make sure this tag was made as a public tag by the original server
+        if (tag.isPublic) continue
+      }
 
       // Valid tag to post
 
@@ -60,7 +65,10 @@ export default class extends Monitor {
         emojis
       )
       // Not an embed
-      if (!transformed.startsWith('{')) return message.channel.createMessage(transformed)
+      if (!transformed.startsWith('{')) {
+        message.channel.createMessage(transformed)
+        return
+      }
 
       try {
         const json = JSON.parse(transformed)
@@ -74,7 +82,5 @@ export default class extends Monitor {
       // Only ever run one tag at a time to prevent spam so we need return here
       return
     }
-
-    return
   }
 }
