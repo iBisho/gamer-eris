@@ -97,11 +97,7 @@ export default class extends Event {
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-    if (!message.channel.guild) {
-      console.log('userID', userID)
-      console.log('emoji', emoji)
-      console.log('rr guild undefined error', message)
-    }
+
     const guild = Gamer.guilds.get(message.channel.guild.id)
     if (!guild) return
 
