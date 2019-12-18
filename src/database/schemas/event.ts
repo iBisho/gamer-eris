@@ -64,5 +64,7 @@ export default new mongoose.Schema({
   // The timezone for the event
   timezone: String,
   // The user ids of those who want to attend but applied when the event was already full
-  waitingList: [String]
+  waitingList: [String],
+  // If the event is made into a template event then it will be given a name
+  templateName: String
 })

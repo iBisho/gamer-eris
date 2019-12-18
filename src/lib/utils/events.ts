@@ -21,7 +21,7 @@ export default class {
   async createNewEvent(message: Message, templateName = ``, guildSettings: GuildSettings | null) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-    const events = (await this.Gamer.database.models.event.find({ guildID: message.channel.guild.id })) as GamerEvent[]
+    const events = await this.Gamer.database.models.event.find({ guildID: message.channel.guild.id })
 
     const template = templateName
       ? events.find(event => event.templateName && event.templateName === templateName)
@@ -30,7 +30,7 @@ export default class {
     const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return
 
-    const startNow = (template ? template.minutesFromNow : 60) * 60000 + Date.now()
+    const startNow = (template?.minutesFromNow || 60) * 60000 + Date.now()
 
     const newEvent = {
       id: this.createNewID(events),
