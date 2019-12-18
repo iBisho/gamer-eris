@@ -15,7 +15,7 @@ export default new Command(`capture`, async (message, args, context) => {
     channelID: message.channel.id
   })
 
-  const [name] = args
+  const name = args.join(' ')
 
   for (const setting of cardSettings) {
     if (!setting.lastItemName) {
