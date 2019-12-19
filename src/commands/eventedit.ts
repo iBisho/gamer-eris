@@ -90,6 +90,8 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `4`:
       const maxAttendees = parseInt(value, 10)
       if (!maxAttendees) return
+      while (event.attendees.length < maxAttendees && event.waitingList.length)
+        Gamer.helpers.events.transferFromWaitingList(event)
       event.maxAttendees = maxAttendees
       response = `events/eventedit:ATTENDEES_UPDATED`
       break
