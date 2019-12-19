@@ -156,11 +156,21 @@ export default class {
       ? await fetch(event.backgroundURL).then(res => res.buffer())
       : undefined
 
+    const guild = this.Gamer.guilds.get(event.guildID)
+
     const attendees: string[] = []
     for (const id of event.attendees) {
       const user = this.Gamer.users.get(id)
       if (!user) continue
-      attendees.push(`${user.username}#${user.discriminator}`)
+
+      if (!guild) {
+        attendees.push(`${user.username}#${user.discriminator}`)
+        continue
+      }
+
+      const member = guild.members.get(id)
+      if (member) attendees.push(`${member.nick || member.username}#${member.user.discriminator}`)
+      else attendees.push(`${user.username}#${user.discriminator}`)
     }
 
     const canvas = new Canvas(652, 367)
@@ -228,7 +238,10 @@ export default class {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     canvas.setTextFont(`13px SFTHeavy`).addText(event.activity, 15 + 35 + platformWidth.width, 261)
-    if (event.showAttendees) canvas.addText(attendees.join(', ').substring(0, 95), 35, 311)
+
+    if (event.showAttendees) {
+      canvas.addResponsiveText(attendees.join(', ').substring(0, 95), 35, 311, 600)
+    }
 
     if (event.isRecurring) {
       canvas
@@ -237,19 +250,6 @@ export default class {
         .setTextAlign(`center`)
         .setTextFont(`18px SFTHeavy`)
         .addResponsiveText(this.Gamer.helpers.transform.humanizeMilliseconds(event.frequency), 175, 50, 158)
-    }
-
-    let i = 0
-
-    for (const t of event.tags) {
-      // draw it
-      canvas.addImage(this.Gamer.buffers.events.tag, 34 + i * 115, 320)
-      canvas
-        .setTextAlign(`center`)
-        .setColor(`#4A4A4A`)
-        .setTextFont(`14px SFTHeavy`)
-        .addText(`#${t}`, 86 + i * 115, 340)
-      i++
     }
 
     return canvas.toBufferAsync()
