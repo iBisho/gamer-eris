@@ -58,7 +58,9 @@ export default new Command(`give`, async (message, args, context) => {
   // Give the role to the user as all checks have passed
   member.addRole(
     role.id,
-    language(`roles/give:GIVEN_BY`, { user: `${message.author.username}-${message.author.discriminator}` })
+    language(`roles/give:GIVEN_BY`, {
+      user: `${encodeURIComponent(message.author.username)}-${message.author.discriminator}`
+    })
   )
   Gamer.amplitude.push({
     authorID: message.author.id,
