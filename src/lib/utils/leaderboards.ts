@@ -12,31 +12,44 @@ export default class {
   }
 
   async makeLocalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
-    const allRelevantMembers = await this.Gamer.database.models.member
-      .find({
-        guildID: member.guild.id
-      })
-      .sort(`-leveling.xp`)
-
-    const index = allRelevantMembers.findIndex(data => data.memberID === member.id)
-    const memberSettings = allRelevantMembers[index]
-    if (!memberSettings) {
+    const memberSettings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
+    if (!memberSettings?.leveling.voicexp) {
       message.channel.createMessage(NO_POINTS)
       return
     }
 
-    const memberPosition = index >= 0 ? index + 1 : this.Gamer.users.size
-    const nextRankUserData = index === 0 ? undefined : allRelevantMembers[index - 1]
-    const prevRankUserData = allRelevantMembers[index + 1]
-    if (!nextRankUserData && !prevRankUserData) {
+    const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
+      this.Gamer.database.models.member
+        .find({ 'leveling.voicexp': { $gt: memberSettings.leveling.voicexp } })
+        .countDocuments(),
+      this.Gamer.database.models.member
+        .find({
+          'leveling.voicexp': { $gt: memberSettings.leveling.voicexp }
+        })
+        .sort('leveling.voicexp')
+        .limit(1),
+      this.Gamer.database.models.member
+        .find({ 'leveling.voicexp': { $lt: memberSettings.leveling.voicexp } })
+        .sort('-leveling.voicexp')
+        .limit(1),
+      this.Gamer.database.models.member
+        .find()
+        .sort('-leveling.voicexp')
+        .limit(3)
+    ])
+
+    const [nextUser] = nextUsers
+    const [prevUser] = prevUsers
+
+    if (!nextUser && !prevUser) {
       message.channel.createMessage(NOT_ENOUGH)
       return
     }
 
-    const rankText = nextRankUserData
-      ? `${this.transformXP(nextRankUserData.leveling.xp - memberSettings.leveling.xp)} EXP Behind`
-      : prevRankUserData
-      ? `${this.transformXP(memberSettings.leveling.xp - prevRankUserData.leveling.xp)} EXP Ahead`
+    const rankText = nextUser
+      ? `${this.transformXP(nextUser.leveling.voicexp - memberSettings.leveling.voicexp)} EXP Behind`
+      : prevUser
+      ? `${this.transformXP(memberSettings.leveling.voicexp - prevUser.leveling.voicexp)} EXP Ahead`
       : 'Unknown'
 
     const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
@@ -44,7 +57,6 @@ export default class {
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
       ``
     )
-    const topUsers = allRelevantMembers.slice(0, 3)
 
     const topUserData = []
     // Run a loop for the top 3 users
@@ -66,7 +78,7 @@ export default class {
       userAvatar,
       username,
       member.user.discriminator,
-      memberPosition,
+      rank + 1,
       memberSettings.leveling.xp,
       rankText,
       topUserData
@@ -146,28 +158,44 @@ export default class {
   }
 
   public async makeVoiceCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
-    const allRelevantUsers = await this.Gamer.database.models.member
-      .find({ guildID: member.guild.id })
-      .sort(`-leveling.voicexp`)
-
-    const index = allRelevantUsers.findIndex(data => data.memberID === member.id)
-    const memberSettings = allRelevantUsers[index]
-    if (!memberSettings) {
+    const memberSettings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
+    if (!memberSettings?.leveling.voicexp) {
       message.channel.createMessage(NO_POINTS)
       return
     }
-    const memberPosition = index >= 0 ? index + 1 : this.Gamer.users.size
-    const nextRankUserData = index === 0 ? undefined : allRelevantUsers[index - 1]
-    const prevRankUserData = allRelevantUsers[index + 1]
-    if (!nextRankUserData && !prevRankUserData) {
+
+    const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
+      this.Gamer.database.models.member
+        .find({ 'leveling.voicexp': { $gt: memberSettings.leveling.voicexp } })
+        .countDocuments(),
+      this.Gamer.database.models.member
+        .find({
+          'leveling.voicexp': { $gt: memberSettings.leveling.voicexp }
+        })
+        .sort('leveling.voicexp')
+        .limit(1),
+      this.Gamer.database.models.member
+        .find({ 'leveling.voicexp': { $lt: memberSettings.leveling.voicexp } })
+        .sort('-leveling.voicexp')
+        .limit(1),
+      this.Gamer.database.models.member
+        .find()
+        .sort('-leveling.voicexp')
+        .limit(3)
+    ])
+
+    const [nextUser] = nextUsers
+    const [prevUser] = prevUsers
+
+    if (!nextUser && !prevUser) {
       message.channel.createMessage(NOT_ENOUGH)
       return
     }
 
-    const rankText = nextRankUserData
-      ? `${this.transformXP(nextRankUserData.leveling.voicexp - memberSettings.leveling.voicexp)} EXP Behind`
-      : prevRankUserData
-      ? `${this.transformXP(memberSettings.leveling.voicexp - prevRankUserData.leveling.voicexp)} EXP Ahead`
+    const rankText = nextUser
+      ? `${this.transformXP(nextUser.leveling.voicexp - memberSettings.leveling.voicexp)} EXP Behind`
+      : prevUser
+      ? `${this.transformXP(memberSettings.leveling.voicexp - prevUser.leveling.voicexp)} EXP Ahead`
       : 'Unknown'
 
     const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
@@ -175,8 +203,6 @@ export default class {
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
       ``
     )
-
-    const topUsers = allRelevantUsers.slice(0, 3)
 
     const topUserData = []
     // Run a loop for the top 3 users
@@ -198,7 +224,7 @@ export default class {
       userAvatar,
       username,
       member.user.discriminator,
-      memberPosition,
+      rank + 1,
       memberSettings.leveling.voicexp,
       rankText,
       topUserData
