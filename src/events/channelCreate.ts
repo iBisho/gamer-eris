@@ -1,5 +1,5 @@
 import Event from '../lib/structures/Event'
-import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel, AnyGuildChannel } from 'eris'
+import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TFunction } from 'i18next'
@@ -85,7 +85,7 @@ export default class extends Event {
     // Fetch the auditlogs and add the author to the embed of the one who made the role and the reason it was made.
     const auditlogs = await channel.guild.getAuditLogs(undefined, undefined, 10)
     if (auditlogs) {
-      const auditLogEntry = auditlogs.entries.find(e => (e.target as AnyGuildChannel).id === channel.id)
+      const auditLogEntry = auditlogs.entries.find(e => e.targetID === channel.id)
       if (auditLogEntry) {
         embed
           .setAuthor(auditLogEntry.user.username, auditLogEntry.user.avatarURL)
