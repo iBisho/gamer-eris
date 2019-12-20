@@ -90,7 +90,7 @@ export default class extends Event {
         Gamer.helpers.events.denyEvent(event, userID)
         message.channel
           .createMessage(language(`events/eventdeny:DENIED`))
-          .then(msg => setTimeout(() => msg.delete(), 10000))
+          .then(msg => setTimeout(() => msg.delete().catch(() => undefined), 10000))
         break
     }
   }
