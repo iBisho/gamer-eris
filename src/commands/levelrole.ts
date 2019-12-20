@@ -53,7 +53,8 @@ export default new Command(`levelrole`, async (message, args, context) => {
   }
 
   // If no roles were provided then send help command
-  if (!roleIDs.length) return helpCommand.execute(message, [`levelrole`], context)
+  if (['create', 'add', 'remove', 'delete'].includes(type.toLowerCase()) || !roleIDs.length)
+    return helpCommand.execute(message, [`levelrole`], context)
 
   const levelRoleData = await Gamer.database.models.level.findOne({
     guildID: message.channel.guild.id,
