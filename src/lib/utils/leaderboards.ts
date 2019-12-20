@@ -13,28 +13,26 @@ export default class {
 
   async makeLocalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
     const memberSettings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
-    if (!memberSettings?.leveling.voicexp) {
+    if (!memberSettings?.leveling.xp) {
       message.channel.createMessage(NO_POINTS)
       return
     }
 
     const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
-      this.Gamer.database.models.member
-        .find({ 'leveling.voicexp': { $gt: memberSettings.leveling.voicexp } })
-        .countDocuments(),
+      this.Gamer.database.models.member.find({ 'leveling.xp': { $gt: memberSettings.leveling.xp } }).countDocuments(),
       this.Gamer.database.models.member
         .find({
-          'leveling.voicexp': { $gt: memberSettings.leveling.voicexp }
+          'leveling.xp': { $gt: memberSettings.leveling.xp }
         })
-        .sort('leveling.voicexp')
+        .sort('leveling.xp')
         .limit(1),
       this.Gamer.database.models.member
-        .find({ 'leveling.voicexp': { $lt: memberSettings.leveling.voicexp } })
-        .sort('-leveling.voicexp')
+        .find({ 'leveling.xp': { $lt: memberSettings.leveling.xp } })
+        .sort('-leveling.xp')
         .limit(1),
       this.Gamer.database.models.member
         .find()
-        .sort('-leveling.voicexp')
+        .sort('-leveling.xp')
         .limit(3)
     ])
 
