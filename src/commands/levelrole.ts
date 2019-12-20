@@ -82,6 +82,11 @@ export default new Command(`levelrole`, async (message, args, context) => {
       levelRoleData.roleIDs = levelRoleData.roleIDs.filter(id => !roleIDs.includes(id))
       levelRoleData.save()
       return message.channel.createMessage(language(`leveling/levelrole:ROLES_REMOVED`))
+    case `delete`:
+      if (!levelRoleData) return
+
+      await Gamer.database.models.level.deleteOne({ _id: levelRoleData._id })
+      return message.channel.createMessage(language(`leveling/levelrole:DELETED`, { number: levelRoleData.level }))
   }
 
   return helpCommand.execute(message, [`levelrole`], context)
