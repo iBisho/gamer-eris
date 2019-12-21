@@ -43,13 +43,20 @@ const Gamer = new GamerClient({
     TYPING_START: true,
     USER_UPDATE: true,
     WEBHOOKS_UPDATE: true
-  }
+  },
+  ignoreBots: false
 })
 
 Gamer.globalCommandRequirements = {
   async custom(message, _args, context) {
     // DM should have necessary perms already
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return true
+
+    const isDemoChannel = message.channel.id !== '328662219086888961'
+    // If this is not the live demo channel and the user is a bot cancel out
+    if (isDemoChannel && message.author.bot) return false
+    // If this is live demo and the user is a bot but not a webhook cancel
+    if (isDemoChannel && message.author.discriminator !== '0000' && message.author.bot) return false
 
     // Check if have send messages perms. Check before fetching guild data to potentially save a fetch
     const botPerms = message.channel.permissionsOf(Gamer.user.id)
