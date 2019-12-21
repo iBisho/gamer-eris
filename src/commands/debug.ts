@@ -31,7 +31,7 @@ export default new Command(['debug', `eval`], async function debug(message, args
     // Sweet. Wait for that to resolve.
     let value
     try {
-      value = util.inspect(await result, inspectOptions)
+      value = await result
     } catch (err) {
       value = err
     }
