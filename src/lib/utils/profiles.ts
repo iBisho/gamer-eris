@@ -3,8 +3,6 @@ import fetch from 'node-fetch'
 import { Message, Member, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import Constants from '../../constants/index'
-import MemberDefaults from '../../constants/settings/member'
-import UserDefaults from '../../constants/settings/user'
 
 interface ProfileCanvasOptions {
   style?: string
@@ -15,14 +13,14 @@ export default class {
   public async makeCanvas(message: Message, member: Member, Gamer: GamerClient, options?: ProfileCanvasOptions) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-    const memberSettings =
-      (await Gamer.database.models.member.findOne({
-        id: `${member.guild.id}.${member.id}`
-      })) || MemberDefaults
-    const userSettings = (await Gamer.database.models.user.findOne({ userID: member.id })) || UserDefaults
+    const memberSettings = await Gamer.database.models.member.findOne({
+      memberID: member.id,
+      guildID: member.guild.id
+    })
+    const userSettings = await Gamer.database.models.user.findOne({ userID: member.id })
     // Select the background theme & id from their settings if no override options were provided
-    const style = (options && options.style) || userSettings.profile.theme
-    const backgroundID = (options && options.backgroundID) || userSettings.profile.backgroundID
+    const style = (options && options.style) || userSettings?.profile.theme || 'white'
+    const backgroundID = (options && options.backgroundID) || userSettings?.profile.backgroundID || 1
 
     // Get background data OR If the background is invalid then set it to default values
     const backgroundData =
@@ -31,14 +29,14 @@ export default class {
     if (!backgroundData) return
 
     // SERVER XP DATA
-    const serverLevelDetails = Constants.levels.find(lev => lev.xpNeeded > memberSettings.leveling.xp)
-    const globalLevelDetails = Constants.levels.find(lev => lev.xpNeeded > userSettings.leveling.xp)
+    const serverLevelDetails = Constants.levels.find(lev => lev.xpNeeded > (memberSettings?.leveling.xp || 0))
+    const globalLevelDetails = Constants.levels.find(lev => lev.xpNeeded > (userSettings?.leveling.xp || 0))
     if (!serverLevelDetails || !globalLevelDetails) return
 
     const memberLevel = serverLevelDetails.level
-    const totalMemberXP = memberSettings.leveling.xp
+    const totalMemberXP = memberSettings?.leveling.xp || 0
     const globalLevel = globalLevelDetails.level
-    const totalGlobalXP = userSettings.leveling.xp
+    const totalGlobalXP = userSettings?.leveling.xp || 0
     // Since XP is stored as TOTAL and is not reset per level we need to make a cleaner version
     // Create the cleaner xp based on the level of the member
     let memberXP = totalMemberXP
@@ -205,7 +203,7 @@ export default class {
       .resetShadows()
 
     // user badges
-    if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings.vip.isVIP) {
+    if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings?.vip.isVIP) {
       canvas
         .addRoundImage(Gamer.buffers.profiles.badges.vip, 45, 455, 50, 50, 25, true)
         .addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
