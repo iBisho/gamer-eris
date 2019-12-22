@@ -18,16 +18,13 @@ export default new Command([`leaderboard`, `lb`], async (message, args, context)
   const globalTypes = [`g`, `global`, ...language(`common:GLOBAL_OPTIONS`, { returnObjects: true })]
   const voiceTypes = [`v`, `voice`, ...language(`common:VOICE_OPTIONS`, { returnObjects: true })]
 
-  const NO_POINTS = language(`leveling/leaderboard:NO_POINTS`, { member: member.mention })
-  const NOT_ENOUGH = language(`leveling/leaderboard:NOT_ENOUGH`)
-
   let buffer: Buffer | undefined
   if ((id && globalTypes.includes(id.toLowerCase())) || (type && globalTypes.includes(type.toLowerCase()))) {
-    buffer = await Gamer.helpers.leaderboards.makeGlobalCanvas(message, member, NO_POINTS, NOT_ENOUGH)
+    buffer = await Gamer.helpers.leaderboards.makeGlobalCanvas(message, member)
   } else if ((id && voiceTypes.includes(id.toLowerCase())) || (type && voiceTypes.includes(type.toLowerCase()))) {
-    buffer = await Gamer.helpers.leaderboards.makeVoiceCanvas(message, member, NO_POINTS, NOT_ENOUGH)
+    buffer = await Gamer.helpers.leaderboards.makeVoiceCanvas(message, member)
   } else {
-    buffer = await Gamer.helpers.leaderboards.makeLocalCanvas(message, member, NO_POINTS, NOT_ENOUGH)
+    buffer = await Gamer.helpers.leaderboards.makeLocalCanvas(message, member)
   }
 
   if (!buffer) return

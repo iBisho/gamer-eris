@@ -11,27 +11,33 @@ export default class {
     this.Gamer = client
   }
 
-  async makeLocalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
+  async makeLocalCanvas(message: Message, member: Member) {
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
+    if (!language) return
+
     const memberSettings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
     if (!memberSettings?.leveling.xp) {
-      message.channel.createMessage(NO_POINTS)
+      message.channel.createMessage(language(`leveling/leaderboard:NO_POINTS`, { member: member.mention }))
       return
     }
 
     const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
-      this.Gamer.database.models.member.find({ 'leveling.xp': { $gt: memberSettings.leveling.xp } }).countDocuments(),
+      this.Gamer.database.models.member
+        .find({ 'leveling.xp': { $gt: memberSettings.leveling.xp }, guildID: member.guild.id })
+        .countDocuments(),
       this.Gamer.database.models.member
         .find({
-          'leveling.xp': { $gt: memberSettings.leveling.xp }
+          'leveling.xp': { $gt: memberSettings.leveling.xp },
+          guildID: member.guild.id
         })
         .sort('leveling.xp')
         .limit(1),
       this.Gamer.database.models.member
-        .find({ 'leveling.xp': { $lt: memberSettings.leveling.xp } })
+        .find({ 'leveling.xp': { $lt: memberSettings.leveling.xp }, guildID: member.guild.id })
         .sort('-leveling.xp')
         .limit(1),
       this.Gamer.database.models.member
-        .find()
+        .find({ guildID: member.guild.id })
         .sort('-leveling.xp')
         .limit(3)
     ])
@@ -40,7 +46,7 @@ export default class {
     const [prevUser] = prevUsers
 
     if (!nextUser && !prevUser) {
-      message.channel.createMessage(NOT_ENOUGH)
+      message.channel.createMessage(language(`leveling/leaderboard:NOT_ENOUGH`))
       return
     }
 
@@ -83,10 +89,13 @@ export default class {
     )
   }
 
-  async makeGlobalCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
+  async makeGlobalCanvas(message: Message, member: Member) {
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
+    if (!language) return
+
     const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
     if (!userSettings?.leveling.xp) {
-      message.channel.createMessage(NO_POINTS)
+      message.channel.createMessage(language(`leveling/leaderboard:NO_POINTS`, { member: member.mention }))
       return
     }
 
@@ -112,7 +121,7 @@ export default class {
     const [prevUser] = prevUsers
 
     if (!nextUser && !prevUser) {
-      message.channel.createMessage(NOT_ENOUGH)
+      message.channel.createMessage(language(`leveling/leaderboard:NOT_ENOUGH`))
       return
     }
 
@@ -155,29 +164,33 @@ export default class {
     )
   }
 
-  public async makeVoiceCanvas(message: Message, member: Member, NO_POINTS: string, NOT_ENOUGH: string) {
+  public async makeVoiceCanvas(message: Message, member: Member) {
+    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
+    if (!language) return
+
     const memberSettings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
     if (!memberSettings?.leveling.voicexp) {
-      message.channel.createMessage(NO_POINTS)
+      message.channel.createMessage(language(`leveling/leaderboard:NO_POINTS`, { member: member.mention }))
       return
     }
 
     const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
       this.Gamer.database.models.member
-        .find({ 'leveling.voicexp': { $gt: memberSettings.leveling.voicexp } })
+        .find({ 'leveling.voicexp': { $gt: memberSettings.leveling.voicexp }, guildID: member.guild.id })
         .countDocuments(),
       this.Gamer.database.models.member
         .find({
-          'leveling.voicexp': { $gt: memberSettings.leveling.voicexp }
+          'leveling.voicexp': { $gt: memberSettings.leveling.voicexp },
+          guildID: member.guild.id
         })
         .sort('leveling.voicexp')
         .limit(1),
       this.Gamer.database.models.member
-        .find({ 'leveling.voicexp': { $lt: memberSettings.leveling.voicexp } })
+        .find({ 'leveling.voicexp': { $lt: memberSettings.leveling.voicexp }, guildID: member.guild.id })
         .sort('-leveling.voicexp')
         .limit(1),
       this.Gamer.database.models.member
-        .find()
+        .find({ guildID: member.guild.id })
         .sort('-leveling.voicexp')
         .limit(3)
     ])
@@ -186,7 +199,7 @@ export default class {
     const [prevUser] = prevUsers
 
     if (!nextUser && !prevUser) {
-      message.channel.createMessage(NOT_ENOUGH)
+      message.channel.createMessage(language(`leveling/leaderboard:NOT_ENOUGH`))
       return
     }
 
