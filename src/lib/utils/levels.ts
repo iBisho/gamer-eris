@@ -42,8 +42,10 @@ export default class {
     memberSettings.leveling.xp = totalXP
     memberSettings.leveling.lastUpdatedAt = Date.now()
 
+    const memberLevel =
+      constants.levels.find(lvl => lvl.xpNeeded > (memberSettings.leveling.xp || 0)) || constants.levels[0]
     // Get the details on the users next level
-    const nextLevelInfo = constants.levels.find(lvl => lvl.level === memberSettings.leveling.level + 1)
+    const nextLevelInfo = constants.levels.find(lvl => lvl.level === memberLevel.level + 1)
     // User did not level up
     if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) {
       memberSettings.save()
