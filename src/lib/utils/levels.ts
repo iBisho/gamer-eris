@@ -144,7 +144,7 @@ export default class {
   async removeXP(member: Member, xpAmountToRemove = 1) {
     if (xpAmountToRemove < 1) return
 
-    const settings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
+    const settings = await this.Gamer.database.models.member.findOne({ memberID: member.id, guildID: member.guild.id })
     if (!settings) return
 
     // If the XP is less than 0 after removing then set it to 0
