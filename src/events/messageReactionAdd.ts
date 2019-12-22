@@ -35,7 +35,7 @@ export default class extends Event {
 
     // Messages must be from Gamer
     if (message.author.id !== Gamer.user.id) return
-
+    console.log('here')
     this.handleProfileReaction(message, emoji, user)
     this.handleEventReaction(message, emoji, userID)
     this.handleNetworkReaction(message, emoji, user)
@@ -129,16 +129,17 @@ export default class extends Event {
   }
 
   async handleProfileReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (
-      message.channel instanceof PrivateChannel ||
-      message.channel instanceof GroupChannel ||
-      user.id !== Gamer.user.id
-    )
-      return
-
+    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    console.log(1)
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
-    if (constants.emojis.discord !== fullEmojiName || !message.embeds.length || !message.attachments.length) return
+    console.log(constants.emojis.discord === fullEmojiName, message.embeds.length, message.attachments.length)
+    if (constants.emojis.discord !== fullEmojiName || !message.embeds.length) return
 
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+    if (!language) return
+
+    const [embed] = message.embeds
+    if (embed.title !== language(`leveling/profile:CURRENT_MISSIONS`)) return
     Gamer.amplitude.push({
       authorID: message.author.id,
       channelID: message.channel.id,
