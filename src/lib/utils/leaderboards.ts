@@ -15,7 +15,10 @@ export default class {
     const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
     if (!language) return
 
-    const memberSettings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
+    const memberSettings = await this.Gamer.database.models.member.findOne({
+      memberID: member.id,
+      guildID: member.guild.id
+    })
     if (!memberSettings?.leveling.xp) {
       message.channel.createMessage(language(`leveling/leaderboard:NO_POINTS`, { member: member.mention }))
       return
@@ -168,7 +171,10 @@ export default class {
     const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
     if (!language) return
 
-    const memberSettings = await this.Gamer.database.models.member.findOne({ memberID: member.id })
+    const memberSettings = await this.Gamer.database.models.member.findOne({
+      memberID: member.id,
+      guildID: member.guild.id
+    })
     if (!memberSettings?.leveling.voicexp) {
       message.channel.createMessage(language(`leveling/leaderboard:NO_POINTS`, { member: member.mention }))
       return
