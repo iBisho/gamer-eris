@@ -51,9 +51,9 @@ export default class {
     }
 
     const rankText = nextUser
-      ? `${this.transformXP(nextUser.leveling.voicexp - memberSettings.leveling.voicexp)} EXP Behind`
+      ? `${this.transformXP(nextUser.leveling.xp - memberSettings.leveling.xp)} EXP Behind`
       : prevUser
-      ? `${this.transformXP(memberSettings.leveling.voicexp - prevUser.leveling.voicexp)} EXP Ahead`
+      ? `${this.transformXP(memberSettings.leveling.xp - prevUser.leveling.xp)} EXP Ahead`
       : 'Unknown'
 
     const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
