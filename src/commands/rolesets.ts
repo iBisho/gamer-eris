@@ -32,7 +32,7 @@ export default new Command(`rolesets`, async (message, _args, context) => {
       return role.name
     })
 
-    const text = `**${roleset.name}**: ${roles.join(' ')}\n`
+    const text = `**${roleset.name}**: ${roles.join(', ')}\n`
     if (response.length + text.length >= 2000) break
     response += text
   }
