@@ -3,6 +3,7 @@ import fetch from 'node-fetch'
 import { Message, Member, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import Constants from '../../constants/index'
+import constants from '../../constants/index'
 
 interface ProfileCanvasOptions {
   style?: string
@@ -31,7 +32,12 @@ export default class {
     // SERVER XP DATA
     const serverLevelDetails = Constants.levels.find(lev => lev.xpNeeded > (memberSettings?.leveling.xp || 0))
     const globalLevelDetails = Constants.levels.find(lev => lev.xpNeeded > (userSettings?.leveling.xp || 0))
-    if (!serverLevelDetails || !globalLevelDetails) return
+    const previousServerLevelDetails =
+      Constants.levels.find(lev => lev.level === (serverLevelDetails?.level || 0) - 1) || constants.levels[0]
+    const previousGlobalLevelDetails =
+      Constants.levels.find(lev => lev.level === (globalLevelDetails?.level || 0) - 1) || constants.levels[0]
+
+    if (!serverLevelDetails || !globalLevelDetails || !previousServerLevelDetails || !previousGlobalLevelDetails) return
 
     const memberLevel = serverLevelDetails.level
     const totalMemberXP = memberSettings?.leveling.xp || 0
@@ -57,9 +63,9 @@ export default class {
     // Calculate Progress
     const xpBarWidth = 360
 
-    const sRatio = memberXP / serverLevelDetails.xpNeeded
+    const sRatio = memberXP / (serverLevelDetails.xpNeeded - previousServerLevelDetails.xpNeeded)
     const sProgress = xpBarWidth * sRatio
-    const gRatio = globalXP / globalLevelDetails.xpNeeded
+    const gRatio = globalXP / (globalLevelDetails.xpNeeded - previousGlobalLevelDetails.xpNeeded)
     const gProgress = xpBarWidth * gRatio
 
     // STYLES EVALUATION AND DATA
@@ -161,13 +167,15 @@ export default class {
       .setColor(sRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
-      .addText(`${memberXP}/${serverLevelDetails.xpNeeded}`, 190, 280)
+      // .addText(`${memberXP}/${previousServerLevelDetails?.xpNeeded - serverLevelDetails.xpNeeded}`, 190, 280)
+      .addText(`${memberXP}/${serverLevelDetails.xpNeeded - previousServerLevelDetails?.xpNeeded}`, 190, 280)
 
       // global xp bar text
       .setColor(gRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
-      .addText(`${globalXP}/${globalLevelDetails.xpNeeded}`, 190, 390)
+      // .addText(`${globalXP}/${previousGlobalLevelDetails?.xpNeeded - globalLevelDetails.xpNeeded}`, 190, 390)
+      .addText(`${globalXP}/${globalLevelDetails.xpNeeded - previousGlobalLevelDetails?.xpNeeded}`, 190, 390)
 
       // clan info (logo, text)
       .addCircularImage(Gamer.buffers.botLogo, 555, 480, 50, true)
