@@ -146,7 +146,8 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   }
 
   const command = Gamer.commandForName(commandName)
-  if (!command) return message.channel.createMessage(language(`basic/help:UNKNOWN`, { name: commandName }))
+  if (!command)
+    return Gamer.helpers.discord.embedResponse(message, language(`basic/help:UNKNOWN`, { name: commandName }))
 
   const name = command.names[0].toLowerCase()
   const category = categories.find(c => c.commands.includes(name)) || { name: `basic` }

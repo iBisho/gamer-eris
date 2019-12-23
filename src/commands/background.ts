@@ -39,7 +39,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       if (isNaN(backgroundID)) break
       // If the id is an invalid background send the user a link to the wiki page to find a valid id
       if (!constants.profiles.backgrounds.find(bg => bg.id === backgroundID))
-        return message.channel.createMessage(language(`leveling/background:INVALID`, { id }))
+        return Gamer.helpers.discord.embedResponse(message, language(`leveling/background:INVALID`, { id }))
 
       // If there was no theme or differnet theme but a valid id was provided just save the id
       if (!theme || theme === userSettings.profile.theme) {

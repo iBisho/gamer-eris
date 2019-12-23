@@ -10,7 +10,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch --preserveWatchOutput",
     "clean": "rimraf production",
-    "dev": "npm run develop",
+    "dev": "npm run build && npm run start",
     "develop": "npm run build && concurrently --handle-input -c \"bgBlue.bold,bgMagenta.bold\" -n app,ts \"nodemon --delay 3s production/src/index\" \"npm run build:watch\" "
   },
   "repository": {

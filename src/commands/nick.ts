@@ -69,5 +69,8 @@ export default new Command([`nick`], async (message, args, context) => {
 
   member.edit({ nick: args.join(` `).substring(0, 32) }, REASON)
 
-  return message.channel.createMessage(language(`moderation/nick:EDITED_MEMBER`, { member: member.username }))
+  return Gamer.helpers.discord.embedResponse(
+    message,
+    language(`moderation/nick:EDITED_MEMBER`, { member: member.username })
+  )
 })

@@ -1,10 +1,22 @@
 import { Message, AnyGuildChannel, Member, Role } from 'eris'
 import config from '../../../config'
 import constants from '../../constants'
+import GamerEmbed from '../structures/GamerEmbed'
 
 const emojiRegex = /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/
 
 export default class {
+  embedResponse(message: Message, text: string) {
+    const embed = new GamerEmbed()
+      .setAuthor(
+        `${message.member?.nick || message.author.username}#${message.author.discriminator}`,
+        message.author.avatarURL
+      )
+      .setDescription(text)
+
+    return message.channel.createMessage({ embed: embed.code })
+  }
+
   // Evaluate if the user is a bot owner or a bot mod
   isBotOwnerOrMod(message: Message) {
     const botMods = config.staff.mods

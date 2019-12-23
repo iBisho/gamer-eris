@@ -24,10 +24,7 @@ export default new Command(`cuddle`, async (message, _args, context) => {
   const user = message.mentions.length ? message.mentions[0] : message.author
 
   const embed = new GamerEmbed()
-    .setAuthor(
-      message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.avatarURL
-    )
+    .setAuthor(message.member.nick || message.member.username, message.author.avatarURL)
     .setDescription(
       language(user.id === message.author.id ? `fun/cuddle:SELF` : `fun/cuddle:REPLY`, {
         mention: user.mention,

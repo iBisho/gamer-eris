@@ -41,10 +41,11 @@ export default new Command(`label`, async (message, args, context) => {
         name,
         guildID: message.channel.guild.id
       })
-      if (!labelToDelete) return message.channel.createMessage(language(`mails/label:INVALID_NAME`, { name }))
+      if (!labelToDelete)
+        return Gamer.helpers.discord.embedResponse(message, language(`mails/label:INVALID_NAME`, { name }))
 
       await Gamer.database.models.label.deleteOne({ name, guildID: message.channel.guild.id })
-      return message.channel.createMessage(language(`mails/label:DELETED`, { name }))
+      return Gamer.helpers.discord.embedResponse(message, language(`mails/label:DELETED`, { name }))
     case `create`:
       if (!name || !categoryID) return helpCommand.execute(message, [`label`], context)
       const category = message.channel.guild.channels.get(categoryID)
@@ -55,7 +56,8 @@ export default new Command(`label`, async (message, args, context) => {
         guildID: message.channel.guild.id
       })
 
-      if (labelExists) return message.channel.createMessage(language(`mails/label:LABEL_EXISTS`, { name }))
+      if (labelExists)
+        return Gamer.helpers.discord.embedResponse(message, language(`mails/label:LABEL_EXISTS`, { name }))
 
       await Gamer.database.models.label.create({
         authorID: message.author.id,
@@ -64,14 +66,15 @@ export default new Command(`label`, async (message, args, context) => {
         name
       })
 
-      return message.channel.createMessage(language(`mails/label:CREATED`, { name }))
+      return Gamer.helpers.discord.embedResponse(message, language(`mails/label:CREATED`, { name }))
     case `set`:
       if (!name) return helpCommand.execute(message, [`label`], context)
       const labelToSet = await Gamer.database.models.label.findOne({
         name,
         guildID: message.channel.guild.id
       })
-      if (!labelToSet) return message.channel.createMessage(language(`mails/label:INVALID_NAME`, { name }))
+      if (!labelToSet)
+        return Gamer.helpers.discord.embedResponse(message, language(`mails/label:INVALID_NAME`, { name }))
 
       const mail = await Gamer.database.models.mail.findOne({
         id: message.channel.id

@@ -38,16 +38,15 @@ export default class {
       }
     }
 
+    const memberLevel =
+      constants.levels.find(lvl => lvl.xpNeeded > (memberSettings.leveling.xp || 0)) || constants.levels[0]
+
     const totalXP = xpAmountToAdd * multiplier + memberSettings.leveling.xp
     memberSettings.leveling.xp = totalXP
     memberSettings.leveling.lastUpdatedAt = Date.now()
 
-    const memberLevel =
-      constants.levels.find(lvl => lvl.xpNeeded > (memberSettings.leveling.xp || 0)) || constants.levels[0]
-    // Get the details on the users next level
-    const nextLevelInfo = constants.levels.find(lvl => lvl.level === memberLevel.level + 1)
     // User did not level up
-    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) {
+    if (memberLevel.xpNeeded > totalXP) {
       memberSettings.save()
       return
     }
@@ -65,10 +64,10 @@ export default class {
     memberSettings.leveling.level = newLevel.level
     memberSettings.save()
     // Fetch all custom guild levels data
-    const allGuildLevels = await this.Gamer.database.models.level.find({ guildID: member.guild.id })
-    if (!allGuildLevels) return
-    // Find if this level has any custom data
-    const levelData = allGuildLevels.find(data => data.level === newLevel.level)
+    const levelData = await this.Gamer.database.models.level.findOne({
+      guildID: member.guild.id,
+      level: newLevel.level
+    })
     // If it has roles to give then give them to the user
     if (!levelData || !levelData.roleIDs.length) return
 

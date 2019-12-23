@@ -36,7 +36,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
     }
 
     if (!response.length) return message.channel.createMessage(language(`leveling/levelrole:NONE`))
-    return message.channel.createMessage(response)
+    return Gamer.helpers.discord.embedResponse(message, response)
   }
 
   const levelID = parseInt(number, 10)
@@ -70,7 +70,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
         guildID: guild.id,
         authorID: message.author.id
       })
-      return message.channel.createMessage(language(`leveling/levelrole:CREATED`, { level: levelID }))
+      return Gamer.helpers.discord.embedResponse(message, language(`leveling/levelrole:CREATED`, { level: levelID }))
     case `add`:
       if (!levelRoleData) return
 

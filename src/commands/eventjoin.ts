@@ -2,7 +2,6 @@ import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, GroupChannel } from 'eris'
 import { GamerEvent } from '../lib/types/gamer'
-import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`eventjoin`, `ej`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
@@ -33,14 +32,13 @@ export default new Command([`eventjoin`, `ej`], async (message, args, context) =
     ? message.member.roles.some(roleID => event.allowedRoleIDs.includes(roleID))
     : true
 
-  if (!hasPermission) {
-    const embed = new GamerEmbed().setAuthor(message.author.username, message.author.avatarURL).setDescription(
+  if (!hasPermission)
+    return Gamer.helpers.discord.embedResponse(
+      message,
       language(`events/eventjoin:MISSING_ALLOWED_ROLES`, {
         roles: event.allowedRoleIDs.map(id => `<@&${id}>`).join(', ')
       })
     )
-    return message.channel.createMessage({ embed: embed.code })
-  }
 
   const response = Gamer.helpers.events.joinEvent(event, message.author.id, language)
   event.save()
