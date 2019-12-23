@@ -88,7 +88,10 @@ export default new Command(`verify`, async (message, args, context) => {
         callback: async msg => {
           // The text did not match so it cancel out
           if (msg.content !== captchaCode) {
-            await msg.channel.createMessage(language(`basic/verify:INVALID_CAPTCHA_CODE`, { code: captchaCode }))
+            await Gamer.helpers.discord.embedResponse(
+              msg,
+              language(`basic/verify:INVALID_CAPTCHA_CODE`, { code: captchaCode })
+            )
             // Run the command again for them to generate a new captcha code
             const verifyCommand = Gamer.commandForName(`verify`)
             if (!verifyCommand) return
@@ -203,7 +206,7 @@ export default new Command(`verify`, async (message, args, context) => {
       }
       const embedCode = JSON.parse(transformed)
       if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
-      embedCode.color = 0x41ebf4
+      if (!embedCode.color) embedCode.color = 0x41ebf4
       // send a message to the new channel
       return newChannel.createMessage({ content: message.author.mention, embed: embedCode })
   }
