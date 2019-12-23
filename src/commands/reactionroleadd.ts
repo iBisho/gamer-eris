@@ -46,7 +46,7 @@ export default new Command([`reactionroleadd`, `rra`], async (message, args, con
     guildID: message.channel.guild.id
   })
 
-  if (!reactionRole) return message.channel.createMessage(language(`role/reactionroleadd:NOT_FOUND`, { name }))
+  if (!reactionRole) return message.channel.createMessage(language(`roles/reactionroleadd:NOT_FOUND`, { name }))
 
   const reaction = Gamer.helpers.discord.convertEmoji(validEmoji.fullCode, `reaction`)
   if (!reaction) return
