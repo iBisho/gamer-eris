@@ -11,7 +11,7 @@ const networkReactions = [constants.emojis.heart, constants.emojis.repeat, const
 export default class extends Event {
   async execute(rawMessage: PossiblyUncachedMessage, emoji: ReactionEmoji, userID: string) {
     if (rawMessage.channel instanceof PrivateChannel || rawMessage.channel instanceof GroupChannel) return
-    if (!rawMessage.channel.guild) return console.log('rr RAWMESSAGE guild undefined', rawMessage)
+
     const user = Gamer.users.get(userID)
     if (!user || user.bot) return
 
