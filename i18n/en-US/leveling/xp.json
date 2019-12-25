@@ -3,6 +3,7 @@
   "EXTENDED": "$t(leveling/xp:EXTENDED_LINE_1)\n$t(leveling/xp:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}xp add 5 @user :** ~ Adds 5 XP to the user.",
   "EXTENDED_LINE_2": "**{{prefix}}xp remove 5 @user :** ~ Removes 5XP from the user.",
+  "USAGE": "{{prefix}}xp [add | remove] [amount] *[User]*",
   "ALIASES": "XP has no aliases.",
   "ADDED": "{{mention}} has been given {{amount}} XP.",
   "REMOVED": "{{mention}} has lost {{amount}} XP.",

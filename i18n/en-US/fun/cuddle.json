@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "When you really need a good cuddle.",
+	"EXTENDED": "**{{prefix}}cuddle [User]** ~ Sends a cuddle gif in the channel.",
+	"USAGE": "{{prefix}}cuddle *[User]*",
+	"ALIASES": "Cuddle does not have any aliases.",
+	"REPLY": "***{{mention}} a good cuddle is life changing! By {{author}}!***",
+	"SELF": "How does it feel to cuddle oneself? I am not programmed to cuddle myself, so won't you consider cuddling me? :)"
+}
