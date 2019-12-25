@@ -46,7 +46,7 @@ export default new Command(`public`, async (message, args, context) => {
 
   switch (type.toLowerCase()) {
     case `add`:
-      settings.moderation.roleIDs.public = roleIDs
+      for (const id of roleIDs) settings.moderation.roleIDs.public.push(id)
       settings.save()
       return message.channel.createMessage(language(`roles/public:ADDED`, { roles: roleNames }))
     case `remove`:
