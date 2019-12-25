@@ -19,9 +19,10 @@ export default new Command(`afk`, async (message, args, context) => {
   if (!args.length) {
     userSettings.afk.enabled = !userSettings.afk.enabled
     userSettings.save()
-    return message.channel.createMessage(
+    message.channel.createMessage(
       language(userSettings.afk.enabled ? `settings/afk:STATUS_ISENABLED` : `settings/afk:STATUS_ISDISABLED`)
     )
+    return Gamer.helpers.levels.completeMission(message.member, `afk`, message.channel.guild.id)
   }
 
   const content = args.join(' ')
@@ -40,6 +41,5 @@ export default new Command(`afk`, async (message, args, context) => {
   // Update the message
   userSettings.afk.message = content
   userSettings.save()
-  message.channel.createMessage(language(`settings/afk:MESSAGE_UPDATED`))
-  return Gamer.helpers.levels.completeMission(message.member, `afk`, message.channel.guild.id)
+  return message.channel.createMessage(language(`settings/afk:MESSAGE_UPDATED`))
 })
