@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Rendez la journée d'une personne meilleure avec un gif positif!",
+  "EXTENDED": "$t(fun/compliment:EXTENDED_LINE_1)\n$t(fun/compliment:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}comp [Membre]** ~ Complimentez le membre spécifié.",
+  "EXTENDED_LINE_2": "**{{prefix}}comp [Rôle]** ~ Complimentez les membres ayant le rôle spécifié.",
+  "USAGE": "{{prefix}}compliment [Membre ou Rôle]",
+  "ALIASES": "{{prefix}}comp",
+  "REPLY": "***{{author}} a envoyé ça à {{memberOrRole}} rien que pour lui/elle :heart:***"
+}
