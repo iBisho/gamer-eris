@@ -253,9 +253,11 @@ export default class {
 
     // If the user already got the rewards for this mission
     if (missionData.completed) return
+
+    missionData.amount += 1
+
     // The mission has not been completed so just increment by 1
     if (missionData.amount + 1 <= mission.amount) {
-      missionData.amount += 1
       missionData.save()
       return
     }
