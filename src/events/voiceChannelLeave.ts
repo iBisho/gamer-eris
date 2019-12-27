@@ -28,5 +28,8 @@ export default class extends Event {
     memberSettings.leveling.joinedVoiceAt = 0
     memberSettings.leveling.voicexp += totalMinutesInVoice
     memberSettings.save()
+
+    // If more than 10 minutes they have fulfilled the mission
+    if (totalMinutesInVoice >= 10) Gamer.helpers.levels.completeMission(member, `voice10min`, member.guild.id)
   }
 }

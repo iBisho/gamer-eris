@@ -6,7 +6,7 @@ import { TenorGif } from '../lib/types/tenor'
 import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`kiss`, async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
 
@@ -24,10 +24,7 @@ export default new Command(`kiss`, async (message, _args, context) => {
   const user = message.mentions.length ? message.mentions[0] : message.author
 
   const embed = new GamerEmbed()
-    .setAuthor(
-      message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.avatarURL
-    )
+    .setAuthor(message.member.nick || message.member.username, message.author.avatarURL)
     .setDescription(
       language(user.id === message.author.id ? `fun/kiss:SELF` : `fun/kiss:REPLY`, {
         mention: user.mention,
@@ -37,5 +34,6 @@ export default new Command(`kiss`, async (message, _args, context) => {
     .setImage(media.gif.url)
     .setFooter(`Via Tenor`)
 
-  return message.channel.createMessage({ embed: embed.code })
+  message.channel.createMessage({ embed: embed.code })
+  return Gamer.helpers.levels.completeMission(message.member, `kiss`, message.channel.guild.id)
 })

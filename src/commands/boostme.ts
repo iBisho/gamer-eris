@@ -43,7 +43,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
     const newBoost = {
       name: language(`leveling/boostme:SMALL_BOOSTER`),
       active: true,
-      multiplier: 5,
+      multiplier: 3,
       timestamp: 60000 * 30,
       activatedAt: Date.now()
     }

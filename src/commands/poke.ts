@@ -3,9 +3,13 @@ import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TenorGif } from '../lib/types/tenor'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`poke`, async (message, _args, context) => {
-  const language = (context.client as GamerClient).i18n.get('en-US')
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  const Gamer = context.client as GamerClient
+
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return null
 
   const data: TenorGif | null = await fetch(`https://api.tenor.com/v1/search?q=poke&key=LIVDSRZULELA&limit=50`)
@@ -19,10 +23,7 @@ export default new Command(`poke`, async (message, _args, context) => {
   const user = message.mentions.length ? message.mentions[0] : message.author
 
   const embed = new GamerEmbed()
-    .setAuthor(
-      message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.avatarURL
-    )
+    .setAuthor(message.member.nick || message.member.username, message.author.avatarURL)
     .setDescription(
       language(user.id === message.author.id ? `fun/poke:SELF` : `fun/poke:REPLY`, {
         mention: user.mention,
@@ -32,5 +33,6 @@ export default new Command(`poke`, async (message, _args, context) => {
     .setImage(media.gif.url)
     .setFooter(`Via Tenor`)
 
-  return message.channel.createMessage({ embed: embed.code })
+  message.channel.createMessage({ embed: embed.code })
+  return Gamer.helpers.levels.completeMission(message.member, `poke`, message.channel.guild.id)
 })
