@@ -18,6 +18,12 @@ export default new Command([`leaderboard`, `lb`], async (message, args, context)
   const globalTypes = [`g`, `global`, ...language(`common:GLOBAL_OPTIONS`, { returnObjects: true })]
   const voiceTypes = [`v`, `voice`, ...language(`common:VOICE_OPTIONS`, { returnObjects: true })]
 
+  // Special needs for vip servers
+  if (['334791529296035840'].includes(message.channel.guild.id)) {
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
+  }
+
   let buffer: Buffer | undefined
   if ((id && globalTypes.includes(id.toLowerCase())) || (type && globalTypes.includes(type.toLowerCase()))) {
     buffer = await Gamer.helpers.leaderboards.makeGlobalCanvas(message, member)
