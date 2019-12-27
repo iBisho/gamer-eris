@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Cite un message en utilisant son ID.",
+	"EXTENDED": "$t(utility/quote:EXTENDED_LINE_1)\n$t(utility/quote:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}quote [ID message]** ~ Cite un message du salon actuel en utilisant l'ID du message.",
+	"EXTENDED_LINE_2": "**{{prefix}}quote [ID message] [#Salon]** ~ Cite un message provenant d'un autre salon en utilisant son ID.",
+	"USAGE": "{{prefix}}quote [ID message] *[Salon]* ",
+	"ALIASES": "Quote n'a pas d'alias.",
+	"CLICK_HERE": "[Cliquez ici pour accéder au message]({{url}})",
+	"EMBED": "Le message spécifié est un embed, impossible de le citer. Le lien direct vers le message est quand même utilisable."
+}

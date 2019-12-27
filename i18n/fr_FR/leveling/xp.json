@@ -3,6 +3,7 @@
   "EXTENDED": "$t(leveling/xp:EXTENDED_LINE_1)\n$t(leveling/xp:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}xp add 5 @membre :** ~ Ajoute 5 d'XP au membre spécifié.",
   "EXTENDED_LINE_2": "**{{prefix}}xp remove 5 @membre :** ~ Retire 5 d'XP au membre spécifié.",
+  "USAGE": "{{prefix}}xp [add | remove] [Quantité] *[Membre]*",
   "ALIASES": "XP n'a pas d'alias.",
   "ADDED": "{{amount}} d'XP ont été donné à {{mention}} .",
   "REMOVED": "{{mention}} a perdu {{amount}} d'XP.",

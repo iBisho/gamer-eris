@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "La commande AFK vous permet de définir un message de réponse automatique, qui sera envoyé à la personne vous ayant mentionné. (quand activé)",
+  "EXTENDED": "$t(settings/afk:EXTENDED_LINE_1)\n$t(settings/afk:EXTENDED_LINE_2)\n\n$t(settings/afk:EXTENDED_LINE_3)\n$t(settings/afk:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}afk** ~ Active / Désactive la réponse automatique du message AFK.",
+  "EXTENDED_LINE_2": "**{{prefix}}afk [Votre message]** ~ Modifie votre message d'AFK.",
+  "EXTENDED_LINE_3": "• Avancé: Vous pouvez aussi customiser votre message d'AFK avec un embed!",
+  "EXTENDED_LINE_4": "~ Consultez **{{prefix}}h embed** pour plus d'infos.",
+  "USAGE": "{{prefix}}afk *[Votre message]*",
+  "ALIASES": "AFK n'a pas d'alias.",
+  "MESSAGE_UPDATED": "Votre message d'AFK a bien été mis à jour! Le statut AFK n'est pas activé automatiquement, vous devez le faire manuellement.",
+  "STATUS_ISENABLED": "Vous avez **ACTIVÉ** votre réponse AFK automatique.",
+  "STATUS_ISDISABLED": "Vous avez **DÉSACTIVÉ** votre réponse AFK automatique.",
+  "INVALID_JSON": "Le message fourni n'avait pas le code JSON valide car il y a des erreurs. Veuillez utiliser un embed builder pour générer un code JSON valide. https://leovoel.github.io/embed-visualizer/",
+  "REASON": "Message d'AFK auto-supprimé."
+}
