@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Uma maneira fácil de partilhar o link do painel Gamer",
+  "EXTENDED": "**{{prefix}}invite** ~ Mostra o link de convite para o bot ser convidado para o seu servidor e um link para se juntar ao servidor de Suporte se precisar de ajuda.",
+  "USAGE": "{{prefix}}invite",
+  "ALIASES": "{{prefix}}join",
+  "EMBED_DESCRIPTION": "Visite o nosso website **https://gamer.netlify.com** para adicionar o bot ao seu servidor!",
+  "LINKS": "$t(basic/invite:LINKS_LINE_1)\n$t(basic/invite:LINKS_LINE_2)",
+  "LINKS_LINE_1": "**»** <:g4m3rwhite:443416083874054145> **Convide o Bot!**: [Clique Aqui Para Convidar O Bot]({{invite}})",
+  "LINKS_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Precisa de Ajuda?**: [Servidor de Suporte](https://discord.gg/J4NqJ72)"
+}
