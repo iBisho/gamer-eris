@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Dá um tapa no usuário mencionado e envia uma imagem no chat.",
+	"EXTENDED": "**{{prefix}}slap [usuário]** ~ Dá um tapa no usuário, na cara, com um chai ~ quero dizer, envia um gif de tapa para o usuário.",
+	"USAGE": "{{prefix}}slap [usuário]",
+	"ALIASES": "O tapa não possui aliases.",
+	"REPLY": "***{{mention}} foi golpeado por {{author}}!***",
+	"SELF": "Tapa-se é uma ótima maneira de manter-se afiado. Mas não faça isso muito difícil, pode doer."
+}
