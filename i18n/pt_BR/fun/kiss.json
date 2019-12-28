@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Beija o usuário / função mencionado e envia uma imagem no chat.",
+	"EXTENDED": "**{{prefix}}kiss [Usuário]** ~ Envia um beijo para o usuário escolhido.",
+	"USAGE": "{{prefix}}kiss [Usuário]",
+	"ALIASES": "Kiss não possui nenhum apelido.",
+	"REPLY": "***{{mention}} foi beijado por {{author}}!***",
+	"SELF": "Quando você se ama tanto, precisa se beijar. Eu faço isso pelo menos uma vez por dia também!"
+}
