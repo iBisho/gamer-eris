@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Faça o dia de alguém melhor com um gif positivo aleatório!",
+  "EXTENDED": "$t(fun/compliment:EXTENDED_LINE_1)\n$t(fun/compliment:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}comp [Usuário]** ~ Elogie o usuário.",
+  "EXTENDED_LINE_2": "**{{prefix}}compliment** ~ Elogie-se. ",
+  "USAGE": "{{prefix}}compliment [Usuário]",
+  "ALIASES": "{{prefix}}comp",
+  "REPLY": "***{{author}} enviou isso apenas para você {{mention}} :heart:***"
+}
