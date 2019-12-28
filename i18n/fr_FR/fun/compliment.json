@@ -5,5 +5,5 @@
   "EXTENDED_LINE_2": "**{{prefix}}comp [Rôle]** ~ Complimentez les membres ayant le rôle spécifié.",
   "USAGE": "{{prefix}}compliment [Membre ou Rôle]",
   "ALIASES": "{{prefix}}comp",
-  "REPLY": "***{{author}} a envoyé ça à {{memberOrRole}} rien que pour lui/elle :heart:***"
+  "REPLY": "***{{author}} t'a envoyé ça :heart: {{mention}}***"
 }
