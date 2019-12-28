@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Pica o usuário / função mencionado e envia um gif no chat.",
+	"EXTENDED": "**{{prefix}}poke [@usuário]** ~ Pica o usuário mencionado e envia um gif para o chat.",
+	"USAGE": "{{prefix}}poke [@usuário]",
+	"ALIASES": "Poke não possui nenhum alias.",
+	"REPLY": "***{{mention}} was poked by {{author}}!***",
+	"SELF": "Às vezes eu preciso me acordar também. Levante-se e brilhe!"
+}
