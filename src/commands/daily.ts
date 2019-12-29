@@ -27,7 +27,7 @@ export default new Command(`daily`, async (message, _args, context) => {
   else Gamer.cooldowns.set(cooldownID, now + milliseconds.DAY)
 
   const userSettings =
-    (await Gamer.database.models.user.findOne({ id: message.author.id })) ||
+    (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
     (await Gamer.database.models.user.create({ userID: message.author.id }))
 
   userSettings.leveling.currency = userSettings.leveling.currency + 10

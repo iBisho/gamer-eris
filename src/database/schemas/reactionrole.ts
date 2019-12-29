@@ -13,11 +13,11 @@ export default new mongoose.Schema({
     }
   ],
   // The message id that this reaction role is tied to
-  messageID: { type: String, required: true },
+  messageID: { type: String, required: true, index: true },
   // The channel id where the reaction role is tied to
   channelID: { type: String, required: true },
   // The guild id where this reaction role was created
   guildID: { type: String, required: true },
   // The user id of the user who created this reaction role
   authorID: { type: String, required: true }
-})
+}).index({ name: 1, guildID: 1 })

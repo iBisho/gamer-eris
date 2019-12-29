@@ -13,4 +13,4 @@ export default new mongoose.Schema({
   type: String,
   // Whether the tag is allowed to be used on other servers
   isPublic: Boolean
-})
+}).index({ guildID: 1, name: 1 })

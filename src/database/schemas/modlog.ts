@@ -14,7 +14,7 @@ export default new mongoose.Schema({
   // The unique modlog id for the server
   modlogID: Number,
   // If this log was a temporary mute, this tells us that this log still needs to unmute this user
-  needsUnmute: Boolean,
+  needsUnmute: { type: Boolean, index: true },
   // The reason that the mod gave for this action
   reason: String,
   // The timestamp that this modlog was created

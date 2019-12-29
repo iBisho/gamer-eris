@@ -47,7 +47,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   const response = await message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
 
   const userSettings = await Gamer.database.models.user.findOne({
-    id: message.channel.guild.id
+    userID: message.author.id
   })
 
   const backgroundID = userSettings?.profile.backgroundID || 1

@@ -19,4 +19,4 @@ export default new mongoose.Schema({
     // Used to determine when the last time the user was active in the server. (Used for Inactive XP Removal)
     lastUpdatedAt: { type: Number, default: 0 }
   }
-})
+}).index({ memberID: 1, guildID: 1 })

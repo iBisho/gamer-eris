@@ -12,10 +12,10 @@ export default new mongoose.Schema({
   // Whether or not to delete the trigger message that activate this shortcut
   deleteTrigger: Boolean,
   // The guild id where this shortcut was created
-  guildID: String,
+  guildID: { type: String, index: true },
   // The name of the shortcut
   name: String
-})
+}).index({ guildID: 1, name: 1 })
 
 export interface GamerShortcut extends mongoose.Document {
   actions: ShortcutAction[]
