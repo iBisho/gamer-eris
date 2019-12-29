@@ -17,7 +17,7 @@ const darkMode = Constants.profiles.darkMode
 export default class {
   Gamer: GamerClient
 
-  defaultProfile: Canvas
+  defaultProfile: Buffer
 
   constructor(client: GamerClient) {
     this.Gamer = client
@@ -66,9 +66,14 @@ export default class {
       .resetShadows()
       .addRoundImage(this.Gamer.buffers.profiles.badges.shoptitans, 45, 455, 50, 50, 25, true)
       .addRoundImage(this.Gamer.buffers.profiles.badges.loud, 120, 455, 50, 50, 25, true)
+      .toBuffer()
   }
 
-  public async makeCanvas(message: Message, member: Member, Gamer: GamerClient, options?: ProfileCanvasOptions) {
+  get getDefaultProfile() {
+    return this.defaultProfile
+  }
+
+  async makeCanvas(message: Message, member: Member, Gamer: GamerClient, options?: ProfileCanvasOptions) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const [memberSettings, userSettings] = await Promise.all([
@@ -137,7 +142,9 @@ export default class {
 
     const canvasWidth = backgroundData.vipNeeded ? 952 : 852
 
-    const canvas = useDefaultProfile ? this.defaultProfile : new Canvas(canvasWidth, 581)
+    const canvas = useDefaultProfile
+      ? new Canvas(canvasWidth, 581).addImage(this.defaultProfile, 0, 0)
+      : new Canvas(canvasWidth, 581)
 
     if (!useDefaultProfile) {
       // SET USER OR DEFAULT BACKGROUND
