@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
   // The guild id will help make each document be unique
-  id: String,
+  id: { type: String, required: true, index: true },
   // The language that should be used for the server
   language: { type: String, default: `en-US` },
   // How many minutes to wait for a response from a user. ONLY VIP GUILDS CAN MODIFY.

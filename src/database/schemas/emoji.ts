@@ -10,5 +10,5 @@ export default new mongoose.Schema({
   // The guild id where the emoji is stored
   guildID: String,
   // The custom name for this emoji
-  name: String
+  name: { type: String, required: true, index: true }
 })
