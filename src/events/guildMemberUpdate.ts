@@ -136,7 +136,6 @@ export default class extends Event {
         // Make sure the bots role is high enough to manage this role
         const role = guild.roles.get(id)
         if (!role) continue
-
         if (botsHighestRole.position <= role.position) continue
 
         if (!roleIDsToRemove.includes(id)) roleIDsToRemove.push(id)

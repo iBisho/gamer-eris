@@ -72,7 +72,7 @@ Gamer.globalCommandRequirements = {
     }
 
     // If the user is using commands within 2 seconds ignore it
-    if (Gamer.slowmode.some(user => user.id === message.author.id)) {
+    if (Gamer.slowmode.has(message.author.id)) {
       // Cleans up spam command messages from users
       if (botPerms.has('manageMessages')) message.delete().catch(() => null)
       return false

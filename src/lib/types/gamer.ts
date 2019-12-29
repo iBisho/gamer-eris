@@ -166,8 +166,3 @@ export interface GamerRoleset extends Document {
   roleIDs: string[]
   name: string
 }
-
-export interface Slowmode {
-  id: string
-  timestamp: number
-}

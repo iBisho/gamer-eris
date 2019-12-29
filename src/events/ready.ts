@@ -183,10 +183,12 @@ export default class extends Event {
 
     // Clears out any user who is past the slowmode of 2 seconds
     setInterval(() => {
-      if (!Gamer.slowmode.length) return
+      if (!Gamer.slowmode.size) return
       const now = Date.now()
 
-      Gamer.slowmode = Gamer.slowmode.filter(user => now - user.timestamp < 2000)
+      Gamer.slowmode.forEach((timestamp, userID) => {
+        if (now - timestamp > 2000) Gamer.slowmode.delete(userID)
+      })
     }, milliseconds.SECOND)
 
     // Clears all cooldowns every 5 seconds
