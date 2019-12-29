@@ -16,7 +16,7 @@ export default class extends Event {
     const guildSettings = await Gamer.database.models.guild.findOne({ id: channel.guild.id })
     if (!guildSettings) return
 
-    this.handleRolePerms(channel)
+    this.handleRolePerms(channel, Gamer.user.id, guildSettings, language)
 
     this.handleServerlog(
       channel,
