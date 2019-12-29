@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Dá um tapinha no usuário / função mencionado e envia uma imagem no chat.",
+	"EXTENDED": "**{{prefix}}pat @usuário** ~ Dá um tapinha na cabeça do usuário.",
+	"USAGE": "{{prefix}}pat [@usuário]",
+	"ALIASES": "Pat não possui nenhum alias.",
+	"REPLY": "***{{mention}} foi afagado por {{author}}!***",
+	"SELF": "Um tapinha por dia mantém a festa viva!"
+}

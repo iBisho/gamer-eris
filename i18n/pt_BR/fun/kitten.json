@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "GIF ou imagem aleatória do gatinho!",
+	"EXTENDED": "**{{prefix}}kitten** ~ Envia o gatinho mais adorável para o seu bate-papo.",
+	"USAGE": "{{prefix}}kitten",
+	"ALIASES": "{{prefix}}cat",
+	"FACT": "**Fato aleatório do gato** 🐱: {{fact}}"
+}

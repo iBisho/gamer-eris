@@ -1,0 +1,11 @@
+{
+	"DESCRIPTION": "Ative seu primeiro XP Booster disponível.",
+	"EXTENDED": "**{{prefix}}boostme** ~ Ativa o primeiro XP Booster disponível que você possui.",
+	"USAGE": "{{prefix}}boostme",
+	"ALIASES": "{{prefix}}iamboosted {{prefix}}amiboosted {{prefix}}boostme",
+	"NO_BOOSTS": "Tem certeza de que possui algum booster de XP? Não consegui encontrar nenhum aumento que possa ser ativado no momento. Tente comprar um booster antes de ativá-lo.",
+	"BOOSTED": "Você é impulsionado agora! O impulso **{{name}}** foi ativado para fornecer a você {{multiplier}}x XP a partir de agora. Para verificar o tempo que você deixou com esse aumento, use o comando **{{prefix}}profile**.",
+	"NEED_XP": "Você precisa de mais de 100 XP para comprar e ativar automaticamente um booster com este comando.",
+	"SMALL_BOOSTER": "Pequeno 5x XP Booster",
+	"ALREADY_BOOSTED": "Você só pode ter 1 reforço ativo a qualquer momento. Tentando ser sorrateiro tsk tsk tsk. Para verificar o status do seu impulso, use o comando profile."
+}

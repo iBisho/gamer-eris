@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Abraça o usuário / função mencionado e envia um gif para o chat.",
+	"EXTENDED": "**{{prefix}}hug [Usuário]** ~ Abraça o usuário mencionado com um gif.",
+	"USAGE": "{{prefix}}hug [Usuário]",
+	"ALIASES": "Hug não possui nenhum alias.",
+	"REPLY": "***{{mention}} foi abraçado por {{user}}***",
+	"SELF": "Se você não tem ninguém para abraçar, sempre pode me abraçar."
+}

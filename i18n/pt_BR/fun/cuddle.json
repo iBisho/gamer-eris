@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Quando você realmente precisa de um bom abraço.",
+	"EXTENDED": "**{{prefix}}cuddle [Usuário]** ~ Envia um gif de carinho no canal.",
+	"USAGE": "{{prefix}}cuddle *[Usuário]*",
+	"ALIASES": "O abraço não possui nenhum alias.",
+	"REPLY": "***{{mention}} um bom abraço muda a vida! Por {{author}}!***",
+	"SELF": "Como é se abraçar? Eu não estou programado para me abraçar, então você não vai considerar me abraçar? :)"
+}

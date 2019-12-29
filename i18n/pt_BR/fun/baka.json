@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Envia um gif de Baka! no canal atual.",
+	"EXTENDED": "**{{prefix}}baka [Usuário]** ~ Envia um gif de baka no canal.",
+	"USAGE": "{{prefix}}baka [Usuário]",
+	"ALIASES": "Baka não possui nenhum alias.",
+	"REPLY": "***{{mention}} baka baka baka! Por {{author}}!***",
+	"SELF": "Concordo. Você é um baka por se chamar baka."
+}

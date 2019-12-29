@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Receba conselhos aleatórios no chat.",
+  "EXTENDED": "$t(fun/advice:EXTENDED_LINE_1)\n$t(fun/advice:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}advice** ~ O jogador posta conselhos no chat.",
+  "EXTENDED_LINE_2": "**{{prefix}}advice @member** ~ Envie alguns conselhos a um amigo.",
+  "USAGE": "{{prefix}}advice *[@Usuário | ID do Usuário]*",
+  "ALIASES": "{{prefix}}ad"
+}
