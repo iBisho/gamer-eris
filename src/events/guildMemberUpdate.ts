@@ -145,7 +145,7 @@ export default class extends Event {
     if (!roleIDsToRemove.length) return
 
     // Remove all roles with 1 api call
-    member.edit({ roles: member.roles.filter(id => !roleIDsToRemove.includes(id)) })
+    member.edit({ roles: member.roles.filter(id => !roleIDsToRemove.includes(id)) }).catch(() => undefined)
   }
 
   async handleVIPRole(Gamer: GamerClient, member: Member) {
