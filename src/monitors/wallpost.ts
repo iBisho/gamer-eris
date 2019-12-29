@@ -3,6 +3,7 @@ import { Message, PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import constants from '../constants'
+import nodefetch from 'node-fetch'
 
 const postReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
 const postPermissions = [
@@ -31,7 +32,11 @@ export default class extends Monitor {
     // Either the guild doesnt have custom settings or the wall channel wasnt setup or this isnt in the wall channel
     if (!guildSettings?.network.channelIDs.wall || guildSettings.network.channelIDs.wall !== message.channel.id) return
 
-    const imageURL = message.attachments.length ? message.attachments[0].url : null
+    const buffer = message.attachments.length
+      ? await nodefetch(message.attachments[0].url)
+          .then(res => res.buffer())
+          .catch(() => undefined)
+      : null
 
     const embed = new GamerEmbed()
       .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.avatarURL)
@@ -39,11 +44,11 @@ export default class extends Monitor {
       .setDescription(message.content)
       .setFooter(message.author.id)
       .setTimestamp()
-    if (imageURL) embed.setImage(imageURL)
+    if (buffer) embed.attachFile(buffer, 'imagepost.png')
 
     try {
       // Send the message the user posted as an embed
-      const posted = await message.channel.createMessage({ embed: embed.code })
+      const posted = await message.channel.createMessage({ embed: embed.code }, embed.file)
       // Add the reactions to the message
       for (const reaction of postReactions) {
         const validReaction = Gamer.helpers.discord.convertEmoji(reaction, `reaction`)
@@ -54,7 +59,7 @@ export default class extends Monitor {
       await message.delete().catch(() => null)
 
       // If an image was attached post the image in #photos
-      if (imageURL) {
+      if (buffer) {
         const photosChannel = guildSettings.network.channelIDs.photos
           ? message.channel.guild.channels.get(guildSettings.network.channelIDs.photos)
           : null
@@ -68,7 +73,7 @@ export default class extends Monitor {
               'embedLinks'
             ])
           ) {
-            await photosChannel.createMessage({ embed: embed.code })
+            await photosChannel.createMessage({ embed: embed.code }, embed.file)
           }
         }
       }
@@ -83,7 +88,7 @@ export default class extends Monitor {
           // Check if the bot has necessary permissions to post in this channel
           if (!Gamer.helpers.discord.checkPermissions(feedChannel, Gamer.user.id, postPermissions)) return
 
-          const reposted = await feedChannel.createMessage({ embed: embed.code })
+          const reposted = await feedChannel.createMessage({ embed: embed.code }, embed.file)
 
           // This is waterfall for consistency. We want the reactions to be in a specific order
           for (const reaction of postReactions) {

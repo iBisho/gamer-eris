@@ -94,6 +94,7 @@ export default class GamerEmbed {
       file,
       name
     }
+    this.setImage(`attachment://${name}`)
 
     return this
   }
