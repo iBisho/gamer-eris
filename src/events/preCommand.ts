@@ -6,6 +6,7 @@ import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Event {
   async execute(command: Command, message: Message, _args: string[], context: CommandContext) {
+    console.log(`[${context.commandName}] Command ran by ${message.author.username}`)
     const Gamer = context.client as GamerClient
 
     const [name] = command.names

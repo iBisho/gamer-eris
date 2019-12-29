@@ -7,7 +7,7 @@ export default new Command([`ping`, `pong`], async (message, _args, context) => 
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   const ping = Date.now() - message.timestamp
   const Gamer = context.client as GamerClient
-
+  console.log('ping command running')
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 

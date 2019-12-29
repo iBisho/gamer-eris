@@ -36,7 +36,7 @@ const allAdvice = [
 
 export default new Command([`advice`, `ad`], async (message, _args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
-
+  console.log('advice command running')
   const Gamer = context.client as GamerClient
 
   const advice = allAdvice[Math.floor(Math.random() * (allAdvice.length - 1))]
