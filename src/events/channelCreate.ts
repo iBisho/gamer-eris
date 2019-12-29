@@ -3,6 +3,7 @@ import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel } from 'eris
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TFunction } from 'i18next'
+import { GuildSettings } from '../lib/types/settings'
 
 export default class extends Event {
   async execute(channel: PrivateChannel | TextChannel | VoiceChannel | CategoryChannel) {
@@ -15,24 +16,7 @@ export default class extends Event {
     const guildSettings = await Gamer.database.models.guild.findOne({ id: channel.guild.id })
     if (!guildSettings) return
 
-    // Verification categories are automatically handled
-    if (
-      !guildSettings.verify.categoryID ||
-      (channel.parentID !== guildSettings.verify.categoryID && guildSettings.verify.channelIDs.includes(channel.id))
-    ) {
-      // If the verification role exists disable all READ permissions
-      if (guildSettings.verify.roleID)
-        channel.editPermission(guildSettings.verify.roleID, 0, 1024, `role`, language(`basic/verify:PERMISSION`))
-      // If the mute role exists disable all SEND/SPEAK permissions
-      if (guildSettings.moderation.roleIDs.mute && channel.guild.roles.has(guildSettings.moderation.roleIDs.mute))
-        channel.editPermission(
-          guildSettings.moderation.roleIDs.mute,
-          0,
-          2099264,
-          `role`,
-          language(`moderation/mute:PERMISSION`)
-        )
-    }
+    this.handleRolePerms(channel)
 
     this.handleServerlog(
       channel,
@@ -42,6 +26,31 @@ export default class extends Event {
       language,
       Gamer
     )
+  }
+
+  async handleRolePerms(
+    channel: TextChannel | VoiceChannel | CategoryChannel,
+    gamerID: string,
+    settings: GuildSettings,
+    language: TFunction
+  ) {
+    // Don't have permissions to edit this channels perms
+    if (!channel.permissionsOf(gamerID).has('manageRoles')) return
+
+    // Deny view perms for Verify role
+    if (settings.verify.categoryID && settings.verify.roleID && channel.parentID !== settings.verify.categoryID) {
+      channel.editPermission(settings.verify.roleID, 0, 1024, `role`, language(`basic/verify:PERMISSION`))
+    }
+
+    // If the mute role exists disable all SEND/SPEAK permissions
+    if (settings.moderation.roleIDs.mute && channel.guild.roles.has(settings.moderation.roleIDs.mute))
+      channel.editPermission(
+        settings.moderation.roleIDs.mute,
+        0,
+        2099264,
+        `role`,
+        language(`moderation/mute:PERMISSION`)
+      )
   }
 
   async handleServerlog(
