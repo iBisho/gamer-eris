@@ -4,9 +4,6 @@ import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (message.author.id === '130136895395987456') {
-      console.log('Message was read.')
-    }
     // If the message was not a mention of the bot cancel
     if (
       message.content !== Gamer.user.mention ||
