@@ -53,7 +53,7 @@ Gamer.globalCommandRequirements = {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return true
 
     const isDemoChannel = message.channel.id !== '328662219086888961'
-    // If this is not the live demo channel and the user is a bot cancel out
+    // If this is the live demo channel and the user is a bot cancel out
     if (isDemoChannel && message.author.bot) return false
     // If this is live demo and the user is a bot but not a webhook cancel
     if (isDemoChannel && message.author.discriminator !== '0000' && message.author.bot) return false
@@ -78,7 +78,9 @@ Gamer.globalCommandRequirements = {
       return false
     }
 
+    console.log('before fetching guildsettings')
     const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    console.log('fetched guild settings')
     if (!guildSettings) return true
 
     // If it is the support channel and NOT a server admin do not allow command
