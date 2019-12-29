@@ -119,9 +119,8 @@ export default class extends Event {
     if (!botMember) return
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
-    const membersHighestRole = Gamer.helpers.discord.highestRole(member)
 
-    if (!botMember.permission.has('manageRoles') || botsHighestRole.position <= membersHighestRole.position) return
+    if (!botMember.permission.has('manageRoles')) return
     const rolesets = await Gamer.database.models.roleset.find({ guildID: member.guild.id })
 
     const roleIDsToRemove: string[] = []
@@ -133,6 +132,13 @@ export default class extends Event {
       for (const id of roleset.roleIDs) {
         // Skip any role the user does not have and the role that was just given
         if (id === roleID || !member.roles.includes(id)) continue
+
+        // Make sure the bots role is high enough to manage this role
+        const role = guild.roles.get(id)
+        if (!role) continue
+
+        if (botsHighestRole.position <= role.position) continue
+
         if (!roleIDsToRemove.includes(id)) roleIDsToRemove.push(id)
       }
     }
