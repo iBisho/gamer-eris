@@ -33,7 +33,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
           const relevantMission = missionData.find(m => m.commandName === mission.commandName)
           if (!relevantMission) return `0 / ${mission.amount} : ${language(mission.title)} **[${mission.reward}] XP**`
 
-          if (relevantMission.amount < mission.amount)
+          if (!relevantMission.completed)
             return `${relevantMission.amount} / ${mission.amount} : ${language(mission.title)} **[${
               mission.reward
             }] XP**`
