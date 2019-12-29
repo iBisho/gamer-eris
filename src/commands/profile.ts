@@ -43,7 +43,6 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
         .join('\n')
     )
     .attachFile(buffer, fileName)
-    .setImage(`attachment://${fileName}`)
 
   const response = await message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
 

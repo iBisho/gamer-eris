@@ -58,7 +58,7 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     .addField(language(`basic/user:SETTINGS`), SETTINGS_VALUE)
     .addField(language(`basic/user:PERMISSIONS`), permOverview.sort().join(`, `))
     .attachFile(buffer, fileName)
-    .setImage(`attachment://${fileName}`)
+
   if (roles) embed.addField(language(`basic/user:ROLES`), roles)
 
   message.channel.createMessage({ embed: embed.code }, embed.file)
