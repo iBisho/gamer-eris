@@ -6,12 +6,13 @@ import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Event {
   async execute(command: Command, message: Message, _args: string[], context: CommandContext) {
-    console.log(`[${context.commandName}] Command ran by ${message.author.username}`)
     const Gamer = context.client as GamerClient
 
     const [name] = command.names
 
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+
+    Gamer.helpers.logger.blue(`[${context.commandName}] Command ran in ${message.channel.guild.name}`)
 
     Gamer.amplitude.push({
       authorID: message.author.id,
