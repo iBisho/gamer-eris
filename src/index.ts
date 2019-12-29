@@ -78,16 +78,12 @@ Gamer.globalCommandRequirements = {
       return false
     }
 
-    console.log('before fetching guildsettings')
-    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
-    console.log('fetched guild settings')
-    if (!guildSettings) return true
-
+    const supportChannelID = Gamer.guildSupportChannelIDs.get(message.channel.guild.id)
     // If it is the support channel and NOT a server admin do not allow command
     if (
-      message.channel.id === guildSettings.mails.supportChannelID &&
+      message.channel.id === supportChannelID &&
       context.commandName !== 'mail' &&
-      !Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)
+      !message.member?.permission.has('administrator')
     )
       return false
 
