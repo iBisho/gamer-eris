@@ -66,7 +66,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   if (hasPermission) {
     const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.discord, `reaction`)
     if (message.channel.permissionsOf(Gamer.user.id).has('addReactions') && isDefaultBackground && reaction)
-      response.addReaction(reaction)
+      response.addReaction(reaction).catch(() => undefined)
   }
 
   return Gamer.helpers.levels.completeMission(message.member, `profile`, message.channel.guild.id)
