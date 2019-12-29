@@ -50,28 +50,6 @@ const assetsPaths = {
 export default class GamerClient extends Client {
   // Used for bot statistics. Events are stored in cache and every second 10 events are uploaded to amplitude.
   amplitude: AmplitudeEvent[] = []
-  // i18n solution
-  i18n: Map<string, TFunction> = new Map()
-
-  // Message collectors
-  collectors: Map<string, Collector> = new Map()
-
-  database = Database
-
-  helpers = {
-    discord: new DiscordHelper(),
-    events: new EventsHelper(this),
-    feedback: new FeedbackHelper(this),
-    leaderboards: new LeaderboardHelper(this),
-    levels: new LevelsHelper(this),
-    logger: new LoggerHelper(),
-    mail: new MailHelper(this),
-    moderation: new ModerationHelper(this),
-    profiles: new ProfileHelper(),
-    scripts: new ScriptsHelper(this),
-    transform: new TransformHelper(this),
-    utils: new UtilsHelper(this)
-  }
 
   buffers = {
     botLogo: fs.readFileSync(constants.profiles.clanDefaults.logo),
@@ -110,6 +88,29 @@ export default class GamerClient extends Client {
       }
     }
   }
+
+  // Message collectors
+  collectors: Map<string, Collector> = new Map()
+
+  database = Database
+
+  helpers = {
+    discord: new DiscordHelper(),
+    events: new EventsHelper(this),
+    feedback: new FeedbackHelper(this),
+    leaderboards: new LeaderboardHelper(this),
+    levels: new LevelsHelper(this),
+    logger: new LoggerHelper(),
+    mail: new MailHelper(this),
+    moderation: new ModerationHelper(this),
+    profiles: new ProfileHelper(this),
+    scripts: new ScriptsHelper(this),
+    transform: new TransformHelper(this),
+    utils: new UtilsHelper(this)
+  }
+
+  // i18n solution
+  i18n: Map<string, TFunction> = new Map()
 
   missions: Mission[] = []
 

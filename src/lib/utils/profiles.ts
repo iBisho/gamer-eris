@@ -10,19 +10,80 @@ interface ProfileCanvasOptions {
   backgroundID?: number
 }
 
+const rectangleStartHeight = 50
+const whiteMode = Constants.profiles.whiteMode
+const darkMode = Constants.profiles.darkMode
+
 export default class {
+  Gamer: GamerClient
+
+  defaultProfile: Canvas
+
+  constructor(client: GamerClient) {
+    this.Gamer = client
+
+    this.defaultProfile = new Canvas(852, 581)
+      .setAntialiasing(`subpixel`)
+      .addBeveledImage(Constants.profiles.backgrounds[0].buffer, 345, 50, 457, 481, 25, true)
+      .setAntialiasing(`subpixel`)
+      .addImage(this.Gamer.buffers.profiles.whiteRectangle, 2, rectangleStartHeight)
+      .addImage(this.Gamer.buffers.profiles.blueCircle, 40, 80)
+      .setColor(whiteMode.userdivider)
+      .addRect(158, 135, 240, 2)
+      .setTextAlign(`left`)
+      .setColor(whiteMode.xpbarText)
+      .setTextFont(`20px LatoBold`)
+
+      // clan info (logo, text)
+      .addCircularImage(this.Gamer.buffers.botLogo, 555, 480, 50, true)
+      .setColor(whiteMode.clanRectFilling)
+      .addBeveledRect(590, 435, 200, 90)
+      .setTextAlign(`left`)
+      .setColor(whiteMode.clanName)
+      .setTextFont(`20px LatoBold`)
+      .addText(Constants.profiles.clanDefaults.name, 600, 463)
+      .setColor(whiteMode.clanText)
+      .setTextFont(`14px LatoBold`)
+      .addMultilineText(Constants.profiles.clanDefaults.text.substr(0, 50), 600, 483)
+      .setColor(whiteMode.clanURL)
+      .setTextFont(`14px LatoBold`)
+      .addText(Constants.profiles.clanDefaults.url, 600, 515)
+      .setShadowColor(whiteMode.badgeShadow)
+      .setShadowBlur(7)
+      .setColor(whiteMode.badgeFilling)
+      .addCircle(70, 480, 27.5)
+      .fill()
+      .addCircle(145, 480, 27.5)
+      .fill()
+      .addCircle(220, 480, 27.5)
+      .fill()
+      .addCircle(295, 480, 27.5)
+      .fill()
+      .addCircle(370, 480, 27.5)
+      .fill()
+      .addCircle(445, 480, 27.5)
+      .fill()
+      .resetShadows()
+      .addRoundImage(this.Gamer.buffers.profiles.badges.shoptitans, 45, 455, 50, 50, 25, true)
+      .addRoundImage(this.Gamer.buffers.profiles.badges.loud, 120, 455, 50, 50, 25, true)
+  }
+
   public async makeCanvas(message: Message, member: Member, Gamer: GamerClient, options?: ProfileCanvasOptions) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-    const memberSettings = await Gamer.database.models.member.findOne({
-      memberID: member.id,
-      guildID: member.guild.id
-    })
-    const userSettings = await Gamer.database.models.user.findOne({ userID: member.id })
+    const [memberSettings, userSettings] = await Promise.all([
+      Gamer.database.models.member.findOne({
+        memberID: member.id,
+        guildID: member.guild.id
+      }),
+      await Gamer.database.models.user.findOne({ userID: member.id })
+    ])
+
     // Select the background theme & id from their settings if no override options were provided
     const style = (options && options.style) || userSettings?.profile.theme || 'white'
     const backgroundID = (options && options.backgroundID) || userSettings?.profile.backgroundID || 1
 
+    const useDefaultProfile = style === 'white' && backgroundID === 1
     // Get background data OR If the background is invalid then set it to default values
     const backgroundData =
       Constants.profiles.backgrounds.find(b => b.id === backgroundID) ||
@@ -69,26 +130,74 @@ export default class {
     const gProgress = xpBarWidth * gRatio
 
     // STYLES EVALUATION AND DATA
-    const whiteMode = Constants.profiles.whiteMode
-    const darkMode = Constants.profiles.darkMode
 
     const mode = style === `black` ? darkMode : whiteMode
     const leftBackground =
       style === `black` ? Gamer.buffers.profiles.blackRectangle : Gamer.buffers.profiles.whiteRectangle
 
     const canvasWidth = backgroundData.vipNeeded ? 952 : 852
-    const rectangleStartHeight = 50
 
-    const canvas = new Canvas(canvasWidth, 581)
-    // SET USER OR DEFAULT BACKGROUND
-    if (backgroundData.vipNeeded) canvas.setAntialiasing(`subpixel`).addImage(backgroundData.buffer, 345, 0)
-    else canvas.setAntialiasing(`subpixel`).addBeveledImage(backgroundData.buffer, 345, 50, 457, 481, 25, true)
+    const canvas = useDefaultProfile ? this.defaultProfile : new Canvas(canvasWidth, 581)
 
-    // set left background (white or black)
-    canvas.setAntialiasing(`subpixel`).addImage(leftBackground, 2, rectangleStartHeight)
+    if (!useDefaultProfile) {
+      // SET USER OR DEFAULT BACKGROUND
+      if (backgroundData.vipNeeded) canvas.setAntialiasing(`subpixel`).addImage(backgroundData.buffer, 345, 0)
+      else canvas.setAntialiasing(`subpixel`).addBeveledImage(backgroundData.buffer, 345, 50, 457, 481, 25, true)
 
-    // user avatar pic + blue circle
-    canvas.addImage(Gamer.buffers.profiles.blueCircle, 40, 80)
+      // set left background (white or black)
+      canvas
+        .setAntialiasing(`subpixel`)
+        .addImage(leftBackground, 2, rectangleStartHeight)
+
+        // user avatar pic + blue circle
+        .addImage(Gamer.buffers.profiles.blueCircle, 40, 80)
+
+        // clan info (logo, text)
+        .addCircularImage(Gamer.buffers.botLogo, 555, 480, 50, true)
+        .setColor(mode.clanRectFilling)
+        .addBeveledRect(590, 435, 200, 90)
+        .setTextAlign(`left`)
+        .setColor(mode.clanName)
+        .setTextFont(`20px LatoBold`)
+        .addText(Constants.profiles.clanDefaults.name, 600, 463)
+        .setColor(mode.clanText)
+        .setTextFont(`14px LatoBold`)
+        .addMultilineText(Constants.profiles.clanDefaults.text.substr(0, 50), 600, 483)
+        .setColor(mode.clanURL)
+        .setTextFont(`14px LatoBold`)
+        .addText(Constants.profiles.clanDefaults.url, 600, 515)
+
+        // all badgeholders
+        .setShadowColor(mode.badgeShadow)
+        .setShadowBlur(7)
+        .setColor(mode.badgeFilling)
+        .addCircle(70, 480, 27.5)
+        .fill()
+        .addCircle(145, 480, 27.5)
+        .fill()
+        .addCircle(220, 480, 27.5)
+        .fill()
+        .addCircle(295, 480, 27.5)
+        .fill()
+        .addCircle(370, 480, 27.5)
+        .fill()
+        .addCircle(445, 480, 27.5)
+        .fill()
+        .resetShadows()
+        .addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 45, 455, 50, 50, 25, true)
+        .addRoundImage(Gamer.buffers.profiles.badges.loud, 120, 455, 50, 50, 25, true)
+
+      // user badges
+      if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings?.vip.isVIP) {
+        canvas.addRoundImage(Gamer.buffers.profiles.badges.vip, 195, 455, 50, 50, 25, true)
+        // Spots to add user custom badges
+        // canvas.addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
+        //   .addRoundImage(Gamer.buffers.profiles.badges.playstation, 195, 455, 50, 50, 25, true)
+        //   .addRoundImage(Gamer.buffers.profiles.badges.xbox, 270, 455, 50, 50, 25, true)
+        //   .addRoundImage(Gamer.buffers.profiles.badges.mobile, 345, 455, 50, 50, 25, true)
+        //   .addRoundImage(Gamer.buffers.profiles.badges.steam, 420, 455, 50, 50, 25, true)
+      }
+    }
 
     const avatarUrl = member.user.dynamicAvatarURL(`png`, 2048)
     try {
@@ -103,6 +212,7 @@ export default class {
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
       ``
     )
+
     canvas
       .setColor(mode.userdivider)
       .addRect(158, 135, 240, 2)
@@ -167,66 +277,13 @@ export default class {
       .setColor(sRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
-      // .addText(`${memberXP}/${previousServerLevelDetails?.xpNeeded - serverLevelDetails.xpNeeded}`, 190, 280)
       .addText(`${memberXP}/${serverLevelDetails.xpNeeded - previousServerLevelDetails?.xpNeeded}`, 190, 280)
 
       // global xp bar text
       .setColor(gRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
-      // .addText(`${globalXP}/${previousGlobalLevelDetails?.xpNeeded - globalLevelDetails.xpNeeded}`, 190, 390)
       .addText(`${globalXP}/${globalLevelDetails.xpNeeded - previousGlobalLevelDetails?.xpNeeded}`, 190, 390)
-
-      // clan info (logo, text)
-      .addCircularImage(Gamer.buffers.botLogo, 555, 480, 50, true)
-      .setColor(mode.clanRectFilling)
-      .addBeveledRect(590, 435, 200, 90)
-      .setTextAlign(`left`)
-      .setColor(mode.clanName)
-      .setTextFont(`20px LatoBold`)
-      .addText(Constants.profiles.clanDefaults.name, 600, 463)
-      .setColor(mode.clanText)
-      .setTextFont(`14px LatoBold`)
-      .addMultilineText(Constants.profiles.clanDefaults.text.substr(0, 50), 600, 483)
-      .setColor(mode.clanURL)
-      .setTextFont(`14px LatoBold`)
-      .addText(Constants.profiles.clanDefaults.url, 600, 515)
-
-      // all badgeholders
-      .setShadowColor(mode.badgeShadow)
-      .setShadowBlur(7)
-      .setColor(mode.badgeFilling)
-      .addCircle(70, 480, 27.5)
-      .fill()
-      .addCircle(145, 480, 27.5)
-      .fill()
-      .addCircle(220, 480, 27.5)
-      .fill()
-      .addCircle(295, 480, 27.5)
-      .fill()
-      .addCircle(370, 480, 27.5)
-      .fill()
-      .addCircle(445, 480, 27.5)
-      .fill()
-      .resetShadows()
-
-    // user badges
-    if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings?.vip.isVIP) {
-      canvas
-        .addRoundImage(Gamer.buffers.profiles.badges.vip, 45, 455, 50, 50, 25, true)
-        .addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
-        .addRoundImage(Gamer.buffers.profiles.badges.loud, 195, 455, 50, 50, 25, true)
-    } else {
-      canvas
-        .addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 45, 455, 50, 50, 25, true)
-        .addRoundImage(Gamer.buffers.profiles.badges.loud, 120, 455, 50, 50, 25, true)
-    }
-    // Spots to add user custom badges
-    // canvas.addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
-    //   .addRoundImage(Gamer.buffers.profiles.badges.playstation, 195, 455, 50, 50, 25, true)
-    //   .addRoundImage(Gamer.buffers.profiles.badges.xbox, 270, 455, 50, 50, 25, true)
-    //   .addRoundImage(Gamer.buffers.profiles.badges.mobile, 345, 455, 50, 50, 25, true)
-    //   .addRoundImage(Gamer.buffers.profiles.badges.steam, 420, 455, 50, 50, 25, true)
 
     return canvas.toBufferAsync()
   }
