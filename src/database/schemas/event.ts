@@ -67,4 +67,4 @@ export default new mongoose.Schema({
   waitingList: [String],
   // If the event is made into a template event then it will be given a name
   templateName: String
-})
+}).index({ id: 1, guildID: 1 })
