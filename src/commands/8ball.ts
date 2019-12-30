@@ -10,6 +10,5 @@ export default new Command([`8ball`, `8b`, `fortune`], async (message, args, con
   if (!language) return
   if (!args.length) return message.channel.createMessage(language(`fun/8ball:NO_ARGS`))
 
-  const response = language(`fun/8ball:REPLY_NUMBER${Math.floor(Math.random() * 12)}`)
-  return message.channel.createMessage(response)
+  return message.channel.createMessage(language(`fun/8ball:REPLY_NUMBER${Math.floor(Math.random() * 12)}`))
 })

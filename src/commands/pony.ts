@@ -22,10 +22,7 @@ export default new Command(`pony`, async (message, _args, context) => {
   const [media] = randomResult.media
 
   const embed = new GamerEmbed()
-    .setAuthor(
-      message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.avatarURL
-    )
+    .setAuthor(message.member?.nick || message.author.username)
     .setDescription(
       language(`fun/pony:FACT`, { fact: language(`fun/pony:REPLY_NUMBER${Math.floor(Math.random() * 12)}`) })
     )
