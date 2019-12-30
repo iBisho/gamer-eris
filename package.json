@@ -39,7 +39,7 @@
     "node-fetch": "^2.6.0",
     "pino-pretty": "^3.5.0",
     "typescript": "^3.7.3",
-    "yuuko": "github:Skillz4Killz/yuuko#fix-event-listener-typings"
+    "yuuko": "github:Skillz4Killz/yuuko#master"
   },
   "devDependencies": {
     "@types/i18next-node-fs-backend": "^2.1.0",

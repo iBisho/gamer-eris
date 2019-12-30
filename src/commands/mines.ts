@@ -15,5 +15,5 @@ export default new Command([`minesweeper`, `mines`], async (message, _args, cont
 
   if (typeof matrix !== 'string') return
 
-  return message.channel.createMessage(`${language('gaming/minesweeper:INSTRUCTIONS')}\n${matrix}`)
+  return message.channel.createMessage(`${language('gaming/minesweeper:INSTRUCTIONS')}\n\n${matrix}`)
 })

@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Jogue um jogo de campo minado.",
+	"EXTENDED": "Cria um jogo de campo minado no canal.",
+	"USAGE": "{{prefix}}minesweeper",
+	"ALIASES": "{{prefix}}mines",
+	"INSTRUCTIONS": "Se você ver o 💥 significa que perdeu. O objetivo do jogo é abrir todas as células do tabuleiro que não contenham uma bomba. Você perde se abrir uma célula com uma bomba. Qualquer célula que não for uma bomba irá te dizer o número total de bombas nas 8 células ao seu redor."
+}
