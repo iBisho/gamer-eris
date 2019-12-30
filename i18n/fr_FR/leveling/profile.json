@@ -10,5 +10,6 @@
 	"EXTENDED_LINE_7": "» Utilisez la commande **{{prefix}}background** pour modifier votre image d'arrière-plan.",
 	"USAGE": "{{prefix}}profile *[Membre]*",
 	"ALIASES": "{{prefix}}p",
-	"CURRENT_MISSIONS": "Missions en cours :"
+	"CURRENT_MISSIONS": "Missions en cours :",
+	"NEW_IN": "Nouvelles missions dispo dans : {{time}}"
 }
