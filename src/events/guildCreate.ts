@@ -40,6 +40,7 @@ export default class extends Event {
 
         // Member has permissions to manage guild so send dm
         try {
+          Gamer.helpers.levels.completeMission(member, `guildadded`, guild.id)
           const dmChannel = await member.user.getDMChannel()
           // Need await to be able to catch and ingore the dm closed error
           await dmChannel.createMessage({ embed: embed.code })
