@@ -468,11 +468,12 @@ export default class extends Event {
         if (!feedbackMember) return
         const downEmojis = [guildSettings.feedback.idea.emojis.down, guildSettings.feedback.bugs.emojis.down]
         const upEmojis = [guildSettings.feedback.idea.emojis.up, guildSettings.feedback.bugs.emojis.up]
+
         if (downEmojis.includes(fullEmojiName)) {
-          Gamer.helpers.levels.completeMission(feedbackMember, `votefeedback`, feedbackMember.guild.id)
+          Gamer.helpers.levels.completeMission(reactorMember, `votefeedback`, reactorMember.guild.id)
           return Gamer.helpers.levels.removeXP(feedbackMember, 3)
         } else if (upEmojis.includes(fullEmojiName)) {
-          Gamer.helpers.levels.completeMission(feedbackMember, `votefeedback`, feedbackMember.guild.id)
+          Gamer.helpers.levels.completeMission(reactorMember, `votefeedback`, reactorMember.guild.id)
           return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
         }
     }

@@ -64,7 +64,7 @@ export default class extends Event {
       Promise.all(promises)
     }, 2000)
 
-    // Randomly select 3 new missions to use every day
+    // Randomly select 3 new missions every 30 minutes
     setInterval(() => {
       // Remove all missions first before creating any new missions
       Gamer.database.models.mission.deleteMany({})
@@ -73,7 +73,7 @@ export default class extends Event {
       Gamer.missions = []
       for (let i = 0; i < 3; i++)
         Gamer.missions.push(constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))])
-    }, milliseconds.HOUR * 6)
+    }, milliseconds.MINUTE * 30)
 
     // Checks if a member is inactive to begin losing XP every day
     setInterval(async () => {
