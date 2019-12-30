@@ -36,6 +36,6 @@
   "LINKS": "**__Liens importants__**",
   "LINKS_VALUE": "$t(basic/help:LINKS_VALUE_LINE_1)\n$t(basic/help:LINKS_VALUE_LINE_2)",
   "LINKS_VALUE_LINE_1": "**»** 🌐 **Wiki:** Ecrivez {{prefix}}help ou RDV sur notre wiki: <https://gamer.netlify.com>.",
-  "LINKS_VALUE_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Serveur Support**: <https://discord.gg/J4NqJ72>",
+  "LINKS_VALUE_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Support Server**: <https://discord.gg/J4NqJ72>",
   "UNKNOWN": "Impossible de trouver la commande nommée **{{name}}**."
 }
