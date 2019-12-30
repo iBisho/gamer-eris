@@ -1,5 +1,5 @@
 {
-  "DESCRIPTION": "Uma maneira fácil de partilhar o link do painel Gamer",
+  "DESCRIPTION": "Uma maneira fácil de partilhar o link do painel Gamer.",
   "EXTENDED": "**{{prefix}}invite** ~ Mostra o link de convite para o bot ser convidado para o seu servidor e um link para se juntar ao servidor de Suporte se precisar de ajuda.",
   "USAGE": "{{prefix}}invite",
   "ALIASES": "{{prefix}}join",
