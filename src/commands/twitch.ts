@@ -26,7 +26,7 @@ export default new Command(`twitch`, async (message, args, context) => {
     return
 
   const [type, username, ...gameName] = args
-  if (!type) return helpCommand.execute(message, [`twitch`], context)
+  if (!type) return helpCommand.process(message, [`twitch`], context)
 
   if (type && type.toLowerCase() === `list`) {
     const twitchSubs = await Gamer.database.models.subscription.find()
@@ -52,7 +52,7 @@ export default new Command(`twitch`, async (message, args, context) => {
     type: `twitch`
   })
 
-  if (!username) return helpCommand.execute(message, [`twitch`], context)
+  if (!username) return helpCommand.process(message, [`twitch`], context)
 
   const game = gameName.join(' ')
   const subPayload = {
@@ -102,5 +102,5 @@ export default new Command(`twitch`, async (message, args, context) => {
 
       return message.channel.createMessage(language(`gaming/twitch:UNSUBBED`, { username }))
   }
-  return helpCommand.execute(message, [`twitch`], context)
+  return helpCommand.process(message, [`twitch`], context)
 })

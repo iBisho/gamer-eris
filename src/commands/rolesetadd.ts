@@ -20,7 +20,7 @@ export default new Command([`rolesetadd`, `rsa`], async (message, args, context)
 
   const [name, ...roleIDsOrNames] = args
   if (!name || (!message.roleMentions.length && !roleIDsOrNames.length))
-    return helpCommand.execute(message, [`rolesetadd`], context)
+    return helpCommand.process(message, [`rolesetadd`], context)
 
   const roleIDs = message.roleMentions
   for (const roleIDOrName of roleIDsOrNames) {

@@ -25,7 +25,7 @@ export default new Command([`eventdelete`, `ed`], async (message, args, context)
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  if (!eventID) return helpCommand.execute(message, [`eventdelete`], context)
+  if (!eventID) return helpCommand.process(message, [`eventdelete`], context)
 
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({

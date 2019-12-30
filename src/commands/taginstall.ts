@@ -21,7 +21,7 @@ export default new Command([`taginstall`], async (message, args, context) => {
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
-  if (!args.length) return helpCommand.execute(message, [`taginstall`], context)
+  if (!args.length) return helpCommand.process(message, [`taginstall`], context)
 
   const guildSettings =
     (await Gamer.database.models.guild.findOne({

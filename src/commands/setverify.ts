@@ -20,7 +20,7 @@ export default new Command(`setverify`, async (message, args, context) => {
   if (!helpCommand) return
 
   const [action, roleIDOrName] = args
-  if (!action) return helpCommand.execute(message, [`setverify`], context)
+  if (!action) return helpCommand.process(message, [`setverify`], context)
 
   const role = roleIDOrName
     ? message.channel.guild.roles.get(roleIDOrName) ||
@@ -76,7 +76,7 @@ export default new Command(`setverify`, async (message, args, context) => {
         message.channel.createMessage(language(`settings/setverify:INVALID_JSON_MESSAGE`))
 
         if (!helpCommand) return
-        return helpCommand.execute(message, [`embed`], context)
+        return helpCommand.process(message, [`embed`], context)
       }
 
       guildSettings.verify.firstMessageJSON = jsonString
@@ -104,5 +104,5 @@ export default new Command(`setverify`, async (message, args, context) => {
   await message.channel.createMessage(language(`settings/setverify:INVALID_USE`))
 
   if (!helpCommand) return
-  return helpCommand.execute(message, [`setverify`], context)
+  return helpCommand.process(message, [`setverify`], context)
 })

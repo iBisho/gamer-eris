@@ -21,7 +21,7 @@ export default new Command(`setevents`, async (message, args, context) => {
   if (!guildSettings) guildSettings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
 
   const [action] = args
-  if (!action) return helpCommand.execute(message, [`setevents`], context)
+  if (!action) return helpCommand.process(message, [`setevents`], context)
   args.shift()
   // The remaining text should be related to the role
   const roleIDOrName = args.join(' ').toLowerCase()
@@ -55,5 +55,5 @@ export default new Command(`setevents`, async (message, args, context) => {
       return message.channel.createMessage(language(`settings/setevents:RESET_ROLE`))
   }
 
-  return helpCommand.execute(message, [`setevents`], context)
+  return helpCommand.process(message, [`setevents`], context)
 })

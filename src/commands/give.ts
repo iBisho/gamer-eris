@@ -37,7 +37,7 @@ export default new Command(`give`, async (message, args, context) => {
   // if a role is mentioned use the mentioned role else see if a role id or role name was provided
   const [roleID] = message.roleMentions
 
-  if (!roleNameOrID && !roleID) return helpCommand.execute(message, [`give`], context)
+  if (!roleNameOrID && !roleID) return helpCommand.process(message, [`give`], context)
   const role = roleID
     ? message.channel.guild.roles.get(roleID)
     : message.channel.guild.roles.find(

@@ -12,7 +12,7 @@ export default new Command([`tagpublic`], async (message, args, context) => {
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
-  if (!args.length) return helpCommand.execute(message, [`tagpublic`], context)
+  if (!args.length) return helpCommand.process(message, [`tagpublic`], context)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id

@@ -20,7 +20,7 @@ export default new Command([`shortcutremove`, `scr`], async (message, args, cont
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [name] = args
-  if (!name) return helpCommand.execute(message, [`shortcutremove`], context)
+  if (!name) return helpCommand.process(message, [`shortcutremove`], context)
 
   const deleted = await Gamer.database.models.shortcut.findOneAndDelete({
     guildID: message.channel.guild.id,

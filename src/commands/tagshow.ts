@@ -13,7 +13,7 @@ export default new Command([`tagshow`, `ts`], async (message, args, context) => 
   if (!language) return
 
   const [name] = args
-  if (!name) return helpCommand.execute(message, [`tagshow`], context)
+  if (!name) return helpCommand.process(message, [`tagshow`], context)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id

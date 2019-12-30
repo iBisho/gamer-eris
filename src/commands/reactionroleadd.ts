@@ -19,7 +19,7 @@ export default new Command([`reactionroleadd`, `rra`], async (message, args, con
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [name, emoji, ...roleIDsOrNames] = args
-  if (!name || !emoji) return helpCommand.execute(message, [`reactionroleadd`], context)
+  if (!name || !emoji) return helpCommand.process(message, [`reactionroleadd`], context)
 
   const validEmoji = await Gamer.database.models.emoji.findOne({ name: emoji.toLowerCase() })
   if (!validEmoji) return message.channel.createMessage(language(`emojis/emojicreate:NEED_VALID_EMOJI`))
@@ -39,7 +39,7 @@ export default new Command([`reactionroleadd`, `rra`], async (message, args, con
   const possibleRole = message.channel.guild.roles.find(r => r.name.toLowerCase() === fullRoleName)
   if (possibleRole && !roleIDs.includes(possibleRole.id)) roleIDs.push(possibleRole.id)
 
-  if (!roleIDs.length) return helpCommand.execute(message, [`reactionrolecreate`], context)
+  if (!roleIDs.length) return helpCommand.process(message, [`reactionrolecreate`], context)
 
   const reactionRole = await Gamer.database.models.reactionRole.findOne({
     name,

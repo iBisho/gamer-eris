@@ -49,35 +49,36 @@ const Gamer = new GamerClient({
 
 Gamer.globalCommandRequirements = {
   async custom(message, _args, context) {
+    console.log(1)
     // DM should have necessary perms already
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return true
-
+    console.log(message.content, context.commandName)
     const isDemoChannel = message.channel.id !== '328662219086888961'
     // If this is the live demo channel and the user is a bot cancel out
     if (isDemoChannel && message.author.bot) return false
     // If this is live demo and the user is a bot but not a webhook cancel
     if (isDemoChannel && message.author.discriminator !== '0000' && message.author.bot) return false
-
+    console.log(2)
     // Check if have send messages perms. Check before fetching guild data to potentially save a fetch
     const botPerms = message.channel.permissionsOf(Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages')) return false
-
+    console.log(3)
     const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return false
-
+    console.log(4)
     // Check if bot has embed links perms
     if (!botPerms.has('embedLinks')) {
       message.channel.createMessage(language(`common:NEED_EMBED_PERMS`))
       return false
     }
-
+    console.log(5)
     // If the user is using commands within 2 seconds ignore it
     if (Gamer.slowmode.has(message.author.id)) {
       // Cleans up spam command messages from users
       if (botPerms.has('manageMessages')) message.delete().catch(() => null)
       return false
     }
-
+    console.log(6)
     const supportChannelID = Gamer.guildSupportChannelIDs.get(message.channel.guild.id)
     // If it is the support channel and NOT a server admin do not allow command
     if (

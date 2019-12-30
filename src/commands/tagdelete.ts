@@ -13,7 +13,7 @@ export default new Command([`tagdelete`, `td`], async (message, args, context) =
   if (!language) return
 
   const [name] = args
-  if (!name) return helpCommand.execute(message, [`tagdelete`], context)
+  if (!name) return helpCommand.process(message, [`tagdelete`], context)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id

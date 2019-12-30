@@ -9,7 +9,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  if (!args.length) return helpCommand.execute(message, [`shortcutcreate`], context)
+  if (!args.length) return helpCommand.process(message, [`shortcutcreate`], context)
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
@@ -29,7 +29,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
   }
 
   const [name] = args
-  if (!name) return helpCommand.execute(message, [`shortcutcreate`], context)
+  if (!name) return helpCommand.process(message, [`shortcutcreate`], context)
   // Remove the shortcut name so first item is the command name
   args.shift()
 

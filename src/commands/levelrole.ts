@@ -13,7 +13,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
   if (!helpCommand) return
 
   const [type, number, ...roleIDsOrNames] = args
-  if (!type) return helpCommand.execute(message, [`levelrole`], context)
+  if (!type) return helpCommand.process(message, [`levelrole`], context)
 
   if (type.toLowerCase() === `list`) {
     const levelroles = await Gamer.database.models.level.find({ guildID: message.channel.guild.id })
@@ -40,7 +40,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
   }
 
   const levelID = parseInt(number, 10)
-  if (!levelID) return helpCommand.execute(message, [`levelrole`], context)
+  if (!levelID) return helpCommand.process(message, [`levelrole`], context)
 
   const guild = message.channel.guild
 
@@ -54,7 +54,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
 
   // If no roles were provided then send help command
   if (['create', 'add', 'remove'].includes(type.toLowerCase()) && !roleIDs.length)
-    return helpCommand.execute(message, [`levelrole`], context)
+    return helpCommand.process(message, [`levelrole`], context)
 
   const levelRoleData = await Gamer.database.models.level.findOne({
     guildID: message.channel.guild.id,
@@ -90,5 +90,5 @@ export default new Command(`levelrole`, async (message, args, context) => {
       return message.channel.createMessage(language(`leveling/levelrole:DELETED`, { number: levelRoleData.level }))
   }
 
-  return helpCommand.execute(message, [`levelrole`], context)
+  return helpCommand.process(message, [`levelrole`], context)
 })

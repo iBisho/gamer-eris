@@ -19,7 +19,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [name, emoji] = args
-  if (!name || !emoji) return helpCommand.execute(message, [`reactionroleremove`], context)
+  if (!name || !emoji) return helpCommand.process(message, [`reactionroleremove`], context)
 
   const validEmoji = await Gamer.database.models.emoji.findOne({ name: emoji.toLowerCase() })
   if (!validEmoji) return message.channel.createMessage(language(`emojis/emojicreate:NEED_VALID_EMOJI`))

@@ -19,7 +19,7 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
 
   const [type] = args
-  if (!type) return helpCommand.execute(message, [`setprofanity`], context)
+  if (!type) return helpCommand.process(message, [`setprofanity`], context)
   // Remove the type and the leftover should be all words
   args.shift()
 

@@ -13,7 +13,7 @@ export default new Command(`embed`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  if (!args.length) return helpCommand.execute(message, [`embed`], context)
+  if (!args.length) return helpCommand.process(message, [`embed`], context)
 
   const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 

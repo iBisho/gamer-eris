@@ -95,7 +95,7 @@ export default new Command(`verify`, async (message, args, context) => {
             // Run the command again for them to generate a new captcha code
             const verifyCommand = Gamer.commandForName(`verify`)
             if (!verifyCommand) return
-            verifyCommand.execute(msg, [`end`], context)
+            verifyCommand.process(msg, [`end`], context)
             return
           }
           // Success With Captcha
