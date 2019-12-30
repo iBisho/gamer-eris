@@ -3,6 +3,7 @@ import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import GamerEmbed from '../lib/structures/GamerEmbed'
+import { milliseconds } from '../lib/types/enums/time'
 
 export default new Command([`profile`, `p`, `prof`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -43,6 +44,13 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
         .join('\n')
     )
     .attachFile(buffer, fileName)
+    .setFooter(
+      language(`leveling/profile:NEW_IN`, {
+        time: Gamer.helpers.transform.humanizeMilliseconds(
+          milliseconds.MINUTE * 30 - (Date.now() - Gamer.missionsStartTimestamp)
+        )
+      })
+    )
 
   const response = await message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
 

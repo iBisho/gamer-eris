@@ -10,5 +10,6 @@
 	"EXTENDED_LINE_7": "» Use the **{{prefix}}background** command to select your custom background.",
 	"USAGE": "{{prefix}}profile *[User]*",
 	"ALIASES": "{{prefix}}p",
-	"CURRENT_MISSIONS": "Current Missions For XP:"
+	"CURRENT_MISSIONS": "Current Missions For XP:",
+	"NEW_IN": "New Missions In: {{time}}"
 }
