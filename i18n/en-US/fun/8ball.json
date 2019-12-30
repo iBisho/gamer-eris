@@ -1,0 +1,19 @@
+{
+	"DESCRIPTION": "Get answers to your questions!",
+	"EXTENDED": "**{{prefix}}8ball** ~ Ask your question and get a response from the magic 8ball.",
+	"USAGE": "{{prefix}}8ball",
+	"ALIASES": "{{prefix}}8ball {{prefix}}8b {{prefix}}fortune",
+	"NO_ARGS": "You forgot telling me your question, silly!",
+	"REPLY_NUMBER0": "Totally!",
+	"REPLY_NUMBER1": "Yes!",
+	"REPLY_NUMBER2": "Definitely!",
+	"REPLY_NUMBER3": "Probably.",
+	"REPLY_NUMBER4": "Very likely.",
+	"REPLY_NUMBER5": "Likely.",
+	"REPLY_NUMBER6": "Unlikely.",
+	"REPLY_NUMBER7": "I wouldn't count on it.",
+	"REPLY_NUMBER8": "No!",
+	"REPLY_NUMBER9": "Definitely not!",
+	"REPLY_NUMBER10": "Nope!",
+	"REPLY_NUMBER11": "No way!"
+}

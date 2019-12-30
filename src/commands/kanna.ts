@@ -22,7 +22,7 @@ export default new Command(`kanna`, (message, _args, context) => {
   const language = Gamer.i18n.get('en-US')
   if (!language) return null
 
-  const randomNum = Math.floor(Math.random() * (gifs.length - 1))
+  const randomNum = Math.floor(Math.random() * gifs.length)
   const randomGif = gifs[randomNum]
   const kannaReply = `fun/kanna:REPLY_NUMBER${randomNum}`
 
