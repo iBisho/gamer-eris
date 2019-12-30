@@ -4,7 +4,6 @@ import { PrivateChannel, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`eventshow`, `es`], async (message, args, context) => {
-  console.log('show command ran')
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
   const Gamer = context.client as GamerClient
 
