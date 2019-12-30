@@ -28,6 +28,7 @@
     "canvas-constructor": "^3.1.0",
     "chalk": "^3.0.0",
     "confusables": "^0.3.3",
+    "discord.js-minesweeper": "^1.0.5",
     "eris": "github:caf203/eris#dev",
     "fastify": "^2.11.0",
     "fastify-helmet": "^3.0.2",
