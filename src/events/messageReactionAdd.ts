@@ -150,7 +150,7 @@ export default class extends Event {
 
     try {
       const dmChannel = await user.getDMChannel()
-      dmChannel.createMessage(`Interested in Shop Titans? Check out https://discord.gg/shoptitans`)
+      await dmChannel.createMessage(`Interested in Shop Titans? Check out https://discord.gg/shoptitans`)
     } catch {}
   }
 
