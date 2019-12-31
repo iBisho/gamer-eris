@@ -18,5 +18,7 @@ export default [
   { amount: 5, commandName: `kiss`, title: `leveling/missions:KISS`, reward: 30 },
   { amount: 5, commandName: `poke`, title: `leveling/missions:POKE`, reward: 10 },
   { amount: 5, commandName: `tickle`, title: `leveling/missions:TICKLE`, reward: 10 },
+  { amount: 5, commandName: `pony`, title: `leveling/missions:PONY`, reward: 30 },
+  { amount: 5, commandName: `8ball`, title: `leveling/missions:8BALL`, reward: 30 },
   { amount: 1, commandName: `guildadded`, title: `leveling/missions:GUILDADDED`, reward: 200 }
 ]

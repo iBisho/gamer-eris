@@ -9,23 +9,25 @@ const categories = [
   {
     name: `fun`,
     commands: [
+      `8ball`,
       `avatar`,
       `baka`,
       `compliment`,
       `cuddle`,
+      `gif`,
       `kanna`,
       `kiss`,
       `kitten`,
       `pat`,
       `poke`,
+      `pony`,
       `puppy`,
       `slap`,
       `supernatural`,
       `tickle`,
       `advice`,
       `wisdom`,
-      `urban`,
-      `gif`
+      `urban`
     ]
   },
   {

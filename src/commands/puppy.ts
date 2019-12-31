@@ -1,6 +1,9 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
+import GamerEmbed from '../lib/structures/GamerEmbed'
+import { TenorGif } from '../lib/types/tenor'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 const facts = [
   `Puppies have 28 teeth and adult dogs have 42.`,
@@ -105,29 +108,21 @@ const facts = [
   `The largest dog was an English Mastiff who weighed 343 pounds.`
 ]
 
-const gifs = [
-  `https://media.giphy.com/media/zJO5kOG6tNL0Y/giphy.gif`,
-  `https://media.giphy.com/media/PkQNU1NVD18MU/giphy.gif`,
-  `https://media.giphy.com/media/vhHKHmPPyAR3i/giphy.gif`,
-  `https://media.giphy.com/media/kSe3uCFjGxeyk/giphy.gif`,
-  `https://media.giphy.com/media/14ivBLRRRmyQw0/giphy.gif`,
-  `https://media.giphy.com/media/73h3LBWraONTW/giphy.gif`,
-  `https://media.giphy.com/media/3oGRFvUEbJdLWlawLu/giphy.gif`,
-  `https://media.giphy.com/media/bOmXDVQAR7gaY/giphy.gif`,
-  `https://media.giphy.com/media/DTgZq3XBUwQgM/giphy.gif`,
-  `https://media.giphy.com/media/gZLl9szOpgbpS/giphy.gif`,
-  `https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif`,
-  `https://media.giphy.com/media/4T7e4DmcrP9du/giphy.gif`,
-  `https://media.giphy.com/media/1TmrEqADCCCS4/giphy.gif`,
-  `https://media.giphy.com/media/QFSD9tGuryBHy/giphy.gif`,
-  `https://media.giphy.com/media/Y4pAQv58ETJgRwoLxj/giphy.gif`
-]
+export default new Command([`puppy`, `dog`, `doggo`], async (message, _args, context) => {
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
-export default new Command([`puppy`, `dog`, `doggo`], (message, _args, context) => {
-  const randomGif = gifs[Math.floor(Math.random() * (gifs.length - 1))]
+  const Gamer = context.client as GamerClient
 
-  const language = (context.client as GamerClient).i18n.get('en-US')
-  if (!language) return null
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
+
+  const data: TenorGif | undefined = await fetch(`https://api.tenor.com/v1/search?q=puppy&key=LIVDSRZULELA&limit=50`)
+    .then(res => res.json())
+    .catch(() => undefined)
+
+  if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
+  const randomResult = data.results[Math.floor(Math.random() * data.results.length)]
+  const [media] = randomResult.media
 
   const embed = new GamerEmbed()
     .setAuthor(
@@ -135,7 +130,10 @@ export default new Command([`puppy`, `dog`, `doggo`], (message, _args, context) 
       message.author.avatarURL
     )
     .setDescription(language(`fun/puppy:FACT`, { fact: facts[Math.floor(Math.random() * facts.length)] }))
-    .setImage(randomGif)
+    .setImage(media.gif.url)
+    .setFooter(`Via Tenor`)
 
-  return message.channel.createMessage({ embed: embed.code })
+  message.channel.createMessage({ embed: embed.code })
+
+  return Gamer.helpers.levels.completeMission(message.member, `puppy`, message.channel.guild.id)
 })
