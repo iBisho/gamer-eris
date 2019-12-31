@@ -17,5 +17,8 @@
   "CUDDLE": "Caressez quelqu'un 3 fois en utilisant la commande **.cuddle**.",
   "KISS": "Faites un bisou à 5 personnes en utilisant la commande **.kiss**.",
   "POKE": "Pokez 5 personnes en utilisant la commande **.poke**.",
-  "TICKLE": "Chatouillez 5 personnes en utilisant la commande **.tickle**."
+  "TICKLE": "Chatouillez 5 personnes en utilisant la commande **.tickle**.",
+  "PONY": "Utilisez la commande **.pony** 5 fois.",
+  "8BALL": "Demandez conseil auprès de la 8ball 5 fois en utilisant la commande **.8ball**.",
+  "GUILDADDED": "Ajoutez Gamer sur votre serveur en utilisant la commande **.invite** :D"
 }
