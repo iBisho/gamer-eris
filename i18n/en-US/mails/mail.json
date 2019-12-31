@@ -27,7 +27,7 @@
   "TAG_SENT": "The {{name}} was sent to the user. It will appear to the user as shown below:",
   "REPLY_FROM": "{{user}} replied to this mail on [ {{guild}} ]",
   "REPLY_SENT": "Your mail has been sent to the user.",
-  "MISSING_PERMISSIONS": "I was not able to create a mail for you because I am missing the **MANAGE MESSAGES** permission. Please contact a mod or admin.",
+  "MISSING_PERMISSIONS": "I was not able to create a mail for you because I do not have the necessary permissions. I require **MANAGE CHANNELS** and **MANAGE ROLES** to use the mail feature. Please contact a mod or admin.",
   "DISABLED": "The mail feature is currently disabled on this server. Please contact a server admin.",
   "BLOCKED": "You have been blocked by the server mods/admins from sending mails on this server.",
   "CATEGORY_NAME": "Mail-Inbox",

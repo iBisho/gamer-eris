@@ -86,7 +86,7 @@ export default class {
     if (!language) return
 
     const botMember = message.channel.guild.members.get(this.Gamer.user.id)
-    if (!botMember || !botMember.permission.has('manageChannels'))
+    if (!botMember || !botMember.permission.has('manageChannels') || !botMember.permission.has('manageRoles'))
       return message.channel.createMessage(language(`mails/mail:MISSING_PERMISSIONS`))
 
     if (!guildSettings?.mails.enabled) return message.channel.createMessage(language(`mails/mail:DISABLED`))
@@ -167,6 +167,7 @@ export default class {
       .setTimestamp()
     if (message.attachments.length) embed.setImage(message.attachments[0].url)
 
+
     const alertRoleIDs = guildSettings?.mails.alertRoleIDs || []
     const modifiedRoleIDs: string[] = []
     for (const roleID of alertRoleIDs) {
@@ -224,6 +225,9 @@ export default class {
     if (!channel) return
     const botPerms = channel.permissionsOf(this.Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
+
+    const botMember = guild.members.get(this.Gamer.user.id)
+    if (!botMember?.permission.has('manageRoles')) return
 
     const alertRoleIDs = guildSettings?.mails.alertRoleIDs || []
     const modifiedRoleIDs: string[] = []
