@@ -39,7 +39,6 @@ const Gamer = new GamerClient({
     CHANNEL_PINS_UPDATE: true,
     GUILD_UPDATE: true,
     GUILD_INTEGRATIONS_UPDATE: true,
-    PRESENCE_UPDATE: true,
     TYPING_START: true,
     USER_UPDATE: true,
     WEBHOOKS_UPDATE: true

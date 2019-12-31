@@ -1,7 +1,7 @@
 {
   "DESCRIPTION": "Définir une langue pour votre serveur.",
   "EXTENDED": "$t(settings/setlanguage:EXTENDED_LINE_1)\n$t(settings/setlanguage:EXTENDED_LINE_2)",
-  "EXTENDED_LINE_1": "**{{prefix}}setlanguage french** ~ Applique la langue française.",
+  "EXTENDED_LINE_1": "**{{prefix}}setlanguage french** ~ Applique la langue Française.",
   "EXTENDED_LINE_2": "**{{prefix}}setlanguage german** ~ Applique la langue Allemand.",
   "USAGE": "{{prefix}}setlanguage [Langue]",
   "ALIASES": "La commande \"Setlanguage\" n'a pas d'alias.",

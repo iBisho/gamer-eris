@@ -64,16 +64,19 @@ export default class extends Event {
       Promise.all(promises)
     }, 2000)
 
-    // Randomly select 3 new missions to use every day
+    // Randomly select 3 new missions every 30 minutes
     setInterval(() => {
       // Remove all missions first before creating any new missions
       Gamer.database.models.mission.deleteMany({})
-
+      Gamer.missionsStartTimestamp = Date.now()
       // Find 3 new random missions to use for today
       Gamer.missions = []
-      for (let i = 0; i < 3; i++)
-        Gamer.missions.push(constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))])
-    }, milliseconds.HOUR * 6)
+
+      while (Gamer.missions.length < 3) {
+        const randomMission = constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))]
+        if (!Gamer.missions.find(m => m.title === randomMission.title)) Gamer.missions.push(randomMission)
+      }
+    }, milliseconds.MINUTE * 30)
 
     // Checks if a member is inactive to begin losing XP every day
     setInterval(async () => {

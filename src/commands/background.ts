@@ -44,16 +44,16 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       // If there was no theme or differnet theme but a valid id was provided just save the id
       if (!theme || theme === userSettings.profile.theme) {
         userSettings.profile.backgroundID = backgroundID
-        userSettings.save()
         message.channel.createMessage(language(`leveling/background:SAVED`))
+        await userSettings.save()
         profileCommand.process(message, [], context)
         return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
       }
       // Update the theme and id
       userSettings.profile.backgroundID = backgroundID
       userSettings.profile.theme = theme
-      userSettings.save()
       message.channel.createMessage(language(`leveling/background:SAVED`))
+      await userSettings.save()
 
       profileCommand.process(message, [], context)
       return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)

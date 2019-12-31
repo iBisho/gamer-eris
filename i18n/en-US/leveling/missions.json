@@ -19,5 +19,6 @@
   "POKE": "Poke 5 people.",
   "TICKLE": "Tickle 5 people.",
   "PONY": "Use the Pony command 5 times.",
-  "8BALL": "Ask the 8ball for advice 5 times."
+  "8BALL": "Ask the 8ball for advice 5 times.",
+  "GUILDADDED": "Add Gamer to your server .invite command"
 }

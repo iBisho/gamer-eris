@@ -18,5 +18,6 @@
   "SENT": "Your idea has been sent, thank you!",
   "CANCELLED": "You have cancelled the idea submission.",
 	"SOLVED_DEFAULT": "Thank you for submitting feedback. Your feedback was resolved successfully.",
-	"REJECTED_DEFAULT": "Thank you for submitting feedback. The feedback you submitted was removed. For more information, contact us on the server!"
+  "REJECTED_DEFAULT": "Thank you for submitting feedback. The feedback you submitted was removed. For more information, contact us on the server!",
+  "NEED_APPROVAL": "Your idea has been added to the approval queue list, thank you. Once it is approved by a server admin/mod it will be sent to the ideas channel."
 }

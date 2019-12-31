@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Jouez une partie de démineur.",
+	"EXTENDED": "Créé une partie de démineur pour vous dans le salon.",
+	"USAGE": "{{prefix}}minesweeper",
+	"ALIASES": "{{prefix}}mines",
+	"INSTRUCTIONS": "Le but du jeu est de découvrir toutes les cases sans tomber sur les bombes 💥, si vous en trouvez une, la partie est perdue. Les cases avec un nombre indique combien il y a de bombes autour de celle-ci dans un cercle de huits cases. Cliquez sur n'importe quelle case pour commencer. Bon jeu!"
+}

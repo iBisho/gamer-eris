@@ -245,8 +245,16 @@ export default class {
         userID: member.id,
         commandName,
         guildID,
-        amount: 1
+        amount: 1,
+        completed: mission.amount === 1
       })
+
+      if (mission.amount === 1) {
+        // The mission should be completed now so need to give XP.
+        this.addLocalXP(member, mission.reward, true)
+        this.addGlobalXP(member, mission.reward, true)
+      }
+
       // Return void to prevent collectors from breaking
       return
     }

@@ -113,6 +113,7 @@ export default class GamerClient extends Client {
   i18n: Map<string, TFunction> = new Map()
 
   missions: Mission[] = []
+  missionsStartTimestamp = Date.now()
 
   // All our stores to store files which we can reload easily.
   events: Map<string, Event> = new Map()

@@ -60,6 +60,24 @@ export default {
       name: `unOrdinary`,
       buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/unordinary.jpg`)),
       vipNeeded: false
+    },
+    {
+      id: 4,
+      name: `Free Fire 1`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire1.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 5,
+      name: `Free Fire 2`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire2.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 6,
+      name: `Free Fire 3`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire3.png`)),
+      vipNeeded: false
     }
   ],
   backgroundPackages: [],
