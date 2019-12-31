@@ -4,7 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`minesweeper`, `mines`], async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || 'en-US')
@@ -15,5 +15,6 @@ export default new Command([`minesweeper`, `mines`], async (message, _args, cont
 
   if (typeof matrix !== 'string') return
 
-  return message.channel.createMessage(`${language('gaming/minesweeper:INSTRUCTIONS')}\n\n${matrix}`)
+  message.channel.createMessage(`${language('gaming/minesweeper:INSTRUCTIONS')}\n\n${matrix}`)
+  return Gamer.helpers.levels.completeMission(message.member, `8ball`, message.channel.guild.id)
 })

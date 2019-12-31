@@ -20,5 +20,6 @@
   "TICKLE": "Tickle 5 people.",
   "PONY": "Use the Pony command 5 times.",
   "8BALL": "Ask the 8ball for advice 5 times.",
-  "GUILDADDED": "Add Gamer to your server .invite command"
+  "GUILDADDED": "Add Gamer to your server via .invite.",
+  "MINES": "Play a game of Minesweeper"
 }
