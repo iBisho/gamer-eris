@@ -6,6 +6,6 @@
 	"NO_BOOSTS": "Impossible de trouver votre boost, êtes-vous sûr d'avoir un booster d'XP de disponible ? Essayez d'en acheter un et rééssayez.",
 	"BOOSTED": "Vous êtes maintenant bOOsted ! Le Boost **{{name}}** a été activé et le multiplicateur est de {{multiplier}}x d'XP à partir de maintenant. Pour voir votre temps restant de boost, utilisez la commande **{{prefix}}profile**.",
 	"NEED_XP": "Vous avez besoin de plus de 100 d'XP supplémentaire pour pouvoir acheter et activer un boost automatiquement avec cette commande.",
-	"SMALL_BOOSTER": "Petit booster d'XP en x5.",
+	"SMALL_BOOSTER": "Booster d'XP x3",
 	"ALREADY_BOOSTED": "Vous ne pouvez activer qu'1 seul booster à la fois."
 }
