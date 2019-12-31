@@ -4,22 +4,21 @@ import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TenorGif } from '../lib/types/tenor'
 import { PrivateChannel, GroupChannel } from 'eris'
-
-const dirtyGifs = ['https://media.tenor.com/images/bc8f545534aadde51a8b9d54eb579052/tenor.gif']
+import constants from '../constants'
 
 export default new Command(`poke`, async (message, _args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
   const Gamer = context.client as GamerClient
 
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return null
+  if (!language) return
 
-  const data: TenorGif | null = await fetch(`https://api.tenor.com/v1/search?q=poke&key=LIVDSRZULELA&limit=50`)
+  const data: TenorGif | undefined = await fetch(`https://api.tenor.com/v1/search?q=poke&key=LIVDSRZULELA&limit=50`)
     .then(res => res.json())
-    .catch(() => null)
+    .catch(() => undefined)
 
   if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
-  const randomResult = data.results.filter(res => !dirtyGifs.includes(res.media[0].gif.url))[
+  const randomResult = data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))[
     Math.floor(Math.random() * (data.results.length - 1))
   ]
   const [media] = randomResult.media
