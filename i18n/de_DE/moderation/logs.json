@@ -1,7 +1,7 @@
 {
 	"TOTAL_EMOJIS": "Gesamtanzahl der Emotes",
 	"EMOJI_CREATED": "Emote wurde erstellt",
-	"EMOJI_DELETE": "Emote wurde gelöscht",
+	"EMOJI_DELETED": "Emote wurde gelöscht",
 	"USER_BANNED": "Benutzer wurde verbannt",
 	"ROLE_NAME": "Rollennamen",
 	"ROLE_ID": "Rollen-ID",
