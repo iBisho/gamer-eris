@@ -15,20 +15,32 @@ export default class {
     const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
     if (!language) return
 
-    const feedback = await channel.createMessage({ embed: embed.code })
+    const channelToUse =
+      settings.feedback.approvalChannelID && channel.guild.channels.has(settings.feedback.approvalChannelID)
+        ? channel.guild.channels.get(settings.feedback.approvalChannelID)
+        : channel
+
+    if (!channelToUse || !(channelToUse instanceof TextChannel)) return
+
+    const needsApproval = channel.id === channelToUse.id
+    const feedback = await channelToUse.createMessage({ embed: embed.code })
     if (!feedback) return
 
     // Create all reactions and then react to the message sent in the feedback channel
     // Permissions are checked in the bug command so we should be good to react
-    const reactions = [
-      settings.feedback.bugs.emojis.up,
-      settings.feedback.bugs.emojis.down,
-      constants.emojis.questionMark,
-      constants.emojis.mailbox,
-      constants.emojis.greenTick,
-      constants.emojis.redX
-    ].map((emoji: string) => this.Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
-    for (const emoji of reactions) if (emoji) await feedback.addReaction(emoji)
+    const emojis = needsApproval
+      ? [
+          settings.feedback.bugs.emojis.up,
+          settings.feedback.bugs.emojis.down,
+          constants.emojis.questionMark,
+          constants.emojis.mailbox,
+          constants.emojis.greenTick,
+          constants.emojis.redX
+        ]
+      : [constants.emojis.greenTick, constants.emojis.redX]
+
+    const reactions = emojis.map((emoji: string) => this.Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
+    for (const reaction of reactions) if (reaction) await feedback.addReaction(reaction)
 
     // Increment by 1
     settings.feedback.feedbacksSent = settings.feedback.feedbacksSent ? settings.feedback.feedbacksSent + 1 : 1
@@ -48,27 +60,44 @@ export default class {
     if (settings.feedback.logChannelID) this.logFeedback(embed, settings.feedback.logChannelID)
 
     // Respond to user that the feedback was sent
-    return message.channel.createMessage(language(`feedback/bugs:SENT`, { mention: message.author.mention }))
+    return message.channel.createMessage(
+      language(needsApproval ? `feedback/bugs:SENT` : `feedback/bugs:NEED_APPROVAL`, {
+        mention: message.author.mention
+      })
+    )
   }
 
   async sendIdea(message: Message, channel: TextChannel, embed: GamerEmbed, settings: GuildSettings) {
     const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
     if (!language) return
 
-    const feedback = await channel.createMessage({ embed: embed.code })
+    const channelToUse =
+      settings.feedback.approvalChannelID && channel.guild.channels.has(settings.feedback.approvalChannelID)
+        ? channel.guild.channels.get(settings.feedback.approvalChannelID)
+        : channel
+
+    if (!channelToUse || !(channelToUse instanceof TextChannel)) return
+
+    const needsApproval = channel.id === channelToUse.id
+
+    const feedback = await channelToUse.createMessage({ embed: embed.code })
     if (!feedback) return
 
     // Create all reactions and then react to the message sent in the feedback channel
-    // Permissions are checked in the idea command so we should be good to react
-    const reactions = [
-      settings.feedback.idea.emojis.up,
-      settings.feedback.idea.emojis.down,
-      constants.emojis.questionMark,
-      constants.emojis.mailbox,
-      constants.emojis.greenTick,
-      constants.emojis.redX
-    ].map((emoji: string) => this.Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
-    for (const emoji of reactions) if (emoji) await feedback.addReaction(emoji)
+    // Permissions are checked in the bug command so we should be good to react
+    const emojis = needsApproval
+      ? [
+          settings.feedback.bugs.emojis.up,
+          settings.feedback.bugs.emojis.down,
+          constants.emojis.questionMark,
+          constants.emojis.mailbox,
+          constants.emojis.greenTick,
+          constants.emojis.redX
+        ]
+      : [constants.emojis.greenTick, constants.emojis.redX]
+
+    const reactions = emojis.map((emoji: string) => this.Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
+    for (const reaction of reactions) if (reaction) await feedback.addReaction(reaction)
 
     // Increment by 1
     settings.feedback.feedbacksSent = settings.feedback.feedbacksSent ? settings.feedback.feedbacksSent + 1 : 1
@@ -88,7 +117,12 @@ export default class {
     if (settings.feedback.logChannelID) this.logFeedback(embed, settings.feedback.logChannelID)
 
     // Respond to user that the feedback was sent
-    return message.channel.createMessage(language(`feedback/idea:SENT`, { mention: message.author.mention }))
+    // Respond to user that the feedback was sent
+    return message.channel.createMessage(
+      language(needsApproval ? `feedback/idea:SENT` : `feedback/idea:NEED_APPROVAL`, {
+        mention: message.author.mention
+      })
+    )
   }
 
   async logFeedback(embed: GamerEmbed, channelID: string) {

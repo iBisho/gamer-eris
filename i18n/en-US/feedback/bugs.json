@@ -16,5 +16,6 @@
   "MISSING_EXTERNAL": "I am missing the **External Emojis** permission in the bug reports channel.",
   "MISSING_HISTORY": "I am missing the **Read Message History** permission in the bug reports channel. This permission is needed to add reactions.",
   "SENT": "Your bug report has been sent, thank you!",
-  "CANCELLED": "You have cancelled the bug report submission."
+  "CANCELLED": "You have cancelled the bug report submission.",
+  "NEED_APPROVAL": "Your bug report has been added to the approval queue list, thank you. Once it is approved by a server admin/mod it will be sent to the bug report channel."
 }

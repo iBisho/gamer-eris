@@ -175,6 +175,8 @@ export default new mongoose.Schema({
     }
   },
   feedback: {
+    // Feedback is originall sent here to be verified and approved by server staff before being made public.
+    approvalChannelID: String,
     // Where all feedback sent are logged. Usually private channel.
     logChannelID: String,
     // Where all feedback once a mod/admin marks it as solved.

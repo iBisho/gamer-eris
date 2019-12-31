@@ -94,13 +94,13 @@ export default new Command([`bugs`, `bug`], async (message, args, context) => {
         }
         // Cancel out as the user is using it wrongly
         else return
-        // If more questions create another collector
         if (embed.code.fields.length === questions.length) {
           // This was the final question so now we need to post the feedback
           Gamer.helpers.feedback.sendBugReport(message, channel, embed, settings)
           return Gamer.helpers.levels.completeMission(msg.member, `bugs`, msg.channel.guild.id)
         }
 
+        // If more questions create another collector
         const currentIndex = questions.findIndex(q => data.question === q)
         // Something is very wrong quit out
         if (currentIndex < 0) return

@@ -47,6 +47,20 @@ export default new Command(`setfeedback`, async (message, args, context) => {
       return message.channel.createMessage(
         language(`settings/setfeedback:LOG_CHANNEL_SET`, { channel: `<#${logChannelID}>` })
       )
+    case 'approvalchannel':
+      if (!message.channelMentions || !message.channelMentions.length) {
+        guildSettings.feedback.approvalChannelID = undefined
+        guildSettings.save()
+        return message.channel.createMessage(language(`settings/setfeedback:RESET_CHANNEL`))
+      }
+
+      const [approvalChannelID] = message.channelMentions
+      guildSettings.feedback.approvalChannelID = approvalChannelID
+      guildSettings.save()
+
+      return message.channel.createMessage(
+        language(`settings/setfeedback:APPROVAL_CHANNEL_SET`, { channel: `<#${approvalChannelID}>` })
+      )
     case 'solvedchannel':
       if (!message.channelMentions || !message.channelMentions.length)
         return message.channel.createMessage(language(`settings/setfeedback:NEED_CHANNEL`))

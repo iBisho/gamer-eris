@@ -338,13 +338,21 @@ export default class extends Event {
     // Check if this message is a feedback message
     const feedback = await Gamer.database.models.feedback.findOne({ id: message.id })
     if (!feedback) return
+
     // Fetch the guild settings for this guild
     const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
     if (!guildSettings) return
 
     // Check if valid feedback channel
-    if (![guildSettings.feedback.idea.channelID, guildSettings.feedback.bugs.channelID].includes(message.channel.id))
+    if (
+      ![
+        guildSettings.feedback.idea.channelID,
+        guildSettings.feedback.bugs.channelID,
+        guildSettings.feedback.approvalChannelID
+      ].includes(message.channel.id)
+    )
       return
+
     // Check if a valid emoji was used
     const feedbackReactions = [constants.emojis.mailbox, constants.emojis.greenTick, constants.emojis.redX]
     if (feedback.isBugReport)
@@ -398,6 +406,45 @@ export default class extends Event {
       case constants.emojis.greenTick:
         // If the user is not atleast a mod cancel everything
         if (!reactorIsAdmin && !reactorIsMod) return
+
+        // If this is the approval channel we need to move the feedback to the new channel
+        if (message.channel.id === guildSettings.feedback.approvalChannelID) {
+          const [embed] = message.embeds
+          const channelID = feedback.isBugReport
+            ? guildSettings.feedback.bugs.channelID
+            : guildSettings.feedback.idea.channelID
+          if (!channelID) return
+
+          const channel = message.channel.guild.channels.get(channelID)
+          if (!channel || !(channel instanceof TextChannel)) return
+
+          const hasApprovedPerms = Gamer.helpers.discord.checkPermissions(channel, Gamer.user.id, [
+            'readMessages',
+            'sendMessages',
+            'embedLinks',
+            'addReactions',
+            'externalEmojis',
+            'readMessageHistory'
+          ])
+          if (!hasApprovedPerms) return
+
+          const approvedFeedback = await channel.createMessage({ embed })
+          if (!approvedFeedback) return
+
+          const reactions = [
+            feedback.isBugReport ? guildSettings.feedback.bugs.emojis.up : guildSettings.feedback.idea.emojis.up,
+            feedback.isBugReport ? guildSettings.feedback.bugs.emojis.down : guildSettings.feedback.idea.emojis.down,
+            constants.emojis.questionMark,
+            constants.emojis.mailbox,
+            constants.emojis.greenTick,
+            constants.emojis.redX
+          ].map((emoji: string) => Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
+          for (const reaction of reactions) if (reaction) await approvedFeedback.addReaction(reaction)
+
+          feedback.id = approvedFeedback.id
+          feedback.save()
+          return message.delete().catch(() => undefined)
+        }
 
         // Send a DM to the user telling them it was solved
         const embed = new GamerEmbed()

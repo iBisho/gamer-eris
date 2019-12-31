@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "Set the verification settings for your server.",
-  "EXTENDED": "$t(settings/setfeedback:EXTENDED_LINE_1)\n$t(settings/setfeedback:EXTENDED_LINE_2)\n\n$t(settings/setfeedback:EXTENDED_LINE_3)\n$t(settings/setfeedback:EXTENDED_LINE_4)\n$t(settings/setfeedback:EXTENDED_LINE_5)\n$t(settings/setfeedback:EXTENDED_LINE_6)\n$t(settings/setfeedback:EXTENDED_LINE_7)\n$t(settings/setfeedback:EXTENDED_LINE_8)",
+  "EXTENDED": "$t(settings/setfeedback:EXTENDED_LINE_1)\n$t(settings/setfeedback:EXTENDED_LINE_2)\n\n$t(settings/setfeedback:EXTENDED_LINE_3)\n$t(settings/setfeedback:EXTENDED_LINE_4)\n$t(settings/setfeedback:EXTENDED_LINE_5)\n$t(settings/setfeedback:EXTENDED_LINE_6)\n$t(settings/setfeedback:EXTENDED_LINE_7)\n$t(settings/setfeedback:EXTENDED_LINE_8)\n$t(settings/setfeedback:EXTENDED_LINE_9)\n$t(settings/setfeedback:EXTENDED_LINE_10)\n$t(settings/setfeedback:EXTENDED_LINE_11)\n$t(settings/setfeedback:EXTENDED_LINE_12)\n$t(settings/setfeedback:EXTENDED_LINE_13)\n$t(settings/setfeedback:EXTENDED_LINE_14)\n$t(settings/setfeedback:EXTENDED_LINE_15)",
   "EXTENDED_LINE_1": "**{{prefix}}setfeedback idea channel [#Channel]** ~ Set the suggestions/ideain a channel.",
   "EXTENDED_LINE_2": "**{{prefix}}setfeedback bugs channel [#Channel]** ~ Set the bug reports in a channel.",
   "EXTENDED_LINE_3": "**{{prefix}}setfeedback idea disable** ~ Disables the idea feedback system.",
@@ -10,11 +10,12 @@
   "EXTENDED_LINE_7": "**{{prefix}}setfeedback idea removequestion [Question]** ~ Removes a question to ask the users when they send an idea.",
   "EXTENDED_LINE_8": "**{{prefix}}setfeedback bugs removequestion [Question]** ~ Removes a question to ask the users when they send an bug report.",
   "EXTENDED_LINE_9": "**{{prefix}}setfeedback logchannel [#Channel]** ~ Sets the log channel where all feedback will be logged privately.",
-  "EXTENDED_LINE_10": "**{{prefix}}setfeedback solvedchannel [#Channel]** ~ Sets the solved log channel where all feedback marked as solved will be saved.",
-  "EXTENDED_LINE_11": "**{{prefix}}setfeedback rejectedchannel [#Channel]** ~ Sets the rejected log channel where all feedback marked as rejected will be saved",
-  "EXTENDED_LINE_12": "**{{prefix}}setfeedback solvedmessage [Message You Wish To Send]** ~ Sets the message that is sent to the user when their feedback is solved.",
-  "EXTENDED_LINE_13": "**{{prefix}}setfeedback rejectedmessage [Message You Wish To Send]** ~ Sets the message that is sent to the user when their feedback is rejected.",
-  "EXTENDED_LINE_14": "**{{prefix}}setfeedback setup** ~ ALWAYS USE THIS FIRST TO AUTOMATICALLY SETUP THE SYSTEM BEFORE ALTERING ANY SETTINGS.",
+  "EXTENDED_LINE_10": "**{{prefix}}setfeedback approvalchannel [#Channel]** ~ Sets the approval queue channel. Mods must approve feedback before it becomes public.",
+  "EXTENDED_LINE_11": "**{{prefix}}setfeedback solvedchannel [#Channel]** ~ Sets the solved log channel where all feedback marked as solved will be saved.",
+  "EXTENDED_LINE_12": "**{{prefix}}setfeedback rejectedchannel [#Channel]** ~ Sets the rejected log channel where all feedback marked as rejected will be saved",
+  "EXTENDED_LINE_13": "**{{prefix}}setfeedback solvedmessage [Message You Wish To Send]** ~ Sets the message that is sent to the user when their feedback is solved.",
+  "EXTENDED_LINE_14": "**{{prefix}}setfeedback rejectedmessage [Message You Wish To Send]** ~ Sets the message that is sent to the user when their feedback is rejected.",
+  "EXTENDED_LINE_15": "**{{prefix}}setfeedback setup** ~ ALWAYS USE THIS FIRST TO AUTOMATICALLY SETUP THE SYSTEM BEFORE ALTERING ANY SETTINGS.",
   "USAGE": "{{prefix}}setfeedback [setup | idea | bugs] *[#Channel]*",
   "ALIASES": "Setfeedback does not have any aliases",
   "IDEA_QUESTION_1": "What is the suggestion you would like to send?",
@@ -50,5 +51,7 @@
   "BUGS_CHANNEL_NAME": "bug-reports",
   "NEED_QUESTION": "You did not provide any question.",
   "PATIENCE": "Please hold on while I create the entire feedback system on the server.",
-  "SETUP": "{{mention}}, the feedback system has been created on your server."
+  "SETUP": "{{mention}}, the feedback system has been created on your server.",
+  "RESET_CHANNEL": "The channel has been reset in the database. I will no longer use this channel.",
+  "APPROVAL_CHANNEL_SET": "The approval channel where all feedback that is sent pending approval from mod/admins has been set."
 }
