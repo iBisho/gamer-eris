@@ -65,9 +65,9 @@ export default class extends Event {
     }, 2000)
 
     // Randomly select 3 new missions every 30 minutes
-    setInterval(() => {
+    setInterval(async () => {
       // Remove all missions first before creating any new missions
-      Gamer.database.models.mission.deleteMany({})
+      await Gamer.database.models.mission.deleteMany({})
       Gamer.missionsStartTimestamp = Date.now()
       // Find 3 new random missions to use for today
       Gamer.missions = []
@@ -213,8 +213,11 @@ export default class extends Event {
     // Set the missions on startup
     // Remove all missions first before creating any new missions
     await Gamer.database.models.mission.deleteMany({}).catch(error => console.log(error))
+    // Always add the first mission on bootup to encourage users to add gamer to more servers
+    Gamer.missions.push(constants.missions[0])
+    // Add 2 more unique missions
     while (Gamer.missions.length < 3) {
-      const randomMission = constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))]
+      const randomMission = constants.missions[Math.floor(Math.random() * constants.missions.length)]
       if (!Gamer.missions.find(m => m.title === randomMission.title)) Gamer.missions.push(randomMission)
     }
 

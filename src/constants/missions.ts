@@ -1,4 +1,5 @@
 export default [
+  { amount: 1, commandName: `guildadded`, title: `leveling/missions:GUILDADDED`, reward: 200 },
   { amount: 10, commandName: `advice`, title: `leveling/missions:ADVICE`, reward: 30 },
   { amount: 3, commandName: `afk`, title: `leveling/missions:AFK`, reward: 30 },
   { amount: 5, commandName: `background`, title: `leveling/missions:BACKGROUND`, reward: 50 },
@@ -19,6 +20,5 @@ export default [
   { amount: 5, commandName: `poke`, title: `leveling/missions:POKE`, reward: 10 },
   { amount: 5, commandName: `tickle`, title: `leveling/missions:TICKLE`, reward: 10 },
   { amount: 5, commandName: `pony`, title: `leveling/missions:PONY`, reward: 30 },
-  { amount: 5, commandName: `8ball`, title: `leveling/missions:8BALL`, reward: 30 },
-  { amount: 1, commandName: `guildadded`, title: `leveling/missions:GUILDADDED`, reward: 200 }
+  { amount: 5, commandName: `8ball`, title: `leveling/missions:8BALL`, reward: 30 }
 ]
