@@ -1,0 +1,21 @@
+{
+  "DESCRIPTION": "Envoyez un rapport de bug au staff.",
+  "EXTENDED": "$t(feedback/bugs:EXTENDED_LINE_1)\n$t(feedback/bugs:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}bugs Votre report de bug** ~ Débute une ou série de questions auquel vous devez répondre pour pouvoir compléter un report de bug.",
+  "EXTENDED_LINE_2": "**AVANCÉ:** Si vous connaissez toutes les questions de ce serveur, vous pouvez rejoindre toutes les réponses d'un coup en les séparant. exemple: |, /, -, ....",
+  "USAGE": "{{prefix}}bugs [Votre report de bug]",
+  "ALIASES": "{{prefix}}bug",
+  "NOT_ACTIVATED": "Le serveur n'a pas activé l'option des reports de bug. Veuillez contacter un modérateur/admin.",
+  "NO_QUESTIONS": "Le serveur n'a pas ajouté de questions pour le report de bug. Veuillez contacter un modérateur/admin.",
+  "NO_CONTENT": "Vous n'avez pas fourni d'informations. Veuillez rééssayer en mettant un message.",
+  "FROM": "Report de bug venant de {{user}}",
+  "INVALID_CHANNEL": "Le salon utilisé pour le report de bugs n'est pas valide. Veuillez contacter un modérateur/admin.",
+  "MISSING_SEND": "Il me faut la permission **Envoyer des messages** dans le salon des reports de bug.",
+  "MISSING_EMBED": "Il me faut la permission **Intégrer des liens** dans le salon des reports de bug.",
+  "MISSING_REACT": "Il me faut la permission **Ajouter des réactions** dans le salon des reports de bug.",
+  "MISSING_EXTERNAL": "il me faut la permission **Utiliser des émojis externes** dans le salon des reports de bug.",
+  "MISSING_HISTORY": "Il me faut la permission **Voir les anciens messages** dans le salon des reports de bug. Cette permission est nécéssaire pour pouvoir ajouter des reactions.",
+  "SENT": "Votre report de bug a bien été envoyé, Merci ! :D",
+  "CANCELLED": "Vous avez annulé le report de bug.",
+  "NEED_APPROVAL": "Votre report de bug a bien été ajouté dans la liste d'attente, merci. Votre report sera ensuite affiché dans le salon correspondant quand un modérateur/admin l'aura approuvé."
+}
