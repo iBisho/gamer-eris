@@ -12,6 +12,7 @@ const categories = [
       `8ball`,
       `avatar`,
       `baka`,
+      `coinflip`,
       `compliment`,
       `cuddle`,
       `gif`,

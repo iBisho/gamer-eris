@@ -16,5 +16,5 @@ export default new Command([`minesweeper`, `mines`], async (message, _args, cont
   if (typeof matrix !== 'string') return
 
   message.channel.createMessage(`${language('gaming/minesweeper:INSTRUCTIONS')}\n\n${matrix}`)
-  return Gamer.helpers.levels.completeMission(message.member, `8ball`, message.channel.guild.id)
+  return Gamer.helpers.levels.completeMission(message.member, `mines`, message.channel.guild.id)
 })
