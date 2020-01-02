@@ -15,7 +15,7 @@ export default new Command([`coinflip`, `cf`], async (message, args, context) =>
   const [choice, amountStr] = args
   if (
     choice.toLowerCase() !== language(`fun/coinflip:OPTION_NUMBER0`).toLowerCase() &&
-    choice !== language(`fun/coinflip:OPTION_NUMBER1`).toLowerCase()
+    choice.toLowerCase() !== language(`fun/coinflip:OPTION_NUMBER1`).toLowerCase()
   )
     return message.channel.createMessage(language(`fun/coinflip:NEED_CHOICE`))
 
