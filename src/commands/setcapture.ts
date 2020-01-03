@@ -31,10 +31,12 @@ export default new Command(`setcapture`, async (message, args, context) => {
     game: game.toLowerCase()
   })
 
-  if ([`reset`, language(`common:RESET`).toLowerCase()].includes(reset.toLowerCase())) {
-    if (!gameSettings) return message.channel.createMessage(language('settings/setcapture:NOT_SETUP'))
-    await Gamer.database.models.tradingCard.deleteOne({ _id: gameSettings._id })
-    return message.channel.createMessage(language(`settings/setcapture:RESET`))
+  if (reset) {
+    if ([`reset`, language(`common:RESET`).toLowerCase()].includes(reset.toLowerCase())) {
+      if (!gameSettings) return message.channel.createMessage(language('settings/setcapture:NOT_SETUP'))
+      await Gamer.database.models.tradingCard.deleteOne({ _id: gameSettings._id })
+      return message.channel.createMessage(language(`settings/setcapture:RESET`))
+    }
   }
 
   if (!gameSettings) {
