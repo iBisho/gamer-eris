@@ -12,6 +12,7 @@ const categories = [
       `8ball`,
       `avatar`,
       `baka`,
+      `coinflip`,
       `compliment`,
       `cuddle`,
       `gif`,
@@ -34,7 +35,19 @@ const categories = [
   },
   {
     name: `leveling`,
-    commands: [`background`, `boostme`, `daily`, `leaderboard`, `levelrole`, `profile`, `xp`, `xpreset`, `xpresetvoice`]
+    commands: [
+      `background`,
+      `balance`,
+      `boostme`,
+      `daily`,
+      `leaderboard`,
+      `levelrole`,
+      `pay`,
+      `profile`,
+      `xp`,
+      `xpreset`,
+      `xpresetvoice`
+    ]
   },
   {
     name: `settings`,
