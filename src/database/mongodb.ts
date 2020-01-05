@@ -7,6 +7,7 @@ import GuildSchema from './schemas/guild'
 import LabelSchema from './schemas/label'
 import LevelSchema from './schemas/level'
 import MailSchema from './schemas/mail'
+import MarriageSchema, { GamerMarriage } from './schemas/marriage'
 import MemberSchema from './schemas/member'
 import MissionSchema from './schemas/mission'
 import ModlogSchema from './schemas/modlog'
@@ -49,6 +50,7 @@ class Database {
     label: mongoose.model<GamerMailLabel>('Label', LabelSchema),
     level: mongoose.model<GamerLevel>('Level', LevelSchema),
     mail: mongoose.model<GamerMail>('Mail', MailSchema),
+    marriage: mongoose.model<GamerMarriage>('Marriage', MarriageSchema),
     member: mongoose.model<MemberSettings>('Member', MemberSchema),
     mission: mongoose.model<GamerMission>('Mission', MissionSchema),
     modlog: mongoose.model<GamerModlog>('Modlog', ModlogSchema),

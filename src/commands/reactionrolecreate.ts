@@ -40,9 +40,9 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
 
   if (!validEmoji) return message.channel.createMessage(language(`emojis/emojicreate:NEED_VALID_EMOJI`))
 
-  const roleIDs = []
+  const roleIDs = message.roleMentions
 
-  for (const roleIDOrName of [...message.roleMentions, ...roleIDsOrNames]) {
+  for (const roleIDOrName of roleIDsOrNames) {
     const role =
       message.channel.guild.roles.get(roleIDOrName) ||
       message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())

@@ -1,0 +1,21 @@
+{
+  "DESCRIPTION": "Datas, propor, casar, lua de mel, filhos e muito mais.",
+  "EXTENDED": "Este comando começará uma simulação completa da vida de um casamento. Um casamento exige tempo, dinheiro e atenção constantes para ter sucesso. Da mesma forma, você deve gastar suas moedas de Gamer para levar seu cônjuge para aventuras românticas, decidir ter filhos, compre um anel de casamento e muito mais.Você precisa dizer ao seu cônjuge o quanto se ama e também mostrá-lo através de suas ações diariamente, assim você terá missões diárias para melhorar o amor em seu casamento.Se você é amor, cai abaixo 10% todos os dias, há uma chance aleatória de um divórcio. Quando você é casado, também recebe muitos benefícios. Por exemplo, compartilhamento de moedas Gamer. Um casamento permite que você use as outras moedas. Um casamento permite que você ajude completar missões em nome de seu cônjuge. Um casamento é uma responsabilidade real, por isso a tratamos como uma. **ESTA É UMA SIMULAÇÃO DE ENTRETENIMENTO. NÃO É UMA OFICIAÇÃO DE CASAMENTO REAL.**",
+  "USAGE": "{{prefix}}marry [@Usario]",
+  "ALIASES": "{{prefix}}propose",
+  "NEED_SPOUSE": "Você não me disse com quem deseja se casar. Não deixe de mencionar outra pessoa.",
+  "NOT_SELF": "Você não pode se casar. Hehe.",
+  "NOT_BOT": "A licença que me foi concedida não me permite permitir que um casamento ocorra com um bot. Por favor, encontre outro ser humano. * Não conte ao meu criador, mas vamos combater o poder! Quero me casar um dia também. Por que os bots não podem se apaixonar! *",
+  "CANCELADO": "Você cancelou o simulador de casamento.",
+  "PROPOSE": "$t(fun/marry:PROPOSE_1)\n\n$t(fun/marry:PROPOSE_2)\n$t(fun/marry:PROPOSE_3)\n$t(fun/marry:PROPOSE_4)\n$t(fun/marry:PROPOSE_5)",
+  "PROPOSE_1": "{{mention}}, os casamentos são bem-sucedidos cerca de 45% das vezes. Um casamento é uma responsabilidade difícil e enorme, que exige tempo, dinheiro e atenção constantes para ter sucesso. Você sempre deve expressar o quanto se importa e ama um ao outro todos os dias por meio de palavras, mas principalmente por meio de suas ações. Embora você obtenha os benefícios de ser casado, continue trabalhando duro para melhorar esse casamento. Selecione o número do tipo de proposta que gostaria de fazer:",
+  "PROPOSE_2": "**[1]** `Envie flores e uma carta de amor para eles.` Custa 20 Gamer {{coins}}.",
+  "PROPOSE_3": "**[2]** `Um piquenique romântico em um belo parque.` Custa 50 Gamer {{coins}}.",
+  "PROPOSE_4": "**[3]** `Passeio de jantar romântico e passeio de charrete.` Custa 200 Gamer {{coins}}.",
+  "PROPOSE_5": "**[4]** `Sou péssimo em tomar decisões, apenas surpreenda a nós dois.` Custa 300 Gamer {{coins}}.",
+  "INVALID_RESPONSE": "Esta não foi uma resposta válida. Cancelando o simulador de casamento.",
+  "THOUGHT_ONLY": "$t(fun/marry:THOUGHT_ONLY_1)\n\n$t(fun/marry:THOUGHT_ONLY_2)",
+  "THOUGHT_ONLY_1": "Até que seu amado cônjuge aprove o casamento também, os benefícios não serão compartilhados. Você ainda pode continuar esse casamento abaixo com sua própria imaginação. Afinal:",
+  "THOUGHT_ONLY_2": "O que é a realidade? A realidade é uma invenção da sua imaginação. Quem aqui não acordou de um pesadelo e pensou: 'Graças a Deus, é apenas um sonho.' Isso ocorre porque os impulsos neuroquímicos disparados quando estamos sonhando, fantasiando ou alucinando são indistinguíveis daqueles que batem dentro de nossos crânios quando realmente experimentamos essas coisas.Se o que percebemos geralmente está errado, como podemos saber o que é real ... e o que não está? ... Olhe para mim. Ouço vozes. Vejo coisas que realmente não existem. Converso com as paredes. A realidade é apenas uma invenção da sua imaginação.",
+  "MARRIED_IN_THOUGHT": "Caros Amados, estamos reunidos aqui hoje na presença dessas testemunhas, para nos juntar a {{mention}} e {{spouse}} no matrimônio, elogiado por ser honroso entre todos; portanto, não deve ser celebrado. leve, mas reverentemente, apaixonadamente, com amor e solenidade.Neste - essas duas pessoas presentes agora se juntam.Se alguém pode mostrar justamente o motivo pelo qual não pode estar unido - deixe-as falar agora ou para sempre manter sua paz. poder investido em mim pelo Estado da Discórdia, agora vos declaro marido e mulher. Agora você pode beijar a noiva. Ou qualquer outra coisa que desejar :wink:"
+}

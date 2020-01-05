@@ -3,6 +3,7 @@ import GamerEmbed from '../structures/GamerEmbed'
 import { GuildSettings } from './settings'
 import { TFunction } from 'i18next'
 import { Document } from 'mongoose'
+import { GamerMarriage } from '../../database/schemas/marriage'
 
 export interface GamerEmbedObject {
   title?: string
@@ -46,6 +47,10 @@ export interface FeedbackCollectorData {
   settings: GuildSettings
   embed: GamerEmbed
   question: string
+}
+
+export interface MarriageCollectorData {
+  marriage: GamerMarriage
 }
 
 export interface GamerLevel extends Document {
