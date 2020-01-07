@@ -19,7 +19,7 @@ export default new Command(`baka`, async (message, _args, context) => {
     .catch(() => undefined)
 
   if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
-  const randomResult = data.results[Math.floor(Math.random() * (data.results.length - 1))]
+  const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
   const [media] = randomResult.media
 
   const embed = new GamerEmbed()

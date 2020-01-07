@@ -61,6 +61,7 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
         return
       }
 
+      const prefix = Gamer.guildPrefixes.get(msg.channel.guild.id) || Gamer.prefix
       const data = collector.data as MarriageCollectorData
       switch (data.marriage.step) {
         // If the user agrees to send the proposal
@@ -76,7 +77,7 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
                 .catch(() => undefined)
               if (!data || !data.results.length) return
 
-              const randomResult = data.results[Math.floor(Math.random() * data.results.length)]
+              const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
               const [media] = randomResult.media
 
               const embed = new GamerEmbed()
@@ -84,20 +85,23 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
                 .setDescription(
                   language('fun/marry:HOW_TO_ACCEPT', {
                     user: spouseUser.mention,
-                    prefix: Gamer.guildPrefixes.get(msg.channel.guild.id) || Gamer.prefix
+                    prefix
                   })
                 )
                 .setImage(media.gif.url)
                 .setFooter(`Via Tenor`, spouseUser.avatarURL)
 
-              msg.channel.createMessage({ embed: embed.code })
+              msg.channel.createMessage({
+                content: `${message.author.mention} ${spouseUser.mention}`,
+                embed: embed.code
+              })
               const thoughtOnlyEmbed = new GamerEmbed()
                 .setAuthor(message.author.username, message.author.avatarURL)
                 .setDescription(language('fun/marry:THOUGHT_ONLY'))
                 .setImage('https://i.imgur.com/WwBfZfa.jpg')
 
-              msg.channel.createMessage({ embed: thoughtOnlyEmbed.code })
-              msg.channel.createMessage(language('fun/marry:TIME_TO_SHOP'))
+              msg.channel.createMessage({ content: message.author.mention, embed: thoughtOnlyEmbed.code })
+              msg.channel.createMessage(language('fun/marry:TIME_TO_SHOP', { mention: message.author.mention, prefix }))
               return
             case '2':
             case '3':

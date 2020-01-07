@@ -17,7 +17,7 @@
   "THOUGHT_ONLY": "$t(fun/marry:THOUGHT_ONLY_1)\n\n$t(fun/marry:THOUGHT_ONLY_2)",
   "THOUGHT_ONLY_1": "Until your dearly beloved spouse approves the marriage as well, the benefits will not be shared. You can still continue this marriage below in your own imagination. Afterall:",
   "THOUGHT_ONLY_2": "What is reality? Reality is a figment of your imagination. Who here hasn't woken up from a nightmare and thought, 'O thank God, it is just a dream.' That is because the neurochemical impulses fired when we are dreaming or fantasizing or hallucinating are indistinguishable from the ones banging inside our skulls when we actually experience those things. If what we perceive is often wrong, how can we ever know what is real... and what isn't?...Look at me. I hear voices. I see things that aren't really there. I talk to the walls. Reality is just a figment of your imagination.",
-  "TIME_TO_SHOP": "Now it is time to begin preparing the wedding ceremony. Use the **shopwedding** command to proceed.",
+  "TIME_TO_SHOP": "{{mention}}, Now it is time to begin preparing the wedding ceremony. Use the **{{prefix}}shopwedding** command to proceed.",
   "YOU_ARE_MARRIED": "I do not yet have the ability to marry you multiple times. Use the **profile** command to view details regarding your marriage.",
   "SPOUSE_IS_MARRIED": "The person you are trying to marry is already married and I do not yet have the ability to marry people multiple times. Use the **profile** command to view details regarding your or their marriage.",
   "PROPOSAL": "{{user}} Proposal To {{spouse}}",

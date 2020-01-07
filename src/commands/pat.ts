@@ -3,17 +3,21 @@ import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TenorGif } from '../lib/types/tenor'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`pat`, async (message, _args, context) => {
-  const language = (context.client as GamerClient).i18n.get('en-US')
-  if (!language) return null
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+
+  const Gamer = context.client as GamerClient
+  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+  if (!language) return
 
   const data: TenorGif | null = await fetch(`https://api.tenor.com/v1/search?q=pat&key=LIVDSRZULELA&limit=50`)
     .then(res => res.json())
     .catch(() => null)
 
   if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
-  const randomResult = data.results[Math.floor(Math.random() * (data.results.length - 1))]
+  const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
   const [media] = randomResult.media
 
   const user = message.mentions.length ? message.mentions[0] : message.author

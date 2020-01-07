@@ -39,7 +39,8 @@ export default new Command([`advice`, `ad`], async (message, _args, context) => 
 
   const Gamer = context.client as GamerClient
 
-  const advice = allAdvice[Math.floor(Math.random() * (allAdvice.length - 1))]
+  const advice = Gamer.helpers.utils.chooseRandom(allAdvice)
+
   const [user] = message.mentions
   const embed = new GamerEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)

@@ -9,7 +9,7 @@ export default {
     logo: join(assetsFolder, `profile/gamer.png`),
     text: `The Bot For Every Gamer`,
     url: `https://gamer.netlify.com`,
-    name: `Gamer`
+    name: `Coins`
   },
   whiteMode: {
     username: `#000`,
@@ -18,7 +18,7 @@ export default {
     xpbarText: `#000`,
     xpbarRatioUp: `#000`,
     xpbarRatioDown: `#000`,
-    badgeShadow: `rgba(100,100,100,.7)`,
+    badgeShadow: `rgba(161,161,161,1)`,
     badgeFilling: `#e0e0e0`,
     xpbarFilling: `#e0e0e0`,
     clanRectFilling: `rgba(54,54,54,.7)`,

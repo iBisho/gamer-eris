@@ -11,5 +11,11 @@
 	"USAGE": "{{prefix}}profile *[User]*",
 	"ALIASES": "{{prefix}}p",
 	"CURRENT_MISSIONS": "Current Missions For XP:",
-	"NEW_IN": "New Missions In: {{time}}"
+	"NEW_IN": "New Missions In: {{time}}",
+	"SERVER_XP": "Server XP",
+	"GLOBAL_XP": "Global XP",
+	"LEVEL": "LEVEL",
+	"NOT_MARRIED": "Not Married",
+	"MARRIED": "In Love With: {{username}}",
+	"COINS": "Coins: {{amount}}"
 }

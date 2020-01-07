@@ -39,15 +39,6 @@ export default class {
       .setColor(whiteMode.clanRectFilling)
       .addBeveledRect(590, 435, 200, 90)
       .setTextAlign(`left`)
-      .setColor(whiteMode.clanName)
-      .setTextFont(`20px LatoBold`)
-      .addText(Constants.profiles.clanDefaults.name, 600, 463)
-      .setColor(whiteMode.clanText)
-      .setTextFont(`14px LatoBold`)
-      .addMultilineText(Constants.profiles.clanDefaults.text.substr(0, 50), 600, 483)
-      .setColor(whiteMode.clanURL)
-      .setTextFont(`14px LatoBold`)
-      .addText(Constants.profiles.clanDefaults.url, 600, 515)
       .setShadowColor(whiteMode.badgeShadow)
       .setShadowBlur(7)
       .setColor(whiteMode.badgeFilling)
@@ -76,12 +67,14 @@ export default class {
   async makeCanvas(message: Message, member: Member, Gamer: GamerClient, options?: ProfileCanvasOptions) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-    const [memberSettings, userSettings] = await Promise.all([
+    const [memberSettings, userSettings, isMarried, isSpouse] = await Promise.all([
       Gamer.database.models.member.findOne({
         memberID: member.id,
         guildID: member.guild.id
       }),
-      await Gamer.database.models.user.findOne({ userID: member.id })
+      Gamer.database.models.user.findOne({ userID: member.id }),
+      Gamer.database.models.marriage.findOne({ authorID: member.id }),
+      Gamer.database.models.marriage.findOne({ spouseID: member.id })
     ])
 
     // Select the background theme & id from their settings if no override options were provided
@@ -129,6 +122,11 @@ export default class {
     // Calculate Progress
     const xpBarWidth = 360
 
+    // Marriage calculations
+    const marriage = isMarried || isSpouse
+    const mRatio = (marriage?.love || 0) / 100
+    const mProgress = xpBarWidth * mRatio
+
     const sRatio = memberXP / (serverLevelDetails.xpNeeded - previousServerLevelDetails.xpNeeded)
     const sProgress = xpBarWidth * sRatio
     const gRatio = globalXP / (globalLevelDetails.xpNeeded - previousGlobalLevelDetails.xpNeeded)
@@ -141,6 +139,9 @@ export default class {
       style === `black` ? Gamer.buffers.profiles.blackRectangle : Gamer.buffers.profiles.whiteRectangle
 
     const canvasWidth = backgroundData.vipNeeded ? 952 : 852
+
+    const language = Gamer.i18n.get(Gamer.guildLanguages.get(member.guild.id) || `en-US`)
+    if (!language) return
 
     const canvas = useDefaultProfile
       ? new Canvas(canvasWidth, 581).addImage(this.defaultProfile, 0, 0)
@@ -164,15 +165,6 @@ export default class {
         .setColor(mode.clanRectFilling)
         .addBeveledRect(590, 435, 200, 90)
         .setTextAlign(`left`)
-        .setColor(mode.clanName)
-        .setTextFont(`20px LatoBold`)
-        .addText(Constants.profiles.clanDefaults.name, 600, 463)
-        .setColor(mode.clanText)
-        .setTextFont(`14px LatoBold`)
-        .addMultilineText(Constants.profiles.clanDefaults.text.substr(0, 50), 600, 483)
-        .setColor(mode.clanURL)
-        .setTextFont(`14px LatoBold`)
-        .addText(Constants.profiles.clanDefaults.url, 600, 515)
 
         // all badgeholders
         .setShadowColor(mode.badgeShadow)
@@ -220,7 +212,18 @@ export default class {
       ``
     )
 
+    const spouse = marriage
+      ? member.guild.members.get(marriage.authorID === member.id ? marriage.spouseID : marriage.authorID)
+      : undefined
+    const spouseUsername = spouse?.username.replace(
+      /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
+      ``
+    )
+
     canvas
+      .setColor(mode.clanName)
+      .setTextFont(`16px LatoBold`)
+      .addText(language('leveling/profile:COINS', { amount: userSettings?.leveling.currency || 0 }), 600, 463)
       .setColor(mode.userdivider)
       .addRect(158, 135, 240, 2)
       .setColor(mode.username)
@@ -236,18 +239,27 @@ export default class {
       .setColor(mode.xpbarText)
       .setTextAlign(`left`)
       .setTextFont(`20px LatoBold`)
-      .addText(`Server XP`, 45, 245)
-      .addText(`LEVEL`, 350, 245)
-      .addText(`Global XP`, 45, 355)
-      .addText(`LEVEL`, 350, 355)
+      .addText(language(`leveling/profile:SERVER_XP`), 45, 225)
+      .addText(language(`leveling/profile:LEVEL`), 350, 225)
+      .addText(language(`leveling/profile:GLOBAL_XP`), 45, 300)
+      .addText(language(`leveling/profile:LEVEL`), 350, 300)
+      .addResponsiveText(
+        spouse
+          ? language(`leveling/profile:MARRIED`, { username: `${spouseUsername}#${spouse.user.discriminator}` })
+          : language(`leveling/profile:NOT_MARRIED`),
+        45,
+        375,
+        450
+      )
       .setTextFont(`30px LatoHeavy`)
-      .addText(memberLevel.toString(), 310, 245)
-      .addText(globalLevel.toString(), 310, 355)
+      .addText(memberLevel.toString(), 310, 225)
+      .addText(globalLevel.toString(), 310, 300)
 
       // all xp bars
       .setColor(mode.xpbarFilling)
-      .addBeveledRect(45, 260, xpBarWidth, 30, 25)
-      .addBeveledRect(45, 370, xpBarWidth, 30, 25)
+      .addBeveledRect(45, 240, xpBarWidth, 30, 25)
+      .addBeveledRect(45, 310, xpBarWidth, 30, 25)
+      .addBeveledRect(45, 390, xpBarWidth, 30, 25)
 
     // server xp bar filling
     // The if checks solve a crucial bug in canvas DO NOT REMOVE.
@@ -256,13 +268,13 @@ export default class {
       canvas
         .setShadowColor(`rgba(155, 222, 239, .5)`)
         .setShadowBlur(7)
-        .printLinearGradient(45, 260, 45 + sProgress, 285, [
+        .printLinearGradient(45, 240, 45 + sProgress, 285, [
           { position: 0, color: `#5994f2` },
           { position: 0.25, color: `#8bccef` },
           { position: 0.5, color: `#9bdeef` },
           { position: 0.75, color: `#9befe7` }
         ])
-        .addBeveledRect(45, 260, sProgress, 30, 25)
+        .addBeveledRect(45, 240, sProgress, 30, 25)
     }
 
     // global xp bar filling
@@ -270,13 +282,25 @@ export default class {
       canvas
         .setShadowColor(`rgba(155, 222, 239, .5)`)
         .setShadowBlur(7)
-        .printLinearGradient(45, 370, 45 + gProgress, 395, [
+        .printLinearGradient(45, 310, 45 + gProgress, 395, [
           { position: 0, color: `#5994f2` },
           { position: 0.25, color: `#8bccef` },
           { position: 0.5, color: `#9bdeef` },
           { position: 0.75, color: `#9befe7` }
         ])
-        .addBeveledRect(45, 370, gProgress, 30, 25)
+        .addBeveledRect(45, 310, gProgress, 30, 25)
+    }
+
+    // marriage love meter filling
+    if (mProgress) {
+      canvas
+        .printLinearGradient(45, 390, 45 + mProgress, 395, [
+          { position: 0, color: `#ff9a8b` },
+          { position: 0.25, color: `#ff8f88` },
+          { position: 0.5, color: `#ff8386` },
+          { position: 0.75, color: `#ff7786` }
+        ])
+        .addBeveledRect(45, 390, mProgress, 30, 25)
     }
 
     canvas
@@ -284,13 +308,11 @@ export default class {
       .setColor(sRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
-      .addText(`${memberXP}/${serverLevelDetails.xpNeeded - previousServerLevelDetails?.xpNeeded}`, 190, 280)
-
+      .addText(`${memberXP}/${serverLevelDetails.xpNeeded - previousServerLevelDetails?.xpNeeded}`, 190, 260)
       // global xp bar text
-      .setColor(gRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
-      .setTextAlign(`left`)
-      .setTextFont(`16px LatoBold`)
-      .addText(`${globalXP}/${globalLevelDetails.xpNeeded - previousGlobalLevelDetails?.xpNeeded}`, 190, 390)
+      .addText(`${globalXP}/${globalLevelDetails.xpNeeded - previousGlobalLevelDetails?.xpNeeded}`, 190, 330)
+      // global xp bar text
+      .addText(`${marriage?.love || 0}%`, 190, 410)
 
     return canvas.toBufferAsync()
   }

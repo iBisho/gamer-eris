@@ -121,7 +121,7 @@ export default new Command([`puppy`, `dog`, `doggo`], async (message, _args, con
     .catch(() => undefined)
 
   if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
-  const randomResult = data.results[Math.floor(Math.random() * data.results.length)]
+  const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
   const [media] = randomResult.media
 
   const embed = new GamerEmbed()

@@ -9,4 +9,8 @@ export default class {
   async sleep(seconds: number) {
     return new Promise(resolve => setTimeout(resolve, 1000 * seconds))
   }
+
+  chooseRandom<T>(array: T[]) {
+    return array[Math.floor(Math.random() * array.length)]
+  }
 }
