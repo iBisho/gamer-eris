@@ -123,7 +123,7 @@ export default class {
     const xpBarWidth = 360
 
     // Marriage calculations
-    const marriage = isMarried || isSpouse
+    const marriage = isMarried || (isSpouse && isSpouse.accepted ? isSpouse : undefined)
     const mRatio = (marriage?.love || 0) / 100
     const mProgress = xpBarWidth * mRatio
 

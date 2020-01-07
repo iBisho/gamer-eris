@@ -30,7 +30,8 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
     })
   ])
 
-  if (isMarried || isSpouse) return message.channel.createMessage(language('fun/marry:YOU_ARE_MARRIED'))
+  if (isMarried || (isSpouse && isSpouse.accepted))
+    return message.channel.createMessage(language('fun/marry:YOU_ARE_MARRIED'))
   if (spouseIsMarried || spouseIsSpouse) return message.channel.createMessage(language('fun/marry:SPOUSE_IS_MARRIED'))
 
   message.channel.createMessage(
