@@ -3,6 +3,7 @@ import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, TextChannel, GroupChannel } from 'eris'
 import { FeedbackCollectorData } from '../lib/types/gamer'
+import fetch from 'node-fetch'
 
 export default new Command([`bugs`, `bug`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -53,7 +54,10 @@ export default new Command([`bugs`, `bug`], async (message, args, context) => {
 
     if (message.attachments.length) {
       const [attachment] = message.attachments
-      embed.setImage(attachment.url)
+      const buffer = await fetch(attachment.url)
+        .then(res => res.buffer())
+        .catch(() => undefined)
+      if (buffer) embed.attachFile(buffer, 'imageattachment.png')
     }
 
     await message.channel.createMessage(`${message.author.mention}, ${question}`)
@@ -86,7 +90,11 @@ export default new Command([`bugs`, `bug`], async (message, args, context) => {
         if (msg.content) embed.addField(data.question, msg.content)
         // If no response was provided but an image was uploaded and this is the last question we use this image
         else if (questions.length === embed.code.fields.length + 1 && msg.attachments.length) {
-          embed.setImage(msg.attachments[0].url)
+          const imgbuffer = await fetch(msg.attachments[0].url)
+            .then(res => res.buffer())
+            .catch(() => undefined)
+          if (imgbuffer) embed.attachFile(imgbuffer, 'imageattachment.png')
+
           // Since this does not add a field we need to end it here as its the last question and without adding a field itll be an infinite loop
           // This was the final question so now we need to post the feedback
           Gamer.helpers.feedback.sendBugReport(message, channel, embed, settings)
