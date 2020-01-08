@@ -65,52 +65,69 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
       const prefix = Gamer.guildPrefixes.get(msg.channel.guild.id) || Gamer.prefix
       const data = collector.data as MarriageCollectorData
       switch (data.marriage.step) {
-        // If the user agrees to send the proposal
         case 0:
+          // Create the possible gif search terms for each option
+          const searchCriteria = ['love letter', 'romantic picnic', 'romantic dinner', 'wedding proposal']
+          let [search] = searchCriteria
+
           // The user will respond with a multiple choice option
-          const searchCriteria = ['love letter']
           switch (msg.content) {
             case '1':
-              const data: TenorGif | undefined = await fetch(
-                `https://api.tenor.com/v1/search?q=${searchCriteria[0]}&key=LIVDSRZULELA&limit=50`
-              )
-                .then(res => res.json())
-                .catch(() => undefined)
-              if (!data || !data.results.length) return
-
-              const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
-              const [media] = randomResult.media
-
-              const embed = new GamerEmbed()
-                .setAuthor(language('fun/marry:PROPOSAL'), message.author.avatarURL)
-                .setDescription(
-                  language('fun/marry:HOW_TO_ACCEPT', {
-                    user: spouseUser.mention,
-                    prefix
-                  })
-                )
-                .setImage(media.gif.url)
-                .setFooter(`Via Tenor`, spouseUser.avatarURL)
-
-              msg.channel.createMessage({
-                content: `${message.author.mention} ${spouseUser.mention}`,
-                embed: embed.code
-              })
-              const thoughtOnlyEmbed = new GamerEmbed()
-                .setAuthor(message.author.username, message.author.avatarURL)
-                .setDescription(language('fun/marry:THOUGHT_ONLY'))
-                .setImage('https://i.imgur.com/WwBfZfa.jpg')
-
-              msg.channel.createMessage({ content: message.author.mention, embed: thoughtOnlyEmbed.code })
-              msg.channel.createMessage(language('fun/marry:TIME_TO_SHOP', { mention: message.author.mention, prefix }))
-              return
+              search = searchCriteria[0]
+              break
             case '2':
+              search = searchCriteria[1]
+              break
             case '3':
+              search = searchCriteria[2]
+              break
             case '4':
+              search = searchCriteria[3]
+              break
             default:
               msg.channel.createMessage(language('fun/marry:INVALID_RESPONSE'))
               return
           }
+
+          // Get a random gif regarding the option the user chose
+          const data: TenorGif | undefined = await fetch(
+            `https://api.tenor.com/v1/search?q=${search}&key=LIVDSRZULELA&limit=50`
+          )
+            .then(res => res.json())
+            .catch(() => undefined)
+          if (!data || !data.results.length) return
+
+          const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
+          const [media] = randomResult.media
+
+          const embed = new GamerEmbed()
+            .setAuthor(
+              language('fun/marry:PROPOSAL', { user: message.author.username, spouse: spouseUser.username }),
+              message.author.avatarURL
+            )
+            .setDescription(
+              language('fun/marry:HOW_TO_ACCEPT', {
+                user: message.author.mention,
+                prefix
+              })
+            )
+            .setImage(media.gif.url)
+            .setFooter(`Via Tenor`, spouseUser.avatarURL)
+
+          // Send a message so the spouse is able to learn how to accept the marriage
+          msg.channel.createMessage({
+            content: `${message.author.mention} ${spouseUser.mention}`,
+            embed: embed.code
+          })
+          // Embed that tells the user they can still continue the marriage simulation
+          const thoughtOnlyEmbed = new GamerEmbed()
+            .setAuthor(message.author.username, message.author.avatarURL)
+            .setDescription(language('fun/marry:THOUGHT_ONLY'))
+            .setImage('https://i.imgur.com/WwBfZfa.jpg')
+
+          msg.channel.createMessage({ content: message.author.mention, embed: thoughtOnlyEmbed.code })
+          msg.channel.createMessage(language('fun/marry:TIME_TO_SHOP', { mention: message.author.mention, prefix }))
+          return
       }
     }
   })

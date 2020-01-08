@@ -167,7 +167,6 @@ export default class {
       .setTimestamp()
     if (message.attachments.length) embed.setImage(message.attachments[0].url)
 
-
     const alertRoleIDs = guildSettings?.mails.alertRoleIDs || []
     const modifiedRoleIDs: string[] = []
     for (const roleID of alertRoleIDs) {

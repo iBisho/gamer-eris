@@ -156,6 +156,7 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
 
   marriage.weddingShopCounter++
   marriage.love++
+  marriage.step++
   marriage.save()
 
   message.channel.createMessage({ embed: embed.code })
