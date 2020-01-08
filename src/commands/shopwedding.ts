@@ -9,8 +9,8 @@ import fetch from 'node-fetch'
 const searchCriteria = [
   { name: 'wedding folder', cost: 5 },
   { name: 'wedding budget', cost: 10 },
-  { name: 'wedding party', cost: 1000 },
-  { name: 'guest list', cost: 100 },
+  { name: 'wedding party', cost: 10 },
+  { name: 'guest list', cost: 10 },
   { name: 'planner', cost: 500 },
   { name: 'wedding hall', cost: 1000 },
   { name: 'gamer bot', cost: 10 },
@@ -33,7 +33,7 @@ const searchCriteria = [
   { name: 'wedding shoes', cost: 1000 },
   { name: 'hair and makeup artists', cost: 500 },
   { name: 'dj', cost: 500 },
-  { name: 'wedding ring', cost: 20000 },
+  { name: 'wedding ring', cost: 6000 },
   { name: 'slow dance', cost: 1000 },
   { name: 'slow dance', cost: 1000 },
   { name: 'marriage license', cost: 20 },
@@ -53,12 +53,10 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
-  const [isMarried, isSpouse] = await Promise.all([
-    Gamer.database.models.marriage.findOne({ authorID: message.author.id }),
-    Gamer.database.models.marriage.findOne({ spouseID: message.author.id, accepted: true })
-  ])
+  const marriage = await Gamer.database.models.marriage
+    .findOne()
+    .or([{ authorID: message.author.id }, { spouseID: message.author.id, accepted: true }])
 
-  const marriage = isMarried || isSpouse
   if (!marriage) return message.channel.createMessage('fun/shopwedding:NOT_MARRIED')
 
   const item = searchCriteria[marriage.weddingShopCounter + 1]
