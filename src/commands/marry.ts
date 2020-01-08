@@ -23,8 +23,10 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
     .or([
       { authorID: message.author.id },
       { spouseID: message.author.id, accepted: true },
-      { spouseID: message.author.id, accepted: false, authorID: spouseUser.id }
+      { spouseID: message.author.id, authorID: spouseUser.id }
     ])
+
+  console.log(marriageData)
 
   // The user is already in a marriage
   if (marriageData) {
@@ -75,7 +77,8 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
   const marriage = await Gamer.database.models.marriage.create({
     authorID: message.author.id,
     spouseID: spouseUser.id,
-    step: 0
+    step: 0,
+    accepted: false
   })
 
   return Gamer.collectors.set(message.author.id, {

@@ -16,6 +16,7 @@ const categories = [
       `compliment`,
       `cuddle`,
       `gif`,
+      `hug`,
       `kanna`,
       `kiss`,
       `kitten`,
