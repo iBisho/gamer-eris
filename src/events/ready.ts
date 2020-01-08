@@ -129,7 +129,7 @@ export default class extends Event {
             events: Gamer.amplitude
               .splice(0, 10)
               // eslint-disable-next-line @typescript-eslint/camelcase
-              .map(data => ({ ...data, user_id: data.authorID, event_type: data.type }))
+              .map(data => ({ event_properties: data, user_id: data.authorID, event_type: data.type }))
           })
         })
       }
