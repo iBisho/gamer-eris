@@ -26,8 +26,6 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
       { spouseID: message.author.id, authorID: spouseUser.id }
     ])
 
-  console.log(marriageData)
-
   // The user is already in a marriage
   if (marriageData) {
     // User initiated the marriage
