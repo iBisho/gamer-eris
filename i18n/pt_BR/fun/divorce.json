@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Divorce seu cônjuge.",
+  "EXTENDED": "**{{prefix}}divorce** ~ Divorce seu cônjuge atual, se você tiver um. Se o casamento foi aceito, haverá uma penalidade no divórcio.",
+  "USAGE": "{{prefix}}divórcio",
+  "ALIASES": "O divórcio não possui nenhum alias.",
+  "NOT_MARRIED": "{{mention}}, não posso me divorciar de você, se você ainda não é casado. Use o comando **profile** para ver os detalhes do seu casamento.",
+  "DIVORCED": "{{mention}}, você agora é divorciado. Você está novamente na vida solitária, triste e solitária."
+}

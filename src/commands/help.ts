@@ -15,6 +15,7 @@ const categories = [
       `coinflip`,
       `compliment`,
       `cuddle`,
+      `divorce`,
       `gif`,
       `hug`,
       `kanna`,
