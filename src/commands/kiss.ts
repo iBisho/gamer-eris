@@ -19,9 +19,9 @@ export default new Command(`kiss`, async (message, _args, context) => {
     .catch(() => undefined)
 
   if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
-  const randomResult = data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))[
-    Math.floor(Math.random() * (data.results.length - 1))
-  ]
+  const randomResult = Gamer.helpers.utils.chooseRandom(
+    data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))
+  )
   const [media] = randomResult.media
 
   const user = message.mentions.length ? message.mentions[0] : message.author

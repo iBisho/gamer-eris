@@ -129,7 +129,9 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
         .catch(() => undefined)
       if (!data || !data.results.length) return
 
-      const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
+      const randomResult = Gamer.helpers.utils.chooseRandom(
+        data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))
+      )
       const [media] = randomResult.media
 
       const embed = new GamerEmbed()

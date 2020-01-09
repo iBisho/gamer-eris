@@ -143,7 +143,11 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
     .then(res => res.json())
     .catch(() => undefined)
 
-  const randomResult = data?.results.length ? Gamer.helpers.utils.chooseRandom(data.results) : undefined
+  const randomResult = data?.results.length
+    ? Gamer.helpers.utils.chooseRandom(
+        data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))
+      )
+    : undefined
   const [media] = randomResult ? randomResult.media : []
 
   const embed = new GamerEmbed()

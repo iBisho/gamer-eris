@@ -4,6 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { TenorGif } from '../lib/types/tenor'
 import { PrivateChannel, GroupChannel } from 'eris'
+import constants from '../constants'
 
 const facts = [
   `Puppies have 28 teeth and adult dogs have 42.`,
@@ -121,7 +122,9 @@ export default new Command([`puppy`, `dog`, `doggo`], async (message, _args, con
     .catch(() => undefined)
 
   if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
-  const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
+  const randomResult = Gamer.helpers.utils.chooseRandom(
+    data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))
+  )
   const [media] = randomResult.media
 
   const embed = new GamerEmbed()

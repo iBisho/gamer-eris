@@ -3,6 +3,7 @@ import { Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Monitor {
+  ignoreBots = false
   async execute(message: Message, Gamer: GamerClient) {
     // Save this message in the amplitude events
     Gamer.amplitude.push({

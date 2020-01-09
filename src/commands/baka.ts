@@ -4,6 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { PrivateChannel, GroupChannel } from 'eris'
 import fetch from 'node-fetch'
 import { TenorGif } from '../lib/types/tenor'
+import constants from '../constants'
 
 export default new Command(`baka`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
@@ -19,7 +20,9 @@ export default new Command(`baka`, async (message, _args, context) => {
     .catch(() => undefined)
 
   if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
-  const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
+  const randomResult = Gamer.helpers.utils.chooseRandom(
+    data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))
+  )
   const [media] = randomResult.media
 
   const embed = new GamerEmbed()
