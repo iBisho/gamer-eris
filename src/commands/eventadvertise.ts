@@ -37,7 +37,9 @@ export default new Command([`eventadvertise`, `ead`], async (message, args, cont
   const channelName = encodeURIComponent(message.channel.name)
   // If an old event card exists in a different channel get rid of it
   if (event.adChannelID && event.adMessageID && event.adChannelID !== message.channel.id) {
-    Gamer.deleteMessage(event.adChannelID, event.adMessageID, `Event card moved to ${channelName}`)
+    Gamer.deleteMessage(event.adChannelID, event.adMessageID, `Event card moved to ${channelName}`).catch(
+      () => undefined
+    )
   }
 
   const channelID = message.channelMentions?.length ? message.channelMentions[0] : message.channel.id

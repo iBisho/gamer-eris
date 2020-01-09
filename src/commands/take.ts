@@ -34,9 +34,11 @@ export default new Command(`take`, async (message, args, context) => {
   const [roleID] = message.roleMentions
   const role = roleID
     ? message.channel.guild.roles.get(roleID)
-    : message.channel.guild.roles.find(
+    : roleNameOrID
+    ? message.channel.guild.roles.find(
         r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase()
       )
+    : undefined
   if (!role) return message.channel.createMessage(language(`roles/take:NEED_ROLE`))
 
   // Check if the bots role is high enough to manage the role

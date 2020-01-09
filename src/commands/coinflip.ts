@@ -13,7 +13,12 @@ export default new Command([`coinflip`, `cf`], async (message, args, context) =>
   const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
   if (!language) return
 
+  const helpCommand = Gamer.commandForName('help')
+  if (!helpCommand) return
+
   const [choice, amountStr] = args
+  if (!choice || amountStr) return helpCommand.process(message, [`coinflip`], context)
+
   if (
     choice.toLowerCase() !== language(`fun/coinflip:OPTION_NUMBER0`).toLowerCase() &&
     choice.toLowerCase() !== language(`fun/coinflip:OPTION_NUMBER1`).toLowerCase()

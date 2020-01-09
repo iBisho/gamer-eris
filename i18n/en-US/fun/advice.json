@@ -4,5 +4,6 @@
   "EXTENDED_LINE_1": "**{{prefix}}advice** ~ Gamer posts advice in the chat.",
   "EXTENDED_LINE_2": "**{{prefix}}advice @member** ~ Send some advice to a friend.",
   "USAGE": "{{prefix}}advice *[@User | User ID]*",
-  "ALIASES": "{{prefix}}ad"
+  "ALIASES": "{{prefix}}ad",
+  "ERROR": "An error occurred with the data that was fetched from the API."
 }

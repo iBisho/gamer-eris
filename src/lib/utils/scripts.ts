@@ -62,7 +62,8 @@ export default class {
     for (const channel of guild.channels.values()) {
       if (channel.parentID === category.id || channel.id === category.id) continue
 
-      if (!channel.permissionsOf(this.Gamer.user.id).has(`manageChannels`)) continue
+      const channelPerms = channel.permissionsOf(this.Gamer.user.id)
+      if (!channelPerms.has(`manageChannels`) || !channelPerms.has(`manageRoles`)) continue
 
       if (channel.parentID) {
         const parent = guild.channels.get(channel.parentID) as CategoryChannel

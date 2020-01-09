@@ -508,7 +508,7 @@ export default class extends Event {
         }
 
         // Deletes the feedback
-        return message.delete()
+        return message.delete().catch(() => undefined)
       // This case will run for when users react with anything else to it
       default:
         // If the user is no longer in the server we dont need to grant any xp
