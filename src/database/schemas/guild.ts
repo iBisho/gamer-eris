@@ -65,6 +65,7 @@ export default new mongoose.Schema({
   },
   // The modules that have been enabled in this guild.
   modules: { type: [String], lowercase: true },
+  disableTenor: Boolean,
   moderation: {
     roleIDs: {
       // The role to be automatically assigned once the user finished verifying.

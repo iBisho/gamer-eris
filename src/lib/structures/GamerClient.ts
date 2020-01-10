@@ -23,6 +23,7 @@ import MailHelper from '../utils/mail'
 import ModerationHelper from '../utils/moderation'
 import ScriptsHelper from '../utils/scripts'
 import TransformHelper from '../utils/transform'
+import TenorHelper from '../utils/tenor'
 import UtilsHelper from '../utils/utils'
 
 import constants from '../../constants'
@@ -106,6 +107,7 @@ export default class GamerClient extends Client {
     profiles: new ProfileHelper(this),
     scripts: new ScriptsHelper(this),
     transform: new TransformHelper(this),
+    tenor: new TenorHelper(this),
     utils: new UtilsHelper(this)
   }
 
@@ -130,6 +132,8 @@ export default class GamerClient extends Client {
   guildLanguages: Map<string, string> = new Map()
   // The guild support channel ids. This is needed on every single message sent so we cache it
   guildSupportChannelIDs: Map<string, string> = new Map()
+  /** This stores the guilds that have disabled Tenor Gifs */
+  guildsDisableTenor: Map<string, boolean> = new Map()
 
   constructor(options: ClientOptions) {
     super(options)

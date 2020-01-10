@@ -19,5 +19,7 @@
   "PONY": "Use the Pony command 5 times.",
   "8BALL": "Ask the 8ball for advice 5 times.",
   "GUILDADDED": "Add Gamer to your server via .invite.",
-  "MINES": "Play a game of Minesweeper"
+  "MINES": "Play a game of Minesweeper",
+  "LMAO": "Share a laugh with others with the .laugh command.",
+  "SLOTS": "Play a game of slots to earn Gamer Coins with .slots command."
 }

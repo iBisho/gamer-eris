@@ -229,6 +229,7 @@ export default class extends Event {
       if (settings.language !== `en-US`) Gamer.guildLanguages.set(settings.id, settings.language)
       if (settings.mails.supportChannelID)
         Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
+      if (settings.disableTenor) Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
     }
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)

@@ -137,24 +137,21 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
     shoppingList.pop()
   }
 
-  const data: TenorGif | undefined = await fetch(
-    `https://api.tenor.com/v1/search?q=${item.name}&key=LIVDSRZULELA&limit=50`
-  )
-    .then(res => res.json())
-    .catch(() => undefined)
-
-  const randomResult = data?.results.length
-    ? Gamer.helpers.utils.chooseRandom(
-        data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))
-      )
-    : undefined
-  const [media] = randomResult ? randomResult.media : []
-
   const embed = new GamerEmbed()
     .setAuthor(message.member.nick || message.author.username, message.author.avatarURL)
     .setDescription(shoppingList.join('\n'))
-    .setFooter(`Via Tenor`)
-  if (media) embed.setImage(media.gif.url)
+
+  if (!Gamer.guildsDisableTenor.has(message.channel.guild.id)) {
+    const data: TenorGif | undefined = await fetch(
+      `https://api.tenor.com/v1/search?q=${item.name}&key=LIVDSRZULELA&limit=50`
+    )
+      .then(res => res.json())
+      .catch(() => undefined)
+
+    const randomResult = data?.results.length ? Gamer.helpers.utils.chooseRandom(data.results) : undefined
+    const [media] = randomResult ? randomResult.media : []
+    if (media) embed.setImage(media.gif.url).setFooter(`Via Tenor`)
+  }
 
   marriage.weddingShopCounter++
   marriage.love++

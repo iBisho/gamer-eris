@@ -71,6 +71,7 @@ const categories = [
       `setlogs`,
       `setmute`,
       `setevents`,
+      `settenor`,
       `viewprofanity`
     ]
   },

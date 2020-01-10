@@ -19,5 +19,7 @@ export default [
   { amount: 5, commandName: `tickle`, title: `leveling/missions:TICKLE`, reward: 10 },
   { amount: 5, commandName: `pony`, title: `leveling/missions:PONY`, reward: 30 },
   { amount: 5, commandName: `8ball`, title: `leveling/missions:8BALL`, reward: 30 },
-  { amount: 1, commandName: `mines`, title: `leveling/missions:MINES`, reward: 20 }
+  { amount: 1, commandName: `mines`, title: `leveling/missions:MINES`, reward: 20 },
+  { amount: 10, commandName: `lmao`, title: `leveling/missions:LMAO`, reward: 30 },
+  { amount: 10, commandName: `slots`, title: `leveling/mission:SLOTS`, reward: 30 }
 ]

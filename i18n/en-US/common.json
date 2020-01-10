@@ -57,6 +57,8 @@
   "AUTOMOD_CAPITALS": "The capitals in that message were too damn high!",
   "AUTOMOD_URLS": "Sharing URLs is restricted.",
   "MENTION_PREFIX": "The prefix on this server is set to: **{{prefix}}**",
+  "WHITELISTED_TENOR": "Via Whitelisted Tenor",
+  "TENOR": "Via Tenor",
   "GLOBAL_OPTIONS": ["g", "global"],
   "VOICE_OPTIONS": ["v", "voice"],
   "CANCEL_OPTIONS": ["q", "quit"]

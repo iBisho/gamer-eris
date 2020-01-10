@@ -121,19 +121,6 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
           return
       }
 
-      // Get a random gif regarding the option the user chose
-      const data: TenorGif | undefined = await fetch(
-        `https://api.tenor.com/v1/search?q=${search}&key=LIVDSRZULELA&limit=50`
-      )
-        .then(res => res.json())
-        .catch(() => undefined)
-      if (!data || !data.results.length) return
-
-      const randomResult = Gamer.helpers.utils.chooseRandom(
-        data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))
-      )
-      const [media] = randomResult.media
-
       const embed = new GamerEmbed()
         .setAuthor(
           language('fun/marry:PROPOSAL', { user: message.author.username, spouse: spouseUser.username }),
@@ -145,8 +132,21 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
             prefix
           })
         )
-        .setImage(media.gif.url)
-        .setFooter(`Via Tenor`, spouseUser.avatarURL)
+
+      if (!Gamer.guildsDisableTenor.has(msg.channel.guild.id)) {
+        // Get a random gif regarding the option the user chose
+        const data: TenorGif | undefined = await fetch(
+          `https://api.tenor.com/v1/search?q=${search}&key=LIVDSRZULELA&limit=50`
+        )
+          .then(res => res.json())
+          .catch(() => undefined)
+        if (!data || !data.results.length) return
+
+        const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
+        const [media] = randomResult.media
+
+        embed.setImage(media.gif.url).setFooter(`Via Tenor`, spouseUser.avatarURL)
+      }
 
       // Send a message so the spouse is able to learn how to accept the marriage
       msg.channel.createMessage({

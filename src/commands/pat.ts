@@ -1,43 +1,8 @@
 import { Command } from 'yuuko'
-import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
-import { TenorGif } from '../lib/types/tenor'
-import { PrivateChannel, GroupChannel } from 'eris'
 import constants from '../constants'
 
 export default new Command(`pat`, async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
   const Gamer = context.client as GamerClient
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
-
-  const data: TenorGif | null = await fetch(`https://api.tenor.com/v1/search?q=pat&key=LIVDSRZULELA&limit=50`)
-    .then(res => res.json())
-    .catch(() => null)
-
-  if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
-  const randomResult = Gamer.helpers.utils.chooseRandom(
-    data.results.filter(res => !constants.general.dirtyTenorGifs.includes(res.media[0].gif.url))
-  )
-  const [media] = randomResult.media
-
-  const user = message.mentions.length ? message.mentions[0] : message.author
-
-  const embed = new GamerEmbed()
-    .setAuthor(
-      message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.avatarURL
-    )
-    .setDescription(
-      language(user.id === message.author.id ? `fun/pat:SELF` : `fun/pat:REPLY`, {
-        mention: user.mention,
-        author: message.author.mention
-      })
-    )
-    .setImage(media.gif.url)
-    .setFooter(`Via Tenor`)
-
-  return message.channel.createMessage({ embed: embed.code })
+  Gamer.helpers.tenor.randomGif(message, 'pat', constants.gifs.pat)
 })
