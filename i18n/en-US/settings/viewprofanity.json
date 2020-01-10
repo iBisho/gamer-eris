@@ -1,0 +1,9 @@
+{
+	"DESCRIPTION": "View a list of all the profanity words in your server.",
+	"EXTENDED": "$t(settings/viewprofanity:EXTENDED_LINE_1)\n$t(settings/viewprofanity:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}viewprofanity** ~ Views all the non-strict words in your profanity filter.",
+	"EXTENDED_LINE_2": "**{{prefix}}viewprofanity strict** ~ Views all the **strict** words in your profanity filter.",
+	"USAGE": "{{prefix}}viewprofanity *[strict]*",
+	"ALIASES": "{{prefix}}viewwords",
+	"NONE_FOUND": "There were no words found in the profanity filter at this time. To add words, use the **setprofanity** command."
+}

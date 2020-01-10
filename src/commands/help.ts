@@ -68,7 +68,8 @@ const categories = [
       `setcapture`,
       `setlogs`,
       `setmute`,
-      `setevents`
+      `setevents`,
+      `viewprofanity`
     ]
   },
   { name: `utility`, commands: [`imgur`, `quote`] },

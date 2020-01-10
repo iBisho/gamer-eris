@@ -61,8 +61,8 @@ export default class extends Event {
 
         if (guildSettings.hibye.welcome.dmEnabled) {
           const dmChannel = await member.user.getDMChannel()
-          if (embed) dmChannel.createMessage({ embed })
-          else dmChannel.createMessage(transformed)
+          if (embed) await dmChannel.createMessage({ embed })
+          else await dmChannel.createMessage(transformed)
         } else if (!guildSettings.hibye.welcome.dmOnly && guildSettings.hibye.welcome.channelID) {
           const welcomeChannel = guild.channels.get(guildSettings.hibye.welcome.channelID)
           if (welcomeChannel && welcomeChannel instanceof TextChannel) {
