@@ -28,6 +28,7 @@ const categories = [
       `puppy`,
       `shopwedding`,
       `slap`,
+      `slots`,
       `supernatural`,
       `tickle`,
       `advice`,
