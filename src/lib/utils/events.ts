@@ -30,7 +30,8 @@ export default class {
     const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
     if (!language) return
 
-    const startNow = (template?.minutesFromNow || 60) * 60000 + Date.now()
+    // 1440 minutes in a day
+    const startNow = (template?.minutesFromNow || 1440) * 60000 + Date.now()
 
     const newEvent = {
       id: this.createNewID(events),
