@@ -21,19 +21,8 @@ export default new Command([`lmao`, `lol`], async (message, _args, context) => {
   )
   const [media] = randomResult.media
 
-  const user = message.mentions.length ? message.mentions[0] : message.author
-
   const embed = new GamerEmbed()
-    .setAuthor(
-      message.member ? message.member.nick || message.member.username : message.author.username,
-      message.author.avatarURL
-    )
-    .setDescription(
-      language(user.id === message.author.id ? `fun/lmao:SELF` : `fun/lmao:REPLY`, {
-        mention: user.mention,
-        author: message.author.mention
-      })
-    )
+    .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
     .setImage(media.gif.url)
     .setFooter(`Via Tenor`)
 

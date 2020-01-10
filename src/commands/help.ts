@@ -21,6 +21,7 @@ const categories = [
       `kanna`,
       `kiss`,
       `kitten`,
+      `lmao`,
       `marry`,
       `pat`,
       `poke`,

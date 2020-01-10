@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Quando você quer rir alto!",
+  "EXTENDED": "**{{prefix}}lmao** ~ Envia um gif de LMAO no canal.",
+  "USAGE": "{{prefix}}lmao",
+  "ALIASES": "{{prefix}}lol"
+}
