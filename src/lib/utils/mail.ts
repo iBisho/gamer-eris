@@ -193,7 +193,7 @@ export default class {
     if (!user) message.delete().catch(() => undefined)
 
     const response = await message.channel.createMessage(language(`mails/mail:CREATED`))
-    return setTimeout(() => response.delete(), 10000)
+    return setTimeout(() => response.delete().catch(() => undefined), 10000)
   }
 
   async sendToMods(
