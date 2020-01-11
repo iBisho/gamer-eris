@@ -1,0 +1,17 @@
+{
+	"DESCRIPTION": "Banni un utilisateur du serveur.",
+	"EXTENDED": "$t(moderation/ban:EXTENDED_LINE_1)\n$t(moderation/ban:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}ban @utilisateur raison** ~ Banni l'utilisateur du serveur avec la raison spécifiée.",
+	"EXTENDED_LINE_2": "Le rôle assigné à Gamer a besoin d'être le plus haut rôle de la hiérarchie pour modérer le serveur avec efficacité. Vérifiez que le bot possède les permissions pour bannir sur votre serveur.",
+	"USAGE": "{{prefix}}ban [Utilisateur] [Raison]",
+	"ALIASES": "{{prefix}}b",
+	"NEED_BAN_PERMS": "Je n'ai pas la permission de Ban.",
+	"ALREADY_BANNED": "L'utilisateur spécifié est déjà banni sur votre serveur.",
+	"NEED_USER": "Vous n'avez pas spécifié d'utilisateur à bannir.",
+  "NEED_REASON": "Vous devez spécifier une raison pour bannir l'utilisateur.",
+	"SUCCESS": "L'utilisateur {{user}} à été banni pour la raison : **{{reason}}**",
+	"USER_TOO_LOW": "Votre rôle le plus haut n'est pas assez élevé pour bannir ce membre.",
+  "BOT_TOO_LOW": "Je n'ai pas pu bannir cet utilisateur, vérifiez bien que mon rôle est au dessus de l'utilisateur que vous voulez bannir et réessayez.",
+  "TITLE": "{{username}}, vous avez été **BANNI** de [{{guildName}}]"
+}
+
