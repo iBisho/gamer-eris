@@ -7,6 +7,8 @@
   "ALIASES": "XP n'a pas d'alias.",
   "ADDED": "{{amount}} d'XP ont été donné à {{mention}} .",
   "REMOVED": "{{mention}} a perdu {{amount}} d'XP.",
+  "ADDED_ALL": "{{amount}} d'XP ont bien été donnés aux membres possédant le rôle {{rolename}}.",
+  "REMOVED_ALL": "Tous les membres possédant le rôle {{rolename}} ont perdu {{amount}} d'XP.",
   "ROLE_REMOVE_REASON": "Récompense de niveau retiré.",
   "ROLE_ADD_REASON": "Récompense de niveau ajoutée."
 }
