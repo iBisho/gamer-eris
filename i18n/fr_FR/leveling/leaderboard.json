@@ -1,8 +1,20 @@
 {
-	"DESCRIPTION": "Affiche le classement de ce serveur ou le classement global.",
-	"EXTENDED": "La commande {{prefix}}leaderboard peut être utilisé pour voir le classement sur votre serveur.",
-	"USAGE": "{{prefix}}leaderboard *[Utilisateur | global]*",
-	"ALIASES": "{{prefix}}lb",
-	"NO_POINTS": "Le membre {{member}} n'a pas d'EXP pour le moment. La commande leaderboard nécessite d'avoir au minimum 1 d'EXP.",
-	"NOT_ENOUGH": "Il n'y a pas assez de membre sur le classement pour que le bot puisse afficher le classement pour le moment. Veuillez rééssayer plus tard."
+  "DESCRIPTION": "Affiche le classement de ce serveur ou le classement global.",
+  "EXTENDED": "La commande {{prefix}}leaderboard peut être utilisé pour voir le classement sur votre serveur.",
+  "USAGE": "{{prefix}}leaderboard *[Utilisateur | global]*",
+  "ALIASES": "{{prefix}}lb",
+  "NO_POINTS": "Le membre {{member}} n'a pas d'EXP pour le moment. La commande leaderboard nécessite d'avoir au minimum 1 d'EXP.",
+  "NOT_ENOUGH": "Il n'y a pas assez de membre sur le classement pour que le bot puisse afficher le classement pour le moment. Veuillez rééssayer plus tard.",
+  "RANK": "Rang {{position}}",
+  "BEHIND": "{{amount}} EXP Derrière",
+  "AHEAD": "{{amount}} EXP Devant",
+  "UNKNOWN": "Inconnu",
+  "CURRENT_XP": "{{amount}} d'XP",
+  "GLOBAL": "CLASSEMENT GLOBAL",
+  "VOICE": "CLASSEMENT VOCAL",
+  "SERVER": "CLASSEMENT SERVEUR",
+  "NAME": "Nom",
+  "LEVEL": "Niveau",
+  "EXP": "EXP",
+  "PRIZE": "Prix"
 }
