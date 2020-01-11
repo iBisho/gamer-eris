@@ -5,8 +5,7 @@ import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default class extends Event {
   async execute(guild: Guild, role: Role) {
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(guild.id)
 
     // Create the base embed that first can be sent to public logs
     const embed = new GamerEmbed()

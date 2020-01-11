@@ -17,8 +17,7 @@ export default new Command([`roleinfo`, `ri`], async (message, args, context) =>
       )
   if (!role) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const members = message.channel.guild.members.filter(member => member.roles.includes(role.id))
 

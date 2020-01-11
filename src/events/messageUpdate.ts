@@ -43,8 +43,7 @@ export default class extends Event {
   async handleServerLogs(message: Message, oldMessage: OldMessage | null) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     if (message.content === oldMessage?.content) return
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.channel.guild.id)
 
     const urlToMessage = `https://discordapp.com/channels/${message.channel.guild.id}/${message.channel.id}/${message.id}`
 

@@ -8,8 +8,7 @@ export default new Command(`capture`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (!args.length) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const cardSettings = await Gamer.database.models.tradingCard.find({
     channelID: message.channel.id

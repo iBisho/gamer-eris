@@ -7,8 +7,7 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
   const Gamer = context.client as GamerClient
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const [eventID] = args
   if (!eventID) return message.channel.createMessage(language(`events/events:NEED_EVENT_ID`))

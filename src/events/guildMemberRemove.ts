@@ -16,8 +16,7 @@ export default class extends Event {
     const botMember = guild.members.get(Gamer.user.id)
     if (!botMember) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(guild.id)
 
     const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
     // If no custom guild settings cancel out

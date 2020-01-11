@@ -6,8 +6,8 @@ export default new Command(`take`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
+
   const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
   // If the user does not have a modrole or admin role quit out

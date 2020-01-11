@@ -52,7 +52,7 @@ export default class extends Event {
           // If no message something is very wrong as the first json message should always be there to be safe just cancel
           if (!message) continue
 
-          const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
+          const language = Gamer.getLanguage(channel.guild.id)
           if (!language) continue
 
           // If the channel has gone inactive too long delete it so there is no spam empty unused channels
@@ -90,7 +90,7 @@ export default class extends Event {
         const guild = Gamer.guilds.get(guildSettings.id)
         if (!guild) continue
 
-        const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
+        const language = Gamer.getLanguage(guild.id)
         if (!language) continue
 
         // Get all members from the database as anyone with default settings dont need to be checked
@@ -168,7 +168,7 @@ export default class extends Event {
 
         const randomCard = cards[Math.floor(Math.random() * cards.length)]
 
-        const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
+        const language = Gamer.getLanguage(guild.id)
         if (!language) continue
 
         setting.lastItemName = randomCard.name

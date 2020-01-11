@@ -8,8 +8,7 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   // If there are no settings then there are no public roles
   if (!settings || !settings.moderation.roleIDs.public.length)

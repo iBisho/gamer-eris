@@ -11,8 +11,7 @@ export default new Command(`quote`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const [messageID] = args
   if (!messageID) return helpCommand.process(message, [`quote`], context)

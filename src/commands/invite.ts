@@ -7,8 +7,7 @@ export default new Command([`invite`, `join`], async (message, _args, context) =
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   const Gamer = context.client as GamerClient
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const embed = new GamerEmbed()
     .setDescription(

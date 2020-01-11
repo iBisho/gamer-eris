@@ -11,8 +11,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     id: message.channel.guild.id
   })
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   // When this boolean is true the user is not a mod/admin so we need to check if they are the event creator
   let checkCreator = false

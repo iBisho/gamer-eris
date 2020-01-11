@@ -16,8 +16,7 @@ export default class extends Event {
     const botMember = guild.members.get(Gamer.user.id)
     if (!botMember) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(guild.id)
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
     const membersHighestRole = Gamer.helpers.discord.highestRole(member)

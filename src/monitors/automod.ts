@@ -16,8 +16,7 @@ export default class extends Monitor {
     // If they have default settings, then no automoderation features will be enabled
     if (!settings) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.channel.guild.id)
 
     // This if check allows admins to override and test their filter is working
     if (!message.content.startsWith(`modbypass`)) {

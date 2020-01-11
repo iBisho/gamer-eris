@@ -13,8 +13,7 @@ export default new Command([`nick`], async (message, args, context) => {
     id: message.channel.guild.id
   })
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   // Check if the bot has the kick permissions
   if (!botMember.permission.has('manageNicknames'))

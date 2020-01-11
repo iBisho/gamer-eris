@@ -61,8 +61,8 @@ Gamer.globalCommandRequirements = {
     const botPerms = message.channel.permissionsOf(Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages')) return false
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return false
+    const language = Gamer.getLanguage(message.channel.guild.id)
+    false
 
     // Check if bot has embed links perms
     if (!botPerms.has('embedLinks')) {

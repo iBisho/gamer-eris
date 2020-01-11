@@ -13,8 +13,7 @@ export default class {
   }
 
   async makeLocalCanvas(message: Message, member: Member) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(member.guild.id)
 
     const memberSettings = await this.Gamer.database.models.member.findOne({
       memberID: member.id,
@@ -95,8 +94,7 @@ export default class {
   }
 
   async makeGlobalCanvas(message: Message, member: Member) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(member.guild.id)
 
     const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
     if (!userSettings?.leveling.xp) {
@@ -171,8 +169,7 @@ export default class {
   }
 
   public async makeVoiceCanvas(message: Message, member: Member) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(member.guild.id)
 
     const memberSettings = await this.Gamer.database.models.member.findOne({
       memberID: member.id,

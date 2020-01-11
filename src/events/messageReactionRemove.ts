@@ -47,8 +47,7 @@ export default class extends Event {
     const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
     if (!event) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.channel.guild.id)
 
     const joinEmojiID = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `id`)
 

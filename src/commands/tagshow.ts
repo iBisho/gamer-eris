@@ -9,8 +9,7 @@ export default new Command([`tagshow`, `ts`], async (message, args, context) => 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const [name] = args
   if (!name) return helpCommand.process(message, [`tagshow`], context)

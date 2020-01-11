@@ -11,8 +11,7 @@ export default new Command(`daily`, async (message, _args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   // Check if on cooldown
   const cooldownID = `${message.author.id}.daily`

@@ -14,8 +14,7 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
   const gamerMember = gamerGuild.members.get(message.author.id)
   if (!gamerMember) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   // User is not a server booster trying to use a vip only command
   if (!gamerMember.roles.includes(constants.general.nitroBoosterRoleID))

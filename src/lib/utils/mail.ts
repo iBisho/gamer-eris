@@ -25,8 +25,8 @@ export default class {
 
   async handleDM(message: Message, content: string) {
     // DM will be in english always
-    const language = this.Gamer.i18n.get(`en-US`)
-    if (!language) return
+    const language = this.Gamer.english
+
     const mails = await this.Gamer.database.models.mail.find({ userID: message.author.id })
     // If the user has no mails and hes trying to create a mail it needs to error because mails must be created within a guild.
     if (!mails.length) return message.channel.createMessage(language(`mails/mail:NEW_MAIL_IN_DM_ERROR`))
@@ -70,8 +70,8 @@ export default class {
     // If the user doesn't have an open mail we need to create one
     if (!mail) return this.createMail(message, content, guildSettings)
 
-    const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(message.channel.guild.id)
+
     // User does have an open mail
     this.sendToMods(message, message.channel.guild, guildSettings, content, mail)
     const response = await message.channel.createMessage(language(`mails/mail:REPLY_SENT_TO_MODS`))
@@ -82,8 +82,7 @@ export default class {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     const mailUser = user || message.author
 
-    const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(message.channel.guild.id)
 
     const botMember = message.channel.guild.members.get(this.Gamer.user.id)
     if (!botMember || !botMember.permission.has('manageChannels') || !botMember.permission.has('manageRoles'))
@@ -204,8 +203,7 @@ export default class {
     mail: GamerMail
   ) {
     const prefix = guildSettings?.prefix || this.Gamer.prefix
-    const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(guild.id)
 
     const embed = new GamerEmbed()
       .setAuthor(
@@ -253,7 +251,7 @@ export default class {
     }
   }
 
-  async replyToMail(message: Message, content: string, guildSettings: GuildSettings | null, mail: GamerMail) {
+  async replyToMail(message: Message, content: string, mail: GamerMail) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
     const tag = await this.Gamer.database.models.tag.findOne({
@@ -265,8 +263,7 @@ export default class {
     const user = this.Gamer.users.get(mail.userID)
     if (!user) return
 
-    const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(message.channel.guild.id)
 
     // If the moderator is trying to send a tag
     if (tag) {
@@ -341,8 +338,7 @@ export default class {
     // If an empty string is passed cancel the command
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !content) return
 
-    const language = this.Gamer.i18n.get(guildSettings?.language || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(message.channel.guild.id)
 
     const botMember = message.channel.guild.members.get(this.Gamer.user.id)
     if (!botMember || !botMember.permission.has('manageChannels'))

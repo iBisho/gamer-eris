@@ -11,8 +11,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
 
   if (!args.length) return helpCommand.process(message, [`shortcutcreate`], context)
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id

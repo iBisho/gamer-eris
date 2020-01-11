@@ -8,8 +8,7 @@ export default new Command([`ping`, `pong`], async (message, _args, context) => 
   const ping = Date.now() - message.timestamp
   const Gamer = context.client as GamerClient
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const embed = new GamerEmbed().setTitle(language(`basic/ping:TIME`, { time: ping / 1000 })).addField(
     language('basic/ping:STATS'),

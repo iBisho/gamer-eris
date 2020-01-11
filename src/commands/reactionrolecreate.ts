@@ -9,8 +9,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const hasPermissions = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
     `addReactions`,

@@ -6,8 +6,7 @@ export default new Command(`setmute`, async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   const Gamer = context.client as GamerClient
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   let guildSettings = await Gamer.database.models.guild.findOne({
     id: message.channel.guild.id

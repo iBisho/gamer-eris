@@ -13,8 +13,8 @@ export default new Command(
     const guild = message.channel.guild
     const settings = await Gamer.database.models.guild.findOne({ id: guild.id })
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return null
+    const language = Gamer.getLanguage(message.channel.guild.id)
+    null
 
     const owner = Gamer.users.get(guild.ownerID)
     const relevantPersonality = Constants.personalities.find(

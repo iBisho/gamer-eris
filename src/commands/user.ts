@@ -13,8 +13,8 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(id) || message.author
 
   const userSettings = await Gamer.database.models.user.findOne({ userID: user.id })
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return null
+  const language = Gamer.getLanguage(message.channel.guild.id)
+  null
 
   const member = guild.members.get(user.id)
   if (!member) return

@@ -25,8 +25,7 @@ export default class extends Monitor {
     // If the guild has default settings then they dont have verification or autorole enabled
     if (!guildSettings) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.channel.guild.id)
 
     if (!guildSettings.moderation.roleIDs.autorole || message.channel.parentID === guildSettings.verify.categoryID)
       return

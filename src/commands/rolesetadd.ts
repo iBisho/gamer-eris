@@ -13,8 +13,8 @@ export default new Command([`rolesetadd`, `rsa`], async (message, args, context)
     id: message.channel.guild.id
   })
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
+
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 

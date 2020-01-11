@@ -13,8 +13,7 @@ export default class {
   async randomGif(message: Message, commandName: string, whitelistedGifs: string[], needDescription = true) {
     if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(message.channel.guild.id)
 
     const user = message.mentions.length ? message.mentions[0] : message.author
 

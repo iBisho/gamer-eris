@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 const gifs = [
   'https://media.giphy.com/media/NRVCgNCn52SAg/source.gif',
@@ -18,9 +19,9 @@ const gifs = [
 ]
 
 export default new Command(`kanna`, (message, _args, context) => {
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   const Gamer = context.client as GamerClient
-  const language = Gamer.i18n.get('en-US')
-  if (!language) return null
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const randomNum = Math.floor(Math.random() * gifs.length)
   const randomGif = gifs[randomNum]

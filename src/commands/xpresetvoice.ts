@@ -12,8 +12,7 @@ export default new Command(`xpresetvoice`, async (message, args, context) => {
 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   // Now we need to reset the entire guilds information
   await message.channel.createMessage(language(`leveling/xpresetvoice:PATIENCE`))

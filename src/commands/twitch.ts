@@ -11,8 +11,7 @@ export default new Command(`twitch`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(guildID) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(guildID)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: guildID

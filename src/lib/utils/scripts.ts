@@ -12,8 +12,7 @@ export default class {
   }
 
   async createVerificationSystem(guild: Guild, guildSettings: GuildSettings) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(guild.id)
 
     const REASON = language(`settings/setverify:REASON`)
     const overwrites: Overwrite[] = [
@@ -96,8 +95,7 @@ export default class {
   }
 
   async createFeedbackSystem(guild: Guild, guildSettings: GuildSettings) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(guild.id)
 
     const REASON = language(`settings/setfeedback:SETUP_REASON`)
     // Create the category first and edit its permissions so that the other two channels can be syned easily
@@ -162,8 +160,7 @@ export default class {
   }
 
   async createLogSystem(guild: Guild, guildSettings: GuildSettings) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(guild.id)
 
     const REASON = language(`settings/setlogs:REASON`)
     const overwrites: Overwrite[] = [
@@ -222,8 +219,7 @@ export default class {
 
   // Create the mute system
   async createMuteSystem(guild: Guild, guildSettings: GuildSettings) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(guild.id)
 
     // If the role is already set cancel creation
     if (guildSettings.moderation.roleIDs.mute && guild.roles.has(guildSettings.moderation.roleIDs.mute)) return

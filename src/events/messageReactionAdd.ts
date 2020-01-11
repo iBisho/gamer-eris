@@ -57,8 +57,7 @@ export default class extends Event {
     const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
     if (!event) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.channel.guild.id)
 
     const [joinEmojiID, denyEmojiID] = [constants.emojis.greenTick, constants.emojis.redX].map(e =>
       Gamer.helpers.discord.convertEmoji(e, `id`)
@@ -134,8 +133,7 @@ export default class extends Event {
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
     if (constants.emojis.discord !== fullEmojiName || !message.embeds.length) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.channel.guild.id)
 
     const [embed] = message.embeds
     if (embed.title !== language(`leveling/profile:CURRENT_MISSIONS`)) return
@@ -181,8 +179,7 @@ export default class extends Event {
         : null
       if (!originalServer) return
 
-      const language = Gamer.i18n.get(Gamer.guildLanguages.get(originalServer.id) || `en-US`)
-      if (!language) return
+      const language = Gamer.getLanguage(originalServer.id)
 
       // Get the guild settings for that server id
       const guildSettings = await Gamer.database.models.guild.findOne({
@@ -321,8 +318,7 @@ export default class extends Event {
       }
     } catch (error) {
       Gamer.emit('error', error)
-      const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-      if (!language) return
+      const language = Gamer.getLanguage(message.channel.guild.id)
 
       const response = await message.channel.createMessage(language(`network/reaction:FAILED`))
       return setTimeout(() => response.delete(), 10000)
@@ -371,8 +367,7 @@ export default class extends Event {
 
     const feedbackMember = message.channel.guild.members.get(feedback.authorID)
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.channel.guild.id)
 
     switch (fullEmojiName) {
       // This case will run if the reaction was the Mailbox reaction

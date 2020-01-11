@@ -8,8 +8,7 @@ export default new Command(`wisdom`, async (message, _args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const data: Wisdom | null = await fetch(`https://favqs.com/api/qotd`)
     .then(res => res.json())

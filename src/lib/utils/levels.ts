@@ -76,8 +76,8 @@ export default class {
     // Check if the bots role is high enough to manage the role
     const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(member.guild.id)
+
     const REASON = language('leveling/xp:ROLE_ADD_REASON')
 
     const rolesToAdd = []
@@ -183,8 +183,7 @@ export default class {
     // Check if the bots role is high enough to manage the role
     const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(member.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(member.guild.id)
 
     const REASON = language('leveling/xp:ROLE_REMOVE_REASON')
 

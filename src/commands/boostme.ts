@@ -7,8 +7,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const userSettings = (await Gamer.database.models.user.findOne({ userID: message.author.id })) as UserSettings | null
   if (!userSettings) return

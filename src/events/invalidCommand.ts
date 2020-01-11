@@ -30,7 +30,7 @@ export default class extends Event {
       await Gamer.helpers.utils.sleep(2)
     }
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
+    const language = Gamer.getLanguage(message.channel.guild.id)
     if (!language || !shortcut.deleteTrigger || !message.channel.permissionsOf(Gamer.user.id).has('manageMessages'))
       return
 

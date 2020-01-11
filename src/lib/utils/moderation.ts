@@ -179,7 +179,7 @@ export default class {
       const guild = this.Gamer.guilds.get(log.guildID)
       if (!guild) continue
 
-      const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+      const language = this.Gamer.getLanguage(guild.id)
       if (!language) continue
 
       const member = guild.members.get(log.userID)

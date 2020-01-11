@@ -6,8 +6,7 @@ export default new Command([`emojicreate`, `emc`], async (message, args, context
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const [name, emoji] = args
   if (!name) return message.channel.createMessage(language(`emojis/emojicreate:NEED_NAME`))

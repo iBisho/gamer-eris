@@ -12,8 +12,7 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
   const botMember = message.channel.guild.members.get(Gamer.user.id)
   if (!botMember || !botMember.permission.has('manageChannels')) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })

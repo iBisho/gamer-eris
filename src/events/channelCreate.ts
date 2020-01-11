@@ -10,8 +10,7 @@ export default class extends Event {
     if (channel instanceof PrivateChannel) return
 
     const Gamer = channel.guild.shard.client as GamerClient
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(channel.guild.id)
 
     const guildSettings = await Gamer.database.models.guild.findOne({ id: channel.guild.id })
     if (!guildSettings) return

@@ -10,8 +10,7 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   if (!message.mentions.length) return message.channel.createMessage(language(`fun/marry:NEED_SPOUSE`))
   const [spouseUser] = message.mentions

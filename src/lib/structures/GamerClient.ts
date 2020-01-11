@@ -134,6 +134,7 @@ export default class GamerClient extends Client {
   guildSupportChannelIDs: Map<string, string> = new Map()
   /** This stores the guilds that have disabled Tenor Gifs */
   guildsDisableTenor: Map<string, boolean> = new Map()
+  english = this.i18n.get('en-US') as TFunction
 
   constructor(options: ClientOptions) {
     super(options)
@@ -192,5 +193,11 @@ export default class GamerClient extends Client {
     this.addDirectory(dirname)
 
     return this
+  }
+
+  getLanguage(guildID: string) {
+    const guildLanguage = this.guildLanguages.get(guildID)
+    const language = guildLanguage ? this.i18n.get(guildLanguage) : undefined
+    return language || this.english
   }
 }

@@ -27,8 +27,7 @@ export default class {
       ? events.find(event => event.templateName && event.templateName === templateName)
       : undefined
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(message.channel.guild.id)
 
     // 1440 minutes in a day
     const startNow = (template?.minutesFromNow || 1440) * 60000 + Date.now()
@@ -414,8 +413,7 @@ export default class {
     const guild = this.Gamer.guilds.get(event.guildID)
     if (!guild) return
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(guild.id)
 
     const embed = new GamerEmbed()
       .setAuthor(language(`events/events:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
@@ -454,8 +452,7 @@ export default class {
     event.executedReminders.push(reminder)
     event.save()
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(guild.id)
 
     const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(event.start - now)
 

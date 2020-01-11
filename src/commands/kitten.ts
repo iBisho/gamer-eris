@@ -2,6 +2,7 @@ import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
 import fetch from 'node-fetch'
+import { PrivateChannel, GroupChannel } from 'eris'
 
 const gifs = [
   `https://media2.giphy.com/media/Fivx313yEXbhe/giphy.gif?cid=790b76115cd6f0365067477932b8699c&rid=giphy.gif`,
@@ -37,6 +38,7 @@ const gifs = [
 ]
 
 export default new Command([`kitten`, `cat`], async (message, _args, context) => {
+  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   // Fetching a random fact
   const data: Kitten | null = await fetch(`https://catfact.ninja/fact`)
     .then(res => res.json())
@@ -45,8 +47,8 @@ export default new Command([`kitten`, `cat`], async (message, _args, context) =>
   // Randomising the gifs
   const randomGif = gifs[Math.floor(Math.random() * (gifs.length - 1))]
 
-  const language = (context.client as GamerClient).i18n.get('en-US')
-  if (!language) return null
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const embed = new GamerEmbed()
     .setAuthor(

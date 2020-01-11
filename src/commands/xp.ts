@@ -13,8 +13,7 @@ export default new Command(`xp`, async (message, args, context) => {
 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const [type, number, ...idOrRoleName] = args
   const isAdding = type.toLowerCase() === `add`

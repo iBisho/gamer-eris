@@ -6,8 +6,8 @@ export default new Command([`8ball`, `8b`, `fortune`], async (message, args, con
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || 'en-US')
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
+
   if (!args.length) return message.channel.createMessage(language(`fun/8ball:NO_ARGS`))
 
   message.channel.createMessage(language(`fun/8ball:REPLY_NUMBER${Math.floor(Math.random() * 12)}`))

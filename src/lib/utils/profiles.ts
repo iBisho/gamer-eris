@@ -140,8 +140,7 @@ export default class {
 
     const canvasWidth = backgroundData.vipNeeded ? 952 : 852
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(member.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(member.guild.id)
 
     const canvas = useDefaultProfile
       ? new Canvas(canvasWidth, 581).addImage(this.defaultProfile, 0, 0)

@@ -7,8 +7,7 @@ export default new Command([`minesweeper`, `mines`], async (message, _args, cont
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || 'en-US')
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const minesweeper = new Minesweeper({ rows: 9, columns: 9, mines: 10 })
   const matrix = minesweeper.start()

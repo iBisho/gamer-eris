@@ -10,8 +10,7 @@ export default new Command(`mute`, async (message, args, context) => {
   const botMember = message.channel.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   // Check if the bot has the manage roles permissions
   if (!botMember.permission.has('manageRoles'))

@@ -6,8 +6,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return

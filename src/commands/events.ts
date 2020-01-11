@@ -8,8 +8,7 @@ export default new Command([`events`, `event`, `e`], async (message, _args, cont
 
   const Gamer = context.client as GamerClient
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const events = await Gamer.database.models.event.find({ guildID: message.channel.guild.id })
   if (!events.length) return message.channel.createMessage(language('events/events:NONE'))

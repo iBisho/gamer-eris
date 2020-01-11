@@ -134,8 +134,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   const Gamer = context.client as GamerClient
   const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || 'en-US')
-  if (!language) return
+  const language = Gamer.getLanguage(message.channel.guild.id)
 
   const prefix = settings?.prefix || Gamer.prefix
   const FEATURES = language(`basic/help:FEATURES`, { prefix })
