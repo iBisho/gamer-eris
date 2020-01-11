@@ -9,7 +9,7 @@
   "BASIC_3": "**[11] Roles To Remind:** {{alertRoles}}",
   "TIME": "$t(events/eventshow:TIME_1)\n$t(events/eventshow:TIME_2)",
   "TIME_1": "**[3] Duration:** {{duration}}",
-  "TIME_2": "**[4] Duration:** {{reminders}}",
+  "TIME_2": "**[4] Reminders:** {{reminders}}",
   "RSVP": "$t(events/eventshow:RSVP_1)\n$t(events/eventshow:RSVP_2)\n$t(events/eventshow:RSVP_3)\n$t(events/eventshow:RSVP_4)",
   "RSVP_1": "**[5] Joined:** {{stats}}",
   "RSVP_2": "**Attendees:** {{attendees}}",
