@@ -44,9 +44,8 @@ export default class extends Event {
       settings.verify.roleID &&
       channel.parentID !== settings.verify.categoryID &&
       channel.guild.roles.has(settings.verify.roleID)
-    ) {
+    )
       channel.editPermission(settings.verify.roleID, 0, 1024, `role`, language(`basic/verify:PERMISSION`))
-    }
 
     // If the mute role exists disable all SEND/SPEAK permissions
     if (settings.moderation.roleIDs.mute && channel.guild.roles.has(settings.moderation.roleIDs.mute))
