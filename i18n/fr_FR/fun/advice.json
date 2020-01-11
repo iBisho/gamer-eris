@@ -4,5 +4,6 @@
   "EXTENDED_LINE_1": "**{{prefix}}advice** ~ Gamer affichera des astuces dans le chat.",
   "EXTENDED_LINE_2": "**{{prefix}}advice @membre** ~ Envoyer des astuces à un membre.",
   "USAGE": "{{prefix}}advice *[@Utilisateur | ID d'utilisateur]*",
-  "ALIASES": "{{prefix}}ad"
+  "ALIASES": "{{prefix}}ad",
+  "ERROR": "Une erreur s'est produite lors de la récupération des données venant de l'API."
 }
