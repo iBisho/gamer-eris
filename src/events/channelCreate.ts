@@ -52,6 +52,7 @@ export default class extends Event {
       channel.editPermission(
         settings.moderation.roleIDs.mute,
         0,
+        // Send Messages, Add Reactions, Speak
         2099264,
         `role`,
         language(`moderation/mute:PERMISSION`)
