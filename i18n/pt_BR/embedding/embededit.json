@@ -1,0 +1,11 @@
+{
+	"DESCRIPTION": "Edite qualquer incorporação existente que foi originalmente enviada pelo Gamer bot.",
+	"EXTENDED": "$t(embedding/embededit:EXTENDED_LINE_1)\n$t(embedding/embededit:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "Para obter o ID de uma mensagem, verifique se o Modo Desenvolvedor está ativado no seu cliente e clique com o botão direito do mouse na mensagem cujo código você deseja copiar e selecione **Copiar ID**.",
+	"EXTENDED_LINE_2": "**{{prefix}}embededit [ID da mensagem] [Código de incorporação]** ~ Edita a incorporação com o novo código de incorporação que você forneceu.",
+	"USAGE": "{{prefix}}embededit [Message ID] [Embed Code]",
+	"ALIASES": "O Embededit não possui nenhum alias.",
+	"NO_EMBED": "A mensagem que você forneceu não contém nenhuma incorporação que eu possa mostrar.",
+	"SUCCESS": "Aqui está o código de incorporação da mensagem com o ID {{id}}. Você pode copiar esse código e colá-lo no [Embed Builder](https://embedbuilder.nadekobot.me) para editá-lo.",
+	"NEED_JSON": "Você não forneceu nenhum código de incorporação para usar no novo evento. O melhor é usar o construtor de incorporação <https://embedbuilder.nadekobot.me/>!"
+}
