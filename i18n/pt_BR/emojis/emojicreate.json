@@ -1,12 +1,12 @@
 {
   "DESCRIPTION": "Crie um emoji global que você pode usar em qualquer servidor de discórdia.",
-  "EXTENDED": "** {{prefix}} emojicreate [Nome] [Emoji] ** ~ Crie um emoji global que você possa usar em qualquer servidor de discórdia com o nome e o emoji exclusivos.",
+  "EXTENDED": "**{{prefix}}emojicreate [Nome] [Emoji]** ~ Crie um emoji global que você possa usar em qualquer servidor de discórdia com o nome e o emoji exclusivos.",
   "USAGE": "{{prefix}}emojicreate [Nome] [Emoji]",
   "ALIASES": "{{prefix}}emc",
   "NEED_NAME": "Você não forneceu nenhum nome para atribuir ao emoji. Os nomes devem ser exclusivos ao criar um emoji.",
   "NEED_EMOJI": "Você não forneceu o emoji para criar globalmente. Você deve fornecer um emoji personalizado exclusivo de qualquer servidor.",
-  "NEED_VALID_EMOJI": "O emoji que você forneceu não parece ser um emoji válido. Por favor, tente usar outro emoji. Se você acredita que o emoji é válido e isso é um erro, use o comando ** invite ** para entrar em contato com meus desenvolvedores no servidor de suporte.",
+  "NEED_VALID_EMOJI": "O emoji que você forneceu não parece ser um emoji válido. Por favor, tente usar outro emoji. Se você acredita que o emoji é válido e isso é um erro, use o comando **invite** para entrar em contato com meus desenvolvedores no servidor de suporte.",
   "EMOJI_EXISTS": "O emoji que você está usando já existe sob o nome: {{name}}",
   "NAME_EXISTS": "O {{name}} já está sendo usado para outro emoji. Forneça outro nome, pois os nomes dos emojis sempre devem ser exclusivos.",
-  "CREATED": "Você criou com sucesso o {{emoji}} emoji com o nome ** {{name}} **"
+  "CREATED": "Você criou com sucesso o {{emoji}} emoji com o nome **{{name}}**"
 }
