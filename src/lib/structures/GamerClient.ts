@@ -134,7 +134,6 @@ export default class GamerClient extends Client {
   guildSupportChannelIDs: Map<string, string> = new Map()
   /** This stores the guilds that have disabled Tenor Gifs */
   guildsDisableTenor: Map<string, boolean> = new Map()
-  english = this.i18n.get('en-US') as TFunction
 
   constructor(options: ClientOptions) {
     super(options)
