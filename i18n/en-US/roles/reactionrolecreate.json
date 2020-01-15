@@ -6,7 +6,7 @@
   "EXTENDED_LINE_3": "Note: The bot must have a role higher than the role you are trying to save in the database.",
   "USAGE": "{{prefix}}reactionrolecreate [Message ID] [Name] [Emoji Name] [@Role | Role ID | Role Name]",
   "ALIASES": "{{prefix}}rrc",
-  "NAME_EXISTS": "**{{name}}** is already taken by another reaction role. If you are trying to edit the reaction role, use **reactionroleadd** or **reactionroleremove** commands. If you are trying to create another reaction role, please provide a unique name.",
+  "NAME_EXISTS": "The reaction role menu was unable to be created. Either the **{{name}}** is already taken by another reaction role OR this message already has a reaction role menu on it. If you are trying to edit the reaction role, use **reactionroleadd** or **reactionroleremove** commands.",
   "CREATED": "The **{{name}}** reaction role has been created on this server.",
   "NEED_PERMS": "In order to create a reaction role, I need to have Add Reactions, External Emojis, and Read Message History permissions in this channel."
 }

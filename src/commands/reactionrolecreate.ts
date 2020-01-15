@@ -51,10 +51,13 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
 
   if (!roleIDs.length) return helpCommand.process(message, [`reactionrolecreate`], context)
 
-  const reactionRole = await Gamer.database.models.reactionRole.findOne({
-    name,
-    guildID: message.channel.guild.id
-  })
+  const reactionRole = await Gamer.database.models.reactionRole.findOne().or([
+    {
+      name,
+      guildID: message.channel.guild.id
+    },
+    { messageID }
+  ])
 
   if (reactionRole) return message.channel.createMessage(language(`role/reactionrolecreate:NAME_EXISTS`, { name }))
 
