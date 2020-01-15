@@ -89,6 +89,7 @@ const categories = [
       `reactionroledelete`,
       `reactionroleadd`,
       `reactionroleremove`,
+      `reactionroles`,
       `rolesetcreate`,
       `rolesetdelete`,
       `rolesetadd`,
