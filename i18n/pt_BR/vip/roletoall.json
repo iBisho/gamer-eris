@@ -1,0 +1,20 @@
+{
+	"DESCRIPTION": "Adicione uma função a todos os membros no servidor.",
+	"EXTENDED": "$t(vip/roletoall:EXTENDED_LINE_1)\n$t(vip/roletoall:EXTENDED_LINE_2)\n$t(vip/roletoall:EXTENDED_LINE_3)\n$t(vip/roletoall:EXTENDED_LINE_4)\n$t(vip/roletoall:EXTENDED_LINE_5)",
+	"EXTENDED_LINE_1": "Este é um comando VIP!",
+	"EXTENDED_LINE_2": "Permite adicionar uma função a todos os membros deste servidor.",
+	"EXTENDED_LINE_3": "Você também pode optar por adicionar uma função apenas àquelas que têm outra função. **{{prefix}}** @roleToGive @roleRequired",
+	"EXTENDED_LINE_4": "Para que o bot dê a primeira função, o membro deve ter a segunda função necessária.",
+	"EXTENDED_LINE_5": "Essa função exige que você tenha uma função superior à função que você está tentando atribuir.",
+	"EXTENDED_LINE_6": "**{{prefix}}roletoall [@função | ID da função | Nome do função]** ~ Atribui a função a todos no servidor.",
+	"EXTENDED_LINE_7": "**{{prefix}}roletoall [@Função | ID da função | Nome da Função]** ~ Atribua a todos no servidor esse função.",
+	"USAGE": "{{prefix}}roletoall [@Função | ID da função | Nome da Função]",
+	"ALIASES": "{{prefix}}oprahrole",
+	"PATIENCE": "Aguarde enquanto eu atribuo a função {{role}} a {{amount}} membros.",
+	"FILTER": "Os usuários com a função {{role}} serão ignorados.",
+	"TIME": "Isso pode demorar um pouco, dependendo de quantos membros são afetados.",
+	"REASON": "{{user}}, função adicionada usando o comando roletoall",
+	"SUCCESS": "{{mention}}, todos os membros especificados agora têm a nova função! Obrigado pela sua paciência.",
+	"MISSING_PERM": "Você não tem as permissões necessárias para atribuir funções ou a função que você está tentando atribuir é superior à sua função mais alta.",
+	"NEED_VIP": "Este comando funcionará apenas para um servidor VIP. Para se tornar um VIP, você deve estar aprimorando nosso servidor de suporte e usar o comando vipregister."
+}
