@@ -1,36 +1,35 @@
 import { Command } from 'yuuko'
 import { MemberSettings } from '../lib/types/settings'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`xpreset`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
+  const Gamer = context.client as GamerClient
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   // Now we need to reset the entire guilds information
   await message.channel.createMessage(language(`leveling/xpreset:PATIENCE`))
   const [id] = args
 
   const [user] = message.mentions
-  const member = user || id ? message.channel.guild.members.get(user ? user.id : id) : undefined
+  const member = user || id ? message.member.guild.members.get(user ? user.id : id) : undefined
   const role = id
-    ? message.channel.guild.roles.get(id) ||
+    ? message.member.guild.roles.get(id) ||
       // Incase the user provided a role name and not an id
-      message.channel.guild.roles.find(r => r.name.toLowerCase() === id.toLowerCase())
+      message.member.guild.roles.find(r => r.name.toLowerCase() === id.toLowerCase())
     : undefined
 
   // If a member was passed we want to reset this members XP only
   if (member) {
     const memberSettings = (await Gamer.database.models.member.findOne({
-      id: `${message.channel.guild.id}.${message.author.id}`
+      id: `${message.guildID}.${message.author.id}`
     })) as MemberSettings | null
 
     if (!memberSettings) return
@@ -44,13 +43,13 @@ export default new Command(`xpreset`, async (message, args, context) => {
 
   // Find all members from this guild so we can loop those with edited settings only
   const memberSettings = (await Gamer.database.models.member.find({
-    guildID: message.channel.guild.id
+    guildID: message.guildID
   })) as MemberSettings[]
 
   // For every member reset his xp and level
   for (const settings of memberSettings) {
     // Since we already fetched members above we can just get() here
-    const member = message.channel.guild.members.get(settings.memberID)
+    const member = message.member.guild.members.get(settings.memberID)
     if (!member) continue
     // If user is a bot OR a role is provided and this member doesnt have it skip
     if (member.user.bot || (role && !member.roles.includes(role.id))) continue

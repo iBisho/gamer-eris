@@ -6,16 +6,16 @@ import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`urban`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  // if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   // Check all permissions before running command
   if (!(message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)) {
-    if (!message.channel.nsfw)
-      return message.channel
-        .createMessage(language(`fun/urban:NSFW`))
-        .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+    if (!message.channel.nsfw) {
+      const response = await message.channel.createMessage(language(`fun/urban:NSFW`))
+      setTimeout(() => response.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined), 10000)
+    }
   }
 
   const term = args.join(` `)

@@ -1,6 +1,5 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import Constants from '../constants/index'
 
@@ -129,13 +128,12 @@ const categories = [
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
   // Gamers goal is to increase activity in a server not in a DM.
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
-    return message.channel.createMessage(`Please use this command in a server. Thank you!`)
+  if (!message.guildID) return message.channel.createMessage(`Please use this command in a server. Thank you!`)
 
   const Gamer = context.client as GamerClient
-  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   const prefix = settings?.prefix || Gamer.prefix
   const FEATURES = language(`basic/help:FEATURES`, { prefix })

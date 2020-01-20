@@ -1,20 +1,21 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, Constants, GroupChannel } from 'eris'
+import { Constants } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import constants from '../constants'
 
 export default new Command(`networkcreate`, async (message, _args, context) => {
+  if (!message.guildID || !message.member) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   // Make sure the bot has the permissions to create channels
-  const botMember = message.channel.guild.members.get(Gamer.user.id)
+  const botMember = message.member.guild.members.get(Gamer.user.id)
   if (!botMember || !botMember.permission.has('manageChannels')) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
@@ -38,17 +39,14 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
     .setTimestamp()
 
   try {
-    const categoryChannel = await message.channel.guild.createChannel(
-      language(`network/networkcreate:CATEGORY_NAME`),
-      4
-    )
+    const categoryChannel = await message.member.guild.createChannel(language(`network/networkcreate:CATEGORY_NAME`), 4)
 
     // Create the wall channel and deny send and add reactions permissions from everyone but the bot must have them
-    const wallChannel = await message.channel.guild.createChannel(language(`network/networkcreate:WALL_NAME`), 0, {
+    const wallChannel = await message.member.guild.createChannel(language(`network/networkcreate:WALL_NAME`), 0, {
       parentID: categoryChannel.id,
       permissionOverwrites: [
         {
-          id: message.channel.guild.id,
+          id: message.guildID,
           allow: Constants.Permissions.readMessages,
           deny: Constants.Permissions.sendMessages,
           type: `role`
@@ -66,31 +64,31 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
     }
 
     // Create the notifications channel which no one can see
-    const notificationsChannel = await message.channel.guild.createChannel(
+    const notificationsChannel = await message.member.guild.createChannel(
       language(`network/networkcreate:NOTIFICATION_NAME`),
       0,
       {
         parentID: categoryChannel.id,
         permissionOverwrites: [
-          { id: message.channel.guild.id, allow: 0, deny: Constants.Permissions.readMessages, type: `role` },
+          { id: message.guildID, allow: 0, deny: Constants.Permissions.readMessages, type: `role` },
           { id: Gamer.user.id, allow: 355392, deny: 0, type: `member` }
         ]
       }
     )
 
-    const photosChannel = await message.channel.guild.createChannel(language(`network/networkcreate:PHOTOS_NAME`), 0, {
+    const photosChannel = await message.member.guild.createChannel(language(`network/networkcreate:PHOTOS_NAME`), 0, {
       parentID: categoryChannel.id,
       permissionOverwrites: [
-        { id: message.channel.guild.id, allow: 0, deny: Constants.Permissions.sendMessages, type: `role` },
+        { id: message.guildID, allow: 0, deny: Constants.Permissions.sendMessages, type: `role` },
         { id: Gamer.user.id, allow: 355392, deny: 0, type: `member` }
       ]
     })
 
     // Create the feed channel which no one can see
-    const feedChannel = await message.channel.guild.createChannel(language(`network/networkcreate:FEED_NAME`), 0, {
+    const feedChannel = await message.member.guild.createChannel(language(`network/networkcreate:FEED_NAME`), 0, {
       parentID: categoryChannel.id,
       permissionOverwrites: [
-        { id: message.channel.guild.id, allow: 0, deny: Constants.Permissions.readMessages, type: `role` },
+        { id: message.guildID, allow: 0, deny: Constants.Permissions.readMessages, type: `role` },
         { id: Gamer.user.id, allow: 355392, deny: 0, type: `member` }
       ]
     })
@@ -98,7 +96,7 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
     // Update the settings with all the new channels created
     if (!guildSettings)
       await Gamer.database.models.guild.create({
-        id: message.channel.guild.id,
+        id: message.guildID,
         network: {
           channelIDs: {
             followers: [],
@@ -121,11 +119,11 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
         userID: message.author.id,
         network: {
           followerIDs: [],
-          guildID: message.channel.guild.id
+          guildID: message.guildID
         }
       })
     else {
-      userSettings.network.guildID = message.channel.guild.id
+      userSettings.network.guildID = message.guildID
       userSettings.save()
     }
 

@@ -1,36 +1,35 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`mute`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = message.channel.guild.members.get(Gamer.user.id)
+  const botMember = message.member.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   // Check if the bot has the manage roles permissions
   if (!botMember.permission.has('manageRoles'))
     return message.channel.createMessage(language(`moderation/mute:NEED_MANAGE_ROLES`))
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
   // If there is default settings the mute role won't exist
   if (!guildSettings || !guildSettings.moderation.roleIDs.mute)
     return message.channel.createMessage(language(`moderation/mute:NEED_MUTE_ROLE`))
 
   if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
   )
     return
 
   // Check if the mute role exists
-  const muteRole = message.channel.guild.roles.get(guildSettings.moderation.roleIDs.mute)
+  const muteRole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.mute)
   if (!muteRole) return message.channel.createMessage(language(`moderation/mute:NEED_MUTE_ROLE`))
 
   const [userID] = args
@@ -39,7 +38,7 @@ export default new Command(`mute`, async (message, args, context) => {
   const user = Gamer.users.get(userID) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`moderation/mute:NEED_USER`))
 
-  const member = message.channel.guild.members.get(user.id)
+  const member = message.member.guild.members.get(user.id)
   if (!member) return
 
   const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
@@ -63,7 +62,7 @@ export default new Command(`mute`, async (message, args, context) => {
   await member.addRole(guildSettings.moderation.roleIDs.mute)
 
   const embed = new GamerEmbed()
-    .setDescription(language(`moderation/mute:TITLE`, { guildName: message.channel.guild.name, user: user.username }))
+    .setDescription(language(`moderation/mute:TITLE`, { guildName: message.member.guild.name, user: user.username }))
     .setThumbnail(user.avatarURL)
     .setTimestamp()
     .addField(language(`common:REASON`), reason)

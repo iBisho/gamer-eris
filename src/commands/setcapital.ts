@@ -1,13 +1,12 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`setcapital`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
 
-  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  let settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const language = Gamer.getLanguage(message.guildID)
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
@@ -17,7 +16,7 @@ export default new Command(`setcapital`, async (message, args, context) => {
   if (!helpCommand) return
 
   if (!type) return helpCommand.process(message, [`setcapital`], context)
-  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
+  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
 
   switch (type.toLowerCase()) {
     case `disable`:

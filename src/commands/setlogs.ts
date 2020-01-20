@@ -1,17 +1,15 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`setlogs`, async (message, args, context) => {
+  if (!message.guildID || !message.member) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  let settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
 
@@ -20,8 +18,8 @@ export default new Command(`setlogs`, async (message, args, context) => {
 
   switch (type.toLowerCase()) {
     case `setup`:
-      if (!settings) settings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
-      await Gamer.helpers.scripts.createLogSystem(message.channel.guild, settings)
+      if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
+      await Gamer.helpers.scripts.createLogSystem(message.member.guild, settings)
       return message.channel.createMessage(language(`settings/setlogs:SETUP`, { mention: message.author.mention }))
   }
 

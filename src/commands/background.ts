@@ -1,14 +1,13 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import config from '../../config'
 
 export default new Command([`background`, `bg`], async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const userSettings =
     (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
@@ -46,7 +45,9 @@ export default new Command([`background`, `bg`], async (message, args, context) 
         message.channel.createMessage(language(`leveling/background:SAVED`))
         await userSettings.save()
         profileCommand.process(message, [], context)
-        return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
+        return message.member
+          ? Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
+          : undefined
       }
       // Update the theme and id
       userSettings.profile.backgroundID = backgroundID
@@ -55,15 +56,19 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       await userSettings.save()
 
       profileCommand.process(message, [], context)
-      return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
+      return message.member
+        ? Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
+        : undefined
     case `view`:
+      if (!message.member) return
+
       const buffer = await Gamer.helpers.profiles.makeCanvas(message, message.member, Gamer, {
         backgroundID,
         style: theme
       })
       if (!buffer) return
       message.channel.createMessage(``, { file: buffer, name: `profile.jpg` })
-      return Gamer.helpers.levels.completeMission(message.member, `background`, message.channel.guild.id)
+      return Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
   }
 
   return helpCommand.process(message, [`background`], context)

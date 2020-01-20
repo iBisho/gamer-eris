@@ -1,6 +1,5 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import constants from '../constants'
 
 const allEmojis = [
@@ -17,14 +16,10 @@ const allEmojis = [
 
 export default new Command([`slots`, `slotmachine`], async (message, _args, context) => {
   const Gamer = context.client as GamerClient
-
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
-
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
   if (!userSettings) return
 

@@ -1,35 +1,34 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`eventdelete`, `ed`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
+  const helpCommand = Gamer.commandForName(`help`)
+  if (!helpCommand) return
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
   if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
   )
     return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   const [number] = args
   const eventID = parseInt(number, 10)
-  const helpCommand = Gamer.commandForName(`help`)
-  if (!helpCommand) return
 
   if (!eventID) return helpCommand.process(message, [`eventdelete`], context)
 
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
     id: eventID,
-    guildID: message.channel.guild.id
+    guildID: message.guildID
   })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 

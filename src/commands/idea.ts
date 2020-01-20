@@ -1,23 +1,23 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, TextChannel, GroupChannel } from 'eris'
+import { TextChannel } from 'eris'
 import { FeedbackCollectorData } from '../lib/types/gamer'
 import fetch from 'node-fetch'
 
 export default new Command(`idea`, async (message, args, context) => {
+  if (!message.guildID || !message.member) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
-  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   // If the settings are null then the feedback system is disabled
   if (!settings || !settings.feedback.idea.channelID)
     return message.channel.createMessage(language(`feedback/idea:NOT_ACTIVATED`))
 
-  const channel = message.channel.guild.channels.get(settings.feedback.idea.channelID)
+  const channel = message.member.guild.channels.get(settings.feedback.idea.channelID)
   if (!channel || !(channel instanceof TextChannel))
     return message.channel.createMessage(language(`feedback/idea:INVALID_CHANNEL`))
 
@@ -67,7 +67,7 @@ export default new Command(`idea`, async (message, args, context) => {
       authorID: message.author.id,
       channelID: message.channel.id,
       createdAt: Date.now(),
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       data: {
         language,
         settings,
@@ -75,7 +75,7 @@ export default new Command(`idea`, async (message, args, context) => {
         question
       },
       callback: async (msg, collector) => {
-        if (msg.channel instanceof PrivateChannel || msg.channel instanceof GroupChannel || !msg.member) return
+        if (!msg.guildID || !msg.member) return
         const CANCEL_OPTIONS = language(`common:CANCEL_OPTIONS`, { returnObjects: true })
         if (CANCEL_OPTIONS.includes(msg.content)) {
           message.channel.createMessage(language(`feedback/idea:CANCELLED`, { mention: msg.author.mention }))
@@ -86,26 +86,20 @@ export default new Command(`idea`, async (message, args, context) => {
         const data = collector.data as FeedbackCollectorData
         const questions = data.settings.feedback.idea.questions
 
-        // If the user gave some sort of response that we use that
-        if (msg.content) embed.addField(data.question, msg.content)
-        // If no response was provided but an image was uploaded and this is the last question we use this image
-        else if (questions.length === embed.code.fields.length + 1 && msg.attachments.length) {
+        if (msg.attachments.length) {
           const imgbuffer = await fetch(msg.attachments[0].url)
             .then(res => res.buffer())
             .catch(() => undefined)
           if (imgbuffer) embed.attachFile(imgbuffer, 'imageattachment.png')
-          // Since this does not add a field we need to end it here as its the last question and without adding a field itll be an infinite loop
-          // This was the final question so now we need to post the feedback
-          Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
-          return Gamer.helpers.levels.completeMission(msg.member, `idea`, msg.channel.guild.id)
         }
-        // Cancel out as the user is using it wrongly
-        else return
 
-        // This was the final question so now we need to post the feedback
-        if (embed.code.fields.length === questions.length) {
+        if (msg.content) embed.addField(data.question, msg.content)
+        // There was no content NOR attachment
+        else if (!msg.attachments.length) return
+
+        if (data.question === questions[questions.length - 1]) {
           Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
-          return Gamer.helpers.levels.completeMission(msg.member, `idea`, msg.channel.guild.id)
+          return Gamer.helpers.levels.completeMission(msg.member, `idea`, msg.guildID)
         }
 
         // If more questions create another collector

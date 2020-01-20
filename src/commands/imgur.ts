@@ -1,17 +1,16 @@
 import { Command } from 'yuuko'
 import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import { parse } from 'url'
 import config from '../../config'
 import GamerEmbed from '../lib/structures/GamerEmbed'
+import { GuildTextableChannel } from 'eris'
 
 export default new Command(`imgur`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
+
   const Gamer = context.client as GamerClient
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   const [attachment] = message.attachments
   const content = args.join(` `)
   const url = attachment ? attachment.url : content ? content : null
@@ -20,7 +19,9 @@ export default new Command(`imgur`, async (message, args, context) => {
   if (url.includes(`imgur.com`)) return message.channel.createMessage(language(`utility/imgur:ALREADY_IMGUR`, { url }))
 
   // Check if the user has permission to post images
-  const hasPermsToPostImages = message.channel.permissionsOf(message.author.id).has('attachFiles')
+  const hasPermsToPostImages = (message.channel as GuildTextableChannel)
+    .permissionsOf(message.author.id)
+    .has('attachFiles')
   if (!hasPermsToPostImages) return message.channel.createMessage(language(`utility/imgur:MISSING_PERMISSION`))
 
   const parsedURL = parse(url)

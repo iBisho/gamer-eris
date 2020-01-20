@@ -1,16 +1,15 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 
 const images = ['https://i.imgur.com/4viDc5c.png', 'https://i.imgur.com/OeSr2UA.png']
 
 export default new Command([`coinflip`, `cf`], async (message, args, context) => {
+  if (!message.guildID) return
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return

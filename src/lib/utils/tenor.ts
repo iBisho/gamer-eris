@@ -1,5 +1,5 @@
 import GamerClient from '../structures/GamerClient'
-import { Message, PrivateChannel, GroupChannel } from 'eris'
+import { Message } from 'eris'
 import GamerEmbed from '../structures/GamerEmbed'
 import { TenorGif } from '../types/tenor'
 import fetch from 'node-fetch'
@@ -11,9 +11,9 @@ export default class {
   }
   // Can be used to make the bot sleep
   async randomGif(message: Message, commandName: string, whitelistedGifs: string[], needDescription = true) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID) return
 
-    const language = this.Gamer.getLanguage(message.channel.guild.id)
+    const language = this.Gamer.getLanguage(message.guildID)
 
     const user = message.mentions.length ? message.mentions[0] : message.author
 
@@ -28,7 +28,7 @@ export default class {
         })
       )
 
-    if (this.Gamer.guildsDisableTenor.has(message.channel.guild.id)) {
+    if (this.Gamer.guildsDisableTenor.has(message.guildID)) {
       embed
         .setImage(this.Gamer.helpers.utils.chooseRandom(whitelistedGifs))
         .setFooter(language(`common:WHITELISTED_TENOR`))
@@ -49,7 +49,7 @@ export default class {
     message.channel.createMessage({ embed: embed.code })
 
     return message.member
-      ? this.Gamer.helpers.levels.completeMission(message.member, commandName, message.channel.guild.id)
+      ? this.Gamer.helpers.levels.completeMission(message.member, commandName, message.guildID)
       : undefined
   }
 }

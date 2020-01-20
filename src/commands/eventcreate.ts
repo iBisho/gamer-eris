@@ -1,17 +1,16 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`eventcreate`, `ec`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   if (
     !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
@@ -33,7 +32,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
 
   const event = await Gamer.database.models.event.findOne({
     id: eventID,
-    guildID: message.channel.guild.id
+    guildID: message.guildID
   })
   if (!event) return
   return Gamer.helpers.events.advertiseEvent(event)

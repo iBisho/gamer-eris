@@ -1,20 +1,18 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import Constants from '../constants/index'
 
 export default new Command(
   [`server`, `si`, `sinfo`, `serverinfo`, `gi`, `ginfo`, `guildinfo`],
   async (message, _args, context) => {
-    const Gamer = context.client as GamerClient
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.member) return
 
-    const guild = message.channel.guild
+    const Gamer = context.client as GamerClient
+    const guild = message.member.guild
     const settings = await Gamer.database.models.guild.findOne({ id: guild.id })
 
-    const language = Gamer.getLanguage(message.channel.guild.id)
-    null
+    const language = Gamer.getLanguage(message.guildID)
 
     const owner = Gamer.users.get(guild.ownerID)
     const relevantPersonality = Constants.personalities.find(

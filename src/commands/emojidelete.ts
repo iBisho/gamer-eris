@@ -1,12 +1,11 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`emojidelete`, `emd`], async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const [name] = args
   if (!name) return message.channel.createMessage(language(`emojis/emojidelete:NEED_NAME`))

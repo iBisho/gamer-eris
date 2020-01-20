@@ -1,22 +1,20 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel, Role, GroupChannel } from 'eris'
+import { Role } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
 
-  const guild = message.channel.guild
   const [id] = args
   const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(id) || message.author
 
   const userSettings = await Gamer.database.models.user.findOne({ userID: user.id })
-  const language = Gamer.getLanguage(message.channel.guild.id)
-  null
+  const language = Gamer.getLanguage(message.guildID)
 
-  const member = guild.members.get(user.id)
+  const member = message.member.guild.members.get(user.id)
   if (!member) return
 
   const buffer = await Gamer.helpers.profiles.makeCanvas(message, member || message.member, Gamer)
@@ -32,7 +30,7 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
 
   const JOINED_VALUE = language(`basic/user:JOINED_VALUE`, {
     memberDate: new Date(user.createdAt).toISOString().substr(0, 10),
-    guildName: message.channel.guild.name,
+    guildName: message.member.guild.name,
     guildDate: new Date(member.joinedAt).toISOString().substr(0, 10)
   })
   const SETTINGS_VALUE = language(`basic/user:SETTINGS_VALUES`, {
@@ -62,5 +60,5 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   if (roles) embed.addField(language(`basic/user:ROLES`), roles)
 
   message.channel.createMessage({ embed: embed.code }, embed.file)
-  return Gamer.helpers.levels.completeMission(message.member, `user`, message.channel.guild.id)
+  return Gamer.helpers.levels.completeMission(message.member, `user`, message.guildID)
 })

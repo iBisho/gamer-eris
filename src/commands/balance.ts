@@ -1,13 +1,12 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 
 export default new Command([`balance`, `bal`, `wallet`, `money`, `coins`], async (message, _args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const userSettings =
     (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||

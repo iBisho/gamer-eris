@@ -22,7 +22,7 @@ export default class {
     if (!channelToUse || !(channelToUse instanceof TextChannel)) return
 
     const needsApproval = channel.id === channelToUse.id
-    const feedback = await channelToUse.createMessage({ embed: embed.code })
+    const feedback = await channelToUse.createMessage({ embed: embed.code }, embed.file)
     if (!feedback) return
 
     // Create all reactions and then react to the message sent in the feedback channel
@@ -78,7 +78,7 @@ export default class {
 
     const needsApproval = channel.id === channelToUse.id
 
-    const feedback = await channelToUse.createMessage({ embed: embed.code })
+    const feedback = await channelToUse.createMessage({ embed: embed.code }, embed.file)
     if (!feedback) return
 
     // Create all reactions and then react to the message sent in the feedback channel
@@ -137,6 +137,6 @@ export default class {
       ])
     )
       return
-    return logChannel.createMessage({ embed: embed.code })
+    return logChannel.createMessage({ embed: embed.code }, embed.file)
   }
 }

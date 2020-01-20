@@ -1,19 +1,18 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`reactionroledelete`, `rrd`], async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
 
+  const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
@@ -23,12 +22,12 @@ export default new Command([`reactionroledelete`, `rrd`], async (message, args, 
 
   const reactionRole = await Gamer.database.models.reactionRole.findOne({
     name,
-    guildID: message.channel.guild.id
+    guildID: message.guildID
   })
 
   if (!reactionRole) return message.channel.createMessage(language(`role/reactionroleadd:NOT_FOUND`, { name }))
 
-  await Gamer.database.models.reactionRole.deleteOne({ name, guildID: message.channel.guild.id })
+  await Gamer.database.models.reactionRole.deleteOne({ name, guildID: message.guildID })
 
   return message.channel.createMessage(language(`roles/reactionroledelete:DELETED`, { name }))
 })

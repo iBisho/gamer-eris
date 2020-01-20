@@ -1,13 +1,12 @@
 import { Command } from 'yuuko'
 import { UserSettings, Boost } from '../lib/types/settings'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (message, _args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const userSettings = (await Gamer.database.models.user.findOne({ userID: message.author.id })) as UserSettings | null
   if (!userSettings) return
@@ -61,7 +60,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
     language(`leveling/boostme:BOOSTED`, {
       name: availableBoost.name,
       multiplier: availableBoost.multiplier,
-      prefix: Gamer.guildPrefixes.get(message.channel.guild.id) || Gamer.prefix
+      prefix: Gamer.guildPrefixes.get(message.guildID) || Gamer.prefix
     })
   )
 })

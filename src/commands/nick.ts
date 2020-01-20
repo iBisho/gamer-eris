@@ -1,19 +1,18 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`nick`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = message.channel.guild.members.get(Gamer.user.id)
+  const botMember = message.member.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   // Check if the bot has the kick permissions
   if (!botMember.permission.has('manageNicknames'))
@@ -23,7 +22,7 @@ export default new Command([`nick`], async (message, args, context) => {
 
   // They provided no arguments which means we need to reset the user nickname
   if (!args.length) {
-    const botMember = message.channel.guild.members.get(Gamer.user.id)
+    const botMember = message.member.guild.members.get(Gamer.user.id)
     if (!botMember) return
 
     if (!Gamer.helpers.discord.compareMemberPosition(botMember, message.member))
@@ -48,12 +47,12 @@ export default new Command([`nick`], async (message, args, context) => {
 
   // A user must have been provided, so we need to add some extra checks
   if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
   )
     return
 
-  const member = user ? message.channel.guild.members.get(user.id) : message.member
+  const member = user ? message.member.guild.members.get(user.id) : message.member
   if (!member) return
 
   // Check if the bot has permissions to edit this member

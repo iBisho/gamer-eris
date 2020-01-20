@@ -1,16 +1,15 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import fetch from 'node-fetch'
 import { TenorGif } from '../lib/types/tenor'
 import constants from '../constants'
 
 export default new Command(`cuddle`, async (message, _args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const user = message.mentions.length ? message.mentions[0] : message.author
 
@@ -23,7 +22,7 @@ export default new Command(`cuddle`, async (message, _args, context) => {
       })
     )
 
-  if (Gamer.guildsDisableTenor.has(message.channel.guild.id)) {
+  if (Gamer.guildsDisableTenor.has(message.guildID)) {
     embed
       .setImage(Gamer.helpers.utils.chooseRandom(constants.gifs.cuddle))
       .setFooter(language(`common:WHITELISTED_TENOR`))
@@ -40,5 +39,5 @@ export default new Command(`cuddle`, async (message, _args, context) => {
   }
 
   message.channel.createMessage({ embed: embed.code })
-  return Gamer.helpers.levels.completeMission(message.member, `cuddle`, message.channel.guild.id)
+  if (message.member) return Gamer.helpers.levels.completeMission(message.member, `cuddle`, message.guildID)
 })

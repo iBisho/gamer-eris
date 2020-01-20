@@ -1,23 +1,21 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`setevents`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.member) return
+
   const Gamer = context.client as GamerClient
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
   let guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
-  if (!guildSettings) guildSettings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
+  if (!guildSettings) guildSettings = await Gamer.database.models.guild.create({ id: message.guildID })
 
   const [action] = args
   if (!action) return helpCommand.process(message, [`setevents`], context)
@@ -40,9 +38,9 @@ export default new Command(`setevents`, async (message, args, context) => {
       return message.channel.createMessage(language(`settings/setevents:RESET_ADCHANNEL`))
     case 'role':
       const role = message.roleMentions.length
-        ? message.channel.guild.roles.get(message.roleMentions[0])
-        : message.channel.guild.roles.get(roleIDOrName) ||
-          message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName)
+        ? message.member.guild.roles.get(message.roleMentions[0])
+        : message.member.guild.roles.get(roleIDOrName) ||
+          message.member.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName)
       if (!role) return message.channel.createMessage(language(`settings/setevents:NEED_ROLE`))
 
       guildSettings.roleIDs.eventsCreate = role.id

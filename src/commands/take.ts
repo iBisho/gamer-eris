@@ -1,14 +1,12 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`take`, async (message, args, context) => {
+  if (!message.guildID || !message.member) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
-  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const language = Gamer.getLanguage(message.guildID)
+  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   // If the user does not have a modrole or admin role quit out
   if (
@@ -21,23 +19,21 @@ export default new Command(`take`, async (message, args, context) => {
     return
 
   // Check if the bot has the permission to manage roles
-  const bot = message.channel.guild.members.get(Gamer.user.id)
+  const bot = message.member.guild.members.get(Gamer.user.id)
   if (!bot || !bot.permission.has('manageRoles'))
     return message.channel.createMessage(language(`roles/take:MISSING_MANAGE_ROLES`))
 
   const [userID, roleNameOrID] = args
   // If a user is mentioned use the mention else see if a user id was provided
   const [user] = message.mentions
-  const member = message.channel.guild.members.get(user?.id || userID)
+  const member = message.member.guild.members.get(user?.id || userID)
   if (!member) return message.channel.createMessage(language(`roles/take:NEED_USER`))
   // if a role is mentioned use the mentioned role else see if a role id or role name was provided
   const [roleID] = message.roleMentions
   const role = roleID
-    ? message.channel.guild.roles.get(roleID)
+    ? message.member.guild.roles.get(roleID)
     : roleNameOrID
-    ? message.channel.guild.roles.find(
-        r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase()
-      )
+    ? message.member.guild.roles.find(r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase())
     : undefined
   if (!role) return message.channel.createMessage(language(`roles/take:NEED_ROLE`))
 
@@ -59,7 +55,7 @@ export default new Command(`take`, async (message, args, context) => {
   Gamer.amplitude.push({
     authorID: message.author.id,
     channelID: message.channel.id,
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     messageID: message.id,
     timestamp: message.timestamp,
     memberID: member.id,

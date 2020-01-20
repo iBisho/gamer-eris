@@ -57,7 +57,7 @@ export default class extends Event {
     const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
     if (!event) return
 
-    const language = Gamer.getLanguage(message.channel.guild.id)
+    const language = Gamer.getLanguage(message.guildID)
 
     const [joinEmojiID, denyEmojiID] = [constants.emojis.greenTick, constants.emojis.redX].map(e =>
       Gamer.helpers.discord.convertEmoji(e, `id`)
@@ -95,15 +95,12 @@ export default class extends Event {
   }
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID || !message.member) return
 
-    const guild = Gamer.guilds.get(message.channel.guild.id)
-    if (!guild) return
-
-    const member = guild.members.get(userID)
+    const member = message.member.guild.members.get(userID)
     if (!member) return
 
-    const botMember = guild.members.get(Gamer.user.id)
+    const botMember = message.member.guild.members.get(Gamer.user.id)
     if (!botMember || !botMember.permission.has(`manageRoles`)) return
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
@@ -119,7 +116,7 @@ export default class extends Event {
     if (!relevantReaction || !relevantReaction.roleIDs.length) return
 
     for (const roleID of relevantReaction.roleIDs) {
-      const role = guild.roles.get(roleID)
+      const role = message.member.guild.roles.get(roleID)
       if (!role || role.position > botsHighestRole.position) continue
 
       if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
@@ -128,19 +125,19 @@ export default class extends Event {
   }
 
   async handleProfileReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID) return
 
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
     if (constants.emojis.discord !== fullEmojiName || !message.embeds.length) return
 
-    const language = Gamer.getLanguage(message.channel.guild.id)
+    const language = Gamer.getLanguage(message.guildID)
 
     const [embed] = message.embeds
     if (embed.title !== language(`leveling/profile:CURRENT_MISSIONS`)) return
     Gamer.amplitude.push({
       authorID: message.author.id,
       channelID: message.channel.id,
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       messageID: message.id,
       timestamp: message.timestamp,
       type: 'PROFILE_INVITE'
@@ -153,7 +150,7 @@ export default class extends Event {
   }
 
   async handleNetworkReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID || !message.member) return
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
     if (!networkReactions.includes(fullEmojiName) || !message.embeds.length) return
@@ -197,7 +194,7 @@ export default class extends Event {
         case constants.emojis.heart: {
           // Send a notification to the original authors notification channel saying x user liked it
           await notificationChannel.createMessage(
-            language(`network/reaction:LIKED`, { user: reactorTag, guildName: message.channel.guild.name })
+            language(`network/reaction:LIKED`, { user: reactorTag, guildName: message.member.guild.name })
           )
           // Post the original embed so the user knows which post was liked
           await notificationChannel.createMessage({ embed: postEmbed })
@@ -256,7 +253,7 @@ export default class extends Event {
           await notificationChannel.createMessage(
             language(`network/reaction:REPOSTED`, {
               username: reactorTag,
-              guildName: message.channel.guild.name,
+              guildName: message.member.guild.name,
               newGuildName: usersGuild.name
             })
           )
@@ -318,7 +315,7 @@ export default class extends Event {
       }
     } catch (error) {
       Gamer.emit('error', error)
-      const language = Gamer.getLanguage(message.channel.guild.id)
+      const language = Gamer.getLanguage(message.guildID)
 
       const response = await message.channel.createMessage(language(`network/reaction:FAILED`))
       return setTimeout(() => response.delete(), 10000)
@@ -326,7 +323,8 @@ export default class extends Event {
   }
 
   async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID || !message.member) return
+
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
     if (!message.embeds.length || message.author.id !== Gamer.user.id) return
@@ -336,7 +334,7 @@ export default class extends Event {
     if (!feedback) return
 
     // Fetch the guild settings for this guild
-    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
     if (!guildSettings) return
 
     // Check if valid feedback channel
@@ -357,7 +355,7 @@ export default class extends Event {
 
     if (!feedbackReactions.includes(fullEmojiName)) return
 
-    const reactorMember = message.channel.guild.members.get(user.id)
+    const reactorMember = message.member.guild.members.get(user.id)
     if (!reactorMember) return
 
     const reactorIsMod = reactorMember.roles.some(id => guildSettings.staff.modRoleIDs.includes(id))
@@ -365,9 +363,9 @@ export default class extends Event {
       reactorMember.permission.has('administrator') ||
       (guildSettings.staff.adminRoleID && reactorMember.roles.includes(guildSettings.staff.adminRoleID))
 
-    const feedbackMember = message.channel.guild.members.get(feedback.authorID)
+    const feedbackMember = message.member.guild.members.get(feedback.authorID)
 
-    const language = Gamer.getLanguage(message.channel.guild.id)
+    const language = Gamer.getLanguage(message.guildID)
 
     switch (fullEmojiName) {
       // This case will run if the reaction was the Mailbox reaction
@@ -378,7 +376,7 @@ export default class extends Event {
         if (!guildSettings.mails.enabled || !guildSettings.mails.categoryID) return
 
         const openMail = await Gamer.database.models.mail.findOne({
-          guildID: message.channel.guild.id,
+          guildID: message.guildID,
           userID: feedback.authorID
         })
         // The feedback author does not have any open mails
@@ -394,7 +392,7 @@ export default class extends Event {
           )
         }
         // They have an open mail so we can just send it there
-        const mailChannel = message.channel.guild.channels.get(openMail.id)
+        const mailChannel = message.member.guild.channels.get(openMail.id)
         if (!mailChannel || !(mailChannel instanceof TextChannel)) return
         return mailChannel.createMessage({ content: user.mention, embed: message.embeds[0] })
       // This case will run if the reaction was the solved green check mark
@@ -410,7 +408,7 @@ export default class extends Event {
             : guildSettings.feedback.idea.channelID
           if (!channelID) return
 
-          const channel = message.channel.guild.channels.get(channelID)
+          const channel = message.member.guild.channels.get(channelID)
           if (!channel || !(channel instanceof TextChannel)) return
 
           const hasApprovedPerms = Gamer.helpers.discord.checkPermissions(channel, Gamer.user.id, [
@@ -444,7 +442,7 @@ export default class extends Event {
         // Send a DM to the user telling them it was solved
         const embed = new GamerEmbed()
           .setDescription(guildSettings.feedback.solvedMessage || language(`feedback/idea:SOLVED_DEFAULT`))
-          .setAuthor(`Feedback From ${message.channel.guild.name}`, message.channel.guild.iconURL)
+          .setAuthor(`Feedback From ${message.member.guild.name}`, message.member.guild.iconURL)
           .setTimestamp()
 
         if (feedbackMember) {
@@ -459,7 +457,7 @@ export default class extends Event {
 
         // Send the feedback to the solved channel
         const channel = guildSettings.feedback.solvedChannelID
-          ? message.channel.guild.channels.get(guildSettings.feedback.solvedChannelID)
+          ? message.member.guild.channels.get(guildSettings.feedback.solvedChannelID)
           : null
         // If the bot has all necessary permissions in the log channel
         if (channel && channel instanceof TextChannel) {
@@ -478,7 +476,7 @@ export default class extends Event {
         // Send a DM to the user telling them it was solved
         const rejectedEmbed = new GamerEmbed()
           .setDescription(guildSettings.feedback.rejectedMessage || language(`feedback/idea:REJECTED_DEFAULT`))
-          .setAuthor(`Feedback From ${message.channel.guild.name}`, message.channel.guild.iconURL)
+          .setAuthor(`Feedback From ${message.member.guild.name}`, message.member.guild.iconURL)
           .setTimestamp()
 
         if (feedbackMember) {
@@ -493,7 +491,7 @@ export default class extends Event {
 
         // Send the feedback to the solved channel
         const rejectedChannel = guildSettings.feedback.rejectedChannelID
-          ? message.channel.guild.channels.get(guildSettings.feedback.rejectedChannelID)
+          ? message.member.guild.channels.get(guildSettings.feedback.rejectedChannelID)
           : null
         // If the bot has all necessary permissions in the log channel
         if (rejectedChannel && rejectedChannel instanceof TextChannel) {

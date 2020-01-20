@@ -1,14 +1,12 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`rolesets`, async (message, _args, context) => {
+  if (!message.member) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const language = Gamer.getLanguage(message.guildID)
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   if (
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID) &&
@@ -16,11 +14,11 @@ export default new Command(`rolesets`, async (message, _args, context) => {
   )
     return
 
-  const rolesets = await Gamer.database.models.roleset.find({ guildID: message.channel.guild.id })
+  const rolesets = await Gamer.database.models.roleset.find({ guildID: message.guildID })
   if (!rolesets.length) return message.channel.createMessage(language(`roles/rolesets:NONE`))
 
   let response = ``
-  const guildRoles = message.channel.guild.roles
+  const guildRoles = message.member.guild.roles
 
   for (const roleset of rolesets) {
     if (response.length === 2000) break

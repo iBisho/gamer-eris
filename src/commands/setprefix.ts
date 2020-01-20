@@ -1,17 +1,16 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`setprefix`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
 
+  const Gamer = context.client as GamerClient
   const guildSettings =
     (await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
-    })) || (await Gamer.database.models.guild.create({ id: message.channel.guild.id }))
+      id: message.guildID
+    })) || (await Gamer.database.models.guild.create({ id: message.guildID }))
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
@@ -22,7 +21,7 @@ export default new Command(`setprefix`, async (message, args, context) => {
   guildSettings.prefix = prefix ? prefix.substring(0, 2) : Gamer.prefix
   guildSettings.save()
 
-  Gamer.guildPrefixes.set(message.channel.guild.id, prefix)
+  Gamer.guildPrefixes.set(message.guildID, prefix)
 
   return message.channel.createMessage(language(prefix ? `settings/setprefix:UPDATED` : `settings/setprefix:RESET`))
 })

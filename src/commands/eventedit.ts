@@ -1,17 +1,16 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`eventedit`, `ee`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   // When this boolean is true the user is not a mod/admin so we need to check if they are the event creator
   let checkCreator = false
@@ -40,7 +39,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
     id: eventID,
-    guildID: message.channel.guild.id
+    guildID: message.guildID
   })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
   if (checkCreator && event.authorID !== message.author.id) return
@@ -144,8 +143,8 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `allowedrole`:
     case `10`:
       const allowedRole =
-        message.channel.guild.roles.get(roleID) ||
-        message.channel.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
+        message.member.guild.roles.get(roleID) ||
+        message.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
       if (!allowedRole) return helpCommand.process(message, [`eventedit`], context)
 
       if (event.allowedRoleIDs.includes(allowedRole.id))
@@ -156,8 +155,8 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `alertrole`:
     case `11`:
       const roleToAlert =
-        message.channel.guild.roles.get(roleID) ||
-        message.channel.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
+        message.member.guild.roles.get(roleID) ||
+        message.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
       if (!roleToAlert) return helpCommand.process(message, [`eventedit`], context)
 
       if (event.alertRoleIDs.includes(roleToAlert.id))

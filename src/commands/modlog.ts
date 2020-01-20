@@ -1,21 +1,19 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`modlog`, `ml`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.member) return
 
   const Gamer = context.client as GamerClient
-
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
   )
     return
@@ -26,7 +24,7 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
     const modlogID = parseInt(caseID, 10)
     if (!modlogID) return message.channel.createMessage(language(`moderation/modlog:INVALID_CASE_ID`, { id: caseID }))
     const deleted = await Gamer.database.models.modlog.findOneAndDelete({
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       modlogID: modlogID
     })
     return message.channel.createMessage(
@@ -37,7 +35,7 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
   const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(userID)
 
   const modlogs = await Gamer.database.models.modlog.find({
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     userID: user?.id || userID
   })
   if (!modlogs.length)
@@ -102,7 +100,7 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
       embed.code.fields = []
     }
 
-    const member = message.channel.guild.members.get(log.modID)
+    const member = message.member.guild.members.get(log.modID)
     const memberName = member ? member.username : log.modID
     const date = new Date(log.timestamp)
 

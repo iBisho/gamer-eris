@@ -1,15 +1,15 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, TextChannel, GroupChannel } from 'eris'
+import { TextChannel } from 'eris'
 
 export default new Command(`embedset`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID || !message.member) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const [channelID] = message.channelMentions
-  const channel = channelID ? message.channel.guild.channels.get(channelID) : message.channel
+  const channel = channelID ? message.member.guild.channels.get(channelID) : message.channel
   if (!channel || !(channel instanceof TextChannel)) return
 
   const [messageID] = args
@@ -24,7 +24,7 @@ export default new Command(`embedset`, async (message, args, context) => {
   const [embed] = messageToUse.embeds
   if (!embed) return
 
-  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   // If the user does not have a modrole or admin role quit out
   if (
     !settings ||
@@ -44,7 +44,7 @@ export default new Command(`embedset`, async (message, args, context) => {
   const transformed = Gamer.helpers.transform.variables(
     args.join(' '),
     message.mentions[0],
-    message.channel.guild,
+    message.member.guild,
     message.author,
     emojis
   )

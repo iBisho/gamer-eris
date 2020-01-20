@@ -1,13 +1,13 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`reactionroles`, async (message, _args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
-  const reactionroles = await Gamer.database.models.reactionRole.find({ guildID: message.channel.guild.id })
+  const Gamer = context.client as GamerClient
+
+  const language = Gamer.getLanguage(message.guildID)
+  const reactionroles = await Gamer.database.models.reactionRole.find({ guildID: message.guildID })
   if (!reactionroles.length) return message.channel.createMessage(language(`roles/reactionroles:NONE`))
 
   return Gamer.helpers.discord.embedResponse(

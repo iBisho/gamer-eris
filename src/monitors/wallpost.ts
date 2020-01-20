@@ -1,5 +1,5 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel, TextChannel, GroupChannel } from 'eris'
+import { Message, TextChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import constants from '../constants'
@@ -18,15 +18,14 @@ const postPermissions = [
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    // Network features only work in dms
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+    if (!message.guildID || !message.member) return
     // Check if bot has necessary permissions
     if (!Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, postPermissions)) return
     // Only server admins can post in the wall channels
     if (!message.member.permission.has('administrator')) return
 
     const guildSettings = await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
+      id: message.guildID
     })
 
     // Either the guild doesnt have custom settings or the wall channel wasnt setup or this isnt in the wall channel
@@ -61,7 +60,7 @@ export default class extends Monitor {
       // If an image was attached post the image in #photos
       if (buffer) {
         const photosChannel = guildSettings.network.channelIDs.photos
-          ? message.channel.guild.channels.get(guildSettings.network.channelIDs.photos)
+          ? message.member.guild.channels.get(guildSettings.network.channelIDs.photos)
           : null
 
         // Make sure the channel exists and bot has perms in it before sending

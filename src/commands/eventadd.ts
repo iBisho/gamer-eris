@@ -1,21 +1,19 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventadd`, `eadd`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
   )
     return
@@ -29,7 +27,7 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
   // Get the event from this server using the id provided
   const event = (await Gamer.database.models.event.findOne({
     id: eventID,
-    guildID: message.channel.guild.id
+    guildID: message.guildID
   })) as GamerEvent | null
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
@@ -37,7 +35,7 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
 
   for (const user of message.mentions) {
     if (event.attendees.includes(user.id)) continue
-    const member = message.channel.guild.members.get(user.id)
+    const member = message.member.guild.members.get(user.id)
     if (!member) continue
     if (event.allowedRoleIDs.length && !member.roles.some(roleID => event.allowedRoleIDs.includes(roleID))) continue
     Gamer.helpers.events.joinEvent(event, user.id, language)
@@ -45,10 +43,10 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
 
   for (const roleIDOrName of [...message.roleMentions, ...roleIDsOrNames]) {
     const role =
-      message.channel.guild.roles.get(roleIDOrName) ||
-      message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
+      message.member.guild.roles.get(roleIDOrName) ||
+      message.member.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
     if (!role) continue
-    const members = message.channel.guild.members.filter(m => m.roles.includes(role.id))
+    const members = message.member.guild.members.filter(m => m.roles.includes(role.id))
     for (const member of members) {
       if (event.attendees.includes(member.id)) continue
       if (event.allowedRoleIDs.length && !member.roles.some(roleID => event.allowedRoleIDs.includes(roleID))) continue

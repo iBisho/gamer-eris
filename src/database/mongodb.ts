@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import ClientSchema from './schemas/client'
+import CommandSchema, { GamerCommandPermission } from './schemas/command'
 import EmojiSchema from './schemas/emoji'
 import EventSchema from './schemas/event'
 import FeedbackSchema, { GamerFeedback } from './schemas/feedback'
@@ -43,6 +44,7 @@ class Database {
   connection: mongoose.Connection
   models = {
     client: mongoose.model('Client', ClientSchema),
+    command: mongoose.model<GamerCommandPermission>('Command', CommandSchema),
     emoji: mongoose.model<GamerEmoji>('Emoji', EmojiSchema),
     event: mongoose.model<GamerEvent>('Event', EventSchema),
     feedback: mongoose.model<GamerFeedback>('Feedback', FeedbackSchema),

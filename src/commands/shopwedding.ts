@@ -1,5 +1,4 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import GamerEmbed from '../lib/structures/GamerEmbed'
@@ -47,10 +46,10 @@ const searchCriteria = [
 ]
 
 export default new Command(`shopwedding`, async (message, _args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const marriage = await Gamer.database.models.marriage
     .findOne()
@@ -137,10 +136,10 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
   }
 
   const embed = new GamerEmbed()
-    .setAuthor(message.member.nick || message.author.username, message.author.avatarURL)
+    .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
     .setDescription(shoppingList.join('\n'))
 
-  if (!Gamer.guildsDisableTenor.has(message.channel.guild.id)) {
+  if (!Gamer.guildsDisableTenor.has(message.guildID)) {
     const data: TenorGif | undefined = await fetch(
       `https://api.tenor.com/v1/search?q=${item.name}&key=LIVDSRZULELA&limit=50`
     )
@@ -164,7 +163,7 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
 
   // The shopping is complete
   const completedEmbed = new GamerEmbed()
-    .setAuthor(message.member.nick || message.author.username, message.author.avatarURL)
+    .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
     .setImage('https://i.imgur.com/Dx9Z2hq.jpg')
   return message.channel.createMessage({ embed: completedEmbed.code })
 })

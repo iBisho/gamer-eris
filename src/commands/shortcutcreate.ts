@@ -1,20 +1,18 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`shortcutcreate`, `scc`], async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
 
+  const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
   if (!args.length) return helpCommand.process(message, [`shortcutcreate`], context)
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
   // If the user is not an admin cancel out
@@ -33,7 +31,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
   args.shift()
 
   const shortcut = await Gamer.database.models.shortcut.findOne({
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     name: name.toLowerCase()
   })
   if (shortcut) return message.channel.createMessage(language(`shortcutcreate:NAME_TAKEN`, { name }))
@@ -52,7 +50,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
     actions,
     authorID: message.author.id,
     deleteTrigger,
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     name
   }
 

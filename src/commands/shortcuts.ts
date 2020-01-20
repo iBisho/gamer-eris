@@ -1,14 +1,12 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`shortcuts`, async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
+
   const Gamer = context.client as GamerClient
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
-  const shortcuts = await Gamer.database.models.shortcut.find({ guildID: message.channel.guild.id })
+  const language = Gamer.getLanguage(message.guildID)
+  const shortcuts = await Gamer.database.models.shortcut.find({ guildID: message.guildID })
   if (!shortcuts.length) return message.channel.createMessage(language(`shortcuts/shortcuts:NONE`))
 
   let response = ``

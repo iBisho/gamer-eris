@@ -1,13 +1,13 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`afk`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  // if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   const userSettings =
     (await Gamer.database.models.user.findOne({
@@ -21,7 +21,7 @@ export default new Command(`afk`, async (message, args, context) => {
     message.channel.createMessage(
       language(userSettings.afk.enabled ? `settings/afk:STATUS_ISENABLED` : `settings/afk:STATUS_ISDISABLED`)
     )
-    return Gamer.helpers.levels.completeMission(message.member, `afk`, message.channel.guild.id)
+    return message.member ? Gamer.helpers.levels.completeMission(message.member, `afk`, message.guildID) : undefined
   }
 
   const content = args.join(' ')

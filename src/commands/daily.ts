@@ -1,5 +1,4 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import { milliseconds } from '../lib/types/enums/time'
@@ -7,11 +6,11 @@ import { milliseconds } from '../lib/types/enums/time'
 const dailyXPGlobalAmount = 10
 
 export default new Command(`daily`, async (message, _args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const language = Gamer.getLanguage(message.guildID)
 
   // Check if on cooldown
   const cooldownID = `${message.author.id}.daily`

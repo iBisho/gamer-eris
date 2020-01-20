@@ -7,14 +7,15 @@ import { TenorGif } from '../lib/types/tenor'
 import fetch from 'node-fetch'
 
 export default new Command([`marry`, `propose`], async (message, _args, context) => {
+  if (!message.guildID || !message.member) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   if (!message.mentions.length) return message.channel.createMessage(language(`fun/marry:NEED_SPOUSE`))
+
   const [spouseUser] = message.mentions
   if (spouseUser.id === message.author.id) return message.channel.createMessage(language(`fun/marry:NOT_SELF`))
+
   if (spouseUser.bot) return message.channel.createMessage(language(`fun/marry:NOT_BOT`))
 
   const marriageData = await Gamer.database.models.marriage
@@ -82,7 +83,7 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
     authorID: message.author.id,
     channelID: message.channel.id,
     createdAt: Date.now(),
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     data: {
       marriage
     },

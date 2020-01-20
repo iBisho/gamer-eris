@@ -1,12 +1,11 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`levelrole`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.member) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
@@ -15,9 +14,9 @@ export default new Command(`levelrole`, async (message, args, context) => {
   if (!type) return helpCommand.process(message, [`levelrole`], context)
 
   if (type.toLowerCase() === `list`) {
-    const levelroles = await Gamer.database.models.level.find({ guildID: message.channel.guild.id })
+    const levelroles = await Gamer.database.models.level.find({ guildID: message.guildID })
 
-    const guildRoles = message.channel.guild.roles
+    const guildRoles = message.member.guild.roles
 
     let response = ``
     for (const level of levelroles) {
@@ -41,13 +40,13 @@ export default new Command(`levelrole`, async (message, args, context) => {
   const levelID = parseInt(number, 10)
   if (!levelID) return helpCommand.process(message, [`levelrole`], context)
 
-  const guild = message.channel.guild
+  const guild = message.member.guild
 
   const roleIDs = message.roleMentions
   for (const id of roleIDsOrNames) {
     const role =
-      message.channel.guild.roles.get(id) ||
-      message.channel.guild.roles.find(r => r.name.toLowerCase() === id.toLowerCase())
+      message.member.guild.roles.get(id) ||
+      message.member.guild.roles.find(r => r.name.toLowerCase() === id.toLowerCase())
     if (role) roleIDs.push(role.id)
   }
 
@@ -56,7 +55,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
     return helpCommand.process(message, [`levelrole`], context)
 
   const levelRoleData = await Gamer.database.models.level.findOne({
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     level: levelID
   })
 

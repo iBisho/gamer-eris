@@ -1,20 +1,19 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`roletoall`, `oprahrole`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.member || !message.guildID) return
 
   const Gamer = context.client as GamerClient
 
-  const botMember = message.channel.guild.members.get(Gamer.user.id)
+  const botMember = message.member.guild.members.get(Gamer.user.id)
   if (!botMember || !botMember.permission.has('manageRoles')) return
   if (!message.member.permission.has(`manageRoles`)) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
   // If they are using default settings, they won't be vip server
@@ -28,13 +27,13 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
 
   const role = message.roleMentions.length
     ? // If a role was mentioned use it
-      message.channel.guild.roles.get(message.roleMentions[0])
+      message.member.guild.roles.get(message.roleMentions[0])
     : // ELse if a role id or name was provided
     roleIDOrName
     ? // Check if its a valid role id
-      message.channel.guild.roles.get(roleIDOrName) ||
+      message.member.guild.roles.get(roleIDOrName) ||
       // Check for the role by its name
-      message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
+      message.member.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
     : undefined
   if (!role) return message.channel.createMessage(language(`vip/roletoall:NEED_ROLE`))
 
@@ -49,14 +48,14 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
   const REASON = language(`vip/roletoall:REASON`, { user: message.author.username })
 
   message.channel.createMessage(
-    language(`vip/roletoall:PATIENCE`, { amount: message.channel.guild.members.size, mention: message.author.mention })
+    language(`vip/roletoall:PATIENCE`, { amount: message.member.guild.members.size, mention: message.author.mention })
   )
 
   // Create a counter that will help us rate limit the amount of members we are editing
   // Otherwise all role commands like .role .mute .verify stuff would not work until this finished
   let counter = 0
 
-  for (const member of message.channel.guild.members.values()) {
+  for (const member of message.member.guild.members.values()) {
     // If the member has the role already skip
     if (member.roles.includes(role.id)) continue
 
@@ -75,7 +74,7 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
     Gamer.amplitude.push({
       authorID: message.author.id,
       channelID: message.channel.id,
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       messageID: message.id,
       timestamp: message.timestamp,
       memberID: member.id,

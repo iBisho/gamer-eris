@@ -1,25 +1,24 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`leaderboard`, `lb`], async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const [id, type] = args
   const memberID = message.mentions.length ? message.mentions[0].id : id
 
-  const member = message.channel.guild.members.get(memberID) || message.member
+  const member = message.member.guild.members.get(memberID) || message.member
   if (!member) return
 
   const globalTypes = [`g`, `global`, ...language(`common:GLOBAL_OPTIONS`, { returnObjects: true })]
   const voiceTypes = [`v`, `voice`, ...language(`common:VOICE_OPTIONS`, { returnObjects: true })]
 
   // Special needs for vip servers
-  if (['334791529296035840'].includes(message.channel.guild.id)) {
-    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  if (['334791529296035840'].includes(message.guildID)) {
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
     if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
   }
 

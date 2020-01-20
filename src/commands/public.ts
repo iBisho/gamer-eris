@@ -1,13 +1,13 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, Role, GroupChannel } from 'eris'
+import { Role } from 'eris'
 
 export default new Command(`public`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID || !message.member) return
 
-  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const Gamer = context.client as GamerClient
+  let settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const language = Gamer.getLanguage(message.guildID)
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
@@ -18,7 +18,7 @@ export default new Command(`public`, async (message, args, context) => {
 
   const validRoles = new Set<Role>()
 
-  const bot = message.channel.guild.members.get(Gamer.user.id)
+  const bot = message.member.guild.members.get(Gamer.user.id)
   if (!bot) return
 
   const botsHighestRole = Gamer.helpers.discord.highestRole(bot)
@@ -26,10 +26,8 @@ export default new Command(`public`, async (message, args, context) => {
 
   for (const roleNameOrID of [...args, ...message.roleMentions]) {
     const role =
-      message.channel.guild.roles.get(roleNameOrID) ||
-      message.channel.guild.roles.find(
-        r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase()
-      )
+      message.member.guild.roles.get(roleNameOrID) ||
+      message.member.guild.roles.find(r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase())
     if (!role || (type === `add` && botsHighestRole.position <= role.position)) continue
     if (type === `add` && settings && settings.moderation.roleIDs.public.includes(role.id)) continue
     if (type === `remove` && settings && !settings.moderation.roleIDs.public.includes(role.id)) continue
@@ -39,7 +37,7 @@ export default new Command(`public`, async (message, args, context) => {
 
   if (!validRoles.size) return message.channel.createMessage(language(`roles/public:NO_VALID_ROLES`))
 
-  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
+  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
   const roleIDs = [...validRoles].map(role => role.id)
   const roleNames = [...validRoles].map(role => role.name)
 

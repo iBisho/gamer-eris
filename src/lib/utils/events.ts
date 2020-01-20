@@ -1,4 +1,4 @@
-import { Message, PrivateChannel, TextChannel, GroupChannel } from 'eris'
+import { Message, TextChannel } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerEvent } from '../types/gamer'
@@ -19,15 +19,15 @@ export default class {
   }
 
   async createNewEvent(message: Message, templateName = ``, guildSettings: GuildSettings | null) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID) return
 
-    const events = await this.Gamer.database.models.event.find({ guildID: message.channel.guild.id })
+    const events = await this.Gamer.database.models.event.find({ guildID: message.guildID })
 
     const template = templateName
       ? events.find(event => event.templateName && event.templateName === templateName)
       : undefined
 
-    const language = this.Gamer.getLanguage(message.channel.guild.id)
+    const language = this.Gamer.getLanguage(message.guildID)
 
     // 1440 minutes in a day
     const startNow = (template?.minutesFromNow || 1440) * 60000 + Date.now()
@@ -35,7 +35,7 @@ export default class {
     const newEvent = {
       id: this.createNewID(events),
       authorID: message.author.id,
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       // now + X minutes
       start: startNow,
       end: startNow + (template ? template.duration : 3600000),
@@ -73,7 +73,7 @@ export default class {
     this.Gamer.amplitude.push({
       authorID: message.author.id,
       channelID: message.channel.id,
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       messageID: message.id,
       timestamp: message.timestamp,
       type: 'EVENT_CREATED'
@@ -359,7 +359,7 @@ export default class {
       if (event.templateName) continue
       if (event.end < now) eventsToEnd.push(event)
       else if (event.start < now && !event.hasStarted && event.end > now) eventsToStart.push(event)
-      else if (event.start > now && !event.hasStarted && event.attendees.length) eventsToRemind.push(event)
+      else if (event.start > now && !event.hasStarted) eventsToRemind.push(event)
     }
 
     for (const event of eventsToEnd) this.endEvent(event)

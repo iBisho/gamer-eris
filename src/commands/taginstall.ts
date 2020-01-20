@@ -1,5 +1,4 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 interface TagModules {
@@ -13,19 +12,16 @@ const modules: TagModules = {
 
 export default new Command([`taginstall`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   if (!args.length) return helpCommand.process(message, [`taginstall`], context)
 
   const guildSettings =
     (await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
-    })) || (await Gamer.database.models.guild.create({ id: message.channel.guild.id }))
+      id: message.guildID
+    })) || (await Gamer.database.models.guild.create({ id: message.guildID }))
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return

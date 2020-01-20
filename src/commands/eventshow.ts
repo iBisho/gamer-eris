@@ -1,21 +1,19 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`eventshow`, `es`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
+
   const Gamer = context.client as GamerClient
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   const [eventID] = args
   if (!eventID) return message.channel.createMessage(language(`events/events:NEED_EVENT_ID`))
 
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
     id: eventID,
-    guildID: message.channel.guild.id
+    guildID: message.guildID
   })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 

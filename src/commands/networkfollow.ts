@@ -1,12 +1,10 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel, TextChannel } from 'eris'
+import { TextChannel } from 'eris'
 
 export default new Command([`networkfollow`, `follow`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
-  const language = Gamer.getLanguage(message.channel.guild.id)
+  const language = Gamer.getLanguage(message.guildID)
 
   const [userID] = args
   const helpCommand = Gamer.commandForName(`help`)

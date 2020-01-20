@@ -1,10 +1,10 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`feedback`, `fb`], async (message, args, context) => {
+  if (!message.guildID) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
 
   const [name] = args
   if (!name) return

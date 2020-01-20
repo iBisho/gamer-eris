@@ -193,8 +193,8 @@ export default class GamerClient extends Client {
     return this
   }
 
-  getLanguage(guildID: string) {
-    const guildLanguage = this.guildLanguages.get(guildID)
+  getLanguage(guildID?: string) {
+    const guildLanguage = guildID ? this.guildLanguages.get(guildID) : undefined
     const language = guildLanguage ? this.i18n.get(guildLanguage) : undefined
     const english = this.i18n.get('en-US') as TFunction
     return language || english

@@ -1,21 +1,17 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`tagshow`, `ts`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.getLanguage(message.channel.guild.id)
-
+  const language = Gamer.getLanguage(message.guildID)
   const [name] = args
   if (!name) return helpCommand.process(message, [`tagshow`], context)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
   // If the user is not an admin cancel out
@@ -28,7 +24,7 @@ export default new Command([`tagshow`, `ts`], async (message, args, context) => 
   const tagName = name.toLowerCase()
 
   const tag = await Gamer.database.models.tag.findOne({
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     name: tagName
   })
 
