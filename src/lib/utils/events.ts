@@ -413,7 +413,7 @@ export default class {
     const guild = this.Gamer.guilds.get(event.guildID)
     if (!guild) return
 
-    const language = this.Gamer.getLanguage(guild.id)
+    const language = this.Gamer.getLanguage(event.guildID)
 
     const embed = new GamerEmbed()
       .setAuthor(language(`events/events:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
@@ -437,6 +437,18 @@ export default class {
 
     event.hasStarted = true
     event.save()
+
+    const adChannel = event.adChannelID ? guild.channels.get(event.adChannelID) : undefined
+    if (!adChannel || !(adChannel instanceof TextChannel)) return
+
+    const botPerms = adChannel.permissionsOf(this.Gamer.user.id)
+
+    if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
+
+    adChannel.createMessage({
+      content: event.alertRoleIDs.map((id: string) => `<@&${id}>`).join(` `),
+      embed: embed.code
+    })
   }
 
   async remindEvent(event: GamerEvent) {
