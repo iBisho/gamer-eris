@@ -42,12 +42,11 @@ export default class extends Event {
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (!message.author.bot || message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
-      return
+    if (!message.author.bot || !message.member) return
     const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
     if (!event) return
 
-    const language = Gamer.getLanguage(message.guildID)
+    const language = Gamer.getLanguage(message.member.guild.id)
 
     const joinEmojiID = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `id`)
 
@@ -61,7 +60,7 @@ export default class extends Event {
   }
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (!message.guildID || !message.member) return
+    if (!message.member) return
 
     const member = message.member.guild.members.get(userID)
     if (!member) return
@@ -91,7 +90,7 @@ export default class extends Event {
   }
 
   async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (!message.guildID || !message.member) return
+    if (!message.member) return
 
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
@@ -101,7 +100,7 @@ export default class extends Event {
     const feedback = await Gamer.database.models.feedback.findOne({ id: message.id })
     if (!feedback) return
     // Fetch the guild settings for this guild
-    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
     if (!guildSettings) return
 
     // Check if valid feedback channel
