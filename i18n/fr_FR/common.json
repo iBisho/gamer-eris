@@ -57,6 +57,8 @@
   "AUTOMOD_CAPITALS": "Le taux de majuscules était beaucoup trop haut!",
   "AUTOMOD_URLS": "Le partage de liens est restreint.",
   "MENTION_PREFIX": "Le prefix sur ce serveur est: **{{prefix}}**",
+  "WHITELISTED_TENOR": "Via Whitelisted Tenor",
+  "TENOR": "Via Tenor",
   "GLOBAL_OPTIONS": ["g", "global"],
   "VOICE_OPTIONS": ["v", "voix"],
   "CANCEL_OPTIONS": ["q", "quitter"]
