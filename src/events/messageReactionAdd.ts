@@ -52,12 +52,12 @@ export default class extends Event {
       }
     }
 
-    if (!message.author.bot || message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
-      return
+    if (!message.author.bot || !message.member) return
+
     const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
     if (!event) return
 
-    const language = Gamer.getLanguage(message.guildID)
+    const language = Gamer.getLanguage(message.member.guild.id)
 
     const [joinEmojiID, denyEmojiID] = [constants.emojis.greenTick, constants.emojis.redX].map(e =>
       Gamer.helpers.discord.convertEmoji(e, `id`)
@@ -95,7 +95,7 @@ export default class extends Event {
   }
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (!message.guildID || !message.member) return
+    if (!message.member) return
 
     const member = message.member.guild.members.get(userID)
     if (!member) return
@@ -125,19 +125,19 @@ export default class extends Event {
   }
 
   async handleProfileReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (!message.guildID) return
+    if (!message.member) return
 
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
     if (constants.emojis.discord !== fullEmojiName || !message.embeds.length) return
 
-    const language = Gamer.getLanguage(message.guildID)
+    const language = Gamer.getLanguage(message.member.guild.id)
 
     const [embed] = message.embeds
     if (embed.title !== language(`leveling/profile:CURRENT_MISSIONS`)) return
     Gamer.amplitude.push({
       authorID: message.author.id,
       channelID: message.channel.id,
-      guildID: message.guildID,
+      guildID: message.member.guild.id,
       messageID: message.id,
       timestamp: message.timestamp,
       type: 'PROFILE_INVITE'
@@ -150,7 +150,7 @@ export default class extends Event {
   }
 
   async handleNetworkReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (!message.guildID || !message.member) return
+    if (!message.member) return
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
     if (!networkReactions.includes(fullEmojiName) || !message.embeds.length) return
@@ -315,7 +315,7 @@ export default class extends Event {
       }
     } catch (error) {
       Gamer.emit('error', error)
-      const language = Gamer.getLanguage(message.guildID)
+      const language = Gamer.getLanguage(message.member.guild.id)
 
       const response = await message.channel.createMessage(language(`network/reaction:FAILED`))
       return setTimeout(() => response.delete(), 10000)
@@ -323,7 +323,7 @@ export default class extends Event {
   }
 
   async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, user: User) {
-    if (!message.guildID || !message.member) return
+    if (!message.member) return
 
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
@@ -334,7 +334,7 @@ export default class extends Event {
     if (!feedback) return
 
     // Fetch the guild settings for this guild
-    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
     if (!guildSettings) return
 
     // Check if valid feedback channel
@@ -365,7 +365,7 @@ export default class extends Event {
 
     const feedbackMember = message.member.guild.members.get(feedback.authorID)
 
-    const language = Gamer.getLanguage(message.guildID)
+    const language = Gamer.getLanguage(message.member.guild.id)
 
     switch (fullEmojiName) {
       // This case will run if the reaction was the Mailbox reaction
@@ -376,7 +376,7 @@ export default class extends Event {
         if (!guildSettings.mails.enabled || !guildSettings.mails.categoryID) return
 
         const openMail = await Gamer.database.models.mail.findOne({
-          guildID: message.guildID,
+          guildID: message.member.guild.id,
           userID: feedback.authorID
         })
         // The feedback author does not have any open mails
