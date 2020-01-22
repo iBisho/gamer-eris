@@ -106,7 +106,7 @@ const categories = [
   },
   {
     name: `moderation`,
-    commands: [`purge`, `nick`, `ban`, `unban`, `kick`, `mute`, `unmute`, `warn`, `modlog`, `reason`]
+    commands: [`purge`, `nick`, `ban`, `unban`, `kick`, `mute`, `move`, `unmute`, `warn`, `modlog`, `reason`]
   },
   { name: `mails`, commands: [`mail`, `label`] },
   { name: `vip`, commands: [`vipregister`, `roletoall`, `export`] },
