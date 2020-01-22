@@ -48,7 +48,7 @@ export default class extends Event {
 
           const message =
             channel.messages.get(channel.lastMessageID) ||
-            (await channel.getMessage(channel.lastMessageID).catch(() => null))
+            (await channel.getMessage(channel.lastMessageID).catch(() => undefined))
           // If no message something is very wrong as the first json message should always be there to be safe just cancel
           if (!message) continue
 
@@ -231,6 +231,11 @@ export default class extends Event {
         Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
       if (settings.disableTenor) Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
     }
+
+    const customCommands = await Gamer.database.models.command.find()
+    customCommands.forEach(command => {
+      Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
+    })
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }

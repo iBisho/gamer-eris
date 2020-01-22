@@ -10,7 +10,7 @@ export default new Command(
     } catch (err) {
       msg.channel
         .createMessage(`There was an error while changing username.\n\`\`\`\n${err.message}\n\`\`\``)
-        .catch(() => null)
+        .catch(() => undefined)
     }
   },
   {

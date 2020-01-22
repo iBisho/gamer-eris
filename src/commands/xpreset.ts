@@ -1,5 +1,4 @@
 import { Command } from 'yuuko'
-import { MemberSettings } from '../lib/types/settings'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`xpreset`, async (message, args, context) => {
@@ -28,9 +27,9 @@ export default new Command(`xpreset`, async (message, args, context) => {
 
   // If a member was passed we want to reset this members XP only
   if (member) {
-    const memberSettings = (await Gamer.database.models.member.findOne({
+    const memberSettings = await Gamer.database.models.member.findOne({
       id: `${message.guildID}.${message.author.id}`
-    })) as MemberSettings | null
+    })
 
     if (!memberSettings) return
 
@@ -42,10 +41,9 @@ export default new Command(`xpreset`, async (message, args, context) => {
   }
 
   // Find all members from this guild so we can loop those with edited settings only
-  const memberSettings = (await Gamer.database.models.member.find({
+  const memberSettings = await Gamer.database.models.member.find({
     guildID: message.guildID
-  })) as MemberSettings[]
-
+  })
   // For every member reset his xp and level
   for (const settings of memberSettings) {
     // Since we already fetched members above we can just get() here

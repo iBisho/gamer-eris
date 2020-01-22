@@ -52,7 +52,6 @@ export default class extends Monitor {
   }
 
   async sendTweet(message: Message, Gamer: GamerClient, channelID: string) {
-    // if (!message.author.bot) return null;
     const split = message.content.split(` `)
     const channel = Gamer.getChannel(channelID)
 

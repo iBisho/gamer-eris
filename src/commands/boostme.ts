@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import { UserSettings, Boost } from '../lib/types/settings'
+import { Boost } from '../lib/types/settings'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (message, _args, context) => {
@@ -8,7 +8,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
-  const userSettings = (await Gamer.database.models.user.findOne({ userID: message.author.id })) as UserSettings | null
+  const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
   if (!userSettings) return
 
   // const [type] = args

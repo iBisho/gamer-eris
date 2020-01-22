@@ -72,7 +72,6 @@ Gamer.globalCommandRequirements = {
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages')) return false
 
     const language = Gamer.getLanguage(message.guildID)
-    false
 
     // Check if bot has embed links perms
     if (!botPerms.has('embedLinks')) {
@@ -83,7 +82,7 @@ Gamer.globalCommandRequirements = {
     // If the user is using commands within 2 seconds ignore it
     if (Gamer.slowmode.has(message.author.id)) {
       // Cleans up spam command messages from users
-      if (botPerms.has('manageMessages')) message.delete().catch(() => null)
+      if (botPerms.has('manageMessages')) message.delete().catch(() => undefined)
       return false
     }
 
@@ -95,6 +94,38 @@ Gamer.globalCommandRequirements = {
       !message.member?.permission.has('administrator')
     )
       return false
+
+    if (message.member?.permission.has('administrator')) return true
+
+    // Check custom command permissions for this command on this server
+    const commandPerms = Gamer.guildCommandPermissions.get(`${message.guildID}.${context.commandName}`)
+    const allCommandsPerms = Gamer.guildCommandPermissions.get(`${message.guildID}.allcommands`)
+
+    // If no custom its enabled
+    if (!commandPerms && !allCommandsPerms) return true
+
+    if (commandPerms) {
+      if (!commandPerms.enabled) {
+        // The command is disabled but check if its disabled for this channel or any roles
+        if (commandPerms.exceptionChannelIDs.includes(message.channel.id)) return true
+        if (commandPerms.exceptionRoleIDs.some(id => message.member?.roles.includes(id))) return true
+        return false
+      }
+      // The command is enabled but check if it is disabled for any of these roles
+      if (commandPerms.exceptionChannelIDs.includes(message.channel.id)) return false
+      if (commandPerms.exceptionRoleIDs.some(id => message.member?.roles.includes(id))) return false
+    }
+
+    if (allCommandsPerms) {
+      if (!allCommandsPerms.enabled) {
+        if (allCommandsPerms.exceptionChannelIDs.includes(message.channel.id)) return true
+        if (allCommandsPerms.exceptionRoleIDs.some(id => message.member?.roles.includes(id))) return true
+        return false
+      }
+
+      if (allCommandsPerms.exceptionChannelIDs.includes(message.channel.id)) return false
+      if (allCommandsPerms.exceptionRoleIDs.some(id => message.member?.roles.includes(id))) return false
+    }
 
     return true
   }

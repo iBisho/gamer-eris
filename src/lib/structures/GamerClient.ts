@@ -29,6 +29,7 @@ import UtilsHelper from '../utils/utils'
 import constants from '../../constants'
 import { AmplitudeEvent } from '../types/amplitude'
 import Gamer from '../..'
+import { GamerCommandPermission } from '../../database/schemas/command'
 
 const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
 const assetsFolder = join(rootFolder, `assets`)
@@ -134,6 +135,8 @@ export default class GamerClient extends Client {
   guildSupportChannelIDs: Map<string, string> = new Map()
   /** This stores the guilds that have disabled Tenor Gifs */
   guildsDisableTenor: Map<string, boolean> = new Map()
+  /** This stores the custom command permissions for guilds */
+  guildCommandPermissions: Map<string, GamerCommandPermission> = new Map()
 
   constructor(options: ClientOptions) {
     super(options)

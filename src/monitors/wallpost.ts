@@ -35,7 +35,7 @@ export default class extends Monitor {
       ? await nodefetch(message.attachments[0].url)
           .then(res => res.buffer())
           .catch(() => undefined)
-      : null
+      : undefined
 
     const embed = new GamerEmbed()
       .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.avatarURL)
@@ -55,13 +55,13 @@ export default class extends Monitor {
       }
 
       // Delete the original message the author posted to keep channel clean. Catch it because it mightve been deleted by another monitor
-      await message.delete().catch(() => null)
+      await message.delete().catch(() => undefined)
 
       // If an image was attached post the image in #photos
       if (buffer) {
         const photosChannel = guildSettings.network.channelIDs.photos
           ? message.member.guild.channels.get(guildSettings.network.channelIDs.photos)
-          : null
+          : undefined
 
         // Make sure the channel exists and bot has perms in it before sending
         if (photosChannel && photosChannel instanceof TextChannel) {

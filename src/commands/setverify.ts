@@ -69,9 +69,7 @@ export default new Command(`setverify`, async (message, args, context) => {
       let json: unknown
       try {
         json = JSON.parse(jsonString)
-      } catch {
-        json = null
-      }
+      } catch {}
       if (!json) {
         message.channel.createMessage(language(`settings/setverify:INVALID_JSON_MESSAGE`))
 

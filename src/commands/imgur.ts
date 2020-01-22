@@ -13,7 +13,7 @@ export default new Command(`imgur`, async (message, args, context) => {
   const language = Gamer.getLanguage(message.guildID)
   const [attachment] = message.attachments
   const content = args.join(` `)
-  const url = attachment ? attachment.url : content ? content : null
+  const url = attachment ? attachment.url : content ? content : undefined
   if (!url) return message.channel.createMessage(language(`utility/imgur:MISSING_URL`))
 
   if (url.includes(`imgur.com`)) return message.channel.createMessage(language(`utility/imgur:ALREADY_IMGUR`, { url }))
@@ -25,7 +25,7 @@ export default new Command(`imgur`, async (message, args, context) => {
   if (!hasPermsToPostImages) return message.channel.createMessage(language(`utility/imgur:MISSING_PERMISSION`))
 
   const parsedURL = parse(url)
-  const validURL = parsedURL.protocol && parsedURL.hostname ? url : null
+  const validURL = parsedURL.protocol && parsedURL.hostname ? url : undefined
   if (!validURL) return message.channel.createMessage(language(`utility/imgur:INVALID_URL`))
 
   const result = (await fetch(`https://api.imgur.com/3/image`, {
@@ -34,7 +34,7 @@ export default new Command(`imgur`, async (message, args, context) => {
     body: JSON.stringify({ image: validURL, type: `url` })
   })
     .then(res => res.json())
-    .catch(() => null)) as Imgur | null
+    .catch(() => undefined)) as Imgur | undefined
 
   if (!result || result.status !== 200) return message.channel.createMessage(language(`utility/imgur:FAILED`))
 

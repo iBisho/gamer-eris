@@ -1,6 +1,5 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventkick`, `ek`], async (message, args, context) => {
   if (!message.guildID) return
@@ -28,10 +27,10 @@ export default new Command([`eventkick`, `ek`], async (message, args, context) =
   if (!user) return message.channel.createMessage(language(`events/eventkick:NEED_USER`))
 
   // Get the event from this server using the id provided
-  const event = (await Gamer.database.models.event.findOne({
+  const event = await Gamer.database.models.event.findOne({
     id: eventID,
     guildID: message.guildID
-  })) as GamerEvent | null
+  })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   if (!event.attendees.includes(user.id) && !event.waitingList.includes(user.id))

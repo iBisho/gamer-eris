@@ -16,7 +16,7 @@ export interface GamerCommandPermission extends mongoose.Document {
   /** Whether or not this command is enabled in the server. */
   enabled: boolean
   /** Channels where the opposite of enabled will be used. */
-  exceptionChannelIDs: []
+  exceptionChannelIDs: string[]
   /** Roles for whom the opposite of enabled option will be used. */
-  exceptionRoleIDs: []
+  exceptionRoleIDs: string[]
 }

@@ -145,7 +145,7 @@ export default class {
       event.adChannelID = adChannel.id
       event.adMessageID = card.id
       event.save()
-      for (const emoji of eventCardReactions) await card.addReaction(emoji).catch(() => null)
+      for (const emoji of eventCardReactions) await card.addReaction(emoji).catch(() => undefined)
     }
   }
 

@@ -56,7 +56,7 @@ export default class extends Event {
         const isEmbed = guildSettings.hibye.welcome.message.startsWith('{')
         const transformed = Gamer.helpers.transform.variables(guildSettings.hibye.welcome.message)
 
-        const embed = isEmbed ? JSON.parse(transformed) : null
+        const embed = isEmbed ? JSON.parse(transformed) : undefined
 
         if (guildSettings.hibye.welcome.dmEnabled) {
           const dmChannel = await member.user.getDMChannel()

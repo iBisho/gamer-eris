@@ -45,8 +45,8 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
     .addField(language(`common:REASON`), reason)
 
   // Send the user a message. AWAIT to make sure message is sent before they are banned and lose access
-  const dmChannel = await user.getDMChannel().catch(() => null)
-  if (dmChannel) dmChannel.createMessage({ embed: embed.code }).catch(() => null)
+  const dmChannel = await user.getDMChannel().catch(() => undefined)
+  if (dmChannel) dmChannel.createMessage({ embed: embed.code }).catch(() => undefined)
 
   const modlogID = await Gamer.helpers.moderation.createModlog(message, guildSettings, language, user, `warn`, reason)
 

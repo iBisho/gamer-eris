@@ -98,7 +98,7 @@ export default class extends Monitor {
 
     const botPerms = (message.channel as GuildTextableChannel).permissionsOf(Gamer.user.id)
     // If the message can be deleted, delete it
-    if (botPerms.has('manageMessages')) message.delete(language(`common:AUTOMOD_DELETE_REASON`)).catch(() => null)
+    if (botPerms.has('manageMessages')) message.delete(language(`common:AUTOMOD_DELETE_REASON`)).catch(() => undefined)
     // Need send and embed perms to send the clean response
     if (!botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
 
@@ -110,7 +110,7 @@ export default class extends Monitor {
     message.channel.createMessage({ embed: embed.code })
     if (reasons.length > 1) {
       const reason = await message.channel.createMessage(`${message.author.mention} ${reasons.join('\n')}`)
-      setTimeout(() => reason.delete().catch(() => null), 3000)
+      setTimeout(() => reason.delete().catch(() => undefined), 3000)
     }
   }
 

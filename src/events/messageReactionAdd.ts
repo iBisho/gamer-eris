@@ -173,7 +173,7 @@ export default class extends Event {
       // If that server id isnt valid cancel
       const originalServer = targetUserSettings.network.guildID
         ? Gamer.guilds.get(targetUserSettings.network.guildID)
-        : null
+        : undefined
       if (!originalServer) return
 
       const language = Gamer.getLanguage(originalServer.id)
@@ -209,7 +209,7 @@ export default class extends Event {
           })
           if (!userSettings) return
 
-          const usersGuild = userSettings.network.guildID ? Gamer.guilds.get(userSettings.network.guildID) : null
+          const usersGuild = userSettings.network.guildID ? Gamer.guilds.get(userSettings.network.guildID) : undefined
           if (!usersGuild) return
 
           const usersGuildSettings = await Gamer.database.models.guild.findOne({
@@ -273,7 +273,7 @@ export default class extends Event {
           })
           if (!userSettings) return
 
-          const usersGuild = userSettings.network.guildID ? Gamer.guilds.get(userSettings.network.guildID) : null
+          const usersGuild = userSettings.network.guildID ? Gamer.guilds.get(userSettings.network.guildID) : undefined
           if (!usersGuild) return
 
           const usersGuildSettings = await Gamer.database.models.guild.findOne({
@@ -311,7 +311,7 @@ export default class extends Event {
           )
         }
         default:
-          return null
+          return
       }
     } catch (error) {
       Gamer.emit('error', error)
@@ -458,7 +458,7 @@ export default class extends Event {
         // Send the feedback to the solved channel
         const channel = guildSettings.feedback.solvedChannelID
           ? message.member.guild.channels.get(guildSettings.feedback.solvedChannelID)
-          : null
+          : undefined
         // If the bot has all necessary permissions in the log channel
         if (channel && channel instanceof TextChannel) {
           const botPerms = channel.permissionsOf(Gamer.user.id)
@@ -492,7 +492,7 @@ export default class extends Event {
         // Send the feedback to the solved channel
         const rejectedChannel = guildSettings.feedback.rejectedChannelID
           ? message.member.guild.channels.get(guildSettings.feedback.rejectedChannelID)
-          : null
+          : undefined
         // If the bot has all necessary permissions in the log channel
         if (rejectedChannel && rejectedChannel instanceof TextChannel) {
           const botPerms = rejectedChannel.permissionsOf(Gamer.user.id)

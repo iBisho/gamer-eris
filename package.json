@@ -43,6 +43,7 @@
     "yuuko": "github:Skillz4Killz/yuuko#master"
   },
   "devDependencies": {
+    "@types/glob": "^7.1.1",
     "@types/i18next-node-fs-backend": "^2.1.0",
     "@types/mongoose": "^5.5.41",
     "@types/node": "^12.12.24",
