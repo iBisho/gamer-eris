@@ -1,33 +1,46 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
+import { VoiceChannel } from 'eris'
 
 export default new Command(`move`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
+
+  const [channelID, newChannelID] = args
+
+  const channel = message.member.guild.channels.get(channelID)
+  // If not a valid voice channel cancel
+  if (!channel || !(channel instanceof VoiceChannel))
+    return message.channel.createMessage(language(`moderation/move:NEED_CHANNEL`))
+
+  const hasPermission = channel.permissionsOf(Gamer.user.id).has(`voiceMoveMembers`)
+  const userHasPermission = channel.permissionsOf(message.author.id).has(`voiceMoveMembers`)
 
   // Check if the bot has the Move Members permissions
-  if (!message.channel.permissionsOf(Gamer.user.id).has('voiceMoveMembers'))
-    return message.channel.createMessage(language(`moderation/move:NEED_MOVE_MEMBERS`))
+  if (!hasPermission) return message.channel.createMessage(language(`moderation/move:NEED_MOVE_MEMBERS`))
+  if (!userHasPermission) return message.channel.createMessage(language(`moderation/move:MISSING_PERM`))
 
-  if (!message.channel.permissionsOf(message.member.id).has('voiceMoveMembers'))
-    return message.channel.createMessage(language(`moderation/move:MISSING_PERM`))
+  const newChannel = message.member.guild.channels.get(newChannelID)
 
-  const channelID = message.channel.guild.channels.get(args[0])?.id
-  if (!channelID) return message.channel.createMessage(language(`moderation/move:NEED_CHANNEL`))
+  const REASON = language(`moderation/move:REASON`, {
+    user: `${message.author.username}#${message.author.discriminator}`
+  })
 
-  if (!message.mentions.length) return message.channel.createMessage(language(`moderation/move:NEED_MEMBERS`))
-
-  let amount = 0
-  for (const i in args.slice(1)) {
-    const member = message.channel.guild.members.get(message.mentions[i]?.id)
-    if (!member) continue
-    member.edit({ channelID: channelID }, `moved by ${message.author.username}#${message.author.discriminator}`)
-    amount++
+  // If a valid new channel was provided we simply move all the users in the channel over
+  if (newChannel) {
+    channel.voiceMembers?.forEach(member => {
+      member.edit({ channelID: newChannel.id }, REASON)
+    })
+  } else {
+    if (!message.mentions.length) return message.channel.createMessage(language(`moderation/move:NEED_MEMBERS`))
+    message.mentions.forEach(user => {
+      const member = message.member?.guild.members.get(user.id)
+      if (!member || !member.voiceState.channelID) return
+      member.edit({ channelID }, REASON)
+    })
   }
 
-  return message.channel.createMessage(language(`moderation/move:SUCESS`, { amount }))
+  return message.channel.createMessage(language(`moderation/move:SUCCESS`))
 })

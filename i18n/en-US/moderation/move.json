@@ -1,11 +1,11 @@
 {
   "DESCRIPTION": "Moves members to the provided voice channel.",
   "EXTENDED": "**{{prefix}}move channelId @user @user** ~ Moves the users to the channel.",
-  "USAGE": "{{prefix}}ban [voiceChannelID] [@user] <@user> ...",
-  "ALIASES": "move has no aliases!",
+  "USAGE": "{{prefix}}move [voiceChannelID] [@user] <@user> ...",
+  "ALIASES": "Move has no aliases!",
   "NEED_MOVE_MEMBERS": "I need the `Move Members` Permission!",
   "MISSING_PERM": "You lack the `Move Members` Permission!",
   "NEED_CHANNEL": "You did not provide a channel to move to!",
   "NEED_MEMBERS": "You did not provide any members to move!",
-  "SUCCESS": "Successfully moved {{amount}} member(s)!"
+  "SUCCESS": "Successfully moved the member's you requested!"
 }
