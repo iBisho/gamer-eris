@@ -33,9 +33,6 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
   if (!userSettings) return
 
-  // if (userSettings.leveling.currency < amount)
-  //   return message.channel.createMessage(language('fun/slots:NOT_ENOUGH_CURRENCY', { mention: message.author.mention }))
-
   const emojis = []
 
   // This allows us to add as many emojis we want but the odds remain the same. More unique emojis help spam feel less spam and more users want to join gamer server to get access to those emojis.
