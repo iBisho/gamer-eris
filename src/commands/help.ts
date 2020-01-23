@@ -60,7 +60,7 @@ const categories = [
       `setcapture`,
       `setevents`,
       `setfeedback`,
-      `setverify`,
+      `sethibye`,
       `setlanguage`,
       `setlogs`,
       `setmail`,
@@ -71,6 +71,7 @@ const categories = [
       `setprofanity`,
       `setstaff`,
       `settenor`,
+      `setverify`,
       `setwhitelisted`,
       `viewprofanity`
     ]

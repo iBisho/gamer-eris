@@ -53,16 +53,23 @@ export default class extends Event {
     // Welcome Message
     if (guildSettings.hibye.welcome.message) {
       try {
+        const emojis = await Gamer.database.models.emoji.find()
         const isEmbed = guildSettings.hibye.welcome.message.startsWith('{')
-        const transformed = Gamer.helpers.transform.variables(guildSettings.hibye.welcome.message)
+        const transformed = Gamer.helpers.transform.variables(
+          guildSettings.hibye.welcome.message,
+          member.user,
+          member.guild,
+          member.user,
+          emojis
+        )
 
         const embed = isEmbed ? JSON.parse(transformed) : undefined
-
         if (guildSettings.hibye.welcome.dmEnabled) {
           const dmChannel = await member.user.getDMChannel()
           if (embed) await dmChannel.createMessage({ embed })
           else await dmChannel.createMessage(transformed)
-        } else if (!guildSettings.hibye.welcome.dmOnly && guildSettings.hibye.welcome.channelID) {
+        }
+        if (guildSettings.hibye.welcome.channelID) {
           const welcomeChannel = guild.channels.get(guildSettings.hibye.welcome.channelID)
           if (welcomeChannel && welcomeChannel instanceof TextChannel) {
             if (embed) welcomeChannel.createMessage({ embed })
@@ -92,23 +99,24 @@ export default class extends Event {
     if (logs.serverlogs.members.addPublicEnabled && logs.publiclogsChannelID) {
       const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
       if (publicLogChannel instanceof TextChannel) {
-        const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
-        if (
-          publicLogChannel &&
-          botPerms.has('embedLinks') &&
-          botPerms.has('readMessages') &&
-          botPerms.has('sendMessages')
-        )
-          publicLogChannel.createMessage({ embed: embed.code })
+        const hasPermission = Gamer.helpers.discord.checkPermissions(publicLogChannel, Gamer.user.id, [
+          `embedLinks`,
+          `readMessages`,
+          `sendMessages`
+        ])
+        if (hasPermission) publicLogChannel.createMessage({ embed: embed.code })
       }
     }
 
     // Send the finalized embed to the log channel
     const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)
     if (logChannel instanceof TextChannel) {
-      const botPerms = logChannel.permissionsOf(Gamer.user.id)
-      if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-        logChannel.createMessage({ embed: embed.code })
+      const hasPermission = Gamer.helpers.discord.checkPermissions(logChannel, Gamer.user.id, [
+        `embedLinks`,
+        `readMessages`,
+        `sendMessages`
+      ])
+      if (hasPermission) logChannel.createMessage({ embed: embed.code })
     }
   }
 }
