@@ -32,5 +32,9 @@ export default {
   poke: `<a:poke:669930972715810876>`,
   lmao: `<a:lmao:669930973118464050>`,
   tantrum: `<a:tantrum:669930973214933005>`,
-  furious: `<a:furious:669930973215064065>`
+  furious: `<a:furious:669930973215064065>`,
+  hurray: `<a:hurray:669934799900901437>`,
+  starry: `<a:starry:669934800139714581>`,
+  heartthrob: `<a:heartthrob:669934800739631146>`,
+  huh: `<a:huh:669934801335091240>`
 }
