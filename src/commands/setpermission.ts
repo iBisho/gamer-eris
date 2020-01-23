@@ -14,11 +14,7 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
   })
 
   // If the user is not an admin cancel out
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [commandName, type, ...targets] = args
   if (!commandName || !type) return helpCommand.process(message, [`setpermission`], context)

@@ -37,7 +37,7 @@ export default new Command([`eventdelete`, `ed`], async (message, args, context)
     event.adChannelID && event.adMessageID
       ? await Gamer.getMessage(event.adChannelID, event.adMessageID).catch(() => undefined)
       : undefined
-  if (eventMessage) eventMessage.delete()
+  if (eventMessage) eventMessage.delete().catch(() => undefined)
 
   // Delete the event itself from the database
   await Gamer.database.models.event.deleteOne({ _id: event._id })
