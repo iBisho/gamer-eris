@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Exclua um emoji global que você criou.",
+  "EXTENDED": "*{{prefix}}emojidelete [Name]** ~ Exclui um de seus emojis globais.",
+  "USAGE": "{{prefix}}emojicreate [Nome]",
+  "ALIASES": "{{prefix}}emd",
+  "NEED_NAME": "Você não forneceu nenhum nome. Não consigo excluir nenhum emoji se você não me informar o nome do emoji que deseja excluir.",
+  "DOESNT_EXIST": "o **{{name}}** emoji não existe no banco de dados global de emojis. Tem certeza de que está tentando excluir um emoji global válido?",
+  "DELETED": "O emoji ** {{name}} ** foi excluído."
+}

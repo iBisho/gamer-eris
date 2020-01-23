@@ -1,18 +1,17 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`tagcreate`, `tc`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID || !message.member) return
+
   const Gamer = context.client as GamerClient
 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
@@ -22,7 +21,7 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
 
   const tagName = name.toLowerCase()
 
-  const tagExists = await Gamer.database.models.tag.findOne({ guildID: message.channel.guild.id, name: tagName })
+  const tagExists = await Gamer.database.models.tag.findOne({ guildID: message.guildID, name: tagName })
   if (tagExists) return message.channel.createMessage(language(`tags/tagcreate:EXISTS`, { name }))
 
   // get type of embed
@@ -39,7 +38,7 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
     const transformed = Gamer.helpers.transform.variables(
       text.join(' '),
       message.author,
-      message.channel.guild,
+      message.member.guild,
       message.author,
       emojis
     )
@@ -52,7 +51,7 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
     message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })
     const payload = {
       embedCode: text.join(' '),
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       mailOnly: false,
       name: tagName,
       type: validType.name

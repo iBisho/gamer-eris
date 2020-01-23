@@ -1,0 +1,20 @@
+{
+  "DESCRIPTION": "Veja o placar do seu servidor ou o placar global.",
+  "EXTENDED": "O comando {{prefix}}leaderboard ser usado para exibir o placar do servidor.",
+  "USAGE": "{{prefix}}leaderboard *[Usuário | global | voice] [@Usario]*",
+  "ALIASES": "{{prefix}}lb",
+  "NO_POINTS": "{{member}} não tem XP no momento. O comando leaderboard exige que o membro tenha pelo menos 1 XP.",
+  "NOT_ENOUGH": "Não há membros suficientes no ranking para coletar dados suficientes no momento. Verifique novamente mais tarde.",
+  "RANK": "Classificação {{position}}",
+  "BEHIND": "{{amount}} EXP Atrás",
+  "AHEAD": "{{amount}} EXP Adiante",
+  "UNKNOWN": "Desconhecido",
+  "CURRENT_XP": "{{amount}} EXP",
+  "GLOBAL": "GLOBAL ENTRE OS MELHORES",
+  "VOICE": "VOZ ENTRE OS MELHORES",
+  "SERVER": "SERVIDOR ENTRE OS MELHORES",
+  "NAME": "Nome",
+  "LEVEL": "Nível",
+  "EXP": "EXP",
+  "PRIZE": "Prêmio"
+}

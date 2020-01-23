@@ -19,8 +19,7 @@ const gifs = [
 
 export default new Command(`kanna`, (message, _args, context) => {
   const Gamer = context.client as GamerClient
-  const language = Gamer.i18n.get('en-US')
-  if (!language) return null
+  const language = Gamer.getLanguage(message.guildID)
 
   const randomNum = Math.floor(Math.random() * gifs.length)
   const randomGif = gifs[randomNum]

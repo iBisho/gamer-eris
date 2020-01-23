@@ -1,4 +1,4 @@
-import { Message, User, PrivateChannel, TextChannel, GroupChannel } from 'eris'
+import { Message, User, TextChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import { GuildSettings } from '../types/settings'
 import { GamerModlog } from '../types/gamer'
@@ -22,9 +22,9 @@ export default class {
     reason: string,
     duration?: number
   ) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID || !message.member) return
 
-    const member = message.channel.guild.members.get(user.id)
+    const member = message.member.guild.members.get(user.id)
     if (member) {
       const memberSettings = await this.Gamer.database.models.member.findOne({
         memberID: user.id
@@ -54,13 +54,13 @@ export default class {
 
     // Generate a modlogid
     const modlogs = await this.Gamer.database.models.modlog.find({
-      guildID: message.channel.guild.id
+      guildID: message.guildID
     })
     const modlogID = this.createNewID(modlogs)
 
     const payload = await this.Gamer.database.models.modlog.create({
       action,
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       modID: message.author.id,
       modlogID,
       messageID: undefined,
@@ -179,7 +179,7 @@ export default class {
       const guild = this.Gamer.guilds.get(log.guildID)
       if (!guild) continue
 
-      const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
+      const language = this.Gamer.getLanguage(guild.id)
       if (!language) continue
 
       const member = guild.members.get(log.userID)

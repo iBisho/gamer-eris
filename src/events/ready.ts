@@ -48,11 +48,11 @@ export default class extends Event {
 
           const message =
             channel.messages.get(channel.lastMessageID) ||
-            (await channel.getMessage(channel.lastMessageID).catch(() => null))
+            (await channel.getMessage(channel.lastMessageID).catch(() => undefined))
           // If no message something is very wrong as the first json message should always be there to be safe just cancel
           if (!message) continue
 
-          const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
+          const language = Gamer.getLanguage(channel.guild.id)
           if (!language) continue
 
           // If the channel has gone inactive too long delete it so there is no spam empty unused channels
@@ -90,7 +90,7 @@ export default class extends Event {
         const guild = Gamer.guilds.get(guildSettings.id)
         if (!guild) continue
 
-        const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
+        const language = Gamer.getLanguage(guild.id)
         if (!language) continue
 
         // Get all members from the database as anyone with default settings dont need to be checked
@@ -129,7 +129,7 @@ export default class extends Event {
             events: Gamer.amplitude
               .splice(0, 10)
               // eslint-disable-next-line @typescript-eslint/camelcase
-              .map(data => ({ ...data, user_id: data.authorID, event_type: data.type }))
+              .map(data => ({ event_properties: data, user_id: data.authorID, event_type: data.type }))
           })
         })
       }
@@ -168,7 +168,7 @@ export default class extends Event {
 
         const randomCard = cards[Math.floor(Math.random() * cards.length)]
 
-        const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
+        const language = Gamer.getLanguage(guild.id)
         if (!language) continue
 
         setting.lastItemName = randomCard.name
@@ -229,7 +229,13 @@ export default class extends Event {
       if (settings.language !== `en-US`) Gamer.guildLanguages.set(settings.id, settings.language)
       if (settings.mails.supportChannelID)
         Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
+      if (settings.disableTenor) Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
     }
+
+    const customCommands = await Gamer.database.models.command.find()
+    customCommands.forEach(command => {
+      Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
+    })
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }

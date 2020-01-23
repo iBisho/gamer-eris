@@ -10,7 +10,7 @@ export default new Command([`mail`, `m`], async (message, args, context) => {
     return Gamer.helpers.mail.handleDM(message, content)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
   if (!guildSettings) return
 
@@ -26,15 +26,14 @@ export default new Command([`mail`, `m`], async (message, args, context) => {
 
   // Since the user is a mod/admin we have to do extra steps
   const mail = await Gamer.database.models.mail.findOne({
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     id: message.channel.id
   })
 
   // If this is not a valid mail channel, treat it as if a mod is sending their own mail command
   if (!mail) return Gamer.helpers.mail.handleSupportChannel(message, content, guildSettings)
   // If the first word is `close` then we need to close the mail
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
   const CLOSE_OPTIONS = language(`mails/mail:CLOSE_OPTIONS`, { returnObjects: true })
   const [closeMail] = args
@@ -43,5 +42,5 @@ export default new Command([`mail`, `m`], async (message, args, context) => {
     return Gamer.helpers.mail.close(message, args.join(' '), guildSettings, mail)
   }
   // This allows mods to reply to mails
-  return Gamer.helpers.mail.replyToMail(message, content, guildSettings, mail)
+  return Gamer.helpers.mail.replyToMail(message, content, mail)
 })

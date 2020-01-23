@@ -2,21 +2,16 @@ import { Command } from 'yuuko'
 import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`wisdom`, async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
-
   const Gamer = context.client as GamerClient
-  const language = Gamer.i18n.get('en-US')
+  const language = Gamer.getLanguage(message.guildID)
 
-  if (!language) return
-
-  const data: Wisdom | null = await fetch(`https://favqs.com/api/qotd`)
+  const data: Wisdom | undefined = await fetch(`https://favqs.com/api/qotd`)
     .then(res => res.json())
-    .catch(() => null)
+    .catch(() => undefined)
 
-  if (!data) return message.channel.createMessage(language(`fun/advice:ERROR`))
+  if (!data || !data.quote.body) return message.channel.createMessage(language(`fun/advice:ERROR`))
 
   const embed = new GamerEmbed()
     .setDescription(data.quote.body)
@@ -26,7 +21,8 @@ export default new Command(`wisdom`, async (message, _args, context) => {
     )
 
   message.channel.createMessage({ embed: embed.code })
-  return Gamer.helpers.levels.completeMission(message.member, `wisdom`, message.channel.guild.id)
+  if (message.member && message.guildID)
+    return Gamer.helpers.levels.completeMission(message.member, `wisdom`, message.guildID)
 })
 
 export interface Wisdom {

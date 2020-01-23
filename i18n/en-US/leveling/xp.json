@@ -7,6 +7,8 @@
   "ALIASES": "XP has no aliases.",
   "ADDED": "{{mention}} has been given {{amount}} XP.",
   "REMOVED": "{{mention}} has lost {{amount}} XP.",
+  "ADDED_ALL": "Successfully added {{amount}} XP to all members with the {{rolename}} role.",
+  "REMOVED_ALL": "All members that have the {{rolename}} have lost {{amount}} XP.",
   "ROLE_REMOVE_REASON": "Level rewards removed.",
   "ROLE_ADD_REASON": "Level rewards added."
 }

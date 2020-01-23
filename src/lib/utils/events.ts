@@ -1,4 +1,4 @@
-import { Message, PrivateChannel, TextChannel, GroupChannel } from 'eris'
+import { Message, TextChannel } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerEvent } from '../types/gamer'
@@ -19,23 +19,23 @@ export default class {
   }
 
   async createNewEvent(message: Message, templateName = ``, guildSettings: GuildSettings | null) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID) return
 
-    const events = await this.Gamer.database.models.event.find({ guildID: message.channel.guild.id })
+    const events = await this.Gamer.database.models.event.find({ guildID: message.guildID })
 
     const template = templateName
       ? events.find(event => event.templateName && event.templateName === templateName)
       : undefined
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(message.guildID)
 
-    const startNow = (template?.minutesFromNow || 60) * 60000 + Date.now()
+    // 1440 minutes in a day
+    const startNow = (template?.minutesFromNow || 1440) * 60000 + Date.now()
 
     const newEvent = {
       id: this.createNewID(events),
       authorID: message.author.id,
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       // now + X minutes
       start: startNow,
       end: startNow + (template ? template.duration : 3600000),
@@ -73,7 +73,7 @@ export default class {
     this.Gamer.amplitude.push({
       authorID: message.author.id,
       channelID: message.channel.id,
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       messageID: message.id,
       timestamp: message.timestamp,
       type: 'EVENT_CREATED'
@@ -145,7 +145,7 @@ export default class {
       event.adChannelID = adChannel.id
       event.adMessageID = card.id
       event.save()
-      for (const emoji of eventCardReactions) await card.addReaction(emoji).catch(() => null)
+      for (const emoji of eventCardReactions) await card.addReaction(emoji).catch(() => undefined)
     }
   }
 
@@ -359,7 +359,7 @@ export default class {
       if (event.templateName) continue
       if (event.end < now) eventsToEnd.push(event)
       else if (event.start < now && !event.hasStarted && event.end > now) eventsToStart.push(event)
-      else if (event.start > now && !event.hasStarted && event.attendees.length) eventsToRemind.push(event)
+      else if (event.start > now && !event.hasStarted) eventsToRemind.push(event)
     }
 
     for (const event of eventsToEnd) this.endEvent(event)
@@ -413,8 +413,7 @@ export default class {
     const guild = this.Gamer.guilds.get(event.guildID)
     if (!guild) return
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(event.guildID)
 
     const embed = new GamerEmbed()
       .setAuthor(language(`events/events:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
@@ -438,6 +437,18 @@ export default class {
 
     event.hasStarted = true
     event.save()
+
+    const adChannel = event.adChannelID ? guild.channels.get(event.adChannelID) : undefined
+    if (!adChannel || !(adChannel instanceof TextChannel)) return
+
+    const botPerms = adChannel.permissionsOf(this.Gamer.user.id)
+
+    if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
+
+    adChannel.createMessage({
+      content: event.alertRoleIDs.map((id: string) => `<@&${id}>`).join(` `),
+      embed: embed.code
+    })
   }
 
   async remindEvent(event: GamerEvent) {
@@ -453,8 +464,7 @@ export default class {
     event.executedReminders.push(reminder)
     event.save()
 
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(guild.id)
 
     const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(event.start - now)
 

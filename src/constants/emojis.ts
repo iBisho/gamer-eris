@@ -1,6 +1,8 @@
 export default {
+  angryping: `<a:angeryping:664865672630763551>`,
   coin: `<:g4m3rwhite:443416083874054145>`,
   currency: `<:gg:601135376765157416>`,
+  dab: `<a:dab:664857622343843870>`,
   denials: `<:event_denials:473797674701815808>`,
   discord: `<:discord:494050000779608064>`,
   flashlight: `🔦`,
@@ -19,6 +21,9 @@ export default {
   questionMark: `<:huh:638772219945943080>`,
   redX: `<:red_tick:448082952824422400>`,
   repeat: `<:repeaty:647528274020401162>`,
+  slam: `<a:slam:664865672454471718>`,
+  snap: `<a:snap:664859216506519562>`,
+  success: `<a:success:664865672559591439>`,
   sunglasses: `🕶`,
   thinking: `<:g4m3rthinking:510742679542431764>`,
   usb: `<:usb:494050000741990400>`

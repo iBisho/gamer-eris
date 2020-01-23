@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Registra seu servidor como um servidor VIP.",
+  "EXTENDED": "$t(vip/vipregister:EXTENDED_LINE_1)\n$t(vip/vipregister:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "Este comando só pode ser usado se você estiver Server Boosting the Gamer Support Server. Para obter um convite para o servidor, digite **{{prefix}}invite**",
+  "EXTENDED_LINE_2": "**{{prefix}}vipregister** ~ Usa seu status de aumento para tornar este servidor um servidor VIP.",
+  "USAGE": "{{prefix}}vipregister",
+  "ALIASES": "{{prefix}}vipr",
+  "MISSING_BOOST_ROLE": "Para registrar um servidor como servidor VIP, você deve estar aumentando o servidor de suporte do Gamer. Por favor, use o comando **invite** para ingressar no servidor.",
+  "ALREADY_VIP": "Este servidor já foi registrado como VIP! 🎉",
+  "REGISTERED_VIP": "Server Este servidor foi registrado como VIP! 🎉 Você pode usar todos os recursos VIP neste servidor agora! 🎉"
+}

@@ -2,7 +2,7 @@ import { Client, ClientOptions } from 'yuuko'
 import i18n from '../../i18next'
 import { TFunction } from 'i18next'
 import * as glob from 'glob'
-import { PrivateChannel, Message, GroupChannel } from 'eris'
+import { PrivateChannel, Message } from 'eris'
 import { Collector, Mission, GamerTag } from '../types/gamer'
 import * as fs from 'fs'
 import { join } from 'path'
@@ -23,11 +23,13 @@ import MailHelper from '../utils/mail'
 import ModerationHelper from '../utils/moderation'
 import ScriptsHelper from '../utils/scripts'
 import TransformHelper from '../utils/transform'
+import TenorHelper from '../utils/tenor'
 import UtilsHelper from '../utils/utils'
 
 import constants from '../../constants'
 import { AmplitudeEvent } from '../types/amplitude'
 import Gamer from '../..'
+import { GamerCommandPermission } from '../../database/schemas/command'
 
 const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
 const assetsFolder = join(rootFolder, `assets`)
@@ -106,6 +108,7 @@ export default class GamerClient extends Client {
     profiles: new ProfileHelper(this),
     scripts: new ScriptsHelper(this),
     transform: new TransformHelper(this),
+    tenor: new TenorHelper(this),
     utils: new UtilsHelper(this)
   }
 
@@ -130,6 +133,10 @@ export default class GamerClient extends Client {
   guildLanguages: Map<string, string> = new Map()
   // The guild support channel ids. This is needed on every single message sent so we cache it
   guildSupportChannelIDs: Map<string, string> = new Map()
+  /** This stores the guilds that have disabled Tenor Gifs */
+  guildsDisableTenor: Map<string, boolean> = new Map()
+  /** This stores the custom command permissions for guilds */
+  guildCommandPermissions: Map<string, GamerCommandPermission> = new Map()
 
   constructor(options: ClientOptions) {
     super(options)
@@ -138,7 +145,6 @@ export default class GamerClient extends Client {
   }
 
   async runMonitors(message: Message) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
     for (const monitor of Gamer.monitors.values()) {
       if (monitor.ignoreBots && message.author.bot) continue
       if (monitor.ignoreDM && message.channel instanceof PrivateChannel) continue
@@ -188,5 +194,12 @@ export default class GamerClient extends Client {
     this.addDirectory(dirname)
 
     return this
+  }
+
+  getLanguage(guildID?: string) {
+    const guildLanguage = guildID ? this.guildLanguages.get(guildID) : undefined
+    const language = guildLanguage ? this.i18n.get(guildLanguage) : undefined
+    const english = this.i18n.get('en-US') as TFunction
+    return language || english
   }
 }

@@ -1,21 +1,19 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command(`embed`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID || !message.member) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
   if (!args.length) return helpCommand.process(message, [`embed`], context)
 
-  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   // If the user does not have a modrole or admin role quit out
   if (
@@ -33,7 +31,7 @@ export default new Command(`embed`, async (message, args, context) => {
   const transformed = Gamer.helpers.transform.variables(
     args.join(' '),
     user,
-    message.channel.guild,
+    message.member.guild,
     message.author,
     emojis
   )

@@ -1,4 +1,4 @@
-import { Message, AnyGuildChannel, Member, Role } from 'eris'
+import { Message, Member, Role, TextableChannel, PrivateChannel, GroupChannel } from 'eris'
 import config from '../../../config'
 import constants from '../../constants'
 import GamerEmbed from '../structures/GamerEmbed'
@@ -70,8 +70,10 @@ export default class {
     }
   }
 
-  checkPermissions(channel: AnyGuildChannel, userID: string, permissions: string[]) {
-    return !permissions.some(permission => !channel.permissionsOf(userID).has(permission))
+  checkPermissions(channel: TextableChannel, userID: string, permissions: string[]) {
+    if (channel instanceof PrivateChannel || channel instanceof GroupChannel) return false
+    const perms = channel.permissionsOf(userID)
+    return !permissions.some(permission => !perms.has(permission))
   }
 
   idsToUserTag(ids: string[]) {

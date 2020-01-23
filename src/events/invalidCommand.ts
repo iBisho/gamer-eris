@@ -1,15 +1,15 @@
 // Logs that a command run (even if it was inhibited)
-import { Message, PrivateChannel, GroupChannel } from 'eris'
+import { Message, GuildTextableChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import { CommandContext } from 'yuuko'
 import Gamer from '..'
 
 export default class extends Event {
   async execute(message: Message, args: string[], context: CommandContext) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID) return
 
     const shortcut = await Gamer.database.models.shortcut.findOne({
-      guildID: message.channel.guild.id,
+      guildID: message.guildID,
       name: context.commandName
     })
     if (!shortcut) return
@@ -30,8 +30,12 @@ export default class extends Event {
       await Gamer.helpers.utils.sleep(2)
     }
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language || !shortcut.deleteTrigger || !message.channel.permissionsOf(Gamer.user.id).has('manageMessages'))
+    const language = Gamer.getLanguage(message.guildID)
+    if (
+      !language ||
+      !shortcut.deleteTrigger ||
+      !(message.channel as GuildTextableChannel).permissionsOf(Gamer.user.id).has('manageMessages')
+    )
       return
 
     message.delete(language(`shortcuts/shortcutcreate:DELETE_TRIGGER_REASON`))

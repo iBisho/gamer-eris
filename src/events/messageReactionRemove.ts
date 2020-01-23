@@ -42,13 +42,11 @@ export default class extends Event {
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (!message.author.bot || message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
-      return
+    if (!message.author.bot || !message.member) return
     const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
     if (!event) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.member.guild.id)
 
     const joinEmojiID = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `id`)
 
@@ -62,15 +60,12 @@ export default class extends Event {
   }
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.member) return
 
-    const guild = Gamer.guilds.get(message.channel.guild.id)
-    if (!guild) return
-
-    const member = guild.members.get(userID)
+    const member = message.member.guild.members.get(userID)
     if (!member) return
 
-    const botMember = guild.members.get(Gamer.user.id)
+    const botMember = message.member.guild.members.get(Gamer.user.id)
     if (!botMember || !botMember.permission.has(`manageRoles`)) return
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
@@ -86,7 +81,7 @@ export default class extends Event {
     if (!relevantReaction || !relevantReaction.roleIDs.length) return
 
     for (const roleID of relevantReaction.roleIDs) {
-      const role = guild.roles.get(roleID)
+      const role = message.member.guild.roles.get(roleID)
       if (!role || role.position > botsHighestRole.position) continue
 
       if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
@@ -95,7 +90,7 @@ export default class extends Event {
   }
 
   async handleFeedbackReaction(message: Message, emoji: ReactionEmoji, userID: string) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.member) return
 
     const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
@@ -105,7 +100,7 @@ export default class extends Event {
     const feedback = await Gamer.database.models.feedback.findOne({ id: message.id })
     if (!feedback) return
     // Fetch the guild settings for this guild
-    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
     if (!guildSettings) return
 
     // Check if valid feedback channel
@@ -119,10 +114,10 @@ export default class extends Event {
 
     if (!feedbackReactions.includes(fullEmojiName)) return
 
-    const reactorMember = message.channel.guild.members.get(userID)
+    const reactorMember = message.member.guild.members.get(userID)
     if (!reactorMember) return
 
-    const feedbackMember = message.channel.guild.members.get(feedback.authorID)
+    const feedbackMember = message.member.guild.members.get(feedback.authorID)
 
     // If the user is no longer in the server we dont need to grant any xp
     if (!feedbackMember) return

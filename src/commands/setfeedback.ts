@@ -1,21 +1,18 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`setfeedback`, async (message, args, context) => {
+  if (!message.guildID || !message.member) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
-
+  const language = Gamer.getLanguage(message.guildID)
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
   const guildSettings =
     (await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
-    })) || (await Gamer.database.models.guild.create({ id: message.channel.guild.id }))
+      id: message.guildID
+    })) || (await Gamer.database.models.guild.create({ id: message.guildID }))
 
   // If the user is not an admin cancel out
   if (
@@ -34,7 +31,7 @@ export default new Command(`setfeedback`, async (message, args, context) => {
     // Create the feedback system if the user types setup
     case 'setup':
       message.channel.createMessage(language(`settings/setfeedback:PATIENCE`))
-      await Gamer.helpers.scripts.createFeedbackSystem(message.channel.guild, guildSettings)
+      await Gamer.helpers.scripts.createFeedbackSystem(message.member.guild, guildSettings)
       return message.channel.createMessage(language(`settings/setfeedback:SETUP`, { mention: message.author.mention }))
     case 'logchannel':
       if (!message.channelMentions || !message.channelMentions.length)

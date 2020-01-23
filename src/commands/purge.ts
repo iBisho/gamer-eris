@@ -1,23 +1,23 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import { milliseconds } from '../lib/types/enums/time'
+import { GuildTextableChannel } from 'eris'
 
 export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = message.channel.guild.members.get(Gamer.user.id)
+  const botMember = message.member.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
+  const channel = message.channel as GuildTextableChannel
   // Check if the bot has the kick permissions
-  if (!message.channel.permissionsOf(Gamer.user.id).has('manageMessages'))
+  if (!channel.permissionsOf(Gamer.user.id).has('manageMessages'))
     return message.channel.createMessage(language(`moderation/kick:NEED_MANAGE_MESSAGE`))
 
-  if (!message.channel.permissionsOf(message.member.id).has('manageMessages'))
+  if (!channel.permissionsOf(message.member.id).has('manageMessages'))
     return message.channel.createMessage(language(`moderation/purge:MISSING_PERM`))
 
   const [number, filter] = args
@@ -44,7 +44,7 @@ export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args
 
   const messagesToDelete = filteredMessages.splice(0, amount + 1)
 
-  message.channel.deleteMessages(messagesToDelete.map(m => m.id))
+  channel.deleteMessages(messagesToDelete.map(m => m.id))
 
   const response = await message.channel.createMessage(
     language(`moderation/purge:RESPONSE`, { amount: messagesToDelete.length - 1 })

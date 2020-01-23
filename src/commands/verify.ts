@@ -46,14 +46,13 @@ const createCaptcha = async (message: Message) => {
 }
 
 export default new Command(`verify`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.member) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
   // If no custom settings verification won't be enabled
   if (!guildSettings) return message.channel.createMessage(language(`basic/verify:DISABLED`))
@@ -68,9 +67,7 @@ export default new Command(`verify`, async (message, args, context) => {
           .createMessage(language(`basic/verify:INVALID_CHANNEL`))
           .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
       // Make sure the role exists
-      const role = guildSettings.verify.roleID
-        ? message.channel.guild.roles.get(guildSettings.verify.roleID)
-        : undefined
+      const role = guildSettings.verify.roleID ? message.member.guild.roles.get(guildSettings.verify.roleID) : undefined
       if (!guildSettings.verify.roleID || !role)
         return message.channel
           .createMessage(language(`basic/verify:NO_ROLE`))
@@ -149,7 +146,7 @@ export default new Command(`verify`, async (message, args, context) => {
       // Make a channels name from the users name and removes any invalid characters since discord doesnt support all characters in channel names.
       const channelName = Gamer.helpers.discord.userToChannelName(message.author.username, message.author.discriminator)
       // Check if another channels with that name exists in the verify channels category
-      const channelExists = message.channel.guild.channels.find(
+      const channelExists = message.member.guild.channels.find(
         channel => channel.name === channelName.toLowerCase() && channel.parentID === guildSettings.verify.categoryID
       )
 
@@ -168,7 +165,7 @@ export default new Command(`verify`, async (message, args, context) => {
       }
 
       const categoryChannel = guildSettings.verify.categoryID
-        ? message.channel.guild.channels.get(guildSettings.verify.categoryID)
+        ? message.member.guild.channels.get(guildSettings.verify.categoryID)
         : undefined
       if (!categoryChannel || !(categoryChannel instanceof CategoryChannel))
         return message.channel
@@ -180,7 +177,7 @@ export default new Command(`verify`, async (message, args, context) => {
           .createMessage(language(`basic/verify:MAXED`))
           .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
 
-      const newChannel = await message.channel.guild.createChannel(channelName, 0, {
+      const newChannel = await message.member.guild.createChannel(channelName, 0, {
         reason: language(`basic/verify:VERIFY_CHANNEL`),
         parentID: categoryChannel.id
       })
@@ -191,7 +188,7 @@ export default new Command(`verify`, async (message, args, context) => {
       const transformed = Gamer.helpers.transform.variables(
         guildSettings.verify.firstMessageJSON,
         message.author,
-        message.channel.guild,
+        message.member.guild,
         message.author,
         emojis
       )
@@ -200,7 +197,7 @@ export default new Command(`verify`, async (message, args, context) => {
       guildSettings.save()
 
       // Delete the command trigger if possible
-      const bot = message.channel.guild.members.get(Gamer.user.id)
+      const bot = message.member.guild.members.get(Gamer.user.id)
       if (bot && bot.permission.has(`manageMessages`)) {
         message.delete(language(`basic/verify:TRIGGER_DELETE`))
       }

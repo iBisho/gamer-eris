@@ -1,7 +1,6 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 const allAdvice = [
   `**Take time to know yourself.** "Know thyself" said Aristotle. When you know who you are, you can be wise about your goals, your dreams, your standards, your convictions. Knowing who you are allows you to live your life with purpose and meaning.`,
@@ -35,11 +34,12 @@ const allAdvice = [
 ]
 
 export default new Command([`advice`, `ad`], async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
 
-  const advice = allAdvice[Math.floor(Math.random() * (allAdvice.length - 1))]
+  const advice = Gamer.helpers.utils.chooseRandom(allAdvice)
+
   const [user] = message.mentions
   const embed = new GamerEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
@@ -47,5 +47,5 @@ export default new Command([`advice`, `ad`], async (message, _args, context) => 
 
   message.channel.createMessage({ embed: embed.code })
 
-  return Gamer.helpers.levels.completeMission(message.member, `advice`, message.channel.guild.id)
+  if (message.member) Gamer.helpers.levels.completeMission(message.member, `advice`, message.guildID)
 })

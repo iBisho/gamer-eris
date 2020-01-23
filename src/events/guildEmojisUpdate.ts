@@ -9,8 +9,7 @@ export default class extends Event {
     if (emojis.length === oldEmojis.length) return
 
     const Gamer = guild.shard.client as GamerClient
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(guild.id)
 
     const emojiCreated = emojis.length > oldEmojis.length
     // Find the emoji that was created/deleted

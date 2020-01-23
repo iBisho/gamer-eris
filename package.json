@@ -6,6 +6,7 @@
   "scripts": {
     "test": "tsc --noEmit && eslint '*/**/*.ts'",
     "lint": "tsc --noEmit && eslint '*/**/*.ts' --quiet --fix",
+    "lintfix": "eslint '*/**/*.ts' --quiet --fix",
     "start": "node production/src/index",
     "build": "tsc",
     "build:watch": "tsc --watch --preserveWatchOutput",
@@ -29,45 +30,32 @@
     "chalk": "^3.0.0",
     "confusables": "^0.3.3",
     "discord.js-minesweeper": "^1.0.5",
-    "eris": "github:caf203/eris#dev",
+    "eris": "github:caf203/eris#new-dev",
     "fastify": "^2.11.0",
     "fastify-helmet": "^3.0.2",
     "get-urls": "^9.2.0",
-    "i18next": "^19.0.2",
+    "i18next": "^19.0.3",
     "i18next-node-fs-backend": "^2.1.3",
-    "mongoose": "^5.8.3",
+    "mongoose": "^5.8.6",
     "node-fetch": "^2.6.0",
     "pino-pretty": "^3.5.0",
     "typescript": "^3.7.4",
     "yuuko": "github:Skillz4Killz/yuuko#master"
   },
   "devDependencies": {
+    "@types/glob": "^7.1.1",
     "@types/i18next-node-fs-backend": "^2.1.0",
-    "@types/mongoose": "^5.5.36",
-    "@types/node": "^12.12.21",
+    "@types/mongoose": "^5.5.41",
+    "@types/node": "^12.12.24",
     "@types/node-fetch": "^2.5.4",
-    "@typescript-eslint/eslint-plugin": "^2.14.0",
-    "@typescript-eslint/parser": "^2.14.0",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
     "concurrently": "^5.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^3.1.0",
-    "lint-staged": "^9.5.0",
     "nodemon": "^2.0.2",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsc --noEmit && lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ]
   }
 }

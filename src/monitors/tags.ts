@@ -1,11 +1,11 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel, GroupChannel } from 'eris'
+import { Message } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GamerTag } from '../lib/types/gamer'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID || !message.member) return
 
     const hasPermissions = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
       `sendMessages`,
@@ -34,7 +34,7 @@ export default class extends Monitor {
     if (!validTags.length) return
 
     const guildSettings = await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
+      id: message.guildID
     })
 
     const disabledChannels = guildSettings ? guildSettings.tags.disabledChannels : []
@@ -46,7 +46,7 @@ export default class extends Monitor {
 
     for (const tag of validTags) {
       // This tag is a module tag so check if the module is enabled
-      if (tag.guildID !== message.channel.guild.id) {
+      if (tag.guildID !== message.guildID) {
         // This servers tags were not installed so skip
         if (!enabledModules.includes(tag.guildID)) continue
         // Make sure this tag was made as a public tag by the original server
@@ -60,7 +60,7 @@ export default class extends Monitor {
       const transformed = Gamer.helpers.transform.variables(
         tag.embedCode,
         message.author,
-        message.channel.guild,
+        message.member.guild,
         message.author,
         emojis
       )

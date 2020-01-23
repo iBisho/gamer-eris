@@ -1,20 +1,18 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, TextChannel, GroupChannel } from 'eris'
+import { TextChannel } from 'eris'
 
 export default new Command(`export`, async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
   // If they are using default settings, they won't be vip server
@@ -27,7 +25,7 @@ export default new Command(`export`, async (message, args, context) => {
   if (!messageID) return helpCommand.process(message, [`export`], context)
 
   const channel = message.channelMentions.length
-    ? message.channel.guild.channels.get(message.channelMentions[0]) || message.channel
+    ? message.member.guild.channels.get(message.channelMentions[0]) || message.channel
     : message.channel
 
   if (

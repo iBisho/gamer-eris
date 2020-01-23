@@ -29,8 +29,7 @@ export default class extends Event {
     }
 
     // Server logs feature
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(channel.guild.id)
 
     const guildSettings = await Gamer.database.models.guild.findOne({ id: channel.guild.id })
 

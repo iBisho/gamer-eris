@@ -1,20 +1,19 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`rolesetremove`, `rsr`], async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.member) return
 
+  const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
+
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
@@ -25,14 +24,14 @@ export default new Command([`rolesetremove`, `rsr`], async (message, args, conte
   const roleIDs: string[] = [...message.roleMentions]
   for (const roleIDOrName of roleIDsOrNames) {
     const role =
-      message.channel.guild.roles.get(roleIDOrName) ||
-      message.channel.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
+      message.member.guild.roles.get(roleIDOrName) ||
+      message.member.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
     if (!role) continue
     roleIDs.push(role.id)
   }
 
   const roleset = await Gamer.database.models.roleset.findOne({
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     name: name.toLowerCase()
   })
 

@@ -7,8 +7,8 @@ import { modlogTypes } from '../lib/types/enums/moderation'
 export default class extends Event {
   async execute(guild: Guild, user: User) {
     const Gamer = guild.shard.client as GamerClient
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(guild.id)
+
     const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
     // If there is no channel set for logging this cancel
     if (!guildSettings?.moderation.logs.serverlogs.members.channelID) return

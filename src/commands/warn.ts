@@ -1,24 +1,22 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command([`warn`, `w`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = message.channel.guild.members.get(Gamer.user.id)
+  const botMember = message.member.guild.members.get(Gamer.user.id)
   if (!botMember) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.channel.guild.id
+    id: message.guildID
   })
 
   if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings ? guildSettings.staff.modRoleIDs : []) &&
+    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
     !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
   )
     return
@@ -30,7 +28,7 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   const reason = text.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/warn:NEED_REASON`))
 
-  const member = message.channel.guild.members.get(user.id)
+  const member = message.member.guild.members.get(user.id)
   if (!member) return
 
   // Checks if the bot is higher than the user
@@ -41,14 +39,14 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
     return message.channel.createMessage(language(`moderation/warn:USER_TOO_LOW`))
 
   const embed = new GamerEmbed()
-    .setDescription(language(`moderation/warn:TITLE`, { guildName: message.channel.guild.name, user: user.username }))
+    .setDescription(language(`moderation/warn:TITLE`, { guildName: message.member.guild.name, user: user.username }))
     .setThumbnail(user.avatarURL)
     .setTimestamp()
     .addField(language(`common:REASON`), reason)
 
   // Send the user a message. AWAIT to make sure message is sent before they are banned and lose access
-  const dmChannel = await user.getDMChannel().catch(() => null)
-  if (dmChannel) dmChannel.createMessage({ embed: embed.code }).catch(() => null)
+  const dmChannel = await user.getDMChannel().catch(() => undefined)
+  if (dmChannel) dmChannel.createMessage({ embed: embed.code }).catch(() => undefined)
 
   const modlogID = await Gamer.helpers.moderation.createModlog(message, guildSettings, language, user, `warn`, reason)
 

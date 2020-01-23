@@ -1,13 +1,13 @@
 {
   "ADVICE": "Compartilhe 10 conselhos com outras pessoas usando o comando advice.",
-  "AFK": "Vá para o AFK 3 vezes com o comando AFK.",
+  "AFK": "Vá para o AFK 3 vezes. Comando AFK.",
   "BACKGROUND": "Use o comando background 5 vezes.",
   "BAKA": "Use o comando .baka em 5 pessoas",
   "BUGS": "Enviar um relatório de bug.",
   "COMPLIMENT": "Elogie 5 pessoas. Comando .compliment",
   "HUG": "Abrace 5 pessoas. Comando .hug",
   "IDEA": "Envie uma ideia de feedback.",
-  "PROFILE": "Veja o perfil de 5 pessoas com o comando .profile",
+  "PROFILE": "Veja o perfil de 5 pessoas. Comando .profile",
   "ROLE": "Dê qualquer cargo para si mesmo 3 vezes.",
   "USER": "Use o comando .user 5 vezes para verificar as informações de outras pessoas.",
   "WISDOM": "Compartilhe 10 frases de sabedoria com outros. Comando .wisdom.",
@@ -16,9 +16,12 @@
   "AVATAR": "Puxe seu avatar.",
   "CUDDLE": "Abrace alguém 3 vezes.",
   "KISS": "Beije 5 pessoas.",
-  "POKE": "Cutuque 5 pessoas com o comando poke.",
+  "POKE": "Cutuque 5 pessoas. Comando poke.",
   "TICKLE": "Faça cócegas em 5 pessoas.",
   "PONY": "Use o comando .pony 5 vezes.",
   "8BALL": "Use o comando .8ball 5 vezes.",
-  "GUILDADDED": "Adicione Gamer ao seu servidor. Comando .invite"
+  "GUILDADDED": "Adicione Gamer ao seu servidor. Comando .invite",
+  "MINES": "Jogue um jogo de Campo Minado. Comando .minesweeper",
+  "LMAO": "Compartilhe uma risada com outras pessoas. Comando .laugh.",
+  "SLOTS": "Jogue um jogo de slots para ganhar moedas. Comando .slots."
 }

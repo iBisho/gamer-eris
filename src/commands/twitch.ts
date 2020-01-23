@@ -1,21 +1,16 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`twitch`, async (message, args, context) => {
+  if (!message.guildID) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
-  const guildID = message.channel.guild.id
-
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(guildID) || `en-US`)
-  if (!language) return
-
+  const language = Gamer.getLanguage(message.guildID)
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: guildID
+    id: message.guildID
   })
 
   // If the user is not an admin/mod cancel out
@@ -34,7 +29,7 @@ export default new Command(`twitch`, async (message, args, context) => {
     let response = ``
     for (const sub of twitchSubs) {
       if (response.length === 2000) break
-      const listener = sub.subs.find(s => s.guildID === guildID)
+      const listener = sub.subs.find(s => s.guildID === message.guildID)
       if (!listener) continue
 
       const text = `${sub.username} <#${listener.channelID}>\n`
@@ -57,7 +52,7 @@ export default new Command(`twitch`, async (message, args, context) => {
   const game = gameName.join(' ')
   const subPayload = {
     game: game?.toLowerCase() ?? null,
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     channelID: message.channel.id
   }
 

@@ -1,10 +1,9 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import constants from '../constants'
 
 export default new Command([`vipregister`, `vipr`], async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
 
@@ -14,8 +13,7 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
   const gamerMember = gamerGuild.members.get(message.author.id)
   if (!gamerMember) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
   // User is not a server booster trying to use a vip only command
   if (!gamerMember.roles.includes(constants.general.nitroBoosterRoleID))
@@ -30,8 +28,8 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
     }))
 
   const guildSettings =
-    (await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })) ||
-    (await Gamer.database.models.guild.create({ id: message.channel.guild.id }))
+    (await Gamer.database.models.guild.findOne({ id: message.guildID })) ||
+    (await Gamer.database.models.guild.create({ id: message.guildID }))
 
   // They have already registered a VIP server.
   if (guildSettings.vip.isVIP) return message.channel.createMessage(language(`vip/vipregister:ALREADY_VIP`))
@@ -41,7 +39,7 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
   guildSettings.vip.userID = message.author.id
   guildSettings.save()
 
-  userSettings.vip.guildsRegistered.push(message.channel.guild.id)
+  userSettings.vip.guildsRegistered.push(message.guildID)
   userSettings.vip.isVIP = true
   userSettings.save()
 

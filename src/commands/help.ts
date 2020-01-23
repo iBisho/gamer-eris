@@ -1,6 +1,5 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import Constants from '../constants/index'
 
@@ -15,15 +14,21 @@ const categories = [
       `coinflip`,
       `compliment`,
       `cuddle`,
+      `divorce`,
       `gif`,
+      `hug`,
       `kanna`,
       `kiss`,
       `kitten`,
+      `lmao`,
+      `marry`,
       `pat`,
       `poke`,
       `pony`,
       `puppy`,
+      `shopwedding`,
       `slap`,
+      `slots`,
       `supernatural`,
       `tickle`,
       `advice`,
@@ -51,20 +56,24 @@ const categories = [
     name: `settings`,
     commands: [
       `afk`,
-      `setverify`,
-      `setfeedback`,
-      `setprofanity`,
       `setcapital`,
-      `setwhitelisted`,
-      `setmodlogs`,
-      `setstaff`,
-      `setlanguage`,
-      `setprefix`,
-      `setmail`,
       `setcapture`,
+      `setevents`,
+      `setfeedback`,
+      `sethibye`,
+      `setlanguage`,
       `setlogs`,
+      `setmail`,
+      `setmodlogs`,
       `setmute`,
-      `setevents`
+      `setpermission`,
+      `setprefix`,
+      `setprofanity`,
+      `setstaff`,
+      `settenor`,
+      `setverify`,
+      `setwhitelisted`,
+      `viewprofanity`
     ]
   },
   { name: `utility`, commands: [`imgur`, `quote`] },
@@ -81,6 +90,7 @@ const categories = [
       `reactionroledelete`,
       `reactionroleadd`,
       `reactionroleremove`,
+      `reactionroles`,
       `rolesetcreate`,
       `rolesetdelete`,
       `rolesetadd`,
@@ -120,14 +130,12 @@ const categories = [
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {
   // Gamers goal is to increase activity in a server not in a DM.
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
-    return message.channel.createMessage(`Please use this command in a server. Thank you!`)
+  if (!message.guildID) return message.channel.createMessage(`Please use this command in a server. Thank you!`)
 
   const Gamer = context.client as GamerClient
-  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || 'en-US')
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
   const prefix = settings?.prefix || Gamer.prefix
   const FEATURES = language(`basic/help:FEATURES`, { prefix })

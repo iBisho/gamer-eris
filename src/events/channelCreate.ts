@@ -10,8 +10,7 @@ export default class extends Event {
     if (channel instanceof PrivateChannel) return
 
     const Gamer = channel.guild.shard.client as GamerClient
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(channel.guild.id)
 
     const guildSettings = await Gamer.database.models.guild.findOne({ id: channel.guild.id })
     if (!guildSettings) return
@@ -34,19 +33,25 @@ export default class extends Event {
     settings: GuildSettings,
     language: TFunction
   ) {
+    const botPerms = channel.permissionsOf(gamerID)
     // Don't have permissions to edit this channels perms
-    if (!channel.permissionsOf(gamerID).has('manageRoles')) return
+    if (!botPerms.has('manageRoles') || !botPerms.has('manageChannels')) return
 
     // Deny view perms for Verify role
-    if (settings.verify.categoryID && settings.verify.roleID && channel.parentID !== settings.verify.categoryID) {
+    if (
+      settings.verify.categoryID &&
+      settings.verify.roleID &&
+      channel.parentID !== settings.verify.categoryID &&
+      channel.guild.roles.has(settings.verify.roleID)
+    )
       channel.editPermission(settings.verify.roleID, 0, 1024, `role`, language(`basic/verify:PERMISSION`))
-    }
 
     // If the mute role exists disable all SEND/SPEAK permissions
     if (settings.moderation.roleIDs.mute && channel.guild.roles.has(settings.moderation.roleIDs.mute))
       channel.editPermission(
         settings.moderation.roleIDs.mute,
         0,
+        // Send Messages, Add Reactions, Speak
         2099264,
         `role`,
         language(`moderation/mute:PERMISSION`)

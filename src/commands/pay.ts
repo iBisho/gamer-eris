@@ -1,15 +1,12 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 
 export default new Command([`pay`, `send`, `transfer`], async (message, args, context) => {
+  if (!message.guildID) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
-
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
-
+  const language = Gamer.getLanguage(message.guildID)
   const [userID, amountStr] = args
   const user = Gamer.users.get(userID) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`leveling/pay:NEED_USER`))

@@ -9,10 +9,12 @@ import arenaofvalor from './cards/arenaofvalor'
 import mobilelegends from './cards/mobilelegends'
 import rulesofsurvival from './cards/rulesofsurvival'
 import servers from './modules/servers'
+import gifs from './gifs'
 
 export default {
   emojis,
   general,
+  gifs,
   levels,
   personalities,
   profanity,

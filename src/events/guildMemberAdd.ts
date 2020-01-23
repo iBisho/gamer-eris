@@ -16,8 +16,7 @@ export default class extends Event {
     const botMember = guild.members.get(Gamer.user.id)
     if (!botMember) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(guild.id)
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
     const membersHighestRole = Gamer.helpers.discord.highestRole(member)
@@ -30,32 +29,47 @@ export default class extends Event {
 
     // In case other bots/users add a role to the user we do this check
     if (botMember.permission.has('manageRoles') && botsHighestRole.position > membersHighestRole.position) {
-      if (guildSettings.moderation.roleIDs.mute && guildSettings.moderation.users.mutedUserIDs.includes(member.id))
+      if (
+        guildSettings.moderation.roleIDs.mute &&
+        guildSettings.moderation.users.mutedUserIDs.includes(member.id) &&
+        guild.roles.has(guildSettings.moderation.roleIDs.mute)
+      )
         member.addRole(guildSettings.moderation.roleIDs.mute, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
 
       // Verify Or AutoRole
 
       // If verification is enabled and the role id is set add the verify role
-      if (guildSettings.verify.enabled && guildSettings.verify.roleID)
+      if (guildSettings.verify.enabled && guildSettings.verify.roleID && guild.roles.has(guildSettings.verify.roleID))
         member.addRole(guildSettings.verify.roleID, language(`basic/verify:VERIFY_ACTIVATE`))
       // If discord verification is disabled and auto role is set give the member the auto role
-      else if (!guildSettings.verify.discordVerificationStrictnessEnabled && guildSettings.moderation.roleIDs.autorole)
+      else if (
+        !guildSettings.verify.discordVerificationStrictnessEnabled &&
+        guildSettings.moderation.roleIDs.autorole &&
+        guild.roles.has(guildSettings.moderation.roleIDs.autorole)
+      )
         member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
     }
 
     // Welcome Message
     if (guildSettings.hibye.welcome.message) {
       try {
+        const emojis = await Gamer.database.models.emoji.find()
         const isEmbed = guildSettings.hibye.welcome.message.startsWith('{')
-        const transformed = Gamer.helpers.transform.variables(guildSettings.hibye.welcome.message)
+        const transformed = Gamer.helpers.transform.variables(
+          guildSettings.hibye.welcome.message,
+          member.user,
+          member.guild,
+          member.user,
+          emojis
+        )
 
-        const embed = isEmbed ? JSON.parse(transformed) : null
-
+        const embed = isEmbed ? JSON.parse(transformed) : undefined
         if (guildSettings.hibye.welcome.dmEnabled) {
           const dmChannel = await member.user.getDMChannel()
-          if (embed) dmChannel.createMessage({ embed })
-          else dmChannel.createMessage(transformed)
-        } else if (!guildSettings.hibye.welcome.dmOnly && guildSettings.hibye.welcome.channelID) {
+          if (embed) await dmChannel.createMessage({ embed })
+          else await dmChannel.createMessage(transformed)
+        }
+        if (guildSettings.hibye.welcome.channelID) {
           const welcomeChannel = guild.channels.get(guildSettings.hibye.welcome.channelID)
           if (welcomeChannel && welcomeChannel instanceof TextChannel) {
             if (embed) welcomeChannel.createMessage({ embed })
@@ -85,23 +99,24 @@ export default class extends Event {
     if (logs.serverlogs.members.addPublicEnabled && logs.publiclogsChannelID) {
       const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
       if (publicLogChannel instanceof TextChannel) {
-        const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
-        if (
-          publicLogChannel &&
-          botPerms.has('embedLinks') &&
-          botPerms.has('readMessages') &&
-          botPerms.has('sendMessages')
-        )
-          publicLogChannel.createMessage({ embed: embed.code })
+        const hasPermission = Gamer.helpers.discord.checkPermissions(publicLogChannel, Gamer.user.id, [
+          `embedLinks`,
+          `readMessages`,
+          `sendMessages`
+        ])
+        if (hasPermission) publicLogChannel.createMessage({ embed: embed.code })
       }
     }
 
     // Send the finalized embed to the log channel
     const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)
     if (logChannel instanceof TextChannel) {
-      const botPerms = logChannel.permissionsOf(Gamer.user.id)
-      if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-        logChannel.createMessage({ embed: embed.code })
+      const hasPermission = Gamer.helpers.discord.checkPermissions(logChannel, Gamer.user.id, [
+        `embedLinks`,
+        `readMessages`,
+        `sendMessages`
+      ])
+      if (hasPermission) logChannel.createMessage({ embed: embed.code })
     }
   }
 }

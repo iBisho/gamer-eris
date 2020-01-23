@@ -12,8 +12,7 @@ export default class {
   }
 
   async sendBugReport(message: Message, channel: TextChannel, embed: GamerEmbed, settings: GuildSettings) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(channel.guild.id)
 
     const channelToUse =
       settings.feedback.approvalChannelID && channel.guild.channels.has(settings.feedback.approvalChannelID)
@@ -23,7 +22,7 @@ export default class {
     if (!channelToUse || !(channelToUse instanceof TextChannel)) return
 
     const needsApproval = channel.id === channelToUse.id
-    const feedback = await channelToUse.createMessage({ embed: embed.code })
+    const feedback = await channelToUse.createMessage({ embed: embed.code }, embed.file)
     if (!feedback) return
 
     // Create all reactions and then react to the message sent in the feedback channel
@@ -68,8 +67,7 @@ export default class {
   }
 
   async sendIdea(message: Message, channel: TextChannel, embed: GamerEmbed, settings: GuildSettings) {
-    const language = this.Gamer.i18n.get(this.Gamer.guildLanguages.get(channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = this.Gamer.getLanguage(channel.guild.id)
 
     const channelToUse =
       settings.feedback.approvalChannelID && channel.guild.channels.has(settings.feedback.approvalChannelID)
@@ -80,7 +78,7 @@ export default class {
 
     const needsApproval = channel.id === channelToUse.id
 
-    const feedback = await channelToUse.createMessage({ embed: embed.code })
+    const feedback = await channelToUse.createMessage({ embed: embed.code }, embed.file)
     if (!feedback) return
 
     // Create all reactions and then react to the message sent in the feedback channel
@@ -139,6 +137,6 @@ export default class {
       ])
     )
       return
-    return logChannel.createMessage({ embed: embed.code })
+    return logChannel.createMessage({ embed: embed.code }, embed.file)
   }
 }

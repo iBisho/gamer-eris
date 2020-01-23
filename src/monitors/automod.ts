@@ -1,5 +1,5 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel, GroupChannel } from 'eris'
+import { Message, GuildTextableChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
 import GamerEmbed from '../lib/structures/GamerEmbed'
@@ -8,16 +8,15 @@ import getURLs from 'get-urls'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+    if (!message.guildID || !message.member) return
 
     const settings = await Gamer.database.models.guild.findOne({
-      id: message.channel.guild.id
+      id: message.guildID
     })
     // If they have default settings, then no automoderation features will be enabled
     if (!settings) return
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.guildID)
 
     // This if check allows admins to override and test their filter is working
     if (!message.content.startsWith(`modbypass`)) {
@@ -43,7 +42,7 @@ export default class extends Monitor {
       Gamer.amplitude.push({
         authorID: message.author.id,
         channelID: message.channel.id,
-        guildID: message.channel.guild.id,
+        guildID: message.guildID,
         messageID: message.id,
         timestamp: message.timestamp,
         type: 'CAPITAL_SPAM_DELETED'
@@ -63,7 +62,7 @@ export default class extends Monitor {
         Gamer.amplitude.push({
           authorID: message.author.id,
           channelID: message.channel.id,
-          guildID: message.channel.guild.id,
+          guildID: message.guildID,
           messageID: message.id,
           timestamp: message.timestamp,
           type: 'PROFANITY_DELETED'
@@ -86,7 +85,7 @@ export default class extends Monitor {
         Gamer.amplitude.push({
           authorID: message.author.id,
           channelID: message.channel.id,
-          guildID: message.channel.guild.id,
+          guildID: message.guildID,
           messageID: message.id,
           timestamp: message.timestamp,
           type: 'URLS_DELETED'
@@ -97,9 +96,9 @@ export default class extends Monitor {
 
     if (content === message.content) return
 
-    const botPerms = message.channel.permissionsOf(Gamer.user.id)
+    const botPerms = (message.channel as GuildTextableChannel).permissionsOf(Gamer.user.id)
     // If the message can be deleted, delete it
-    if (botPerms.has('manageMessages')) message.delete(language(`common:AUTOMOD_DELETE_REASON`)).catch(() => null)
+    if (botPerms.has('manageMessages')) message.delete(language(`common:AUTOMOD_DELETE_REASON`)).catch(() => undefined)
     // Need send and embed perms to send the clean response
     if (!botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
 
@@ -111,7 +110,7 @@ export default class extends Monitor {
     message.channel.createMessage({ embed: embed.code })
     if (reasons.length > 1) {
       const reason = await message.channel.createMessage(`${message.author.mention} ${reasons.join('\n')}`)
-      setTimeout(() => reason.delete().catch(() => null), 3000)
+      setTimeout(() => reason.delete().catch(() => undefined), 3000)
     }
   }
 

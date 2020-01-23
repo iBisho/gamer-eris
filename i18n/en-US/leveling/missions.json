@@ -3,10 +3,8 @@
   "AFK": "Go AFK 3 times with the AFK command.",
   "BACKGROUND": "Use the background command 5 times.",
   "BAKA": "Call 5 people baka with the baka command.",
-  "BUGS": "Send one bug report.",
   "COMPLIMENT": "Compliment 5 People.",
   "HUG": "Hug 5 People.",
-  "IDEA": "Send one feedback idea.",
   "PROFILE": "View 5 People Profile",
   "ROLE": "Assign any role to yourself 3 times",
   "USER": "Use the user command 5 times to check other's info.",
@@ -21,5 +19,7 @@
   "PONY": "Use the Pony command 5 times.",
   "8BALL": "Ask the 8ball for advice 5 times.",
   "GUILDADDED": "Add Gamer to your server via .invite.",
-  "MINES": "Play a game of Minesweeper"
+  "MINES": "Play a game of Minesweeper",
+  "LMAO": "Share a laugh with others with the .laugh command.",
+  "SLOTS": "Play a game of slots to earn Gamer Coins with .slots command."
 }

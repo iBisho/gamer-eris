@@ -1,6 +1,6 @@
 import config from '../config'
 import GamerClient from './lib/structures/GamerClient'
-import { Message, PrivateChannel, GroupChannel } from 'eris'
+import { Message, GuildTextableChannel } from 'eris'
 import { Canvas } from 'canvas-constructor'
 import { join } from 'path'
 import GamerEmbed from './lib/structures/GamerEmbed'
@@ -44,12 +44,22 @@ const Gamer = new GamerClient({
     WEBHOOKS_UPDATE: true
   },
   ignoreBots: false
+  // intents: [
+  //   'guilds',
+  //   'guildMembers',
+  //   'guildBans',
+  //   'guildEmojis',
+  //   'guildVoiceStates',
+  //   'guildMessages',
+  //   'guildMessageReactions',
+  //   'directMessages'
+  // ]
 })
 
 Gamer.globalCommandRequirements = {
   async custom(message, _args, context) {
     // DM should have necessary perms already
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return true
+    if (!message.guildID) return true
 
     const isDemoChannel = message.channel.id !== '328662219086888961'
     // If this is the live demo channel and the user is a bot cancel out
@@ -58,11 +68,10 @@ Gamer.globalCommandRequirements = {
     if (isDemoChannel && message.author.discriminator !== '0000' && message.author.bot) return false
 
     // Check if have send messages perms. Check before fetching guild data to potentially save a fetch
-    const botPerms = message.channel.permissionsOf(Gamer.user.id)
+    const botPerms = (message.channel as GuildTextableChannel).permissionsOf(Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages')) return false
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return false
+    const language = Gamer.getLanguage(message.guildID)
 
     // Check if bot has embed links perms
     if (!botPerms.has('embedLinks')) {
@@ -73,11 +82,11 @@ Gamer.globalCommandRequirements = {
     // If the user is using commands within 2 seconds ignore it
     if (Gamer.slowmode.has(message.author.id)) {
       // Cleans up spam command messages from users
-      if (botPerms.has('manageMessages')) message.delete().catch(() => null)
+      if (botPerms.has('manageMessages')) message.delete().catch(() => undefined)
       return false
     }
 
-    const supportChannelID = Gamer.guildSupportChannelIDs.get(message.channel.guild.id)
+    const supportChannelID = Gamer.guildSupportChannelIDs.get(message.guildID)
     // If it is the support channel and NOT a server admin do not allow command
     if (
       message.channel.id === supportChannelID &&
@@ -85,6 +94,38 @@ Gamer.globalCommandRequirements = {
       !message.member?.permission.has('administrator')
     )
       return false
+
+    if (message.member?.permission.has('administrator')) return true
+
+    // Check custom command permissions for this command on this server
+    const commandPerms = Gamer.guildCommandPermissions.get(`${message.guildID}.${context.commandName}`)
+    const allCommandsPerms = Gamer.guildCommandPermissions.get(`${message.guildID}.allcommands`)
+
+    // If no custom its enabled
+    if (!commandPerms && !allCommandsPerms) return true
+
+    if (commandPerms) {
+      if (!commandPerms.enabled) {
+        // The command is disabled but check if its disabled for this channel or any roles
+        if (commandPerms.exceptionChannelIDs.includes(message.channel.id)) return true
+        if (commandPerms.exceptionRoleIDs.some(id => message.member?.roles.includes(id))) return true
+        return false
+      }
+      // The command is enabled but check if it is disabled for any of these roles
+      if (commandPerms.exceptionChannelIDs.includes(message.channel.id)) return false
+      if (commandPerms.exceptionRoleIDs.some(id => message.member?.roles.includes(id))) return false
+    }
+
+    if (allCommandsPerms) {
+      if (!allCommandsPerms.enabled) {
+        if (allCommandsPerms.exceptionChannelIDs.includes(message.channel.id)) return true
+        if (allCommandsPerms.exceptionRoleIDs.some(id => message.member?.roles.includes(id))) return true
+        return false
+      }
+
+      if (allCommandsPerms.exceptionChannelIDs.includes(message.channel.id)) return false
+      if (allCommandsPerms.exceptionRoleIDs.some(id => message.member?.roles.includes(id))) return false
+    }
 
     return true
   }
@@ -97,9 +138,9 @@ Gamer.addCommandDir(`${__dirname}/commands`)
 
 Gamer.prefixes((message: Message) => {
   // If in DM use the default prefix
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
   // If in a server who has not customized their prefix, use the default prefix
-  const prefix = Gamer.guildPrefixes.get(message.channel.guild.id)
+  const prefix = Gamer.guildPrefixes.get(message.guildID)
   if (!prefix) return
   // If in a server with the custom prefix, use the custom prefix
   return prefix
@@ -123,23 +164,6 @@ process.on('unhandledRejection', error => {
     .setDescription(['```js', error.stack, '```'].join(`\n`))
     .setTimestamp()
     .setFooter('Unhandled Rejection Error Occurred')
-  // Send error to the log channel on the gamerbot server
-  Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
-})
-
-process.on('uncaughtException', error => {
-  // Don't send errors for non production bots
-  // Check !Gamer incase the errors are before bots ready
-  if (!Gamer || Gamer.user.id !== constants.general.gamerID) return console.error(error)
-  // An unhandled error occurred on the bot in production
-  console.error(error || `An uncaughtException error occurred but error was null or undefined`)
-
-  if (!error) return
-
-  const embed = new GamerEmbed()
-    .setDescription(['```js', error.stack, '```'].join(`\n`))
-    .setTimestamp()
-    .setFooter('Uncaught Exception Error Occurred')
   // Send error to the log channel on the gamerbot server
   Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
 })

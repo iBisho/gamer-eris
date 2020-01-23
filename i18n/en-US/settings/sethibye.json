@@ -1,0 +1,21 @@
+{
+	"DESCRIPTION": "Setup welcome/goodbye messages on your server.",
+	"EXTENDED": "$t(settings/sethibye:EXTENDED_LINE_1)\n$t(settings/sethibye:EXTENDED_LINE_2)\n$t(settings/sethibye:EXTENDED_LINE_3)\n$t(settings/sethibye:EXTENDED_LINE_4)\n$t(settings/sethibye:EXTENDED_LINE_5)",
+	"EXTENDED_LINE_1": "**{{prefix}}sethibye welcome channel [#Channel]** ~ Set a channel to send the welcome messages to.",
+	"EXTENDED_LINE_2": "**{{prefix}}sethibye welcome channel** ~ Removes the welcome channel.",
+	"EXTENDED_LINE_3": "**{{prefix}}sethibye welcome dm** ~ Toggles whether the welcome message will be sent in DM.",
+	"EXTENDED_LINE_4": "**{{prefix}}sethibye welcome message [Message Or JSON Code]** ~ Sets the message to be sent. Use a JSON Code if you wish to send a custom Embed. Use the {{prefix}}embed command to create your embed.",
+	"EXTENDED_LINE_5": "NOTE: To setup goodbye settings, simply change the `welcome` to `goodbye`.",
+	"USAGE": "{{prefix}}sethibye [welcome | goodbye] [channel | dm | message] [#Channel | Message JSON Code]",
+	"ALIASES": "{{prefix}}setwelcome {{prefix}}setgoodbye",
+	"WELCOME_CHANNEL_SET": "The welcome channel has been set.",
+	"GOODBYE_CHANNEL_SET": "The goodbye channel has been set.",
+	"WELCOME_CHANEL_RESET": "The welcome channel has been removed.",
+	"WELCOME_DM_ENABLED": "The welcome messages will be sent by DM.",
+	"WELCOME_DM_DISABLED": "The welcome message will no longer be sent by DM.",
+	"GOODBYE_DM_ENABLED": "The goodbye messages will be sent by DM if the user still shares another server.",
+	"GOODBYE_DM_DISABLED": "The goodbye messages will no longer be sent by DM.",
+	"NEED_MESSAGE": "You did not provide a message to send.",
+	"WELCOME_MESSAGE_SET": "The welcome message has been set.",
+	"GOODBYE_MESSAGE_SET": "The goodbye message has been set."
+}

@@ -1,11 +1,11 @@
 import Monitor from '../lib/structures/Monitor'
-import { Message, PrivateChannel, GroupChannel } from 'eris'
+import { Message } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+    if (!message.guildID || !message.member) return
 
     const authorSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
     if (authorSettings && authorSettings.afk.enabled) {
@@ -18,8 +18,7 @@ export default class extends Monitor {
 
     const emojis = await Gamer.database.models.emoji.find()
 
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    const language = Gamer.getLanguage(message.guildID)
 
     const REASON = language(`settings/afk:REASON`)
 
@@ -37,14 +36,15 @@ export default class extends Monitor {
           .setDescription(userSettings.afk.message)
           .setFooter(`${user.username}${user.discriminator} AFK Message`)
 
-        message.channel.createMessage({ embed: embed.code }).then(msg => setTimeout(() => msg.delete(REASON), 10000))
+        const response = await message.channel.createMessage({ embed: embed.code })
+        setTimeout(() => response.delete(REASON), 10000)
         continue
       }
 
       const embed = Gamer.helpers.transform.variables(
         userSettings.afk.message,
         user,
-        message.channel.guild,
+        message.member.guild,
         message.author,
         emojis
       )
@@ -55,9 +55,8 @@ export default class extends Monitor {
       json.footer.text = `${user.username}${user.discriminator} AFK Message`
 
       // Send the AFK message
-      message.channel
-        .createMessage({ embed: JSON.parse(embed) })
-        .then(msg => setTimeout(() => msg.delete(REASON), 10000))
+      const response = await message.channel.createMessage({ embed: JSON.parse(embed) })
+      setTimeout(() => response.delete(REASON), 10000)
     }
   }
 }

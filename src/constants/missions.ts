@@ -4,10 +4,8 @@ export default [
   { amount: 3, commandName: `afk`, title: `leveling/missions:AFK`, reward: 30 },
   { amount: 5, commandName: `background`, title: `leveling/missions:BACKGROUND`, reward: 50 },
   { amount: 5, commandName: `baka`, title: `leveling/missions:BAKA`, reward: 50 },
-  { amount: 1, commandName: `bugs`, title: `leveling/missions:BUGS`, reward: 10 },
   { amount: 5, commandName: `compliment`, title: `leveling/missions:COMPLIMENT`, reward: 50 },
   { amount: 5, commandName: `hug`, title: `leveling/missions:HUG`, reward: 50 },
-  { amount: 1, commandName: `idea`, title: `leveling/missions:IDEA`, reward: 10 },
   { amount: 5, commandName: `profile`, title: `leveling/missions:PROFILE`, reward: 150 },
   { amount: 3, commandName: `role`, title: `leveling/missions:ROLE`, reward: 30 },
   { amount: 5, commandName: `user`, title: `leveling/missions:USER`, reward: 70 },
@@ -21,5 +19,7 @@ export default [
   { amount: 5, commandName: `tickle`, title: `leveling/missions:TICKLE`, reward: 10 },
   { amount: 5, commandName: `pony`, title: `leveling/missions:PONY`, reward: 30 },
   { amount: 5, commandName: `8ball`, title: `leveling/missions:8BALL`, reward: 30 },
-  { amount: 1, commandName: `mines`, title: `leveling/missions:MINES`, reward: 20 }
+  { amount: 1, commandName: `mines`, title: `leveling/missions:MINES`, reward: 20 },
+  { amount: 10, commandName: `lmao`, title: `leveling/missions:LMAO`, reward: 30 },
+  { amount: 10, commandName: `slots`, title: `leveling/mission:SLOTS`, reward: 30 }
 ]

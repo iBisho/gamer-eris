@@ -1,20 +1,16 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
-import { TextChannel, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`ping`, `pong`], async (message, _args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
   const ping = Date.now() - message.timestamp
   const Gamer = context.client as GamerClient
-
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
   const embed = new GamerEmbed().setTitle(language(`basic/ping:TIME`, { time: ping / 1000 })).addField(
     language('basic/ping:STATS'),
     language(`basic/ping:STATS_VALUE`, {
-      id: message.channel instanceof TextChannel ? message.channel.guild.shard.id : 0,
+      id: message.member ? message.member.guild.shard.id : 'Unknown',
       discord: `<:discord:494050000779608064>`,
       guilds: context.client.guilds.size.toLocaleString(),
       users: context.client.users.size.toLocaleString()

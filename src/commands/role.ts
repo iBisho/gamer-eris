@@ -1,21 +1,20 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, Role, GroupChannel } from 'eris'
+import { Role } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`role`, `rank`], async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID || !message.member) return
 
-  const settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const Gamer = context.client as GamerClient
+  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const language = Gamer.getLanguage(message.guildID)
 
   // If there are no settings then there are no public roles
   if (!settings || !settings.moderation.roleIDs.public.length)
     return message.channel.createMessage(language(`roles/role:NO_PUBLIC_ROLES`))
   // Check if the bot has the permission to manage roles
-  const bot = message.channel.guild.members.get(Gamer.user.id)
+  const bot = message.member.guild.members.get(Gamer.user.id)
   if (!bot || !bot.permission.has('manageRoles'))
     return message.channel.createMessage(language(`roles/role:MISSING_MANAGE_ROLES`))
 
@@ -33,10 +32,8 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   }
 
   const role = roleID
-    ? message.channel.guild.roles.get(roleID)
-    : message.channel.guild.roles.find(
-        r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase()
-      )
+    ? message.member.guild.roles.get(roleID)
+    : message.member.guild.roles.find(r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase())
   if (!role) return message.channel.createMessage(language(`roles/role:NEED_ROLE`))
   if (!settings.moderation.roleIDs.public.includes(role.id))
     return message.channel.createMessage(language(`roles/role:NOT_PUBLIC`))
@@ -66,11 +63,11 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   Gamer.amplitude.push({
     authorID: message.author.id,
     channelID: message.channel.id,
-    guildID: message.channel.guild.id,
+    guildID: message.guildID,
     messageID: message.id,
     timestamp: message.timestamp,
     memberID: message.member.id,
     type: hasRole ? 'ROLE_REMOVED' : 'ROLE_ADDED'
   })
-  return Gamer.helpers.levels.completeMission(message.member, `role`, message.channel.guild.id)
+  return Gamer.helpers.levels.completeMission(message.member, `role`, message.guildID)
 })

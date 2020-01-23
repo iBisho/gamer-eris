@@ -95,6 +95,7 @@ export interface GuildSettings extends mongoose.Document {
     disabledChannels: string[]
   }
   modules: string[]
+  disableTenor: boolean
   moderation: {
     roleIDs: {
       autorole?: string

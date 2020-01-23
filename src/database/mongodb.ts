@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import ClientSchema from './schemas/client'
+import CommandSchema, { GamerCommandPermission } from './schemas/command'
 import EmojiSchema from './schemas/emoji'
 import EventSchema from './schemas/event'
 import FeedbackSchema, { GamerFeedback } from './schemas/feedback'
@@ -7,6 +8,7 @@ import GuildSchema from './schemas/guild'
 import LabelSchema from './schemas/label'
 import LevelSchema from './schemas/level'
 import MailSchema from './schemas/mail'
+import MarriageSchema, { GamerMarriage } from './schemas/marriage'
 import MemberSchema from './schemas/member'
 import MissionSchema from './schemas/mission'
 import ModlogSchema from './schemas/modlog'
@@ -42,6 +44,7 @@ class Database {
   connection: mongoose.Connection
   models = {
     client: mongoose.model('Client', ClientSchema),
+    command: mongoose.model<GamerCommandPermission>('Command', CommandSchema),
     emoji: mongoose.model<GamerEmoji>('Emoji', EmojiSchema),
     event: mongoose.model<GamerEvent>('Event', EventSchema),
     feedback: mongoose.model<GamerFeedback>('Feedback', FeedbackSchema),
@@ -49,6 +52,7 @@ class Database {
     label: mongoose.model<GamerMailLabel>('Label', LabelSchema),
     level: mongoose.model<GamerLevel>('Level', LevelSchema),
     mail: mongoose.model<GamerMail>('Mail', MailSchema),
+    marriage: mongoose.model<GamerMarriage>('Marriage', MarriageSchema),
     member: mongoose.model<MemberSettings>('Member', MemberSchema),
     mission: mongoose.model<GamerMission>('Mission', MissionSchema),
     modlog: mongoose.model<GamerModlog>('Modlog', ModlogSchema),

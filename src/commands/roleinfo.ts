@@ -1,26 +1,22 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command([`roleinfo`, `ri`], async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.member) return
 
+  const Gamer = context.client as GamerClient
   const roleIDOrName = args.join(' ')
   const [roleID] = message.roleMentions
 
   const role = roleID
-    ? message.channel.guild.roles.get(roleID)
-    : message.channel.guild.roles.find(
-        r => r.id === roleIDOrName || r.name.toLowerCase() === roleIDOrName.toLowerCase()
-      )
+    ? message.member.guild.roles.get(roleID)
+    : message.member.guild.roles.find(r => r.id === roleIDOrName || r.name.toLowerCase() === roleIDOrName.toLowerCase())
   if (!role) return
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
-  const members = message.channel.guild.members.filter(member => member.roles.includes(role.id))
+  const members = message.member.guild.members.filter(member => member.roles.includes(role.id))
 
   const embed = new GamerEmbed()
     .setAuthor(role.name, message.author.avatarURL)

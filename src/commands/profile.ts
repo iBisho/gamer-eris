@@ -1,22 +1,17 @@
 import { Command } from 'yuuko'
-import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { milliseconds } from '../lib/types/enums/time'
 
 export default new Command([`profile`, `p`, `prof`], async (message, args, context) => {
+  if (!message.guildID || !message.member) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
-
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
-
+  const language = Gamer.getLanguage(message.guildID)
   const [id] = args
   const memberID = message.mentions.length ? message.mentions[0].id : id
-
-  const member = message.channel.guild.members.get(memberID) || message.member
-
+  const member = message.member.guild.members.get(memberID) || message.member
   const buffer = await Gamer.helpers.profiles.makeCanvas(message, member, Gamer)
   if (!buffer) return
 
@@ -72,9 +67,8 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
 
   if (hasPermission) {
     const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.discord, `reaction`)
-    if (message.channel.permissionsOf(Gamer.user.id).has('addReactions') && isDefaultBackground && reaction)
-      response.addReaction(reaction).catch(() => undefined)
+    if (isDefaultBackground && reaction) response.addReaction(reaction).catch(() => undefined)
   }
 
-  return Gamer.helpers.levels.completeMission(message.member, `profile`, message.channel.guild.id)
+  return Gamer.helpers.levels.completeMission(message.member, `profile`, message.guildID)
 })

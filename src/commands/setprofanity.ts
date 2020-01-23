@@ -1,19 +1,16 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
 import constants from '../constants'
 
 export default new Command([`setprofanity`, `setwords`], async (message, args, context) => {
+  if (!message.guildID) return
+
   const Gamer = context.client as GamerClient
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
-
+  const language = Gamer.getLanguage(message.guildID)
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  let settings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  let settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
@@ -23,7 +20,7 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
   // Remove the type and the leftover should be all words
   args.shift()
 
-  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.channel.guild.id })
+  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
 
   switch (type.toLowerCase()) {
     case `enable`:

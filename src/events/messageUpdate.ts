@@ -41,12 +41,12 @@ export default class extends Event {
   }
 
   async handleServerLogs(message: Message, oldMessage: OldMessage | null) {
-    if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-    if (message.content === oldMessage?.content) return
-    const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-    if (!language) return
+    if (!message.member) return
 
-    const urlToMessage = `https://discordapp.com/channels/${message.channel.guild.id}/${message.channel.id}/${message.id}`
+    if (message.content === oldMessage?.content) return
+    const language = Gamer.getLanguage(message.guildID)
+
+    const urlToMessage = `https://discordapp.com/channels/${message.guildID}/${message.channel.id}/${message.id}`
 
     const embed = new GamerEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
@@ -71,11 +71,11 @@ export default class extends Event {
         embed.addField(language(`moderation/logs:MESSAGE_CONTENT_CONTINUED`), message.content.substring(1024))
     }
 
-    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
     if (!guildSettings) return
 
     const logChannel = guildSettings.moderation.logs.serverlogs.messages.channelID
-      ? message.channel.guild.channels.get(guildSettings.moderation.logs.serverlogs.messages.channelID)
+      ? message.member.guild.channels.get(guildSettings.moderation.logs.serverlogs.messages.channelID)
       : undefined
 
     if (logChannel instanceof TextChannel) {

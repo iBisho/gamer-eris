@@ -1,15 +1,12 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { PrivateChannel, GroupChannel } from 'eris'
-import { GamerEvent } from '../lib/types/gamer'
 
 export default new Command([`eventleave`, `el`], async (message, args, context) => {
-  if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+  if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
 
-  const language = Gamer.i18n.get(Gamer.guildLanguages.get(message.channel.guild.id) || `en-US`)
-  if (!language) return
+  const language = Gamer.getLanguage(message.guildID)
 
   const [number] = args
   const eventID = parseInt(number, 10)
@@ -19,10 +16,10 @@ export default new Command([`eventleave`, `el`], async (message, args, context) 
   if (!eventID) return helpCommand.process(message, [`eventleave`], context)
 
   // Get the event from this server using the id provided
-  const event = (await Gamer.database.models.event.findOne({
+  const event = await Gamer.database.models.event.findOne({
     id: eventID,
-    guildID: message.channel.guild.id
-  })) as GamerEvent | null
+    guildID: message.guildID
+  })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
 
   if (!event.attendees.includes(message.author.id) && !event.waitingList.includes(message.author.id))
