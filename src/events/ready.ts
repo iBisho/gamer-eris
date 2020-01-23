@@ -57,7 +57,7 @@ export default class extends Event {
 
           // If the channel has gone inactive too long delete it so there is no spam empty unused channels
           if (Date.now() - message.timestamp > milliseconds.MINUTE * 10)
-            channel.delete(language(`basic/verify:CHANNEL_DELETE_REASON`))
+            channel.delete(language(`basic/verify:CHANNEL_DELETE_REASON`)).catch(() => undefined)
         }
       })
 
