@@ -11,7 +11,13 @@ const allEmojis = [
   constants.emojis.gamerHug,
   constants.emojis.gamerOnFire,
   constants.emojis.angryping,
-  constants.emojis.gamerCry
+  constants.emojis.gamerCry,
+  constants.emojis.bite,
+  constants.emojis.pat,
+  constants.emojis.poke,
+  constants.emojis.lmao,
+  constants.emojis.tantrum,
+  constants.emojis.furious
 ]
 
 export default new Command([`slots`, `slotmachine`], async (message, _args, context) => {

@@ -26,5 +26,11 @@ export default {
   success: `<a:success:664865672559591439>`,
   sunglasses: `🕶`,
   thinking: `<:g4m3rthinking:510742679542431764>`,
-  usb: `<:usb:494050000741990400>`
+  usb: `<:usb:494050000741990400>`,
+  bite: `<a:bite:669930972325871626>`,
+  pat: `<a:pat:669930972430467092>`,
+  poke: `<a:poke:669930972715810876>`,
+  lmao: `<a:lmao:669930973118464050>`,
+  tantrum: `<a:tantrum:669930973214933005>`,
+  furious: `<a:furious:669930973215064065>`
 }
