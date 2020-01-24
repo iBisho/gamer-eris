@@ -18,7 +18,7 @@
 	"STATSVALUE_LINE_3": "Kanäle [**{{channelCount}}**]",
 	"STATSVALUE_LINE_4": "Rollen [**{{roleCount}}**]",
 	"STATSVALUE_LINE_5": "👥 [**{{memberCount}}**]",
-	"SETTINGSNAME": "Gamer-Grundeinstellungen",
+	"SETTINGSNAME": "Gamer-Basiseinstellungen",
 	"SETTINGSVALUE": "$t(basic/server:SETTINGSVALUE_LINE_1)\n$t(basic/server:SETTINGSVALUE_LINE_2)\n$t(basic/server:SETTINGSVALUE_LINE_3)\n$t(basic/server:SETTINGSVALUE_LINE_4)",
 	"SETTINGSVALUE_LINE_1": "Sprache: {{language}}",
 	"SETTINGSVALUE_LINE_2": "Moderatorrollen: {{modRoles}}",
