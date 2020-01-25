@@ -50,5 +50,5 @@
   "NOT_VALID_TAG_NAME": "{{tag}} ist kein gültiger Erwähnungsname auf diesem Server.",
   "TEMPLATE_ADDED": "{{tag}} wurde der Liste der Mailvorlagen hinzugefügt.",
   "TEMPLATE_REMOVED": "{{tag}} wurde von der Liste der Mailvorlagen entfernt.",
-  "CLOSE_OPTIONS": ["close", "S"]
+  "CLOSE_OPTIONS": ["close", "s"]
 }
