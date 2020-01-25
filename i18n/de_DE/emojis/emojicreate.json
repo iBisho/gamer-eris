@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Erstelle ein globales Emote, das Du auf jedem Discord-Server verwenden kannst.",
+  "EXTENDED": "**{{prefix}}emojicreate [Name] [Emote]** ~ Erstelle ein globales Emote, das Du auf jedem Discord-Server mit dem einzigartigen Namen und Emote verwenden kannst.",
+  "USAGE": "{{prefix}}emojicreate [Name] [Emote]",
+  "ALIASES": "{{prefix}}emc",
+  "NEED_NAME": "Du hast keinen Namen für das Emote angegeben. Namen müssen beim Erstellen eines Emote einzigartig sein.",
+  "NEED_EMOJI": "Du hast das Emote nicht bereitgestellt, um es global zu erstellen. Du musst von irgendeinem Server ein einzigartigen benutzerdefiniertes Emote bereitstellen.",
+  "NEED_VALID_EMOJI": "Das von Dir angegebene Emote scheint kein gültiges Emote zu sein. Bitte versuche es mit einem anderen Emote. Wenn Du glaubst, dass das Emote gültig ist und dies ein Fehler ist, verwende den Befehl **invite**, um Kontakt mit meinen Entwicklern auf dem Support-Server aufzunehmen.",
+  "EMOJI_EXISTS": "Das von Dir verwendete Emote existiert bereits unter dem Namen: {{name}}",
+  "NAME_EXISTS": "{{name}} wird bereits für einen anderen Emote verwendet. Bitte geben einen anderen Namen an, da die Emote-Namen immer einzigartig sein müssen.",
+  "CREATED": "Du hast erfolgreich das {{emoji}} Emote mit dem Namen **{{name}}** erstellt!"
+}
