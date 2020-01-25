@@ -54,6 +54,13 @@ export default class extends Event {
 
         const embed = isEmbed ? JSON.parse(transformed) : undefined
 
+        if (embed) {
+          if (typeof embed.image === 'string') embed.image = { url: embed.image }
+          if (typeof embed.thumbnail === 'string') embed.thumbnail = { url: embed.thumbnail }
+          if (embed.color === 'RANDOM') embed.color = Math.floor(Math.random() * (0xffffff + 1))
+          if (embed.timestamp) embed.timestamp = new Date().toISOString()
+        }
+
         if (guildSettings.hibye.goodbye.dmEnabled) {
           const dmChannel = await member.user.getDMChannel()
           if (embed) dmChannel.createMessage({ embed })

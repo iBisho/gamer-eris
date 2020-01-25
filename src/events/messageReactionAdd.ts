@@ -4,6 +4,7 @@ import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
 import GamerEmbed from '../lib/structures/GamerEmbed'
+import nodefetch from 'node-fetch'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
@@ -421,7 +422,17 @@ export default class extends Event {
           ])
           if (!hasApprovedPerms) return
 
-          const approvedFeedback = await channel.createMessage({ embed })
+          const [attachment] = message.attachments
+          const img = attachment
+            ? await nodefetch(attachment.url)
+                .then(res => res.buffer())
+                .catch(() => undefined)
+            : undefined
+          if (img) embed.image = { url: `attachment://${attachment.filename}` }
+          const approvedFeedback = await channel.createMessage(
+            { embed },
+            img ? { name: attachment.filename, file: img } : undefined
+          )
           if (!approvedFeedback) return
 
           const reactions = [
