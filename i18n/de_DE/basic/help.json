@@ -1,12 +1,10 @@
 {
   "DESCRIPTION": "Zeigt allgemeine Hilfe für alle Befehle und die detaillierte Hilfe für einen spezifischen Befehl an.",
-  "EXTENDED": "$t(basic/help:EXTENDED_LINE_1)\n$t(basic/help:EXTENDED_LINE_2)\n$t(basic/help:EXTENDED_LINE_3)\n$t(basic/help:EXTENDED_LINE_4)\n$t(basic/help:EXTENDED_LINE_5)",
+  "EXTENDED": "$t(basic/help:EXTENDED_LINE_1)\n$t(basic/help:EXTENDED_LINE_2)\n$t(basic/help:EXTENDED_LINE_3)",
   "EXTENDED_LINE_1": "**{{prefix}}help ** ~ Rufe das allgemeine Hilfemenü auf.",
-  "EXTENDED_LINE_2": "**{{prefix}}help all** ~ Zeigt alle Befehle via Kategorie in Deinen Direktnachrichten oder in dem aktuellen Kanal, wenn Du ein Moderator bist, an.",
-  "EXTENDED_LINE_3": "**{{prefix}}help details** ~ Eine Liste mit allen Befehlsnamen ...",
-  "EXTENDED_LINE_4": "**{{prefix}}help [Befehlsname]** ~ Zeigt eine ausführliche Hilfe für den Befehl an.",
-  "EXTENDED_LINE_5": "**{{prefix}}help [Kategoriename]** ~ Zeigt die Kategorie, ihre Befehle und die Details an.",
-  "USAGE": "{{prefix}}help *[all | Befehlsname | Kategoriename]*",
+  "EXTENDED_LINE_2": "**{{prefix}}help all** ~ Zeigt alle Befehle die Du mit dem Bot ausführen kannst.",
+  "EXTENDED_LINE_3": "**{{prefix}}help [Befehlsname]** ~ Zeigt eine ausführliche Hilfe für den Befehl an.",
+  "USAGE": "{{prefix}}help *[all | Befehlsname]*",
   "ALIASES": "*Sei super schnell mit diesen kurzen Aliasen.*",
   "DM": "📥 | Die Liste der Befehle, auf die Du Zugriff hast, wurde Dir via Direktnachrichten gesandt.",
   "NO_DM": "❌ | Du hast Direktnachrichten ausgeschaltet – ich konnte Dir die Befehle nicht via Direktnachrichten senden.",
@@ -36,8 +34,8 @@
   "SEE_ALL": "Um alle Befehle anzusehen:",
   "CHECK_WIKI": "Wir haben Hunderte von Befehlen und es könnte Spam verursachen, sie zu senden. In unserem [Wiki](https://gamer.netlify.com) findest Du eine komplette Liste oder tippe **{{prefix}}help all**.",
   "LINKS": "**__Wichtigste Links__**",
-  "LINKS_VALUE": "$t(basic/help:LINKS_VALUE_LINE_1)\n$t(basic/help:LINKS_VALUE_LINE_2)\n$t(basic/help:LINKS_VALUE_LINE_3)",
+  "LINKS_VALUE": "$t(basic/help:LINKS_VALUE_LINE_1)\n$t(basic/help:LINKS_VALUE_LINE_2)",
   "LINKS_VALUE_LINE_1": "**»**  🌐 **Wiki:** Tippe {{prefix}}help oder siehe Dir unser Wiki an: <https://gamer.netlify.com>.",
-
+  "LINKS_VALUE_LINE_2": "**»**<:g4m3rblue:443416157597466636> **Support Server**: <https://discord.gg/J4NqJ72>",
   "UNKNOWN": "Es konnte kein Befehl mit dem Namen **{{name}}** gefunden werden."
 }
