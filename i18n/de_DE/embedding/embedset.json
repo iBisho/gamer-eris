@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Bearbeite ein beliebiges Element (zum Beispiel die Beschreibung) einer vorhandenen Einbettung, das ursprünglich vom Gamer Bot versendet wurde.",
+  "EXTENDED": "$t(embedding/embedset:EXTENDED_LINE_1)\n$t(embedding/embedset:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "Um die ID einer Nachricht zu erhalten, vergewisse Dich, dass der Entwicklermodus in Deinem Client aktiviert ist, und klicke mit der rechten Maustaste auf die Nachricht, deren ID Du kopieren möchtest, und wähle **ID kopieren** aus.",
+  "EXTENDED_LINE_2": "**{{prefix}}embedset [Nachrichten-ID] [Einbettungselement] [Neuer Wert] ** ~ Aktualisiert das von Dir angegebene Element auf den von Dir angegebenen neuen Wert.",
+  "USAGE": "{{prefix}}embedset [Nachrichten-ID] [Einbettungselement] [Neuer Wert]",
+  "ALIASES": "„Embedset“ hat keinen Alias.",
+  "NO_EMBED": "Die von Dir angegebene Nachricht ist keine Einbettung, die ich bearbeiten kann.",
+  "SUCCESS": "{{type}} wurde erfolgreich aktualisiert!",
+  "NEED_ARGS": "Ungültige Eingabe, siehe Dir die Hilfeseite an und versuchen es erneut."
+}
