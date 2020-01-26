@@ -1,0 +1,11 @@
+{
+	"DESCRIPTION": "Bearbeite alle vorhandenen Einbettungen, die ursprünglich vom Gamer Bot gesendet wurden.",
+	"EXTENDED": "$t(embedding/embededit:EXTENDED_LINE_1)\n$t(embedding/embededit:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "Um die ID einer Nachricht zu erhalten, vergewisse Dich, dass der Entwicklermodus in Deinem Client aktiviert ist, und klicke mit der rechten Maustaste auf die Nachricht, deren ID Du kopieren möchtest, und wähle **ID kopieren** aus.",
+	"EXTENDED_LINE_2": "**{{prefix}}embededit [Nachrichten-ID] [Einbettungscode]** ~ Bearbeitet die Einbettung mit dem neuen Einbettungscode, den Du angegeben hast. ",
+	"USAGE": "{{prefix}}embededit [Nachrichten-ID] [Einbettungscode]",
+	"ALIASES": "„Embededit“ hat keinen Alias",
+	"NO_EMBED": "Die von Dir angegebene Nachricht enthält keine Einbettung, die ich anzeigen kann.",
+	"SUCCESS": "Hier ist der Einbettungscode für die Nachricht mit der ID: {{id}}. Du kannst diesen Code kopieren und in den [Embed-Builder](https://embedbuilder.nadekobot.me) einfügen, um ihn zu bearbeiten.",
+	"NEED_JSON": "Du hast keinen Einbettungscode für das neue Ereignis angegeben. Verwende am besten den [Embed-Builder](https://embedbuilder.nadekobot.me/)!"
+}

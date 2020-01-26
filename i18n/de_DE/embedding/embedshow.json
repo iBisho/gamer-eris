@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Hiermit kannst Du den Einbettungscode einer Einbettung anzeigen, sodass Du ihn mithilfe eines Einbettungsbuilders problemlos bearbeiten kannst.",
+	"EXTENDED": "$t(embedding/embedshow:EXTENDED_LINE_1)\n$t(embedding/embedshow:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "Um die ID einer Nachricht zu erhalten, vergewisse Dich, dass der Entwicklermodus in Deinem Client aktiviert ist, und klicke mit der rechten Maustaste auf die Nachricht, deren ID Du kopieren möchtest, und wähle **ID kopieren** aus.",
+	"EXTENDED_LINE_2": "**{{prefix}}embedshow [Nachrichten-ID]** ~ Zeigt Dir den Einbettungscode für die Nachricht mit ID an.",
+	"USAGE": "{{prefix}}embedshow [Nachrichten-ID]",
+	"ALIASES": "{{prefix}}se",
+	"NO_EMBED": "Die von Dir angegebene Nachricht enthält keine Einbettung, die ich anzeigen kann.",
+	"SUCCESS": "Hier ist der Einbettungscode für die Nachricht mit der ID: {{id}}. Du kannst diesen Code kopieren und in den [Embed-Builder](https://embedbuilder.nadekobot.me) einfügen, um ihn zu bearbeiten."
+}

@@ -44,6 +44,7 @@
   "MODERATOR": "Moderator:",
   "SERVER": "Server:",
   "REASON": "Grund:",
+  "RESET": "Zurücksetzen",
   "AUTOMOD_DELETE_REASON": "Automoderation ausgelöst – die Nachricht stimmt nicht mit den Servereinstellungen überein.",
   "TOO_MUCH_WRONG": "Automod: Die Regeln wurden aus verschiedenen Gründen nicht eingehalten.",
   "INVALID": "WARNUNG: Falsche Verwendung von \"gefährlichen\" Befehl!",
@@ -55,7 +56,9 @@
   "AUTOMOD_NAUGHTY": "Zu viele anstößige Wörter!",
   "AUTOMOD_CAPITALS": "Diese Nachricht hat zuviele Großbuchstaben enthalten.",
   "AUTOMOD_URLS": "Das Teilen von einheitlichen Ressourcenzeiger (URLs) ist hier eingeschränkt möglich.",
-  "MENTION_PREFIX": "Das Präfix auf diesem Server ist auf **{{prefix}}** festgelegt.",
+  "MENTION_PREFIX": "Das Präfix auf diesem Server ist: **{{prefix}}**",
+  "WHITELISTED_TENOR": "via. whitelistet Tenor",
+  "TENOR": "via. Tenor",
   "GLOBAL_OPTIONS": ["G", "Global"],
   "VOICE_OPTIONS": ["S", "Sprach"],
   "CANCEL_OPTIONS": ["Q", "Quittieren"]
