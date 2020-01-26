@@ -177,6 +177,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   // Save any change to the events
   await event.save()
   message.channel.createMessage(language(response))
+  Gamer.helpers.events.advertiseEvent(event)
 
   const eventshowCommand = Gamer.commandForName(`eventshow`)
   if (!eventshowCommand) return
