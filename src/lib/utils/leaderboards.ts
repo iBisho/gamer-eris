@@ -59,9 +59,7 @@ export default class {
       ? `${this.transformXP(memberSettings.leveling.xp - prevUser.leveling.xp)} EXP Ahead`
       : 'Unknown'
 
-    const userAvatar = await fetch(member.user.avatarURL)
-      .then(res => res.buffer())
-      .catch(() => undefined)
+    const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
     const username = member.user.username.replace(
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
       ``
