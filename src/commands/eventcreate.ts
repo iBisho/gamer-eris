@@ -238,6 +238,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
       msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined)
 
       Gamer.helpers.events.advertiseEvent(event)
+      collector.createdAt = Date.now()
       Gamer.collectors.set(message.author.id, collector)
     }
   })
