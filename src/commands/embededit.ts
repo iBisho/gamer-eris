@@ -19,7 +19,8 @@ export default new Command(`embededit`, async (message, args, context) => {
   args.shift()
   // If there was no JSON code given then cancel out
   if (!args.length) return message.channel.createMessage(language(`embedding/embededit:NEED_JSON`))
-  const messageToUse = channel.messages.get(messageID) || (await Gamer.getMessage(channel.id, messageID))
+  const messageToUse =
+    channel.messages.get(messageID) || (await Gamer.getMessage(channel.id, messageID).catch(() => undefined))
   if (!messageToUse || messageToUse.author.id !== Gamer.user.id) return
 
   const [embed] = messageToUse.embeds
