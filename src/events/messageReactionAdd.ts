@@ -70,11 +70,15 @@ export default class extends Event {
     const joinReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `reaction`)
     if (!joinReaction) return
 
+    const member = message.member.guild.members.get(userID)
+    if (!member) return
+
     switch (emoji.id) {
       case joinEmojiID:
         const denyReactors = await message.getReaction(denyReaction).catch(() => [])
         if (denyReactors.find(user => user.id === userID)) message.removeReaction(denyReaction, userID)
         if (event.attendees.includes(userID)) return
+        if (event.allowedRoleIDs.length && !event.allowedRoleIDs.some(id => member.roles.includes(id))) return
 
         const response = Gamer.helpers.events.joinEvent(event, userID, language)
         event.save()
