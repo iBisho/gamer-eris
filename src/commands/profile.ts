@@ -47,6 +47,12 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
       })
     )
 
+  const canAttachFile = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, ['attachFiles'])
+  if (!canAttachFile)
+    return message.channel.createMessage(
+      language(`leveling/profile:NEED_ATTACH_FILE`, { mention: message.author.mention })
+    )
+
   const response = await message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
 
   const userSettings = await Gamer.database.models.user.findOne({
