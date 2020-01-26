@@ -1,0 +1,20 @@
+{
+	"DESCRIPTION": "Erstellt eine Einbettung aus dem von Dir eingegebenen Einbettungsobjekt.",
+	"EXTENDED": "$t(embedding/embed:EXTENDED_LINE_1)\n$t(embedding/embed:EXTENDED_LINE_2)\n$t(embedding/embed:EXTENDED_LINE_3)\n$t(embedding/embed:EXTENDED_LINE_4)\n$t(embedding/embed:EXTENDED_LINE_5)\n$t(embedding/embed:EXTENDED_LINE_6)\n$t(embedding/embed:EXTENDED_LINE_7)\n$t(embedding/embed:EXTENDED_LINE_8)\n$t(embedding/embed:EXTENDED_LINE_9)\n$t(embedding/embed:EXTENDED_LINE_10)\n$t(embedding/embed:EXTENDED_LINE_11)\n$t(embedding/embed:EXTENDED_LINE_12)\n$t(embedding/embed:EXTENDED_LINE_13)\n$t(embedding/embed:EXTENDED_LINE_14)",
+	"EXTENDED_LINE_1": "**» Zwei Optionen, um eine Einbettung zu kreieren:**",
+	"EXTENDED_LINE_2": "**{{prefix}}embed [@Benutzer] {Objekt}** ~ Bettet das angegebene Objekt ein. Gebe zuerst einen Benutzer an, wenn Du die Benutzervariablen verwenden möchtest.",
+	"EXTENDED_LINE_3": "**» Diverse Variablen, die Du in Einbettungen verwenden kannst:**",
+	"EXTENDED_LINE_4": "**%author%** ~ Zeigt den Namen des Autors an.",
+	"EXTENDED_LINE_5": "**%authormention%** ~ Erwähnt den Namen des Autors",
+	"EXTENDED_LINE_6": "**%authorimage%** ~ Zeigt das Bild des Autors in einem Bildfeld an.",
+	"EXTENDED_LINE_7": "**%user%** ~ Zeigt den Namen des aktivierenden Benutzers an.",
+	"EXTENDED_LINE_8": "**%usermention%** ~ Erwähnt den Namen des aktivierenden Benutzers.",
+	"EXTENDED_LINE_9": "**%userimage%** ~ Zeigt das Avatar des aktivierenden Benutzers in einem Bildfeld an.",
+	"EXTENDED_LINE_10": "**%guild%** ~ Zeigt den Servernamen an.",
+	"EXTENDED_LINE_11": "**%guildimage%** ~ Displays the server\u0027s image in an image field.",
+	"EXTENDED_LINE_12": "**»** Benutzervariablen funktionieren nur, wenn ein Benutzer zusammen mit dem Befehl erwähnt wird.",
+	"EXTENDED_LINE_13": "**ERSTELLE DEIN EINGEBETTETES OBJEKT AUF DER FOLGENDEN WEBSEITE: \u003chttps://embedbuilder.nadekobot.me/\u003e**.",
+	"USAGE": "{{prefix}}embed [@Benutzer] {Objekt}",
+	"ALIASES": "„Embed“ hat keinen Alias.",
+	"BAD_EMBED": "Dies war kein **gültiges Einbettungsobjekt**. Verwende am besten den [Embed-Builder von Nadekobot](https://embedbuilder.nadekobot.me/)!"
+}
