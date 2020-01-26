@@ -11,5 +11,8 @@
   "DEFAULT_GAME": "Gamer Role Play Hehehe",
   "DEFAULT_ACTIVITY": "Playing All Night Long!",
   "CREATE_FAILED": "Sorry, an error has occurred and I was unable to create an event for you. Please contact my developers with the **.fb dev your message here.**.",
-  "CREATE_SUCCESS": "You have successfully created a new event on this server with an ID of **[ {{number}} ]**."
+  "CREATE_SUCCESS": "You have successfully created a new event on this server with an ID of **[ {{number}} ]**.",
+  "SAVED": "{{mention}}, You have successfully saved the event.",
+  "INVALID_EDIT": "{{mention}}, the type your provided was not a valid option. Saving event and cancelling the edit interface.",
+  "INVALID_TIME": "{{mention}}, the time you provided was not valid. Saving event and cancelling the edit interface."
 }
