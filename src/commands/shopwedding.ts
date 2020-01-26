@@ -58,7 +58,7 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
   if (!marriage) return message.channel.createMessage('fun/shopwedding:NOT_MARRIED')
 
   const item = searchCriteria[marriage.weddingShopCounter + 1]
-
+  if (!item) return message.channel.createMessage(language(`fun/shopwedding:COMPLETE`))
   // If no settings for the user they wont have any coins to spend anyway
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
   if (!userSettings)

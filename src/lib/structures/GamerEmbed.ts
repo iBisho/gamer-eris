@@ -77,8 +77,8 @@ export default class GamerEmbed {
     if (this.code.fields.length >= 25) return this
 
     this.code.fields.push({
-      name: this.fitData(name.toString(), embedLimits.fieldName),
-      value: this.fitData(value.toString(), embedLimits.fieldValue),
+      name: this.fitData(name, embedLimits.fieldName),
+      value: this.fitData(value, embedLimits.fieldValue),
       inline
     })
 
