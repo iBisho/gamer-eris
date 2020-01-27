@@ -16,6 +16,13 @@ export default class extends Monitor {
     // If no @ return
     if (!message.mentions.length) return
 
+    const hasPermission = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
+      'readMessages',
+      'sendMessages',
+      'embedLinks'
+    ])
+    if (!hasPermission) return
+
     const emojis = await Gamer.database.models.emoji.find()
 
     const language = Gamer.getLanguage(message.guildID)

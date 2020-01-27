@@ -44,7 +44,7 @@ export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args
 
   const messagesToDelete = filteredMessages.splice(0, amount + 1)
 
-  channel.deleteMessages(messagesToDelete.map(m => m.id))
+  channel.deleteMessages(messagesToDelete.map(m => m.id)).catch(() => undefined)
 
   const response = await message.channel.createMessage(
     language(`moderation/purge:RESPONSE`, { amount: messagesToDelete.length - 1 })
