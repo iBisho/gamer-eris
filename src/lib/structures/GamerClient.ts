@@ -191,7 +191,7 @@ export default class GamerClient extends Client {
     // Delete all current items in the map
     map.clear()
     // Reload everything from that directory
-    this.addDirectory(dirname)
+    this.addDirectory(join(__dirname, `../../${dirname}`))
 
     return this
   }
