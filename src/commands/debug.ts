@@ -24,8 +24,9 @@ export default new Command(['debug', `eval`], async function debug(message, args
   } catch (e) {
     result = e
   }
-  const response = ['```js', '```']
+  const response = ['```js']
 
+  const regex = new RegExp(Gamer.token, 'gi')
   // We returned a promise?
   if (result && typeof result.then === 'function') {
     // Sweet. Wait for that to resolve.
@@ -35,10 +36,21 @@ export default new Command(['debug', `eval`], async function debug(message, args
     } catch (err) {
       value = err
     }
-    response.splice(1, 0, util.inspect(value, inspectOptions).substring(0, 1985))
+    response.push(
+      util
+        .inspect(value, inspectOptions)
+        .replace(regex, 'YOU WISH!')
+        .substring(0, 1985)
+    )
   } else {
-    response.splice(1, 0, String(util.inspect(result)).substring(0, 1985))
+    response.push(
+      String(util.inspect(result))
+        .replace(regex, 'YOU WISH!')
+        .substring(0, 1985)
+    )
   }
+
+  response.push('```')
 
   await message.channel.createMessage(response.join('\n'))
 })
