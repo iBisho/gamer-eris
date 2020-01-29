@@ -7,19 +7,25 @@ import { exec } from 'child_process'
 
 const asyncExecute = promisify(exec)
 
-export default new Command('reload', async (message, _args, context) => {
+export default new Command('reload', async (message, args, context) => {
   if (message.author.id !== '130136895395987456') return
   const Gamer = context.client as GamerClient
 
   // First recompile the files
   await asyncExecute('npm run build')
   // Reloads commands
-  Gamer.reloadCommands()
+  if (!args.length || args.includes('commands')) Gamer.reloadCommands()
   // Reloads all the stores
-  Gamer.reloadDirectory('monitors', Gamer.monitors)
-  Gamer.reloadDirectory('events', Gamer.events)
+  if (!args.length || args.includes('monitors')) Gamer.reloadDirectory('monitors', Gamer.monitors)
+  if (!args.length || args.includes('events')) {
+    // First remove all existing event listeneres
+    Gamer.events.forEach(e => Gamer.removeListener(e.name, e.execute))
+    Gamer.reloadDirectory('events', Gamer.events)
+    // Add the events listeners back
+    Gamer.events.forEach(e => Gamer.on(e.name, e.execute.bind(e)))
+  }
   // Reloads i18n translations
-  i18next.reloadResources(constants.personalities.map(p => p.id))
+  if (!args.length || args.includes('languages')) i18next.reloadResources(constants.personalities.map(p => p.id))
 
-  message.channel.createMessage('Reloaded.')
+  message.channel.createMessage(`Reloaded. ${args}`)
 })
