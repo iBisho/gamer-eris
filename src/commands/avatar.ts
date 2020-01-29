@@ -10,7 +10,7 @@ export default new Command([`avatar`, `pfp`, `userimage`], (message, _args, cont
 
   const embed = new GamerEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
-    .setImage(user.dynamicAvatarURL('webp', 2048))
+    .setImage(user.dynamicAvatarURL(undefined, 2048))
 
   message.channel.createMessage({ embed: embed.code })
   if (message.member) Gamer.helpers.levels.completeMission(message.member, `avatar`, message.guildID)
