@@ -12,5 +12,6 @@
   "REMIND_FOOTER": "Server: {{guildName}}",
   "SHOW_NONE": "Sorry, there are no members to display.",
   "NEED_EVENT_ID": "I need an event ID to search for.",
-  "NONE": "There were no events found on this server. Please use the **eventcreate** command to make a new event."
+  "NONE": "There were no events found on this server. Please use the **eventcreate** command to make a new event.",
+  "GO_TO": "Go To Event Channel!"
 }

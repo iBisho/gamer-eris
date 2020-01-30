@@ -421,6 +421,8 @@ export default class {
       .addField(language(`events/eventshow:RSVP_EMOJI`), `${event.attendees.length} / ${event.maxAttendees}`)
       .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
 
+    if (event.adChannelID) embed.addField(language(`events/events:GO_TO`), `<#${event.adChannelID}>`)
+
     if (guild.iconURL) embed.setThumbnail(guild.iconURL)
 
     for (const userID of event.attendees) {
@@ -451,7 +453,7 @@ export default class {
     })
   }
 
-  async remindEvent(event: GamerEvent) {
+  remindEvent(event: GamerEvent) {
     const guild = this.Gamer.guilds.get(event.guildID)
     if (!guild) return
 
@@ -476,30 +478,31 @@ export default class {
       .setFooter(language(`events/events:REMIND_FOOTER`, { guildName: guild.name }))
     if (guild.iconURL) embed.setThumbnail(guild.iconURL)
 
-    if (event.dmReminders) {
-      for (const userID of event.attendees) {
-        const user = this.Gamer.users.get(userID)
-        if (!user) continue
+    const adChannel = event.adChannelID ? guild.channels.get(event.adChannelID) : undefined
+    if (adChannel && adChannel instanceof TextChannel) {
+      const botPerms = adChannel.permissionsOf(this.Gamer.user.id)
 
-        user
-          .getDMChannel()
-          // send message or catch rejected promise if user has dms off
-          .then(channel => channel.createMessage({ embed: embed.code }).catch(() => undefined))
-          // Catch the promise from dmchannel
-          .catch(() => undefined)
-      }
+      if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
+
+      adChannel.createMessage({
+        content: event.alertRoleIDs.map((id: string) => `<@&${id}>`).join(` `),
+        embed: embed.code
+      })
     }
 
-    const adChannel = event.adChannelID ? guild.channels.get(event.adChannelID) : undefined
-    if (!adChannel || !(adChannel instanceof TextChannel)) return
+    if (!event.dmReminders) return
 
-    const botPerms = adChannel.permissionsOf(this.Gamer.user.id)
+    if (event.adChannelID) embed.addField(language(`events/events:GO_TO`), `<#${event.adChannelID}>`)
+    for (const userID of event.attendees) {
+      const user = this.Gamer.users.get(userID)
+      if (!user) continue
 
-    if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
-
-    adChannel.createMessage({
-      content: event.alertRoleIDs.map((id: string) => `<@&${id}>`).join(` `),
-      embed: embed.code
-    })
+      user
+        .getDMChannel()
+        // send message or catch rejected promise if user has dms off
+        .then(channel => channel.createMessage({ embed: embed.code }).catch(() => undefined))
+        // Catch the promise from dmchannel
+        .catch(() => undefined)
+    }
   }
 }

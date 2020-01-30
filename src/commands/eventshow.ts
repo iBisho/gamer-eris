@@ -33,7 +33,7 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
       language(`events/eventshow:TIME_EMOJI`),
       language(`events/eventshow:TIME`, {
         duration: Gamer.helpers.transform.humanizeMilliseconds(event.duration),
-        reminders: event.reminders.map(r => Gamer.helpers.transform.humanizeMilliseconds(r))
+        reminders: event.reminders.map(r => Gamer.helpers.transform.humanizeMilliseconds(r)).join(' ')
       })
     )
     // .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
