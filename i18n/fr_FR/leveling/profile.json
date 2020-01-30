@@ -12,10 +12,11 @@
 	"ALIASES": "{{prefix}}p",
 	"CURRENT_MISSIONS": "Missions en cours :",
 	"NEW_IN": "Nouvelles missions dispo dans : {{time}}",
-	"SERVER_XP": "XP sur le serveur",
-	"GLOBAL_XP": "XP Globale",
+	"SERVER_XP": "XP Serveur",
+	"GLOBAL_XP": "XP Global",
 	"LEVEL": "Niveau",
 	"NOT_MARRIED": "Non marié ",
 	"MARRIED": "Marié avec: {{username}}",
-	"COINS": "Argent: {{amount}}"
+	"COINS": "Pièces : {{amount}}",
+	"NEED_ATTACH_FILE": "{{mention}}, Désolé, impossible d'afficher votre profil car il me manque la permission \"Joindre des fichiers\"."
 }
