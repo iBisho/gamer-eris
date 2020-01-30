@@ -8,6 +8,7 @@
   "USAGE": "{{prefix}}twitch [Twitch Username] *[Game Name]*",
   "ALIASES": "Twitch does not have any aliases.",
   "SUBSCRIBED": "Successfully subscribed to twitch alerts for {{username}} on {{channel}}.",
+  "UNSUBBED": "Successfully unsubscribed to twitch alerts for {{username}} on {{channel}}.",
   "NOT_SUBSCRIBED": "The {{username}} has no subscriptions set up for twitch at this time.",
   "NOT_SUBBED": "The {{username}} has no subscriptions set up for this channel at this time.",
   "ALREADY_SUBBED": "The {{username}} is already subscribed to send alerts in this channel.",

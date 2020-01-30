@@ -8,6 +8,7 @@ import GuildSchema from './schemas/guild'
 import LabelSchema from './schemas/label'
 import LevelSchema from './schemas/level'
 import MailSchema from './schemas/mail'
+import MangaSchema from './schemas/manga'
 import MarriageSchema, { GamerMarriage } from './schemas/marriage'
 import MemberSchema from './schemas/member'
 import MissionSchema from './schemas/mission'
@@ -37,6 +38,7 @@ import {
   GamerLevel,
   GamerMission
 } from '../lib/types/gamer'
+import { GamerManga } from './schemas/manga'
 
 const connectionString = config.mongoConnectionString
 
@@ -52,6 +54,7 @@ class Database {
     label: mongoose.model<GamerMailLabel>('Label', LabelSchema),
     level: mongoose.model<GamerLevel>('Level', LevelSchema),
     mail: mongoose.model<GamerMail>('Mail', MailSchema),
+    manga: mongoose.model<GamerManga>('Manga', MangaSchema),
     marriage: mongoose.model<GamerMarriage>('Marriage', MarriageSchema),
     member: mongoose.model<MemberSettings>('Member', MemberSchema),
     mission: mongoose.model<GamerMission>('Mission', MissionSchema),

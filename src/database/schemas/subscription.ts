@@ -3,9 +3,9 @@ import mongoose from 'mongoose'
 export default new mongoose.Schema(
   {
     // The username of the account. Ex: Twitch username
-    username: { type: String, required: true },
+    username: { type: String, required: true, index: true },
     // The type/platform of subscription. Ex: twitch, dlive etc...
-    type: { type: String, required: true, lowercase: true },
+    type: { type: String, required: true, lowercase: true, index: true },
 
     // All the listeners for this subscription. When we recieve a alert we send a message to all these listeners.
     subs: [

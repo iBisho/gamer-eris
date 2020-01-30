@@ -13,6 +13,10 @@ export default new Command('reload', async (message, args, context) => {
 
   // First recompile the files
   if (!args.length || !args.includes('skip')) await asyncExecute('npm run build')
+
+  // Remove skip from args
+  if (args.includes('skip')) args = args.filter(a => a !== 'skip')
+
   // Reloads commands
   if (!args.length || args.includes('commands')) Gamer.reloadCommands()
   // Reloads all the stores

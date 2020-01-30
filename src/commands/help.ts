@@ -127,7 +127,8 @@ const categories = [
   { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`] },
   { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] },
   { name: `tags`, commands: [`tagcreate`, `tagdelete`, `tagshow`, `taginstall`, `taguninstall`, `tagpublic`] },
-  { name: `shortcuts`, commands: [`shortcutcreate`, `shortcutremove`, `shortcuts`] }
+  { name: `shortcuts`, commands: [`shortcutcreate`, `shortcutremove`, `shortcuts`] },
+  { name: `weeb`, commands: [`manga`] }
 ]
 
 export default new Command([`help`, `h`, `commands`, `cmds`], async (message, args, context) => {

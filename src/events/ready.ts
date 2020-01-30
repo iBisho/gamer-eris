@@ -8,6 +8,7 @@ import config from '../../config'
 import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
 import GamerEmbed from '../lib/structures/GamerEmbed'
+import { fetchLatestManga } from '../services/manga'
 
 export default class extends Event {
   async execute() {
@@ -141,6 +142,9 @@ export default class extends Event {
     // Process all mutes
     setInterval(() => Gamer.helpers.moderation.processMutes(), milliseconds.MINUTE)
 
+    // Begin fetching manga
+    setInterval(() => fetchLatestManga(), milliseconds.MINUTE * 30)
+    fetchLatestManga()
     // Run the Trading Card Interval every 20 minutes
     setInterval(async () => {
       const cardSettings = await Gamer.database.models.tradingCard.find()
