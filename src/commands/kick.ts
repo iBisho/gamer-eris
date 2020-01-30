@@ -46,7 +46,10 @@ export default new Command([`kick`, `k`], async (message, args, context) => {
     .setDescription(language(`moderation/kick:TITLE`, { guildName: message.member.guild.name, user: user.username }))
     .setThumbnail(user.avatarURL)
     .setTimestamp()
-    .addField(language(`common:REASON`), language(`moderation/kick:REASON`, { user: message.author.username, reason }))
+    .addField(
+      language(`common:REASON`),
+      language(`moderation/kick:REASON`, { username: message.author.username, reason })
+    )
 
   // Send the user a message. AWAIT to make sure message is sent before they are kicked and lose access
   const dmChannel = await user.getDMChannel().catch(() => undefined)
@@ -56,5 +59,5 @@ export default new Command([`kick`, `k`], async (message, args, context) => {
 
   Gamer.helpers.moderation.createModlog(message, guildSettings, language, user, `kick`, reason)
 
-  return message.channel.createMessage(language(`moderation/kick:SUCCESS`, { user: user.username, reason }))
+  return message.channel.createMessage(language(`moderation/kick:SUCCESS`, { username: user.username, reason }))
 })
