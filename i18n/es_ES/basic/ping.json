@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Da información sobre el bot.",
+  "EXTENDED": "$t(basic/ping:EXTENDED_LINE_1)\n$t(basic/ping:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}ping** ~ Muestra información importante como el pulso de Gamer (ping).",
+  "EXTENDED_LINE_2": "Estadísticas Generales del Bot : Base de datos | Gremios de Discord | Contador de Usuarios",
+  "USAGE": "{{prefix}}ping",
+  "ALIASES": "{{prefix}}pong",
+  "TIME": "Tiempo de respuesta: {{time}} segundos",
+  "STATS": "**__Estadísticas Generales del Bot__**",
+  "STATS_VALUE": "🆔 {{id}} {{discord}} {{guilds}} 👥 {{users}}"
+}
