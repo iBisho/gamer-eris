@@ -56,6 +56,7 @@ export default class extends Monitor {
 
       // Delete the original message the author posted to keep channel clean. Catch it because it mightve been deleted by another monitor
       await message.delete().catch(() => undefined)
+      if (message.member) Gamer.helpers.levels.completeMission(message.member, `wallpost`, message.guildID)
 
       // If an image was attached post the image in #photos
       if (buffer) {

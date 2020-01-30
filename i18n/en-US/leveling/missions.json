@@ -21,5 +21,6 @@
   "GUILDADDED": "Add Gamer to your server via .invite.",
   "MINES": "Play a game of Minesweeper",
   "LMAO": "Share a laugh with others with the .lmao command.",
-  "SLOTS": "Play a game of slots to earn Gamer Coins with .slots command."
+  "SLOTS": "Play a game of slots to earn Gamer Coins with .slots command.",
+  "WALLPOST": "Make a post on your wall channel. To get a wall channel use the .networkcreate command."
 }
