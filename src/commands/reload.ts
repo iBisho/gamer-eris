@@ -12,7 +12,7 @@ export default new Command('reload', async (message, args, context) => {
   const Gamer = context.client as GamerClient
 
   // First recompile the files
-  await asyncExecute('npm run build')
+  if (!args.length || !args.includes('skip')) await asyncExecute('npm run build')
   // Reloads commands
   if (!args.length || args.includes('commands')) Gamer.reloadCommands()
   // Reloads all the stores
