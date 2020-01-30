@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Affiche vos Gamer Coins.",
+  "EXTENDED": "**{{prefix}}balance** ~ Affiche le nombre de {{emoji}} Gamer Coins en votre possession.",
+  "USAGE": "{{prefix}}balance",
+  "ALIASES": "{{prefix}}bal {{prefix}}wallet",
+  "SUCCESS": "{{mention}}, Vous possédez {{amount}} Gamer Coins {{emoji}} ."
+}
