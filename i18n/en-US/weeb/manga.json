@@ -7,7 +7,7 @@
   "USAGE": "{{prefix}}manga [Title] *[Game Name]*",
   "ALIASES": "Manga does not have any aliases.",
 	"SUBSCRIBED": "Successfully subscribed to manga alerts for {{title}} on {{channel}}.",
-	"UNSUBBED": "Successfully unsubscribed to manga alerts for {{title}} on {{channel}}.",
+	"UNSUBBED": "Successfully unsubscribed to manga alerts for {{title}}.",
   "NOT_SUBSCRIBED": "The {{title}} manga has no subscriptions at this time.",
   "NOT_SUBBED": "The {{title}} manga has no subscriptions set up for this channel at this time.",
   "ALREADY_SUBBED": "The {{title}} manga is already subscribed to send alerts in this channel.",
