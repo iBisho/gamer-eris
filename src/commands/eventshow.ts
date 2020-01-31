@@ -36,7 +36,6 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
         reminders: event.reminders.map(r => Gamer.helpers.transform.humanizeMilliseconds(r)).join(' ')
       })
     )
-    // .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
     .addField(
       language(`events/eventshow:RSVP_EMOJI`),
       language(`events/eventshow:RSVP`, {
