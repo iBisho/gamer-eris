@@ -1,5 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
+import { isValidManga } from '../services/manga'
+import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default new Command(`manga`, async (message, args, context) => {
   if (!message.guildID) return
@@ -66,11 +68,15 @@ export default new Command(`manga`, async (message, args, context) => {
           subs: [subPayload]
         }
 
-        await Gamer.database.models.manga.create(payload)
+        const check = await isValidManga(title)
+        if (!check.valid) return message.channel.createMessage(language(`weeb/manga:NOT_FOUND`, { title }))
 
-        return message.channel.createMessage(
-          language(`weeb/manga:SUBSCRIBED`, { title, channel: message.channel.mention })
-        )
+        const embed = new GamerEmbed()
+          .setImage(check.imageURL)
+          .setDescription(language(`weeb/manga:SUBSCRIBED`, { title, channel: message.channel.mention }))
+        message.channel.createMessage({ embed: embed.code })
+
+        return Gamer.database.models.manga.create(payload)
       }
       // Already has a subscription created
       const exists = subscription.subs.some(sub => sub.channelID === message.channel.id)

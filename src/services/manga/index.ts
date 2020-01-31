@@ -85,3 +85,18 @@ export const fetchLatestManga = async () => {
 
   allNodes.forEach(node => checkNode(node))
 }
+
+export const isValidManga = async (name: string) => {
+  const data = await fetch(`https://fanfox.net/manga/${name.split(' ').join('_')}`)
+    .then(res => res.text())
+    .catch(() => undefined)
+  if (!data) return { valid: false, imageURL: '' }
+
+  const isValid = data.includes('Read Now')
+
+  const body = data.substring(data.indexOf('<body'), data.indexOf('</body>'))
+  const start = body.substring(body.indexOf('detail-info-cover-img'))
+  const imageURL = start.substring(28, start.indexOf('" alt="'))
+
+  return { valid: isValid, imageURL }
+}
