@@ -65,8 +65,6 @@ export default class {
   }
 
   async makeCanvas(message: Message, member: Member, Gamer: GamerClient, options?: ProfileCanvasOptions) {
-    // if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
-
     const [memberSettings, userSettings, isMarried, isSpouse] = await Promise.all([
       Gamer.database.models.member.findOne({
         memberID: member.id,
