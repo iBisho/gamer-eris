@@ -14,8 +14,11 @@ export default class extends Event {
       .setImage(image)
       .setTimestamp()
 
+    if (subscription.lastAlertData === payload) return
+    subscription.lastAlertData = payload
+    subscription.save()
+
     subscription.subs.forEach(sub => {
-      if (sub.lastAlertData && sub.lastAlertData === payload) return
       // Get the guild specific language
       const language = Gamer.getLanguage(sub.guildID)
       if (!language) return
@@ -34,10 +37,6 @@ export default class extends Event {
         content: "A new chapter is out! Hop in a voice channel and let's read it together",
         embed: embed.code
       })
-
-      sub.lastAlertData = payload
     })
-
-    subscription.save()
   }
 }
