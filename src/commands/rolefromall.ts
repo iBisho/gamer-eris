@@ -53,7 +53,7 @@ export default new Command([`rolefromall`], async (message, args, context) => {
   let counter = 0
 
   for (const member of message.member.guild.members.values()) {
-    // If the member has the role already skip
+    // If the member doesnt have the role already skip
     if (!member.roles.includes(role.id)) continue
 
     if (counter === 3) {
