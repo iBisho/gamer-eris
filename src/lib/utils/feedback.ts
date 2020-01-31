@@ -31,7 +31,6 @@ export default class {
       ? [
           settings.feedback.bugs.emojis.up,
           settings.feedback.bugs.emojis.down,
-          constants.emojis.questionMark,
           constants.emojis.mailbox,
           constants.emojis.greenTick,
           constants.emojis.redX
@@ -87,7 +86,6 @@ export default class {
       ? [
           settings.feedback.bugs.emojis.up,
           settings.feedback.bugs.emojis.down,
-          constants.emojis.questionMark,
           constants.emojis.mailbox,
           constants.emojis.greenTick,
           constants.emojis.redX
