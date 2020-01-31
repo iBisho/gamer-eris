@@ -212,7 +212,7 @@ export default class {
     )
 
     const spouse = marriage
-      ? member.guild.members.get(marriage.authorID === member.id ? marriage.spouseID : marriage.authorID)
+      ? Gamer.users.get(marriage.authorID === member.id ? marriage.spouseID : marriage.authorID)
       : undefined
     const spouseUsername = spouse?.username.replace(
       /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
@@ -244,7 +244,7 @@ export default class {
       .addText(language(`leveling/profile:LEVEL`), 350, 300)
       .addResponsiveText(
         spouse
-          ? language(`leveling/profile:MARRIED`, { username: `${spouseUsername}#${spouse.user.discriminator}` })
+          ? language(`leveling/profile:MARRIED`, { username: `${spouseUsername}#${spouse.discriminator}` })
           : language(`leveling/profile:NOT_MARRIED`),
         45,
         375,
