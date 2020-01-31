@@ -4,6 +4,14 @@ import GamerEmbed from '../structures/GamerEmbed'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 
+const feedbackEmojis = [
+  constants.emojis.voteup,
+  constants.emojis.votedown,
+  constants.emojis.mailbox,
+  constants.emojis.greenTick,
+  constants.emojis.redX
+]
+
 export default class {
   Gamer: GamerClient
 
@@ -27,15 +35,7 @@ export default class {
 
     // Create all reactions and then react to the message sent in the feedback channel
     // Permissions are checked in the bug command so we should be good to react
-    const emojis = needsApproval
-      ? [
-          settings.feedback.bugs.emojis.up,
-          settings.feedback.bugs.emojis.down,
-          constants.emojis.mailbox,
-          constants.emojis.greenTick,
-          constants.emojis.redX
-        ]
-      : [constants.emojis.greenTick, constants.emojis.redX]
+    const emojis = needsApproval ? feedbackEmojis : [constants.emojis.greenTick, constants.emojis.redX]
 
     const reactions = emojis.map((emoji: string) => this.Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
     for (const reaction of reactions) if (reaction) await feedback.addReaction(reaction)
@@ -82,15 +82,7 @@ export default class {
 
     // Create all reactions and then react to the message sent in the feedback channel
     // Permissions are checked in the bug command so we should be good to react
-    const emojis = needsApproval
-      ? [
-          settings.feedback.bugs.emojis.up,
-          settings.feedback.bugs.emojis.down,
-          constants.emojis.mailbox,
-          constants.emojis.greenTick,
-          constants.emojis.redX
-        ]
-      : [constants.emojis.greenTick, constants.emojis.redX]
+    const emojis = needsApproval ? feedbackEmojis : [constants.emojis.greenTick, constants.emojis.redX]
 
     const reactions = emojis.map((emoji: string) => this.Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
     for (const reaction of reactions) if (reaction) await feedback.addReaction(reaction)

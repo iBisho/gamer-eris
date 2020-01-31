@@ -8,6 +8,13 @@ import nodefetch from 'node-fetch'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
+const feedbackEmojis = [
+  constants.emojis.voteup,
+  constants.emojis.votedown,
+  constants.emojis.mailbox,
+  constants.emojis.greenTick,
+  constants.emojis.redX
+]
 
 export default class extends Event {
   async execute(rawMessage: PossiblyUncachedMessage, emoji: ReactionEmoji, userID: string) {
@@ -353,12 +360,7 @@ export default class extends Event {
       return
 
     // Check if a valid emoji was used
-    const feedbackReactions = [constants.emojis.mailbox, constants.emojis.greenTick, constants.emojis.redX]
-    if (feedback.isBugReport)
-      feedbackReactions.push(guildSettings.feedback.bugs.emojis.down, guildSettings.feedback.bugs.emojis.up)
-    else feedbackReactions.push(guildSettings.feedback.idea.emojis.down, guildSettings.feedback.idea.emojis.up)
-
-    if (!feedbackReactions.includes(fullEmojiName)) return
+    if (!feedbackEmojis.includes(fullEmojiName)) return
 
     const reactorMember = message.member.guild.members.get(user.id)
     if (!reactorMember) return
@@ -439,14 +441,7 @@ export default class extends Event {
           )
           if (!approvedFeedback) return
 
-          const reactions = [
-            feedback.isBugReport ? guildSettings.feedback.bugs.emojis.up : guildSettings.feedback.idea.emojis.up,
-            feedback.isBugReport ? guildSettings.feedback.bugs.emojis.down : guildSettings.feedback.idea.emojis.down,
-            constants.emojis.questionMark,
-            constants.emojis.mailbox,
-            constants.emojis.greenTick,
-            constants.emojis.redX
-          ].map((emoji: string) => Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
+          const reactions = feedbackEmojis.map((emoji: string) => Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
           for (const reaction of reactions) if (reaction) await approvedFeedback.addReaction(reaction)
 
           feedback.id = approvedFeedback.id
@@ -521,13 +516,11 @@ export default class extends Event {
       default:
         // If the user is no longer in the server we dont need to grant any xp
         if (!feedbackMember) return
-        const downEmojis = [guildSettings.feedback.idea.emojis.down, guildSettings.feedback.bugs.emojis.down]
-        const upEmojis = [guildSettings.feedback.idea.emojis.up, guildSettings.feedback.bugs.emojis.up]
 
-        if (downEmojis.includes(fullEmojiName)) {
+        if (fullEmojiName === constants.emojis.votedown) {
           Gamer.helpers.levels.completeMission(reactorMember, `votefeedback`, reactorMember.guild.id)
           return Gamer.helpers.levels.removeXP(feedbackMember, 3)
-        } else if (upEmojis.includes(fullEmojiName)) {
+        } else if (fullEmojiName === constants.emojis.voteup) {
           Gamer.helpers.levels.completeMission(reactorMember, `votefeedback`, reactorMember.guild.id)
           return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
         }
