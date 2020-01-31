@@ -40,5 +40,5 @@ export default new Command([`mail`, `m`], async (message, args, context) => {
     return Gamer.helpers.mail.close(message, args.join(' '), guildSettings, mail)
   }
   // This allows mods to reply to mails
-  return Gamer.helpers.mail.replyToMail(message, content, mail)
+  return Gamer.helpers.mail.replyToMail(message, guildSettings, content, mail)
 })

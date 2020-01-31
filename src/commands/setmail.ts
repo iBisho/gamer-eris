@@ -32,6 +32,8 @@ export default new Command(`setmail`, async (message, args, context) => {
 
   if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
 
+  const channelID = message.channelMentions.length ? message.channelMentions[0] : message.channel.id
+
   switch (type.toLowerCase()) {
     case `enable`:
       if (settings.mails.enabled) return message.channel.createMessage(language(`settings/setmail:ALREADY_ENABLED`))
@@ -44,11 +46,14 @@ export default new Command(`setmail`, async (message, args, context) => {
       settings.save()
       return message.channel.createMessage(language(`settings/setmail:DISABLED`))
     case `channel`:
-      const channelID = message.channelMentions.length ? message.channelMentions[0] : message.channel.id
       settings.mails.supportChannelID = channelID
       Gamer.guildSupportChannelIDs.set(message.guildID, channelID)
       settings.save()
       return message.channel.createMessage(language(`settings/setmail:SUPPORT_CHANNEL_SET`))
+    case `logs`:
+      settings.mails.logChannelID = channelID
+      settings.save()
+      return message.channel.createMessage(language(`settings/setmail:LOG_CHANNEL_SET`))
     case `roles`:
       if (!validRoleIDs.length) return message.channel.createMessage(language(`settings/setmail:NEED_ROLES`))
       for (const id of validRoleIDs) {

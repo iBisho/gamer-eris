@@ -80,6 +80,7 @@ export interface GuildSettings extends mongoose.Document {
     categoryID: string | undefined
     enabled: boolean
     supportChannelID: string | undefined
+    logChannelID: string
   }
   staff: {
     adminRoleID: string | undefined

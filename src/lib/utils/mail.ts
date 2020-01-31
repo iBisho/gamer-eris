@@ -183,6 +183,8 @@ export default class {
 
     if (!user) message.delete().catch(() => undefined)
 
+    this.logMail(guildSettings, embed)
+
     const response = await message.channel.createMessage(language(`mails/mail:CREATED`))
     return setTimeout(() => response.delete().catch(() => undefined), 10000)
   }
@@ -241,9 +243,11 @@ export default class {
       if (!role) continue
       role.edit({ mentionable: false })
     }
+
+    this.logMail(guildSettings, embed)
   }
 
-  async replyToMail(message: Message, content: string, mail: GamerMail) {
+  async replyToMail(message: Message, guildSettings: GuildSettings | null, content: string, mail: GamerMail) {
     if (!message.guildID || !message.member) return
 
     const tag = await this.Gamer.database.models.tag.findOne({
@@ -286,6 +290,8 @@ export default class {
         // Show the tag sent to the mods
         message.channel.createMessage({ content: embed.plaintext, embed: embed })
         success = true
+
+        this.logMail(guildSettings, embed)
       } catch (error) {
         // Something went wrong somewhere so show it failed
         return message.channel.createMessage(language(`mails/mail:DM_FAILED`, { name: tag.name }))
@@ -318,6 +324,7 @@ export default class {
       return message.channel.createMessage(language(`mails/mail:DM_FAILED`))
     }
 
+    this.logMail(guildSettings, embed)
     // Reset the embeds fields
     embed.code.fields = []
 
@@ -389,6 +396,7 @@ export default class {
 
     const channel = message.channel as GuildChannel
     channel.delete(language(`mails/mail:CHANNEL_DELETE_REASON`, { user: encodeURIComponent(message.author.username) }))
+    this.logMail(guildSettings, dmEmbed)
 
     if (!guildSettings?.moderation.logs.modlogsChannelID) return
 
@@ -410,5 +418,21 @@ export default class {
       .setFooter(message.author.username)
       .setTimestamp()
     return modlogChannel.createMessage({ embed: logEmbed.code })
+  }
+
+  logMail(guildSettings: GuildSettings | null, embed: GamerEmbed) {
+    if (!guildSettings?.mails.logChannelID) return
+
+    const channel = this.Gamer.getChannel(guildSettings.mails.logChannelID)
+    if (!channel || !(channel instanceof TextChannel)) return
+
+    const hasPerms = this.Gamer.helpers.discord.checkPermissions(channel, this.Gamer.user.id, [
+      'readMessages',
+      'sendMessages',
+      'embedLinks'
+    ])
+    if (!hasPerms) return
+
+    channel.createMessage({ embed: embed.code })
   }
 }

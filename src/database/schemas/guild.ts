@@ -41,7 +41,9 @@ export default new mongoose.Schema({
     // Whether the mail system is enabled or disabled
     enabled: Boolean,
     // Support channel can automatically create mails without needing to use commands. Better user experience.
-    supportChannelID: String
+    supportChannelID: String,
+    // The log channel where all mails will be sent.
+    logChannelID: String
   },
   staff: {
     // Dangerous permissions so we only should allow max of 1 role
