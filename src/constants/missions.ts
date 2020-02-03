@@ -21,6 +21,6 @@ export default [
   { amount: 5, commandName: `8ball`, title: `leveling/missions:8BALL`, reward: 30 },
   { amount: 1, commandName: `mines`, title: `leveling/missions:MINES`, reward: 20 },
   { amount: 10, commandName: `lmao`, title: `leveling/missions:LMAO`, reward: 30 },
-  { amount: 10, commandName: `slots`, title: `leveling/mission:SLOTS`, reward: 30 },
-  { amount: 1, commandName: `wallpost`, title: `leveling/mission:WALLPOST`, reward: 100 }
+  { amount: 10, commandName: `slots`, title: `leveling/missions:SLOTS`, reward: 30 },
+  { amount: 1, commandName: `wallpost`, title: `leveling/missions:WALLPOST`, reward: 100 }
 ]
