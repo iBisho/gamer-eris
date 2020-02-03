@@ -114,4 +114,6 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
       row3.join(' | ')
     ].join('\n')
   )
+
+  if (message.member && message.guildID) Gamer.helpers.levels.completeMission(message.member, 'slots', message.guildID)
 })
