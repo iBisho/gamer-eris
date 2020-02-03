@@ -41,22 +41,28 @@ export default new Command(`xpresetvoice`, async (message, args, context) => {
     return message.channel.createMessage(language(`leveling/xpresetvoice:MEMBER`, { member: member.mention }))
   }
 
-  // Find all members from this guild so we can loop those with edited settings only
-  const memberSettings = await Gamer.database.models.member.find({
-    guildID: message.guildID
-  })
+  if (!role) {
+    Gamer.database.models.member
+      .updateMany({ guildID: message.guildID, 'leveling.voicexp': { $gt: 0 } }, { voicexp: 0, voicelevel: 0 })
+      .exec()
+  } else {
+    // Find all members from this guild so we can loop those with edited settings only
+    const memberSettings = await Gamer.database.models.member.find({
+      'leveling.voicexp': { $gt: 0 },
+      guildID: message.guildID
+    })
 
-  // For every member reset his xp and level
-  for (const settings of memberSettings) {
-    // Since we already fetched members above we can just get() here
-    const member = message.member.guild.members.get(settings.memberID)
-    if (!member) continue
-    // If user is a bot OR a role is provided and this member doesnt have it skip
-    if (member.user.bot || (role && !member.roles.includes(role.id))) continue
+    // For every member reset his xp and level
+    for (const settings of memberSettings) {
+      const member = message.member.guild.members.get(settings.memberID)
+      if (!member) continue
+      // If user is a bot OR a role is provided and this member doesnt have it skip
+      if (member.user.bot || !member.roles.includes(role.id)) continue
 
-    settings.leveling.voicexp = 0
-    settings.leveling.voicelevel = 0
-    settings.save()
+      settings.leveling.voicexp = 0
+      settings.leveling.voicelevel = 0
+      settings.save()
+    }
   }
 
   return message.channel.createMessage(
