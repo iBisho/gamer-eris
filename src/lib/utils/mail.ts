@@ -355,7 +355,7 @@ export default class {
     if (!user) return
 
     // Delete the mail from the database
-    await this.Gamer.database.models.mail.deleteOne({ guildID: message.guildID, userID: mail.userID })
+    this.Gamer.database.models.mail.deleteOne({ guildID: message.guildID, userID: mail.userID }).exec()
 
     const dmEmbed = new GamerEmbed()
       .setAuthor(

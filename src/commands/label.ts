@@ -45,7 +45,7 @@ export default new Command(`label`, async (message, args, context) => {
       if (!labelToDelete)
         return Gamer.helpers.discord.embedResponse(message, language(`mails/label:INVALID_NAME`, { name }))
 
-      await Gamer.database.models.label.deleteOne({ name, guildID: message.guildID })
+      Gamer.database.models.label.deleteOne({ name, guildID: message.guildID }).exec()
       return Gamer.helpers.discord.embedResponse(message, language(`mails/label:DELETED`, { name }))
     case `create`:
       if (!name || !categoryID) return helpCommand.process(message, [`label`], context)

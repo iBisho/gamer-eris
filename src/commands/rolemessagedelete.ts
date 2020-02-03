@@ -24,6 +24,6 @@ export default new Command([`rolemessagedelete`, `rmd`], async (message, args, c
   const rolemessage = await Gamer.database.models.roleMessages.findOne({ roleID: role.id })
   if (!rolemessage) return message.channel.createMessage(language(`roles/rolemessagedelete:NONE_FOUND`))
 
-  await Gamer.database.models.roleMessages.deleteOne({ _id: rolemessage._id })
+  Gamer.database.models.roleMessages.deleteOne({ _id: rolemessage._id }).exec()
   return message.channel.createMessage(language(`roles/rolemessagedelete:DELETED`))
 })

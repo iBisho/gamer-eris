@@ -32,7 +32,7 @@ export default new Command(`setcapture`, async (message, args, context) => {
   if (reset) {
     if ([`reset`, language(`common:RESET`).toLowerCase()].includes(reset.toLowerCase())) {
       if (!gameSettings) return message.channel.createMessage(language('settings/setcapture:NOT_SETUP'))
-      await Gamer.database.models.tradingCard.deleteOne({ _id: gameSettings._id })
+      Gamer.database.models.tradingCard.deleteOne({ _id: gameSettings._id }).exec()
       return message.channel.createMessage(language(`settings/setcapture:RESET`))
     }
   }

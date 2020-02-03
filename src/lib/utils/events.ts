@@ -377,7 +377,7 @@ export default class {
           : undefined
       if (card) card.delete()
       // Deletes the event from the database
-      return this.Gamer.database.models.event.deleteOne({ _id: event._id })
+      return this.Gamer.database.models.event.deleteOne({ _id: event._id }).exec()
     }
 
     // add new event to events array to be sent to amplitude for product analytics
@@ -504,5 +504,36 @@ export default class {
         // Catch the promise from dmchannel
         .catch(() => undefined)
     }
+  }
+
+  async processReminders() {
+    const now = Date.now()
+    const reminders = await this.Gamer.database.models.reminder.find({ timestamp: { $lt: now } })
+    if (!reminders.length) return
+
+    reminders.forEach(reminder => {
+      const channel = this.Gamer.getChannel(reminder.channelID)
+      if (!channel || !(channel instanceof TextChannel)) return
+
+      const user = this.Gamer.users.get(reminder.userID)
+      if (!user) return
+
+      const language = this.Gamer.getLanguage(reminder.guildID)
+      const embed = new GamerEmbed()
+        .setAuthor(user.username, user.avatarURL)
+        .setDescription(reminder.content)
+        .setFooter(language(`events/remind:REMINDING`, { id: reminder.id }))
+
+      channel.createMessage({ content: this.Gamer.helpers.discord.idsToUserTag([reminder.userID]), embed: embed.code })
+
+      if (reminder.recurring && reminder.interval) {
+        while (reminder.timestamp < now) reminder.timestamp = reminder.timestamp + reminder.interval
+        reminder.save()
+        return
+      }
+
+      // Delete the reminder if it is not recurring
+      this.Gamer.database.models.reminder.deleteOne({ _id: reminder._id }).exec()
+    })
   }
 }

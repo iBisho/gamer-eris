@@ -15,7 +15,7 @@ export default new Command(`divorce`, async (message, _args, context) => {
   if (!marriageData)
     return message.channel.createMessage(language('fun/divorce:NOT_MARRIED', { mention: message.author.mention }))
 
-  await Gamer.database.models.marriage.deleteOne({ _id: marriageData._id })
+  Gamer.database.models.marriage.deleteOne({ _id: marriageData._id }).exec()
 
   // This is a solo marriage simulation that has not been accepted so we can simply delete
   if (marriageData.authorID === message.author.id && !marriageData.accepted)

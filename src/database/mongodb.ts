@@ -14,6 +14,7 @@ import MemberSchema from './schemas/member'
 import MissionSchema from './schemas/mission'
 import ModlogSchema from './schemas/modlog'
 import ReactionRoleSchema from './schemas/reactionrole'
+import ReminderSchema, { GamerReminder } from './schemas/reminder'
 import RolesetSchema from './schemas/roleset'
 import RoleMessageSchema, { GamerRoleMessage } from './schemas/rolemessage'
 import ShortcutSchema, { GamerShortcut } from './schemas/shortcut'
@@ -60,6 +61,7 @@ class Database {
     mission: mongoose.model<GamerMission>('Mission', MissionSchema),
     modlog: mongoose.model<GamerModlog>('Modlog', ModlogSchema),
     reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),
+    reminder: mongoose.model<GamerReminder>('Reminder', ReminderSchema),
     roleMessages: mongoose.model<GamerRoleMessage>('RoleMessage', RoleMessageSchema),
     roleset: mongoose.model<GamerRoleset>('Roleset', RolesetSchema),
     shortcut: mongoose.model<GamerShortcut>('Shortcut', ShortcutSchema),

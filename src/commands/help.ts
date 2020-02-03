@@ -113,7 +113,9 @@ const categories = [
       `eventkick`,
       `eventleave`,
       `events`,
-      `eventshow`
+      `eventshow`,
+      `remind`,
+      `reminddelete`
     ]
   },
   {

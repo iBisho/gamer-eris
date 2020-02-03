@@ -20,7 +20,7 @@ export default new Command([`removemodlog`, `rml`], async (message, args, contex
   const modlogID = parseInt(id, 10)
   if (!id) return message.channel.createMessage(language(`moderation/removemodlog:NOT_FOUND`, { id: modlogID }))
 
-  Gamer.database.models.modlog.deleteOne({ guildID: message.guildID, modlogID })
+  Gamer.database.models.modlog.deleteOne({ guildID: message.guildID, modlogID }).exec()
 
   return message.channel.createMessage(language(`moderation/removemodlog:REMOVED`, { id: modlogID }))
 })

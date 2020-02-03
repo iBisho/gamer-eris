@@ -13,7 +13,7 @@ export default class extends Event {
       // Check if this channel was a mail channel
       const mailChannel = await Gamer.database.models.mail.findOne({ id: channel.id })
       // If it was a mail channel delete it
-      if (mailChannel) await Gamer.database.models.mail.deleteOne({ _id: mailChannel._id })
+      if (mailChannel) Gamer.database.models.mail.deleteOne({ _id: mailChannel._id }).exec()
 
       // Check if this channel was a channel with an event card
       const events = await Gamer.database.models.event.find({ adChannelID: channel.id })

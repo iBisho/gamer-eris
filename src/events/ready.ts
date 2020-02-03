@@ -136,15 +136,16 @@ export default class extends Event {
       }
     }, milliseconds.SECOND)
 
-    // Process all gamer events once per minute
-    setInterval(() => Gamer.helpers.events.process(), milliseconds.MINUTE)
-
-    // Process all mutes
-    setInterval(() => Gamer.helpers.moderation.processMutes(), milliseconds.MINUTE)
+    // All processes that need to be run every minute
+    setInterval(() => {
+      Gamer.helpers.events.process()
+      Gamer.helpers.events.processReminders()
+      Gamer.helpers.moderation.processMutes()
+    }, milliseconds.MINUTE)
 
     // Begin fetching manga
     setInterval(() => fetchLatestManga(), milliseconds.MINUTE * 30)
-    fetchLatestManga()
+
     // Run the Trading Card Interval every 20 minutes
     setInterval(async () => {
       const cardSettings = await Gamer.database.models.tradingCard.find()

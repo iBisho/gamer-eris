@@ -40,7 +40,7 @@ export default new Command([`eventdelete`, `ed`], async (message, args, context)
   if (eventMessage) eventMessage.delete().catch(() => undefined)
 
   // Delete the event itself from the database
-  await Gamer.database.models.event.deleteOne({ _id: event._id })
+  Gamer.database.models.event.deleteOne({ _id: event._id }).exec()
   // Let the user know it was deleted
   return message.channel.createMessage(language(`events/eventdelete:DELETE`, { id: event.id }))
 })
