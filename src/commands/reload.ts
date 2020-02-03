@@ -23,7 +23,7 @@ export default new Command('reload', async (message, args, context) => {
   if (!args.length || args.includes('monitors')) Gamer.reloadDirectory('monitors', Gamer.monitors)
   if (!args.length || args.includes('events')) {
     // First remove all existing event listeneres
-    Gamer.events.forEach(e => Gamer.removeListener(e.name, e.execute))
+    Gamer.events.forEach(e => Gamer.removeListener(e.name, e.execute.bind(e)))
     Gamer.reloadDirectory('events', Gamer.events)
     // Add the events listeners back
     Gamer.events.forEach(e => Gamer.on(e.name, e.execute.bind(e)))

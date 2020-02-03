@@ -58,6 +58,7 @@ export default new Command(`xpresetvoice`, async (message, args, context) => {
       if (!member) continue
       // If user is a bot OR a role is provided and this member doesnt have it skip
       if (member.user.bot || !member.roles.includes(role.id)) continue
+      if (!settings.leveling.voicexp || settings.leveling.voicexp < 1) continue
 
       settings.leveling.voicexp = 0
       settings.leveling.voicelevel = 0

@@ -5,9 +5,9 @@ import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`urban`, async (message, args, context) => {
-  const Gamer = context.client as GamerClient
-  // if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel) return
+  if (!message.guildID) return
 
+  const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
   // Check all permissions before running command
