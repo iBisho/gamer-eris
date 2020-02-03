@@ -21,5 +21,6 @@
   "MUTE_ROLE_REASON": "Edited permissions to hide access to this channel for mute role.",
   "NEED_MUTE_ROLE": "The mute role was not able to be found. You must first set up the mute system, with the **setmute** command.",
   "NEED_REASON": "You must provide a reason in order to mute the user.",
-  "TITLE": "{{username}}, you have been **MUTED** from [{{guildName}}]"
+  "TITLE": "{{username}}, you have been **MUTED** from [{{guildName}}]",
+  "NEED_USER": "You did not provide a user to mute."
 }
