@@ -21,11 +21,16 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   )
     return
 
-  const [userID, ...text] = args
+  let [userID] = args
+  args.shift()
+
+  if (userID.startsWith('<@!')) userID = userID.substring(3, userID.length - 1)
+  else if (userID.startsWith('<@')) userID = userID.substring(2, userID.length - 1)
 
   const user = Gamer.users.get(userID) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`moderation/warn:NEED_USER`))
-  const reason = text.join(` `)
+
+  const reason = args.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/warn:NEED_REASON`))
 
   const member = message.member.guild.members.get(user.id)
