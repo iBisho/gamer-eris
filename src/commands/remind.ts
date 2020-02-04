@@ -39,7 +39,7 @@ export default new Command(
       userID: message.author.id,
       recurring,
       content: args.join(' '),
-      timestamp: startNow,
+      timestamp: Date.now() + startNow,
       interval
     })
   }
