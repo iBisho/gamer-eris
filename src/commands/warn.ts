@@ -11,6 +11,8 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
 
   const language = Gamer.getLanguage(message.guildID)
 
+  if (!args.length) return message.channel.createMessage(language(`moderation/warn:NEED_USER`))
+
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.guildID
   })
@@ -23,7 +25,6 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
 
   let [userID] = args
   args.shift()
-
   if (userID.startsWith('<@!')) userID = userID.substring(3, userID.length - 1)
   else if (userID.startsWith('<@')) userID = userID.substring(2, userID.length - 1)
 
