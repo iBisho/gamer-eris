@@ -32,7 +32,7 @@ export default class extends Event {
 
     // Nickname changed
 
-    if (guildSettings && member.nick !== oldMember.nick && guildSettings.moderation.logs.serverlogs.members.channelID) {
+    if (member.nick !== oldMember.nick && guildSettings?.moderation.logs.serverlogs.members.channelID) {
       embed.addField(language(`moderation/logs:NICKNAME`), `${oldMember.nick} **=>** ${member.nick}`, true)
 
       const logs = guildSettings.moderation.logs
