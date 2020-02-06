@@ -4,7 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import Constants from '../constants/index'
 
 const categories = [
-  { name: `basic`, commands: [`help`, `ping`, `invite`, `server`, `user`] },
+  { name: `basic`, commands: [`help`, `ping`, `invite`, `server`, `upvote`, `user`] },
   {
     name: `fun`,
     commands: [

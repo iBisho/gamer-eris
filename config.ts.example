@@ -1,5 +1,10 @@
 export default {
   token: 'Bot_Token_Here',
+  topgg: {
+    auth: 'SECRET',
+    port: 3000
+    token: 'TOP_GG_TOKEN',
+  },
   defaultPrefix: '!',
   mongoConnectionString: 'CONNECTION_STRING',
   hooks: {

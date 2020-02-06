@@ -8,6 +8,7 @@ import constants from './constants'
 import HooksServices from './services/hooks'
 
 import TwitchService from './services/twitch/index'
+import TopGGAPI from 'dblapi.js'
 
 // Initiate hooks service
 HooksServices(config.hooks.port)
@@ -55,6 +56,24 @@ const Gamer = new GamerClient({
   //   'directMessages'
   // ]
 })
+
+// Create top.gg botlist configuration
+new TopGGAPI(config.topgg.token, Gamer).on('posted', () => Gamer.helpers.logger.green(`Server stats updated on Top.GG`))
+
+// TODO: Remove ts-ignores once they merge my pr fixing the typings
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+// TopGG.webhook
+//   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+//   // @ts-ignore
+//   .on('ready', hook => {
+//     Gamer.helpers.logger.green(`Top.GG Webhook running at http://${hook.hostname}:${hook.port}${hook.path}`)
+//   })
+// // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// // @ts-ignore
+// TopGG.webhook.on('vote', vote => {
+//   Gamer.helpers.logger.green(`User with ID ${vote.user} just voted!`)
+// })
 
 Gamer.globalCommandRequirements = {
   async custom(message, _args, context) {
@@ -148,7 +167,7 @@ for (const [name, event] of Gamer.events) Gamer.on(name, event.execute.bind(even
 process.on('unhandledRejection', error => {
   // Don't send errors for non production bots
   // Check !Gamer incase the errors are before bots ready
-  if (!Gamer || Gamer.user.id !== constants.general.gamerID) return console.error(error)
+  if (Gamer.user?.id !== constants.general.gamerID) return console.error(error)
   // An unhandled error occurred on the bot in production
   console.error(error || `An unhandled rejection error occurred but error was null or undefined`)
 

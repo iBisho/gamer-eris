@@ -1,9 +1,10 @@
 import fastifyBuilder from 'fastify'
 import twitchRouters from './../twitch/hooks'
 import helmet from 'fastify-helmet'
+import topGGRouter from '../topgg'
 
 const fastify = fastifyBuilder({
-  logger: false
+  logger: true
 })
 
 fastify.register(helmet, {
@@ -14,6 +15,7 @@ fastify.register(helmet, {
 })
 
 fastify.register(twitchRouters, { prefix: '/twitch' })
+fastify.register(topGGRouter)
 
 export default (port: number) => {
   fastify.listen(port || 3000, '0.0.0.0')
