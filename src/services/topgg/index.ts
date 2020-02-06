@@ -17,14 +17,15 @@ const topGGRouter: TopGGRouter = (fastify, _opts, done) => {
     //   query: '?test=data&notRandomNumber=8',
     //   isWeekend: false
     //   },
-
+    const now = Date.now()
     const votesMade = req.body.isWeekend ? 2 : 1
     const upvote = await database.models.upvote.findOne({ userID: req.body.user })
 
     if (upvote) {
       upvote.amount += votesMade
+      upvote.timestamp = now
       upvote.save()
-    } else database.models.upvote.create({ userID: req.body.user, amount: votesMade })
+    } else database.models.upvote.create({ userID: req.body.user, amount: votesMade, timestamp: now })
   })
 
   done()
