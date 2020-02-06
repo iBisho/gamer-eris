@@ -4,7 +4,7 @@ import helmet from 'fastify-helmet'
 import topGGRouter from '../topgg'
 
 const fastify = fastifyBuilder({
-  logger: true
+  logger: false
 })
 
 fastify.register(helmet, {

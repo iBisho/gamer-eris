@@ -22,6 +22,7 @@ import SubscriptionSchema, { GamerSubscription } from './schemas/subscription'
 import SurveySchema from './schemas/survey'
 import TagSchema from './schemas/tag'
 import TradingCardSchema from './schemas/tradingCard'
+import UpvoteSchema from './schemas/upvote'
 import UserSchema from './schemas/user'
 import { GuildSettings, UserSettings, MemberSettings } from '../lib/types/settings'
 
@@ -40,6 +41,7 @@ import {
   GamerMission
 } from '../lib/types/gamer'
 import { GamerManga } from './schemas/manga'
+import { GamerUpvote } from './schemas/upvote'
 
 const connectionString = config.mongoConnectionString
 
@@ -69,6 +71,7 @@ class Database {
     survey: mongoose.model('Survey', SurveySchema),
     tag: mongoose.model<GamerTag>('Tag', TagSchema),
     tradingCard: mongoose.model<GamerTradingCard>('TradingCards', TradingCardSchema),
+    upvote: mongoose.model<GamerUpvote>('Upvote', UpvoteSchema),
     user: mongoose.model<UserSettings>('User', UserSchema)
   }
 
