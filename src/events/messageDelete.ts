@@ -28,6 +28,9 @@ export default class extends Event {
       ? message.channel.guild.channels.get(logs.publiclogsChannelID)
       : undefined
 
+    const botMember = message.channel.guild.members.get(Gamer.user.id)
+    if (!botMember?.permission.has('viewAuditLogs')) return
+
     const auditlogs = await message.channel.guild.getAuditLogs(
       undefined,
       undefined,

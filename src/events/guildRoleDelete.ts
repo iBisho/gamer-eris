@@ -31,6 +31,9 @@ export default class extends Event {
       }
     }
 
+    const botMember = guild.members.get(Gamer.user.id)
+    if (!botMember?.permission.has('viewAuditLogs')) return
+
     // Fetch the auditlogs and add the author to the embed of the one who made the role and the reason it was made.
     const auditlogs = await guild.getAuditLogs(undefined, undefined, Constants.AuditLogActions.ROLE_DELETE)
     if (auditlogs) {
