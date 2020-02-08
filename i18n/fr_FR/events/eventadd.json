@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Ajoutez un membre à l'évènement!",
+  "EXTENDED": "$t(events/eventadd:EXTENDED_LINE_1)\n$t(events/eventadd:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}eventadd [ID évènement] [@membre]** ~ Ajoute un membre à l'évènement spécifié.",
+  "EXTENDED_LINE_2": "**{{prefix}}eventadd [ID évènement] [@Rôle]** ~ Ajoute tous les membres avec le rôle spécifié à l'évènement spécifié.",
+  "USAGE": "{{prefix}}eventjoin [ID évènement] [@membre | @rôle]",
+  "ALIASES": "{{prefix}}eadd",
+  "PATIENCE": "Veuillez patienter pendant l'ajout des membres à l'évènement. Plus la liste des membres est longue, plus le temps nécessaire sera grand. Un message s'affichera quand les membres auront été ajoutés.",
+  "ADDED": "{{mention}}, tous les membres ont été ajoutés comme **Participant** à cet évènement."
+}
