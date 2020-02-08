@@ -1,0 +1,15 @@
+{
+	"DESCRIPTION": "¡Vota por el bot para conseguir increíbles recompensas!",
+	"EXTENDED": "$t(basic/upvote:EXTENDED_LINE_1)\n$t(basic/upvote:EXTENDED_LINE_2)\n\n$t(basic/upvote:EXTENDED_LINE_3)\n$t(basic/upvote:EXTENDED_LINE_4)\n$t(basic/upvote:EXTENDED_LINE_5)\n$t(basic/upvote:EXTENDED_LINE_6)\n\n$t(basic/upvote:EXTENDED_LINE_7)",
+	"EXTENDED_LINE_1": "**{{prefix}}upvote** ~ Consigue el enlace para votar por el bot Gamer. Crea un recordatorio cada 12 horas para votar de nuevo y que puedas conseguir recompensas increíbles.",
+	"EXTENDED_LINE_2": "Después de votar, te llegarán las siguientes recompensas:",
+	"EXTENDED_LINE_3": "- 5 misiones en lugar de 3 misiones. `(Requerido: 1 Voto/Semana)`",
+	"EXTENDED_LINE_4": "- Reclama las recompensas de voto automáticamente. `(Requerido: 3 votos/semana)`",
+	"EXTENDED_LINE_5": "- 2X XP Potenciador. `(Requerido: 3 votos/semana)`",
+	"EXTENDED_LINE_6": "- Racha de votos de 7 días `(Requerido: 20 Votos por semana)` = **GRATIS 1 Semana VIP**",
+	"EXTENDED_LINE_7": "¡Los Viernes, Sábados y Domingos dan DOBLE votos! ¡No te los pierdas!",
+	"USAGE": "{{prefix}}upvote",
+	"ALIASES": "{{prefix}}vote",
+	"CLICK_HERE": "¡Haz click Aquí y desbloquea las recompensas!",
+	"REWARDS": "Posición de texto para las recompensas."
+}
