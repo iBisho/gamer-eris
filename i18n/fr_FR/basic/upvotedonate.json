@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Donner des votes à un membre.",
+	"EXTENDED": "**{{prefix}}upvotedonate 10 [@membre]** ~ Donnez vos votes à un autre membre. Vous pouvez l'utiliser pour regrouper les votes d'un administrateur qui peut ensuite déverrouiller les fonctionnalités VIP pour votre serveur.",
+	"USAGE": "{{prefix}}upvotedonate [quantité] [@membre]",
+	"ALIASES": "{{prefix}}votedonate",
+	"NEED_USER": "Vous n'avez pas spécifié de membre à qui donner vos votes.",
+	"NOT_SELF": "Tu ne peux pas t'en donner toi-même hahaha! Si bête!!",
+	"VOTE_FIRST": "Pour pouvoir donner des votes, les deux personnes concernée doivent avoir au minimum 1 vote.",
+	"DONATED": "Merci d'avoir donner vos votes!"
+}
