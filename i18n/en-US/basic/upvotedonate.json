@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Donate your votes to another user.",
+	"EXTENDED": "**{{prefix}}upvotedonate 10 [@User]** ~ Donate your votes to another user. You can use this to aggregate votes for an admin who can then unlock VIP features for your server.",
+	"USAGE": "{{prefix}}upvotedonate [amount] [@User]",
+	"ALIASES": "{{prefix}}votedonate",
+	"NEED_USER": "You did not provide a user to whom you wish to donate to.",
+	"NOT_SELF": "You can not donate to yourself hahaha. So silly!",
+	"VOTE_FIRST": "In order to donate, both you and the user must have atleast 1 vote.",
+	"DONATED": "Thank you for donating your votes!"
+}

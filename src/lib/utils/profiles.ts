@@ -93,7 +93,6 @@ export default class {
       Constants.levels.find(lev => lev.level === (serverLevelDetails?.level || 0) - 1) || constants.levels[0]
     const previousGlobalLevelDetails =
       Constants.levels.find(lev => lev.level === (globalLevelDetails?.level || 0) - 1) || constants.levels[0]
-
     if (!serverLevelDetails || !globalLevelDetails || !previousServerLevelDetails || !previousGlobalLevelDetails) return
 
     const memberLevel = serverLevelDetails.level

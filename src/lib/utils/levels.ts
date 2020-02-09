@@ -1,6 +1,7 @@
 import { Member } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
+import { milliseconds } from '../types/enums/time'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -228,8 +229,15 @@ export default class {
   }
 
   async completeMission(member: Member, commandName: string, guildID: string) {
+    const upvoted = await this.Gamer.database.models.upvote.findOne({
+      userID: member.id,
+      timestamp: { $gt: Date.now() - milliseconds.HOUR * 12 }
+    })
     // Check if this is a daily mission from today
-    const mission = this.Gamer.missions.find(m => m.commandName === commandName)
+    const mission = this.Gamer.missions.find((m, index) => {
+      if (index > 2 && !upvoted) return
+      return m.commandName === commandName
+    })
     if (!mission) return
 
     // Find the data for this user regarding this mission or make it for them

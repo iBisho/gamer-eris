@@ -16,28 +16,30 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   if (!buffer) return
 
   const fileName = `profile.jpg`
+  const UNLOCK = language('leveling/profile:UNLOCK', {
+    prefix: Gamer.guildPrefixes.get(message.guildID) || Gamer.prefix
+  })
 
-  const missionData = await Gamer.database.models.mission.find({
-    userID: member.id
+  const missionData = await Gamer.database.models.mission.find({ userID: member.id })
+  const upvote = await Gamer.database.models.upvote.findOne({
+    userID: member.id,
+    timestamp: { $gt: message.timestamp - milliseconds.HOUR * 12 }
+  })
+
+  const missions = Gamer.missions.map((mission, index) => {
+    if (index > 2 && !upvote) return `${constants.emojis.questionMark} || ${UNLOCK} ||`
+    const relevantMission = missionData.find(m => m.commandName === mission.commandName)
+    if (!relevantMission) return `0 / ${mission.amount} : ${language(mission.title)} **[${mission.reward}] XP**`
+
+    if (!relevantMission.completed)
+      return `${relevantMission.amount} / ${mission.amount} : ${language(mission.title)} **[${mission.reward}] XP**`
+
+    return `${constants.emojis.success}: ${language(mission.title)} **[${mission.reward}] XP**`
   })
 
   const embed = new GamerEmbed()
     .setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
-    .setDescription(
-      Gamer.missions
-        .map(mission => {
-          const relevantMission = missionData.find(m => m.commandName === mission.commandName)
-          if (!relevantMission) return `0 / ${mission.amount} : ${language(mission.title)} **[${mission.reward}] XP**`
-
-          if (!relevantMission.completed)
-            return `${relevantMission.amount} / ${mission.amount} : ${language(mission.title)} **[${
-              mission.reward
-            }] XP**`
-
-          return `${constants.emojis.greenTick}: ${language(mission.title)} **[${mission.reward}] XP**`
-        })
-        .join('\n')
-    )
+    .setDescription(missions.join('\n'))
     .attachFile(buffer, fileName)
     .setFooter(
       language(`leveling/profile:NEW_IN`, {
@@ -60,11 +62,8 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   })
 
   const backgroundID = userSettings?.profile.backgroundID || 1
-
   const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === backgroundID)
-
   const isDefaultBackground = backgroundData && backgroundData.name === constants.profiles.defaultBackground
-
   const hasPermission = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
     `addReactions`,
     `externalEmojis`,

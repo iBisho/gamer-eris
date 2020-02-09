@@ -5,6 +5,7 @@
   "ALIASES": "{{prefix}}slotmachine",
   "NOT_ENOUGH_CURRENCY": "Você não possui moedas Gamer suficientes para fazer uma aposta tão grande.",
   "LOSER": "Aww, você não ganhou no caça-níqueis. Você perdeu 1 {{emoji}} moeda.",
+  "LOSER_MULTI": "Aww, você não ganhou no caça-níqueis. Você perdeu 2 {{emoji}} moedas.",
   "FREEBIE": "Infelizmente você não ganhou. Você recebeu uma moeda de {{emoji}}. Anime-se e tente novamente!",
   "WINNER_PARTIAL": "🎉 Parabéns, você tem 2 dos mesmos slots. Você recebeu {{amount}} {{emoji}}. 🎉",
   "WINNER_FULL": "🎉🎉🎉 VENCEDOR! VENCEDOR! VENCEDOR! Você acabou de ganhar {{amount}} {{emoji}}. 🎉🎉🎉",

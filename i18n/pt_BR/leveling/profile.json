@@ -17,5 +17,7 @@
   "LEVEL": "NÍVEL",
   "NOT_MARRIED": "Solteiro",
   "MARRIED": "Apaixonado por: {{username}}",
-  "COINS": "Moedas: {{amount}}"
+  "COINS": "Moedas: {{amount}}",
+  "NEED_ATTACH_FILE": "{{mention}}, desculpe, não foi possível enviar seu perfil porque não tenho a permissão para anexar arquivos.",
+  "UNLOCK": "Desbloqueie mais com **{{prefix}}upvote**"
 }

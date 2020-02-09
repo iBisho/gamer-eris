@@ -23,9 +23,18 @@ const topGGRouter: TopGGRouter = (fastify, _opts, done) => {
 
     if (upvote) {
       upvote.amount += votesMade
+      upvote.weeklyCount += votesMade
       upvote.timestamp = now
+      upvote.luckySlots += 50
       upvote.save()
-    } else database.models.upvote.create({ userID: req.body.user, amount: votesMade, timestamp: now })
+    } else
+      database.models.upvote.create({
+        userID: req.body.user,
+        amount: votesMade,
+        timestamp: now,
+        weeklyCount: votesMade,
+        luckySlots: 50
+      })
   })
 
   done()

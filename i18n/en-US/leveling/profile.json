@@ -18,5 +18,6 @@
 	"NOT_MARRIED": "Not Married",
 	"MARRIED": "In Love With: {{username}}",
 	"COINS": "Coins: {{amount}}",
-	"NEED_ATTACH_FILE": "{{mention}}, sorry I was unable to send your profile because I am missing Attach Files permission."
+	"NEED_ATTACH_FILE": "{{mention}}, sorry I was unable to send your profile because I am missing Attach Files permission.",
+	"UNLOCK": "Unlock more with **{{prefix}}upvote**"
 }

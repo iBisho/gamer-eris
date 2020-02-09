@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Doe seus votos para outro usuário.",
+	"EXTENDED": "**{{prefix}}upvotedonate 10 [@Usario]** ~ Doe seus votos para outro usuário. Você pode usá-lo para agregar votos a um administrador que poderá desbloquear os recursos VIP do seu servidor.",
+	"USAGE": "{{prefix}}upvotedonate [quantidade] [@Usuário]",
+	"ALIASES": "{{prefix}}votedonate",
+	"NEED_USER": "Você não forneceu um usuário para quem deseja doar.",
+	"NOT_SELF": "Você não pode doar para si mesmo hahaha. Tão bobo!",
+	"VOTE_FIRST": "Para doar, você e o usuário devem ter pelo menos 1 voto.",
+	"DONATED": "Obrigado por doar seus votos!"
+	}

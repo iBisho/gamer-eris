@@ -60,21 +60,6 @@ const Gamer = new GamerClient({
 // Create top.gg botlist configuration
 new TopGGAPI(config.topgg.token, Gamer).on('posted', () => Gamer.helpers.logger.green(`Server stats updated on Top.GG`))
 
-// TODO: Remove ts-ignores once they merge my pr fixing the typings
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-// TopGG.webhook
-//   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-//   // @ts-ignore
-//   .on('ready', hook => {
-//     Gamer.helpers.logger.green(`Top.GG Webhook running at http://${hook.hostname}:${hook.port}${hook.path}`)
-//   })
-// // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// // @ts-ignore
-// TopGG.webhook.on('vote', vote => {
-//   Gamer.helpers.logger.green(`User with ID ${vote.user} just voted!`)
-// })
-
 Gamer.globalCommandRequirements = {
   async custom(message, _args, context) {
     // DM should have necessary perms already

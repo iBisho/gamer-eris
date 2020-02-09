@@ -1,0 +1,22 @@
+{
+	"DESCRIPTION": "Vote no bot para obter recompensas incríveis!",
+	"EXTENDED": "$t(basic/upvote: EXTENDED_LINE_1)\n$t(basic/upvote: EXTENDED_LINE_2) \ n \ n $t(basic/upvote: EXTENDED_LINE_3)\n$t(basic/upvote: EXTENDED_LINE_4)\n$t(nota básica / votada: EXTENDED_LINE_5)\n$t(nota básica / votada: EXTENDED_LINE_6) \ n \ n $t(nota básica / votada: EXTENDED_LINE_7) ",
+	"EXTENDED_LINE_1": "** {{prefix}} upvote ** ~ Obtenha o link para upvote Gamer bot. Cria um lembrete para você a cada 12 horas para votar novamente, para que você possa desbloquear recompensas incríveis.",
+	"EXTENDED_LINE_2": "Depois de reivindicar seu voto positivo, você receberá as seguintes recompensas:",
+	"EXTENDED_LINE_3": "- 5 missões em vez de 3 missões.` (Obrigatório: 1 votação / semana) `",
+	"EXTENDED_LINE_4": "- Reivindique automaticamente recompensas upvote.` (Necessário: 3 votos / semana) `",
+	"EXTENDED_LINE_5": "- 2X XP Booster.` (Necessário: 3 votos / semana) `",
+	"EXTENDED_LINE_6": "- Faixa de votação de 7 dias` (obrigatório: 20 votos por semana) `= ** VIP GRÁTIS de 1 semana **",
+	"EXTENDED_LINE_7": "Sextas, sábados e domingos dão votos DUPLOS! Não perca!",
+	"USAGE": "{{prefix}} voto positivo",
+	"ALIASES": "{{prefix}} vote",
+	"CLICK_HERE": "Clique aqui para votar",
+	"RECOMPENSAS": "$t(básico / voto positivo: REWARDS_1) \ n \ n $t(básico / voto positivo: REWARDS_2)\n$t(básico / voto positivo: REWARDS_3)\n$t(básico / voto positivo: REWARDS_4) \ n \ n $t(básico / upvote: EXTENDED_LINE_7) ",
+	"REWARDS_1": "Votos da semana atual: {{amount}}",
+	"REWARDS_2": "1 voto / 12h - 5 missões em vez de 3 missões.",
+	"REWARDS_3": "1 voto / 12h - 50 slots. Sorte",
+	"REWARDS_4": "100 votos - ** VIP GRÁTIS de 1 semana **",
+	"REMINDER": "Lembre-se de fazer o upvote do bot e desbloquear recompensas incríveis! Use` {{prefix}} upvote`! Para desativar esse tipo de alerta ** ** {{prefix}} rememberdelete {{id}} ** ",
+	"TIME_LEFT": "Próximo voto em: {{time}}",
+	"VOTE_NOW": "Você pode votar agora!"
+	}

@@ -9,6 +9,7 @@ import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { fetchLatestManga } from '../services/manga'
+import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
 
 export default class extends Event {
   async execute() {
@@ -73,7 +74,7 @@ export default class extends Event {
       // Find 3 new random missions to use for today
       Gamer.missions = []
 
-      while (Gamer.missions.length < 3) {
+      while (Gamer.missions.length < 5) {
         const randomMission = constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))]
         if (!Gamer.missions.find(m => m.title === randomMission.title)) Gamer.missions.push(randomMission)
       }
@@ -143,6 +144,12 @@ export default class extends Event {
       Gamer.helpers.moderation.processMutes()
     }, milliseconds.MINUTE)
 
+    // All processes that need to be run every day
+    setInterval(() => {
+      weeklyVoteReset()
+      vipExpiredCheck()
+    }, milliseconds.DAY)
+
     // Begin fetching manga
     setInterval(() => fetchLatestManga(), milliseconds.MINUTE * 30)
 
@@ -209,6 +216,10 @@ export default class extends Event {
       }
     }, milliseconds.SECOND * 5)
 
+    // Everything below this is required in order to start the bot even though some are done in intervals
+
+    weeklyVoteReset()
+
     Gamer.helpers.logger.green(`Loading all tags into cache now...`)
     // Set the tags in cache
     const tags = await Gamer.database.models.tag.find()
@@ -221,7 +232,7 @@ export default class extends Event {
     // Always add the first mission on bootup to encourage users to add gamer to more servers
     Gamer.missions.push(constants.missions[0])
     // Add 2 more unique missions
-    while (Gamer.missions.length < 3) {
+    while (Gamer.missions.length < 5) {
       const randomMission = constants.missions[Math.floor(Math.random() * constants.missions.length)]
       if (!Gamer.missions.find(m => m.title === randomMission.title)) Gamer.missions.push(randomMission)
     }

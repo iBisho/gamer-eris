@@ -16,6 +16,7 @@ export default new Command(`daily`, async (message, _args, context) => {
   const cooldownID = `${message.author.id}.daily`
   const now = Date.now()
   const cooldown = Gamer.cooldowns.get(cooldownID)
+  // If they are on cooldown and the cooldown timestamp has not been over a day cancel the command
   if (cooldown)
     return message.channel.createMessage(
       language(`leveling/daily:COOLDOWN`, {

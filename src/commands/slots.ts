@@ -36,7 +36,7 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
   const emojis = []
 
   // This allows us to add as many emojis we want but the odds remain the same. More unique emojis help spam feel less spam and more users want to join gamer server to get access to those emojis.
-  while (emojis.length < 9) {
+  while (emojis.length < 10) {
     emojis.push(Gamer.helpers.utils.chooseRandom(allEmojis))
   }
 
@@ -53,14 +53,21 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
   const winningSet = new Set(row2)
   const topSet = new Set(row1)
   const bottomSet = new Set(row3)
+  const upvote = await Gamer.database.models.upvote.findOne({ userID: message.author.id })
+  const isLucky = upvote && upvote.luckySlots >= 1
 
   let response = 'fun/slots:LOSER'
   let finalAmount = 1
+  if (upvote && winningSet.size !== 3) upvote.luckySlots -= 1
 
   // If they lost all three are unique emojis
   if (winningSet.size === 3) {
     if (userSettings.leveling.currency > 0) {
-      userSettings.leveling.currency -= 1
+      if (userSettings.leveling.currency < 2) userSettings.leveling.currency -= 1
+      else {
+        userSettings.leveling.currency -= 2
+        response = 'fun/slots:LOSER_MULTI'
+      }
     } else {
       userSettings.leveling.currency += 1
       response = 'fun/slots:FREEBIE'
@@ -69,8 +76,9 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
   // If 2 of them were the same emoji
   else if (winningSet.size === 2) {
     response = 'fun/slots:WINNER_PARTIAL'
-    userSettings.leveling.currency += 10
-    finalAmount = 10
+    finalAmount = isLucky ? 3 : 1 * 10
+    userSettings.leveling.currency += finalAmount
+    if (upvote && isLucky) upvote.luckySlots -= 1
   }
   // If all three emojis are the same. WINNER!
   else {
@@ -80,27 +88,27 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
       // All 9 emojis are the same
       if (winningEmoji === [...topSet][0] && winningEmoji === [...bottomSet][0]) {
         response = 'fun/slots:WINNER_COMPLETE'
-        userSettings.leveling.currency += 5000
-        finalAmount = 5000
+        finalAmount = isLucky ? 3 : 1 * 5000
+        userSettings.leveling.currency += finalAmount
       }
       // The rows are different
       else {
         response = 'fun/slots:WINNER_LUCKY'
-        userSettings.leveling.currency += 1000
-        finalAmount = 1000
+        finalAmount = isLucky ? 3 : 1 * 1000
+        userSettings.leveling.currency += finalAmount
       }
     }
     // 2 rows were all the same emoji
     else if (bottomSet.size === 1 || topSet.size === 1) {
       response = 'fun/slots:WINNER_MULTIPLE'
-      userSettings.leveling.currency += 500
-      finalAmount = 500
+      finalAmount = isLucky ? 3 : 1 * 500
+      userSettings.leveling.currency += finalAmount
     }
     // Only one row was the same
     else {
       response = 'fun/slots:WINNER_FULL'
-      userSettings.leveling.currency += 100
-      finalAmount = 100
+      finalAmount = isLucky ? 3 : 1 * 100
+      userSettings.leveling.currency += finalAmount
     }
   }
 
