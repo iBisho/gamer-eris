@@ -1,0 +1,17 @@
+{
+	"DESCRIPTION": "Votez pour le bot pour recevoir des récompenses !",
+	"EXTENDED": "$t(basic/upvote:EXTENDED_LINE_1)\n$t(basic/upvote:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}upvote** ~ Recevez un lien pour pouvoir voter. Vous recevrez également un rappel toutes les 12heures quand vous pourrez re-voter.",
+	"EXTENDED_LINE_2": "Les votes comptent **DOUBLE** les vendredis, samedis et dimanches ! Ne les manquez pas!",
+	"USAGE": "{{prefix}}upvote",
+	"ALIASES": "{{prefix}}vote",
+	"CLICK_HERE": "__**Cliquez ici pour VOTER !**__ ",
+	"REWARDS": "$t(basic/upvote:REWARDS_1)\n\n$t(basic/upvote:REWARDS_2)\n$t(basic/upvote:REWARDS_3)\n$t(basic/upvote:REWARDS_4)\n\n$t(basic/upvote:EXTENDED_LINE_2)",
+	"REWARDS_1": "Votes hebdomadaire actuel: {{amount}}",
+	"REWARDS_2": "1 Vote / 12h - 5 missions au lieu de 3 missions.",
+	"REWARDS_3": "1 Vote / 12h - 50 Lucky **.slots**",
+	"REWARDS_4": "100 Votes - **Une semaine VIP GRATUIT**",
+	"REMINDER": "Pensez à voter pour le bot et recevez des récompenses! Utilisez `{{prefix}}upvote`. Pour désactiver cette alerte, faites **{{prefix}}reminddelete {{id}}**",
+	"TIME_LEFT": "Prochain vote dans: {{time}}",
+	"VOTE_NOW": "Votre vote est disponible!"
+}
