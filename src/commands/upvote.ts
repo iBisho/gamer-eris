@@ -19,7 +19,7 @@ export default new Command([`upvote`, `vote`], async (message, _args, context) =
   ])
 
   const millisecondsLeft = upvote
-    ? Gamer.helpers.transform.humanizeMilliseconds(Date.now() - (upvote?.timestamp + milliseconds.HOUR * 12))
+    ? Gamer.helpers.transform.humanizeMilliseconds(milliseconds.HOUR * 12 + upvote.timestamp - Date.now())
     : undefined
 
   const embed = new GamerEmbed()
