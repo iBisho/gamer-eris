@@ -34,7 +34,7 @@ export const vipExpiredCheck = async () => {
     )
   ]
 
-  usersIDsToReset.forEach(userID => {
+  usersIDsToReset.forEach(async userID => {
     const userSettings = await database.models.user.findOne({ userID })
     if (!userSettings) return
 
