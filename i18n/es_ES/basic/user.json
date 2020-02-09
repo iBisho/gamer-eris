@@ -1,0 +1,19 @@
+{
+	"DESCRIPTION": "Visualiza información de otros miembros.",
+	"EXTENDED": "$t(basic/user:EXTENDED_LINE_1)\n$t(basic/user:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}user** ~ Muestra tu información propia.",
+	"EXTENDED_LINE_2": "**{{prefix}}user @user** ~ Muestra información de otros miembros.",
+	"USAGE": "{{prefix}}user *[@user]*",
+	"ALIASES": "{{prefix}}ui {{prefix}}userinfo",
+	"LOADING": "Cargando información del usuario...",
+	"NICKNAME": "**Apodo** {{nickname}}\n",
+	"ID": "**ID del Usuario:** [{{id}}]({{url}})",
+	"JOINED": "Fechas de registro",
+	"JOINED_VALUE": "**Se unió a Discord:** {{memberDate}}\n**Se unió a {{guildName}}:** {{guildDate}}",
+	"SETTINGS": "Ajustes de Usuario",
+	"SETTINGS_VALUES": "$t(basic/user:SETTINGS_VALUES_LINE_1)\n$t(basic/user:SETTINGS_VALUES_LINE_2)",
+	"SETTINGS_VALUES_LINE_1": "**Estado AFK:** {{afk}}",
+	"SETTINGS_VALUES_LINE_2": "**Mensaje AFK:** {{afkMessage}}",
+	"PERMISSIONS": "Permisos",
+	"ROLES": "Roles"
+}

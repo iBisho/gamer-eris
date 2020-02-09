@@ -12,5 +12,6 @@
   "REMIND_FOOTER": "Serveur: {{guildName}}",
   "SHOW_NONE": "Désolé, il n'y a pas de membres à afficher.",
   "NEED_EVENT_ID": "Un ID d'évènement est nécessaire pour la recherche.",
-  "NONE": "Impossible de trouver un évènement sur ce serveur. Veuillez utiliser la commande **eventcreate** pour créer un nouvel évènement."
+  "NONE": "Impossible de trouver un évènement sur ce serveur. Veuillez utiliser la commande **eventcreate** pour créer un nouvel évènement.",
+  "GO_TO": "Allez au salon d'évènement!"
 }

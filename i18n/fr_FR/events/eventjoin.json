@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Rejoingez un évènement pour recevoir une alerte quand celui-ci débutera!",
+  "EXTENDED": "**{{prefix}}eventjoin [ID évènement]** ~ Rejoignez l'évènement spécifié si de la place est disponible et si vous avez le rôle nécessaire.",
+  "USAGE": "{{prefix}}eventjoin [ID évènement]",
+  "ALIASES": "{{prefix}}ej",
+  "ALREADY_JOINED": "Vous avez déjà répondu en tant que **Participant** à cet évènement.",
+  "MISSING_ALLOWED_ROLES": "Cet évènement ne peut être rejoint que par les membres possédant le rôle suivant: {{roles}}",
+  "SUCCESSFULLY_JOINED": "Vous vous êtes inscrit en tant que **Participant** pour cet évènement.",
+  "SUCCESSFULLY_JOINED_WAITING_LIST": "Comme le nombre maximum de participants possible a déjà été atteint, vous avez été mis en liste d'attente. Si une place ce libère, vous serez automatiquement ajouté à la liste des participants."
+}
