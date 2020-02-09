@@ -1,7 +1,7 @@
 {
 	"DESCRIPTION": "Vote no bot para obter recompensas incríveis!",
 	"EXTENDED": "$t(basic/upvote:EXTENDED_LINE_1)\n$t(basic/upvote:EXTENDED_LINE_2)",
-	"EXTENDED_LINE_1": "** {{prefix}} upvote ** ~ Obtenha o link para upvote Gamer bot. Cria um lembrete para você a cada 12 horas para votar novamente, para que você possa desbloquear recompensas incríveis.",
+	"EXTENDED_LINE_1": "**{{prefix}}upvote** ~ Obtenha o link para upvote Gamer bot. Cria um lembrete para você a cada 12 horas para votar novamente, para que você possa desbloquear recompensas incríveis.",
 	"EXTENDED_LINE_2": "Sextas, sábados e domingos dão votos DUPLOS! Não perca!",
 	"USAGE": "{{prefix}}upvote",
 	"ALIASES": "{{prefix}}vote",
