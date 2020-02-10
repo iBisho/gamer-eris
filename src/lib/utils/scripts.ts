@@ -58,30 +58,30 @@ export default class {
 
     guildSettings.save()
     // Edit all necessary channels with the verify role to prevent users from seeing any channels except the verify channel
-    for (const channel of guild.channels.values()) {
-      if (channel.parentID === category.id || channel.id === category.id) continue
+    guild.channels.forEach(channel => {
+      if (channel.parentID === category.id || channel.id === category.id) return
 
       const channelPerms = channel.permissionsOf(this.Gamer.user.id)
-      if (!channelPerms.has(`manageChannels`) || !channelPerms.has(`manageRoles`)) continue
+      if (!channelPerms.has(`manageChannels`) || !channelPerms.has(`manageRoles`) || !channelPerms.has('readMessages'))
+        return
 
       if (channel.parentID) {
         const parent = guild.channels.get(channel.parentID) as CategoryChannel
 
         let isSynced = true
-        for (const key of channel.permissionOverwrites.keys()) {
-          const perm = channel.permissionOverwrites.get(key) as Permission
+        channel.permissionOverwrites.forEach((permission, key) => {
           const parentPerm = parent.permissionOverwrites.get(key)
           // If the parent has this user/role permission and they are the exact same perms then check next permission
-          if (parentPerm && parentPerm.allow === perm.allow && parentPerm.deny === perm.deny) continue
+          if (parentPerm && parentPerm.allow === permission.allow && parentPerm.deny === permission.deny) return
 
           isSynced = false
-          break
-        }
-        if (isSynced) continue
+        })
+
+        if (isSynced) return
       }
       // Update the channel perms
-      await channel.editPermission(role.id, 0, 1024, `role`)
-    }
+      channel.editPermission(role.id, 0, 1024, `role`)
+    })
 
     const embed = new GamerEmbed()
       .setDescription([language('settings/setverify:THRILLED'), ``, `• **${guildSettings.prefix}verify**`].join('\n'))
@@ -234,29 +234,29 @@ export default class {
     guildSettings.moderation.roleIDs.mute = muteRole.id
     guildSettings.save()
 
-    for (const channel of guild.channels.values()) {
+    guild.channels.forEach(channel => {
       // Skip if the verify category
       if (
         (channel.parentID && channel.parentID === guildSettings.verify.categoryID) ||
         channel.id === guildSettings.verify.categoryID
       )
-        continue
+        return
 
       const botPerms = channel.permissionsOf(this.Gamer.user.id)
       // If no permissions in this channel to manage it skip
-      if (!botPerms.has(`manageChannels`) || !botPerms.has(`manageRoles`)) continue
+      if (!botPerms.has(`manageChannels`) || !botPerms.has(`manageRoles`) || !botPerms.has('readMessages')) return
 
       // If the permissions are synced with the category channel skip
       if (channel.parentID) {
         const category = guild.channels.get(channel.parentID)
-        if (!category) continue
+        if (!category) return
 
-        if (category.permissionOverwrites === channel.permissionOverwrites) continue
+        if (category.permissionOverwrites === channel.permissionOverwrites) return
       }
 
       // Update the channel perms
       channel.editPermission(muteRole.id, 0, 1024, `role`, language(`moderation/mute:MUTE_ROLE_REASON`))
-    }
+    })
 
     return muteRole
   }
