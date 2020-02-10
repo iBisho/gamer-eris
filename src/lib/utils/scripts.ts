@@ -1,4 +1,4 @@
-import { Guild, CategoryChannel, Permission, Overwrite } from 'eris'
+import { Guild, CategoryChannel, Overwrite } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import GamerEmbed from '../structures/GamerEmbed'
@@ -21,7 +21,7 @@ export default class {
     ]
     if (guildSettings.staff.adminRoleID)
       overwrites.push({ id: guildSettings.staff.adminRoleID, allow: 3072, deny: 0, type: 'role' })
-    for (const id of guildSettings.staff.modRoleIDs) overwrites.push({ id, allow: 3072, deny: 0, type: 'role' })
+    guildSettings.staff.modRoleIDs.forEach(id => overwrites.push({ id, allow: 3072, deny: 0, type: 'role' }))
 
     const category = await guild.createChannel(language(`basic/verify:CATEGORY_NAME`), 4, {
       reason: REASON,
@@ -170,7 +170,7 @@ export default class {
 
     if (guildSettings.staff.adminRoleID)
       overwrites.push({ id: guildSettings.staff.adminRoleID, allow: 3072, deny: 0, type: 'role' })
-    for (const id of guildSettings.staff.modRoleIDs) overwrites.push({ id, allow: 3072, deny: 0, type: 'role' })
+    guildSettings.staff.modRoleIDs.forEach(id => overwrites.push({ id, allow: 3072, deny: 0, type: 'role' }))
 
     const category = await guild.createChannel(language(`settings/setlogs:CATEGORY_NAME`), 4, {
       reason: REASON,
