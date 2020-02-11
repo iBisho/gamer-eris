@@ -29,6 +29,8 @@ export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args
   const maxAge = milliseconds.WEEK * 2
 
   const filteredMessages = messages.filter(msg => {
+    // Always delete the nuke command message
+    if (message.id === msg.id) return true
     // Discord does not allow deleting messages over 2 weeks old
     if (now - msg.timestamp > maxAge) return false
     // if users were mentioned we remove their messages
