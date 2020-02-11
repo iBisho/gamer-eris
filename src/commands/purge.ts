@@ -32,7 +32,7 @@ export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args
     // Discord does not allow deleting messages over 2 weeks old
     if (now - msg.timestamp > maxAge) return false
     // if users were mentioned we remove their messages
-    if (message.mentions.some(user => user.id === msg.author.id)) return true
+    if (message.mentions.length) return message.mentions.some(user => user.id === msg.author.id)
     // Check the filter types
     if (filter === `links`) return /https?:\/\/[^ /.]+\.[^ /.]+/.test(msg.content)
     if (filter === `invites`)
