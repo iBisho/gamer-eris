@@ -27,7 +27,7 @@ export default class {
       // The first arg should be mail id if multiple mails. Ex: .mail 2 mail content here
       const [mailID] = content
       const id = parseInt(mailID, 10)
-      if (!id || id > mails.length) {
+      if ((!id && id !== 0) || id > mails.length) {
         const mailData = mails
           .map((mail, index) => {
             const guild = this.Gamer.guilds.get(mail.guildID)

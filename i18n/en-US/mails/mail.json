@@ -50,5 +50,7 @@
   "NOT_VALID_TAG_NAME": "{{tag}} is not a valid tag name on this server.",
   "TEMPLATE_ADDED": "The {{tag}} has been added to the list of mail templates.",
   "TEMPLATE_REMOVED": "The {{tag}} has been removed from the list of mail templates.",
-  "CLOSE_OPTIONS": ["close", "c"]
+  "CLOSE_OPTIONS": ["close", "c"],
+  "NEED_MAIL_ID": "$t(mails/mail:NEED_MAIL_ID_1)\n\n{{mails}}",
+  "NEED_MAIL_ID_1": "You have multiple mails open across multiple servers. Please provide a the ID number for the mail you wish to reply as. For example: `.mail 1 Your response here`"
 }
