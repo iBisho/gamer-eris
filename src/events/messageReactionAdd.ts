@@ -5,6 +5,7 @@ import constants from '../constants'
 import Gamer from '..'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import nodefetch from 'node-fetch'
+import config from '../../config'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
@@ -434,7 +435,7 @@ export default class extends Event {
                 .then(res => res.buffer())
                 .catch(() => undefined)
             : undefined
-          if (img) embed.image = { url: `attachment://${attachment.filename}` }
+          if (img) embed.image = { url: `attachment://${attachment.filename}approved` }
           const approvedFeedback = await channel.createMessage(
             { embed },
             img ? { name: attachment.filename, file: img } : undefined
