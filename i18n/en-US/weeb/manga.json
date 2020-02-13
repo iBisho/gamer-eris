@@ -4,7 +4,7 @@
   "EXTENDED_LINE_1": "**{{prefix}}manga subscribe [Title]** ~ Subscribes to a manga.",
   "EXTENDED_LINE_2": "**{{prefix}}manga unsubscribe [Title]** ~ Removes the subscription to a manga.",
   "EXTENDED_LINE_3": "**{{prefix}}manga list** ~ Lists all manga titles the server has subscribed to.",
-  "USAGE": "{{prefix}}manga [Title]",
+  "USAGE": "{{prefix}}manga [subscribe | unsubscribe | list] *[Title]*",
   "ALIASES": "Manga does not have any aliases.",
 	"SUBSCRIBED": "Successfully subscribed to manga alerts for {{title}} on {{channel}}.",
 	"UNSUBBED": "Successfully unsubscribed to manga alerts for {{title}}.",
