@@ -428,16 +428,16 @@ export default class extends Event {
           ])
           if (!hasApprovedPerms) return
 
-          const [attachment] = message.attachments
-          const img = attachment
-            ? await nodefetch(attachment.url)
+          const img = embed.image?.url
+            ? await nodefetch(embed.image?.url)
                 .then(res => res.buffer())
                 .catch(() => undefined)
             : undefined
-          if (img) embed.image = { url: `attachment://${attachment.filename}approved` }
+          if (img) embed.image = { url: `attachment://approved.png` }
+
           const approvedFeedback = await channel.createMessage(
             { embed },
-            img ? { name: attachment.filename, file: img } : undefined
+            img ? { name: `approved.png`, file: img } : undefined
           )
           if (!approvedFeedback) return
 
