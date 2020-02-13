@@ -169,7 +169,8 @@ export default class extends Event {
     const botPerms = channel.permissionsOf(Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
 
-    const transformed = Gamer.helpers.transform.variables(roleMessage.message)
+    const emojis = await Gamer.database.models.emoji.find()
+    const transformed = Gamer.helpers.transform.variables(roleMessage.message, member.user, guild, member.user, emojis)
 
     if (!roleMessage.message.startsWith('{')) return channel.createMessage(`${member.mention} ${transformed}`)
 
