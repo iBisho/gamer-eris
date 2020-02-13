@@ -5,7 +5,6 @@ import constants from '../constants'
 import Gamer from '..'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import nodefetch from 'node-fetch'
-import config from '../../config'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
