@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Créer un tag pour le serveur.",
+  "EXTENDED": "$t(tags/tagcreate:EXTENDED_LINE_1)\n$t(tags/tagcreate:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}tagcreate [Nom] basic {object}** ~ Créé un tag que le bot affichera quand le nom du tag sera dit au premier mot d'une phrase.",
+  "EXTENDED_LINE_2": "**{{prefix}}tagcreate [Nom] advanced {object}** ~ Créé un tag que le bot affichera quand le nom du tag sera écrit dans une phrase peu importe son emplacement.",
+  "USAGE": "{{prefix}}tagcreate [Nom] [basic | advanced] {object}",
+  "ALIASES": "{{prefix}}tc",
+  "EXISTS": "Le tag avec le nom `{{name}}` existe déjà sur ce serveur.",
+  "BASIC": "basique",
+  "ADVANCED": "avancé",
+  "SAVED": "Un nouveau tag a bien été créé sur ce serveur avec le nom: **[{{name}}]**.",
+  "WRONG_NAME": "Impossible de trouver un tag avec le nom **[{{name}}]**.",
+  "REMOVED": "Le tag {{name}} a bien été **supprimé** de ce serveur.",
+  "NO_TAGS": "Vous n'avez pas encore **créé de tag** sur ce serveur!"
+}
