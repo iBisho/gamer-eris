@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Afficher l'embed de vos tags.",
+  "EXTENDED": "**{{prefix}}tagshow [Nom]** ~ Affiche l'embed du tag spéficié.",
+  "USAGE": "{{prefix}}tagshow [Nom]",
+  "ALIASES": "{{prefix}}ts",
+  "INVALID_NAME": "Impossible de trouver le tag ayant pour nom: **{{name}}**."
+}
