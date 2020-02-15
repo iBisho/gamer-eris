@@ -11,6 +11,11 @@ export default class extends Monitor {
     // The message type helps ignore other messages like discord default welcome messages
     if (!message.guildID || message.type !== 0 || !message.member || message.member.roles.length > 1) return
 
+    const bot = message.member.guild.members.get(Gamer.user.id)
+    if (!bot || !bot.permission.has('manageRoles')) return
+
+    const highestRole = Gamer.helpers.discord.highestRole(bot)
+
     // Get the verification category id so we dont assign the role while they are chatting in verification
     const guildSettings = await Gamer.database.models.guild.findOne({
       id: message.guildID
@@ -26,8 +31,8 @@ export default class extends Monitor {
     )
       return
 
-    const bot = message.member.guild.members.get(Gamer.user.id)
-    if (!bot || !bot.permission.has('manageRoles')) return
+    const autorole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.autorole)
+    if (!autorole || autorole.position < highestRole.position) return
 
     Gamer.amplitude.push({
       authorID: message.author.id,
@@ -38,6 +43,7 @@ export default class extends Monitor {
       memberID: message.member.id,
       type: 'ROLE_ADDED'
     })
+
     return message.member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
   }
 }
