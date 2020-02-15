@@ -1,0 +1,9 @@
+{
+  "EXTENDED": "$t(tags/taguninstall:EXTENDED_LINE_1)\n$t(tags/taguninstall:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}taguninstall aov** ~ Supprime tous les tags provenant du serveur **Arena of Valor**.",
+  "EXTENDED_LINE_2": "**{{prefix}}taguninstall 223909216866402304** ~ Supprime tous les tags du serveur spéficié précédemment importé via son ID serveur.",
+  "EXTENDED_LINE_3": "Pour créer votre propre nom d'import, veuillez me contacter sur le serveur de support en utilisant la commande **.invite**.",
+  "REMOVED": "Les tags ont bien été supprimé.",
+  "USAGE": "{{prefix}}taguninstall [Nom serveur | ID serveur]",
+  "ALIASES": "Taguninstall n'a pas d'alias."
+}
