@@ -1,0 +1,9 @@
+{
+	"DESCRIPTION": "Rend tous vos tags créé publique qui pourront ensuite être installé sur n'importe quel serveur.",
+	"EXTENDED": "$t(tags/tagpublic:EXTENDED_LINE_1)\n$t(tags/tagpublic:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}tagpublic [Nom tags]** ~ Rendez vos tags publique pour que tous les autres serveurs puissent les installer.",
+	"EXTENDED_LINE_2": "Note: Vous pouvez créer autant de tags que vous voulez, ils seront rendu automatiquement public.",
+	"EXPORTED": "Le tag a bien été mis en mode publique.",
+	"USAGE": "{{prefix}}tagpublic [Nom tag]",
+	"ALIASES": "Tagpublic n'a pas d'alias."
+}
