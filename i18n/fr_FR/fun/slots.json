@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Testez votre chance à la machine à sous!",
+  "EXTENDED": "**{{prefix}}slots [#]** ~ Pariez des Gamer Coins et tentez de remporter plus! Ayez des émojis identique au centre pour gagner!",
+  "USAGE": "{{prefix}}slots [quantité]",
+  "ALIASES": "{{prefix}}slotmachine",
+  "NOT_ENOUGH_CURRENCY": "Vous ne possédez pas assez de Gamer Coins pour pouvoir parier autant.",
+  "LOSER": "Aww, tu as perdu ! :frowning2: Tu viens de perdre 1 {{emoji}} coin.",
+  "LOSER_MULTI": "Aww, tu as perdu ! :frowning2: Tu viens de perdre 2 {{emoji}} coins.",
+  "FREEBIE": "Malheureusement tu n'as rien gagné :man_shrugging:. Je viens de te donner 1 {{emoji}} coin. Réessaye ! :muscle:",
+  "WINNER_PARTIAL": "🎉Bien joué, tu as 2 cases identique ! Tu viens de remporter {{amount}} coins {{emoji}} ! 🎉",
+  "WINNER_FULL": "🎉🎉🎉 WINNER! WINNER! WINNER! Tu viens de remporter {{amount}} coins {{emoji}}. 🎉🎉🎉",
+  "WINNER_MULTIPLE": "🎉🎉🎉 Oh wow ! Tu viens d'avoir 2 lignes gagnantes ! Tu as remporté {{amount}} coins {{emoji}}. 🎉🎉🎉",
+  "WINNER_LUCKY": "🎉🎉🎉 Oh wow ! Tu viens d'avoir 3 lignes gagnantes ! Tu as remporté {{amount}} coins {{emoji}}. 🎉🎉🎉",
+  "WINNER_COMPLETE": "🎉🎉🎉 OMG! JACKPOT! Toutes les lignes sont identiques, tu as remporté {{amount}} coins {{emoji}} !! 🎉🎉🎉"
+}
