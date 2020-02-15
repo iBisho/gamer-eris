@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Supprimer des rappels.",
+	"EXTENDED": "**{{prefix}}reminddelete [ID du rappel]** ~ Supprime le rappel avec l'ID spécifié. Vous ne recevrez donc plus de rappel une fois supprimé.",
+	"USAGE": "{{prefix}}reminddelete [ID du rappel]",
+	"ALIASES": "{{prefix}}rd {{prefix}}remindmedelete {{prefix}}reminderdelete",
+	"DELETED": "{{mention}}, Le rappel avec l'ID que vous avez spécifié a bien été supprimé."
+}

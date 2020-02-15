@@ -18,5 +18,6 @@
 	"NOT_MARRIED": "Non marié ",
 	"MARRIED": "Marié avec: {{username}}",
 	"COINS": "Pièces : {{amount}}",
-	"NEED_ATTACH_FILE": "{{mention}}, Désolé, impossible d'afficher votre profil car il me manque la permission \"Joindre des fichiers\"."
+	"NEED_ATTACH_FILE": "{{mention}}, Désolé, impossible d'afficher votre profil car il me manque la permission \"Joindre des fichiers\".",
+	"UNLOCK": "Débloquez en plus avec la commande **{{prefix}}upvote**."
 }
