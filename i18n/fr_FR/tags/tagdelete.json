@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Supprimer un tag de votre serveur.",
+  "EXTENDED": "**{{prefix}}tagdelete [Nom]** ~ Supprime un tag.",
+  "USAGE": "{{prefix}}tagdelete [Nom]",
+  "ALIASES": "{{prefix}}td",
+  "INVALID_NAME": "Impossible de trouver le tag ayant pour nom: **{{name}}**.",
+  "DELETED": "Le tag {{name}} a bien été **supprimé** de ce serveur."
+}
