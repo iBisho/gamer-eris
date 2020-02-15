@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Supprime un certain nombre de messages.",
+  "EXTENDED": "$t(moderation/purge:EXTENDED_LINE_1)\n$t(moderation/purge:EXTENDED_LINE_2)\n$t(moderation/purge:EXTENDED_LINE_3)\n$t(moderation/purge:EXTENDED_LINE_4)\n$t(moderation/purge:EXTENDED_LINE_5)\n$t(moderation/purge:EXTENDED_LINE_6)",
+  "EXTENDED_LINE_1": "**{{prefix}}purge [#]** ~ Supprime x messages.",
+  "EXTENDED_LINE_2": "**{{prefix}}purge [#] @membre** ~ Supprime x messages de l'utilisateur spécifié.",
+  "EXTENDED_LINE_3": "**{{prefix}}nuke [#] links** ~ Supprime x liens postés.",
+  "EXTENDED_LINE_4": "**{{prefix}}nuke [#] invites** ~ Supprime x liens d'invitation (discord.gg).",
+  "EXTENDED_LINE_5": "**{{prefix}}nuke [#] bots** ~ Supprime x messages venant des bots.",
+  "EXTENDED_LINE_6": "**{{prefix}}nuke [#] images** ~ Supprime x messages avec attachements.",
+  "USAGE": "{{prefix}}purge",
+  "ALIASES": "Purge n'a pas d'alias.",
+  "MISSING_PERM": "Vous n'avez pas la permission de supprimer les messages dans ce salon.",
+  "NEED_MANAGE_MESSAGE": "Il me faut la permission __Gérer les messages__ pour que je puisse supprimer des messages.",
+  "RESPONSE": "{{amount}} messages ont bien été supprimés."
+}
