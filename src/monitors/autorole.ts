@@ -32,7 +32,7 @@ export default class extends Monitor {
       return
 
     const autorole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.autorole)
-    if (!autorole || autorole.position < highestRole.position) return
+    if (!autorole || autorole.position >= highestRole.position) return
 
     Gamer.amplitude.push({
       authorID: message.author.id,
