@@ -36,18 +36,18 @@ const Gamer = new GamerClient({
   maxShards: `auto`,
   ignoreGlobalRequirements: false,
   getAllUsers: true,
-  ignoreBots: false,
-  intents: [
-    'guilds',
-    'guildMembers',
-    'guildBans',
-    'guildEmojis',
-    'guildVoiceStates',
-    'guildInvites',
-    'guildMessages',
-    'guildMessageReactions',
-    'directMessages'
-  ]
+  ignoreBots: false
+  // intents: [
+  //   'guilds',
+  //   'guildMembers',
+  //   'guildBans',
+  //   'guildEmojis',
+  //   'guildVoiceStates',
+  //   'guildInvites',
+  //   'guildMessages',
+  //   'guildMessageReactions',
+  //   'directMessages'
+  // ]
 })
 
 // Create top.gg botlist configuration
