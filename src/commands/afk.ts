@@ -2,7 +2,6 @@ import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`afk`, async (message, args, context) => {
-  // if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
   if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
