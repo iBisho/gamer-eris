@@ -1,6 +1,6 @@
 {
 	"DESCRIPTION": "Makes an embed from the embed object you input.",
-	"EXTENDED": "$t(embedding/embed:EXTENDED_LINE_1)\n$t(embedding/embed:EXTENDED_LINE_2)\n$t(embedding/embed:EXTENDED_LINE_3)\n$t(embedding/embed:EXTENDED_LINE_4)\n$t(embedding/embed:EXTENDED_LINE_5)\n$t(embedding/embed:EXTENDED_LINE_6)\n$t(embedding/embed:EXTENDED_LINE_7)\n$t(embedding/embed:EXTENDED_LINE_8)\n$t(embedding/embed:EXTENDED_LINE_9)\n$t(embedding/embed:EXTENDED_LINE_10)\n$t(embedding/embed:EXTENDED_LINE_11)\n$t(embedding/embed:EXTENDED_LINE_12)\n$t(embedding/embed:EXTENDED_LINE_13)\n$t(embedding/embed:EXTENDED_LINE_14)",
+	"EXTENDED": "$t(embedding/embed:EXTENDED_LINE_1)\n$t(embedding/embed:EXTENDED_LINE_2)\n$t(embedding/embed:EXTENDED_LINE_3)\n$t(embedding/embed:EXTENDED_LINE_4)\n$t(embedding/embed:EXTENDED_LINE_5)\n$t(embedding/embed:EXTENDED_LINE_6)\n$t(embedding/embed:EXTENDED_LINE_7)\n$t(embedding/embed:EXTENDED_LINE_8)\n$t(embedding/embed:EXTENDED_LINE_9)\n$t(embedding/embed:EXTENDED_LINE_10)\n$t(embedding/embed:EXTENDED_LINE_11)\n$t(embedding/embed:EXTENDED_LINE_12)\n$t(embedding/embed:EXTENDED_LINE_13)",
 	"EXTENDED_LINE_1": "**» Two options to create an embed:**",
 	"EXTENDED_LINE_2": "**{{prefix}}embed [@user] {object}** ~ Embeds the given object. Provide a @User first if you want to use User variables.",
 	"EXTENDED_LINE_3": "**» Possible variables that you can use in embeds:**",
