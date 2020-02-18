@@ -117,11 +117,13 @@ export default class {
       guildSettings.save()
     }
 
+    const botPerms = this.Gamer.helpers.discord.checkPermissions(message.channel, this.Gamer.user.id, [
+      `manageChannels`
+    ])
+    if (!botPerms) return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
+
     // Creates a text channel by default and we move it to the mail category
     const channel = await message.member.guild.createChannel(channelName, 0, { parentID: category.id })
-
-    // if channel could not be created send an embed to the user so he can annoy the mods / admins
-    if (!channel) return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
 
     this.Gamer.amplitude.push({
       authorID: mailUser.id,
