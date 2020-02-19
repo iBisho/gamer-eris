@@ -1,0 +1,19 @@
+{
+  "DESCRIPTION": "Vous vous posez des questions ? La 8ball vous répond !",
+  "EXTENDED": "**{{prefix}}8ball** ~ Posez votre question et recevez une réponse provenant de la 8ball.",
+  "USAGE": "{{prefix}}8ball [Votre question]",
+  "ALIASES": "{{prefix}}8ball {{prefix}}8b {{prefix}}fortune",
+  "NO_ARGS": "T'as oublié la question, idiot!",
+  "REPLY_NUMBER0": "Totalement!",
+  "REPLY_NUMBER1": "Oui!",
+  "REPLY_NUMBER2": "Définitivement!",
+  "REPLY_NUMBER3": "Probablement :shrug:",
+  "REPLY_NUMBER4": "Très probable.",
+  "REPLY_NUMBER5": "Probable.",
+  "REPLY_NUMBER6": "Peu probable.",
+  "REPLY_NUMBER7": "Je ne compterais pas là-dessus.",
+  "REPLY_NUMBER8": "Non!",
+  "REPLY_NUMBER9": "Définitivement pas!",
+  "REPLY_NUMBER10": "Nop!",
+  "REPLY_NUMBER11": "Aucune chance!"
+}
