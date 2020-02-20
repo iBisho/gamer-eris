@@ -123,7 +123,9 @@ export default class {
     if (!botPerms) return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
 
     // Creates a text channel by default and we move it to the mail category
-    const channel = await message.member.guild.createChannel(channelName, 0, { parentID: category.id })
+    const channel = await message.member.guild.createChannel(channelName, 0, {
+      parentID: category.channels.size < 50 ? category.id : undefined
+    })
 
     this.Gamer.amplitude.push({
       authorID: mailUser.id,
