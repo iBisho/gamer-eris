@@ -515,6 +515,13 @@ export default class {
       const channel = this.Gamer.getChannel(reminder.channelID)
       if (!channel || !(channel instanceof TextChannel)) return
 
+      const hasPermission = this.Gamer.helpers.discord.checkPermissions(channel, this.Gamer.user.id, [
+        'readMessages',
+        'sendMessages',
+        'embedLinks'
+      ])
+      if (!hasPermission) return
+
       const user = this.Gamer.users.get(reminder.userID)
       if (!user) return
 

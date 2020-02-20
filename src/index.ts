@@ -58,12 +58,6 @@ Gamer.globalCommandRequirements = {
     // DM should have necessary perms already
     if (!message.guildID) return true
 
-    const isDemoChannel = message.channel.id !== '328662219086888961'
-    // If this is the live demo channel and the user is a bot cancel out
-    if (isDemoChannel && message.author.bot) return false
-    // If this is live demo and the user is a bot but not a webhook cancel
-    if (isDemoChannel && message.author.discriminator !== '0000' && message.author.bot) return false
-
     // Check if have send messages perms. Check before fetching guild data to potentially save a fetch
     const botPerms = (message.channel as GuildTextableChannel).permissionsOf(Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages')) return false
