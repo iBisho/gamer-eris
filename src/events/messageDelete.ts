@@ -3,6 +3,7 @@ import { TextChannel, Constants, Message, PrivateChannel, GroupChannel } from 'e
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import { PartialMessage } from '../lib/types/discord'
+import nodefetch from 'node-fetch'
 
 export default class extends Event {
   async execute(message: Message | PartialMessage) {
@@ -46,7 +47,12 @@ export default class extends Event {
 
     if (message instanceof Message && message.channel instanceof TextChannel) {
       embed.setThumbnail(message.author.avatarURL)
-      if (message.attachments.length) embed.setImage(message.attachments[0].url)
+      if (message.attachments.length) {
+        const buffer = await nodefetch(message.attachments[0].url)
+          .then(res => res.buffer())
+          .catch(() => undefined)
+        if (buffer) embed.attachFile(buffer, 'deletedimage.png')
+      }
       if (message.content) {
         embed.addField(language(`moderation/logs:MESSAGE_CONTENT`), message.content.substring(0, 1024))
         if (message.content.length > 1024)
