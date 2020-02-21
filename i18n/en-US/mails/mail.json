@@ -52,5 +52,6 @@
   "TEMPLATE_REMOVED": "The {{tag}} has been removed from the list of mail templates.",
   "CLOSE_OPTIONS": ["close", "c"],
   "NEED_MAIL_ID": "$t(mails/mail:NEED_MAIL_ID_1)\n\n{{mails}}",
-  "NEED_MAIL_ID_1": "You have multiple mails open across multiple servers. Please provide a the ID number for the mail you wish to reply as. For example: `.mail 1 Your response here`"
+  "NEED_MAIL_ID_1": "You have multiple mails open across multiple servers. Please provide a the ID number for the mail you wish to reply as. For example: `.mail 1 Your response here`",
+  "TOO_MANY_CHANNELS": "I am unable to create a mail at the moment, because there is no more room left to create another channel in the inbox. Please contact the admins/moderators to make room in the inbox."
 }

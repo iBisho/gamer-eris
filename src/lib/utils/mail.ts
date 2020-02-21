@@ -117,15 +117,14 @@ export default class {
       guildSettings.save()
     }
 
-    const botPerms = this.Gamer.helpers.discord.checkPermissions(message.channel, this.Gamer.user.id, [
-      `manageChannels`
-    ])
-    if (!botPerms) return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
+    const bot = message.member.guild.members.get(this.Gamer.user.id)
+    if (!bot?.permission.has('manageChannels'))
+      return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
+
+    if (category.channels.size === 50) return message.channel.createMessage(language(`mails/mail:TOO_MANY_CHANNELS`))
 
     // Creates a text channel by default and we move it to the mail category
-    const channel = await message.member.guild.createChannel(channelName, 0, {
-      parentID: category.channels.size < 50 ? category.id : undefined
-    })
+    const channel = await message.member.guild.createChannel(channelName, 0, { parentID: category.id })
 
     this.Gamer.amplitude.push({
       authorID: mailUser.id,
