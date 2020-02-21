@@ -11,7 +11,7 @@
 	"REWARDS_2": "1 Vote / 12h - 5 missions instead of 3 missions.",
 	"REWARDS_3": "1 Vote / 12h - 50 Lucky .slots",
 	"REWARDS_4": "100 Vote - **FREE 1 Week VIP**",
-	"REMINDER": "Remeber to to upvote the bot and unlock amazing rewards! Use `{{prefix}}upvote`! To disable this alert type **{{prefix}}reminddelete {{id}}**",
+	"REMINDER": "Remember to upvote the bot and unlock amazing rewards! Use `{{prefix}}upvote`! To disable this alert type **{{prefix}}reminddelete {{id}}**",
 	"TIME_LEFT": "Next Vote In: {{time}}",
 	"VOTE_NOW": "You can vote right now!"
 }

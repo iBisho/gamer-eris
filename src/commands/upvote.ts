@@ -8,8 +8,9 @@ export default new Command([`upvote`, `vote`], async (message, _args, context) =
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
+  const prefix = Gamer.guildPrefixes.get(message.guildID) || Gamer.prefix
 
-  const REMINDER = language('basic/upvote:REMINDER')
+  const REMINDER = language('basic/upvote:REMINDER', { prefix, id: message.id })
   const [upvote, reminder] = await Promise.all([
     Gamer.database.models.upvote.findOne({ userID: message.author.id }),
     Gamer.database.models.reminder.findOne({
