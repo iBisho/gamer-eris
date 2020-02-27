@@ -3,7 +3,7 @@ export default {
   topgg: {
     auth: 'SECRET',
     port: 3000
-    token: 'TOP_GG_TOKEN',
+    token: 'TOP_GG_TOKEN'
   },
   defaultPrefix: '!',
   mongoConnectionString: 'CONNECTION_STRING',
