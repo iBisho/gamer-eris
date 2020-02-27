@@ -33,7 +33,7 @@ export default new Command(`urban`, async (message, args, context) => {
     )
     .setTitle(Gamer.helpers.transform.splitCamelCase(term))
     .addField(language(`fun/urban:DEFINITION`), highestRated.definition)
-    .addField(language(`fun/urban:EXAMPLE`), highestRated.example)
+    .addField(language(`fun/urban:EXAMPLE`), highestRated.example || language(`common:NONE`))
     .addField(language(`fun/urban:AUTHOR`), highestRated.author)
     .addField(`:thumbsup:`, highestRated.thumbs_up.toString(), true)
     .addField(`:thumbsdown:`, highestRated.thumbs_down.toString(), true)

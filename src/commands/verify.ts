@@ -199,7 +199,7 @@ export default new Command(`verify`, async (message, args, context) => {
       // Delete the command trigger if possible
       const bot = message.member.guild.members.get(Gamer.user.id)
       if (bot && bot.permission.has(`manageMessages`)) {
-        message.delete(language(`basic/verify:TRIGGER_DELETE`))
+        message.delete(language(`basic/verify:TRIGGER_DELETE`)).catch(() => undefined)
       }
       const embedCode = JSON.parse(transformed)
       if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
