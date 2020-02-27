@@ -14,8 +14,7 @@ export default new Command([`upvote`, `vote`], async (message, _args, context) =
   const [upvote, reminder] = await Promise.all([
     Gamer.database.models.upvote.findOne({ userID: message.author.id }),
     Gamer.database.models.reminder.findOne({
-      userID: message.author.id,
-      content: REMINDER
+      userID: message.author.id
     })
   ])
 
