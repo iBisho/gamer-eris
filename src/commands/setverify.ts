@@ -22,7 +22,9 @@ export default new Command(`setverify`, async (message, args, context) => {
   const [action, roleIDOrName] = args
   if (!action) return helpCommand.process(message, [`setverify`], context)
 
-  const role = roleIDOrName
+  const role = message.roleMentions[0]
+    ? message.member.guild.roles.get(message.roleMentions[0])
+    : roleIDOrName
     ? message.member.guild.roles.get(roleIDOrName) ||
       message.member.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName.toLowerCase())
     : undefined

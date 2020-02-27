@@ -139,8 +139,8 @@ for (const [name, event] of Gamer.events) Gamer.on(name, event.execute.bind(even
 process.on('unhandledRejection', error => {
   // Don't send errors for non production bots
   // Check !Gamer incase the errors are before bots ready
-  // if (Gamer.user?.id !== constants.general.gamerID) return console.error(error)
-  if (Gamer.user?.id !== constants.general.gamerID) console.error(error)
+  if (Gamer.user?.id !== constants.general.gamerID) return console.error(error)
+
   // An unhandled error occurred on the bot in production
   console.error(error || `An unhandled rejection error occurred but error was null or undefined`)
 
