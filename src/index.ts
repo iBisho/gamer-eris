@@ -139,7 +139,8 @@ for (const [name, event] of Gamer.events) Gamer.on(name, event.execute.bind(even
 process.on('unhandledRejection', error => {
   // Don't send errors for non production bots
   // Check !Gamer incase the errors are before bots ready
-  if (Gamer.user?.id !== constants.general.gamerID) return console.error(error)
+  // if (Gamer.user?.id !== constants.general.gamerID) return console.error(error)
+  if (Gamer.user?.id !== constants.general.gamerID) console.error(error)
   // An unhandled error occurred on the bot in production
   console.error(error || `An unhandled rejection error occurred but error was null or undefined`)
 
@@ -151,8 +152,12 @@ process.on('unhandledRejection', error => {
     .setDescription(['```js', error.stack, '```'].join(`\n`))
     .setTimestamp()
     .setFooter('Unhandled Rejection Error Occurred')
+
+  if (embed.code.description?.includes(`Error: Request timed out (>15000ms) on POST`)) {
+    return Gamer.createMessage('680852595061162014', { embed: embed.code })
+  }
   // Send error to the log channel on the gamerbot server
-  Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
+  return Gamer.createMessage(config.channelIDs.errors, { content: `<@!130136895395987456>`, embed: embed.code })
 })
 
 export default Gamer
