@@ -100,11 +100,6 @@ export default new Command(`setfeedback`, async (message, args, context) => {
   // These menus require the user type .setfeedback `idea` or `bug`
   switch (action.toLowerCase()) {
     case 'channel':
-      if (currentChannelID)
-        return message.channel.createMessage(
-          language(`settings/setfeedback:ALREADY_ENABLED`, { channel: `<#${currentChannelID}>` })
-        )
-
       if (!message.channelMentions || !message.channelMentions.length)
         return message.channel.createMessage(language(`settings/setfeedback:NEED_CHANNEL`))
 

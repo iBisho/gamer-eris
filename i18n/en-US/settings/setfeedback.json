@@ -30,7 +30,6 @@
   "BUGS_ANSWER_2": "Why can I never hug anyone of my own free will? ",
   "IDEA_FROM": "Idea From {{user}}",
   "BUGS_FROM": "Bug Report From {{user}}",
-  "ALREADY_ENABLED": "The feedback feature is already enabled in {{channel}}.",
   "NEED_CHANNEL": "You did not provide any channel to use. Please try again with a #channel",
   "CHANNEL_SET": "The feedback channel has been updated now to {{channel}}.",
   "ALREADY_DISABLED": "The feedback feature is already disabled.",
