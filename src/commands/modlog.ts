@@ -32,7 +32,7 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
     )
   }
 
-  const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(userID)
+  const user = message.mentions.length ? message.mentions[0] : await Gamer.helpers.discord.fetchUser(Gamer, userID)
 
   const modlogs = await Gamer.database.models.modlog.find({
     guildID: message.guildID,
@@ -100,7 +100,7 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
       embed.code.fields = []
     }
 
-    const member = message.member.guild.members.get(log.modID)
+    const member = await Gamer.helpers.discord.fetchMember(message.member.guild, log.modID)
     const memberName = member ? member.username : log.modID
     const date = new Date(log.timestamp)
 

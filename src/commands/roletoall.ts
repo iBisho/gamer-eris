@@ -6,7 +6,7 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
 
   const Gamer = context.client as GamerClient
 
-  const botMember = message.member.guild.members.get(Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!botMember || !botMember.permission.has('manageRoles')) return
   if (!message.member.permission.has(`manageRoles`)) return
 

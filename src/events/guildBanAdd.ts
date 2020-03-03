@@ -24,7 +24,7 @@ export default class extends Event {
       .setThumbnail(user.avatarURL)
       .setTimestamp()
 
-    const botMember = guild.members.get(Gamer.user.id)
+    const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
     if (!botMember?.permission.has('viewAuditLogs')) return
 
     // Fetch the auditlogs and add the author to the embed of the one who made the role and the reason it was made.

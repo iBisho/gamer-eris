@@ -6,7 +6,7 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   if (!message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = message.member.guild.members.get(Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!botMember) return
 
   const language = Gamer.getLanguage(message.guildID)
@@ -28,13 +28,13 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   if (userID.startsWith('<@!')) userID = userID.substring(3, userID.length - 1)
   else if (userID.startsWith('<@')) userID = userID.substring(2, userID.length - 1)
 
-  const user = Gamer.users.get(userID) || message.mentions[0]
+  const user = (await Gamer.helpers.discord.fetchUser(Gamer, userID)) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`moderation/warn:NEED_USER`))
 
   const reason = args.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/warn:NEED_REASON`))
 
-  const member = message.member.guild.members.get(user.id)
+  const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
   if (!member) return
 
   // Checks if the bot is higher than the user

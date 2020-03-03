@@ -11,7 +11,7 @@ export default class extends Monitor {
     // The message type helps ignore other messages like discord default welcome messages
     if (!message.guildID || message.type !== 0 || !message.member || message.member.roles.length > 1) return
 
-    const bot = message.member.guild.members.get(Gamer.user.id)
+    const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!bot || !bot.permission.has('manageRoles')) return
 
     const highestRole = Gamer.helpers.discord.highestRole(bot)

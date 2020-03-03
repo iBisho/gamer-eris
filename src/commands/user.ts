@@ -9,12 +9,14 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   const Gamer = context.client as GamerClient
 
   const [id] = args
-  const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(id) || message.author
+  const user = message.mentions.length
+    ? message.mentions[0]
+    : (await Gamer.helpers.discord.fetchUser(Gamer, id)) || message.author
 
   const userSettings = await Gamer.database.models.user.findOne({ userID: user.id })
   const language = Gamer.getLanguage(message.guildID)
 
-  const member = message.member.guild.members.get(user.id)
+  const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
   if (!member) return
 
   const buffer = await Gamer.helpers.profiles.makeCanvas(message, member || message.member, Gamer)

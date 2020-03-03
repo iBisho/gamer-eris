@@ -14,7 +14,7 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   if (!settings || !settings.moderation.roleIDs.public.length)
     return message.channel.createMessage(language(`roles/role:NO_PUBLIC_ROLES`))
   // Check if the bot has the permission to manage roles
-  const bot = message.member.guild.members.get(Gamer.user.id)
+  const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!bot || !bot.permission.has('manageRoles'))
     return message.channel.createMessage(language(`roles/role:MISSING_MANAGE_ROLES`))
 

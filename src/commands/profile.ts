@@ -11,7 +11,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   const language = Gamer.getLanguage(message.guildID)
   const [id] = args
   const memberID = message.mentions.length ? message.mentions[0].id : id
-  const member = message.member.guild.members.get(memberID) || message.member
+  const member = (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
   const buffer = await Gamer.helpers.profiles.makeCanvas(message, member, Gamer)
   if (!buffer) return
 

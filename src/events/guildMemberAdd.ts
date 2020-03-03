@@ -13,7 +13,7 @@ export default class extends Event {
       type: 'MEMBER_ADDED'
     })
 
-    const botMember = guild.members.get(Gamer.user.id)
+    const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
     if (!botMember) return
 
     const language = Gamer.getLanguage(guild.id)

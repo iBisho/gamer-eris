@@ -10,7 +10,7 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
 
   // Make sure the bot has the permissions to create channels
-  const botMember = message.member.guild.members.get(Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!botMember || !botMember.permission.has('manageChannels')) return
 
   const language = Gamer.getLanguage(message.guildID)

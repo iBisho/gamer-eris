@@ -7,33 +7,28 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
 
   const Gamer = context.client as GamerClient
 
-  const botMember = message.member.guild.members.get(Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!botMember) return
 
   const language = Gamer.getLanguage(message.guildID)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   // Check if the bot has the ban permissions
   if (!botMember.permission.has('banMembers'))
     return message.channel.createMessage(language(`moderation/ban:NEED_BAN_PERMS`))
 
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [userID, ...text] = args
 
-  const user = Gamer.users.get(userID) || message.mentions[0]
-  if (!user) return message.channel.createMessage(language(`moderation/ban:NEED_USER`))
   const reason = text.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/ban:NEED_REASON`))
 
-  const member = message.member.guild.members.get(user.id)
+  const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
+  if (!user) return
+
+  const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
   // If this user is still a member in the guild we need to do extra checks
   if (member) {
     // Checks if the bot is higher than the user

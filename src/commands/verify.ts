@@ -98,7 +98,7 @@ export default new Command(`verify`, async (message, args, context) => {
           // Success With Captcha
 
           if (msg.channel instanceof PrivateChannel || msg.channel instanceof GroupChannel || !msg.member) return
-          const bot = msg.channel.guild.members.get(Gamer.user.id)
+          const bot = await Gamer.helpers.discord.fetchMember(msg.channel.guild, Gamer.user.id)
           if (!bot) return
           // Remove the verify role
           msg.member.removeRole(role.id)
@@ -197,7 +197,7 @@ export default new Command(`verify`, async (message, args, context) => {
       guildSettings.save()
 
       // Delete the command trigger if possible
-      const bot = message.member.guild.members.get(Gamer.user.id)
+      const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
       if (bot && bot.permission.has(`manageMessages`)) {
         message.delete(language(`basic/verify:TRIGGER_DELETE`)).catch(() => undefined)
       }

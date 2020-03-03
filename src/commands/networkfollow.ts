@@ -10,13 +10,11 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(userID)
+  const user = message.mentions.length ? message.mentions[0] : await Gamer.helpers.discord.fetchUser(Gamer, userID)
   if (!user) return helpCommand.process(message, [`networkfollow`], context)
 
   // The command users settings
-  const userSettings = await Gamer.database.models.user.findOne({
-    userID: message.author.id
-  })
+  const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
 
   if (!userSettings || !userSettings.network.guildID)
     return message.channel.createMessage(language(`network/networkfollow:NEED_PROFILE_SERVER`))

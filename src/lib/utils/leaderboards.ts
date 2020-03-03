@@ -69,7 +69,7 @@ export default class {
     // Run a loop for the top 3 users
     for (const userData of topUsers) {
       // Get the user
-      const user = this.Gamer.users.get(userData.memberID)
+      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userData.memberID)
       if (!user) continue
 
       topUserData.push({
@@ -144,7 +144,7 @@ export default class {
     // Run a loop for the top 3 users
     for (const userData of topUsers) {
       // Get the user
-      const user = this.Gamer.users.get(userData.userID)
+      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userData.userID)
       if (!user) continue
 
       topUserData.push({
@@ -229,7 +229,7 @@ export default class {
     // Run a loop for the top 3 users
     for (const userData of topUsers) {
       // Get the user
-      const user = this.Gamer.users.get(userData.memberID)
+      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userData.memberID)
       if (!user) continue
 
       topUserData.push({

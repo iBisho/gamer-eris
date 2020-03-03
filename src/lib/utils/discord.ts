@@ -1,7 +1,9 @@
-import { Message, Member, Role, TextableChannel, PrivateChannel, GroupChannel } from 'eris'
+import { Message, Member, Role, TextableChannel, PrivateChannel, GroupChannel, Guild } from 'eris'
 import config from '../../../config'
 import constants from '../../constants'
 import GamerEmbed from '../structures/GamerEmbed'
+import GamerClient from '../structures/GamerClient'
+import { GuildSettings } from '../types/settings'
 
 const emojiRegex = /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/
 
@@ -35,6 +37,10 @@ export default class {
       message.member &&
       (message.member.permission.has('administrator') || (roleID && message.member.roles.includes(roleID)))
     )
+  }
+
+  isModOrAdmin(message: Message, settings: GuildSettings | null) {
+    return this.isAdmin(message, settings?.staff.adminRoleID) || this.isModerator(message, settings?.staff.modRoleIDs)
   }
 
   userToChannelName(username: string, discriminator: string) {
@@ -73,7 +79,7 @@ export default class {
   checkPermissions(channel: TextableChannel, userID: string, permissions: string[]) {
     if (channel instanceof PrivateChannel || channel instanceof GroupChannel) return false
     const perms = channel.permissionsOf(userID)
-    return !permissions.some(permission => !perms.has(permission))
+    return permissions.every(permission => perms.has(permission))
   }
 
   idsToUserTag(ids: string[]) {
@@ -118,5 +124,31 @@ export default class {
 
   booleanEmoji(enabled: boolean) {
     return enabled ? constants.emojis.greenTick : constants.emojis.redX
+  }
+
+  async fetchMember(guild: Guild, id: string) {
+    const userID = id.startsWith('<@') ? id.substring(id.startsWith('<@!') ? 3 : 2, id.length - 1) : id
+
+    const cachedMember = guild.members.get(userID)
+    if (cachedMember) return cachedMember
+
+    const member = await guild.shard.client.getRESTGuildMember(guild.id, userID).catch(() => undefined)
+
+    // Fetch all members behind the scene so next time bot needs a member for this guild it will be cached
+    guild.fetchAllMembers()
+
+    return member
+  }
+
+  async fetchUser(Gamer: GamerClient, id: string) {
+    const userID = id.startsWith('<@') ? id.substring(id.startsWith('<@!') ? 3 : 2, id.length - 1) : id
+
+    const cachedUser = Gamer.users.get(userID)
+    if (cachedUser) return cachedUser
+
+    const user = await Gamer.getRESTUser(userID).catch(() => undefined)
+    if (user) Gamer.users.add(user)
+
+    return user
   }
 }

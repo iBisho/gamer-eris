@@ -18,7 +18,7 @@ export default new Command(`public`, async (message, args, context) => {
 
   const validRoles = new Set<Role>()
 
-  const bot = message.member.guild.members.get(Gamer.user.id)
+  const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!bot) return
 
   const botsHighestRole = Gamer.helpers.discord.highestRole(bot)

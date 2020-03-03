@@ -10,7 +10,7 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
   const gamerGuild = Gamer.guilds.get(constants.general.gamerServerID)
   if (!gamerGuild) return
 
-  const gamerMember = gamerGuild.members.get(message.author.id)
+  const gamerMember = await Gamer.helpers.discord.fetchMember(gamerGuild, message.author.id)
   if (!gamerMember) return
 
   const language = Gamer.getLanguage(message.guildID)

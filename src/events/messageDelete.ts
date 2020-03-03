@@ -29,7 +29,7 @@ export default class extends Event {
       ? message.channel.guild.channels.get(logs.publiclogsChannelID)
       : undefined
 
-    const botMember = message.channel.guild.members.get(Gamer.user.id)
+    const botMember = await Gamer.helpers.discord.fetchMember(message.channel.guild, Gamer.user.id)
     if (!botMember?.permission.has('viewAuditLogs')) return
 
     const auditlogs = await message.channel.guild.getAuditLogs(

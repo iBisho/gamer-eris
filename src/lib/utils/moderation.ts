@@ -24,7 +24,7 @@ export default class {
   ) {
     if (!message.guildID || !message.member) return
 
-    const member = message.member.guild.members.get(user.id)
+    const member = await this.Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
     if (member) {
       const memberSettings = await this.Gamer.database.models.member.findOne({
         memberID: user.id
@@ -180,9 +180,7 @@ export default class {
       if (!guild) continue
 
       const language = this.Gamer.getLanguage(guild.id)
-      if (!language) continue
-
-      const member = guild.members.get(log.userID)
+      const member = await this.Gamer.helpers.discord.fetchMember(guild, log.userID)
       if (!member) continue
 
       // Since the time has fully elapsed we need to remove the role on the user

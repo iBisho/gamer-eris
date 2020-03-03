@@ -15,7 +15,7 @@ export default class extends Event {
     if (!oldMember) return
 
     const Gamer = guild.shard.client as GamerClient
-    const botMember = guild.members.get(Gamer.user.id)
+    const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
     if (!botMember) return
 
     const language = Gamer.getLanguage(guild.id)
@@ -114,7 +114,7 @@ export default class extends Event {
 
   async handleRoleSets(Gamer: GamerClient, guild: Guild, member: Member, roleID: string) {
     // Check bot perms
-    const botMember = guild.members.get(Gamer.user.id)
+    const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
     if (!botMember) return
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)

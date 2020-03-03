@@ -83,7 +83,7 @@ export default new Command(`label`, async (message, args, context) => {
 
       if (!mail) return message.channel.createMessage(language(`mails/label:NOT_MAIL_CHANNEL`))
 
-      const botMember = message.member.guild.members.get(Gamer.user.id)
+      const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
       if (!botMember || !botMember.permission.has('manageChannels'))
         return message.channel.createMessage(language(`mails/label:NEED_MANAGE_CHANNELS`))
 

@@ -45,7 +45,7 @@ export default new Command(`xp`, async (message, args, context) => {
   }
 
   // The user is trying to update just 1 member
-  const member = message.member.guild.members.get(memberID) || message.member
+  const member = (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
   if (isAdding) Gamer.helpers.levels.addLocalXP(member, amount, true)
   else if (type.toLowerCase() === `remove`) Gamer.helpers.levels.removeXP(member, amount)
   // Cancel out if not add or remove

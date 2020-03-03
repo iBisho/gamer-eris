@@ -6,7 +6,7 @@ export default new Command(`mute`, async (message, args, context) => {
   if (!message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = message.member.guild.members.get(Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!botMember) return
 
   const language = Gamer.getLanguage(message.guildID)
@@ -35,10 +35,7 @@ export default new Command(`mute`, async (message, args, context) => {
   const [userID] = args
   args.shift()
 
-  const user = Gamer.users.get(userID) || message.mentions[0]
-  if (!user) return message.channel.createMessage(language(`moderation/mute:NEED_USER`))
-
-  const member = message.member.guild.members.get(user.id)
+  const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
   if (!member) return
 
   const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
@@ -62,20 +59,22 @@ export default new Command(`mute`, async (message, args, context) => {
   await member.addRole(guildSettings.moderation.roleIDs.mute)
 
   const embed = new GamerEmbed()
-    .setDescription(language(`moderation/mute:TITLE`, { guildName: message.member.guild.name, user: user.username }))
-    .setThumbnail(user.avatarURL)
+    .setDescription(
+      language(`moderation/mute:TITLE`, { guildName: message.member.guild.name, user: member.user.username })
+    )
+    .setThumbnail(member.user.avatarURL)
     .setTimestamp()
     .addField(language(`common:REASON`), reason)
 
   // Send the user a message
-  const dmChannel = await user.getDMChannel().catch(() => undefined)
+  const dmChannel = await member.user.getDMChannel().catch(() => undefined)
   if (dmChannel) dmChannel.createMessage({ embed: embed.code }).catch(() => undefined)
 
   const modlogID = await Gamer.helpers.moderation.createModlog(
     message,
     guildSettings,
     language,
-    user,
+    member.user,
     `mute`,
     reason,
     duration

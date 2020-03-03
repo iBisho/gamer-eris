@@ -18,7 +18,8 @@ export default new Command(`xpreset`, async (message, args, context) => {
   const [id] = args
 
   const [user] = message.mentions
-  const member = user || id ? message.member.guild.members.get(user ? user.id : id) : undefined
+  const member =
+    user || id ? await Gamer.helpers.discord.fetchMember(message.member.guild, user ? user.id : id) : undefined
   const role = id
     ? message.member.guild.roles.get(id) ||
       // Incase the user provided a role name and not an id
@@ -47,7 +48,9 @@ export default new Command(`xpreset`, async (message, args, context) => {
   // For every member reset his xp and level
   for (const settings of memberSettings) {
     // Since we already fetched members above we can just get() here
-    const member = message.member.guild.members.get(settings.memberID)
+    const member = await Gamer.helpers.discord
+      .fetchMember(message.member.guild, settings.memberID)
+      .catch(() => undefined)
     if (!member) continue
     // If user is a bot OR a role is provided and this member doesnt have it skip
     if (member.user.bot || (role && !member.roles.includes(role.id))) continue

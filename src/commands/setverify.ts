@@ -86,7 +86,7 @@ export default new Command(`setverify`, async (message, args, context) => {
       if (guildSettings.verify.enabled)
         return message.channel.createMessage(language(`settings/setverify:ALREADY_ENABLED`))
 
-      const bot = message.member.guild.members.get(Gamer.user.id)
+      const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
       if (!bot) return
 
       if (!bot.permission.has('manageRoles') || !bot.permission.has('manageChannels'))

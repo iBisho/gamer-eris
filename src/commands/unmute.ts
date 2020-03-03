@@ -6,7 +6,7 @@ export default new Command(`unmute`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = message.member.guild.members.get(Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!botMember) return
 
   const language = Gamer.getLanguage(message.guildID)
@@ -39,7 +39,7 @@ export default new Command(`unmute`, async (message, args, context) => {
   const [userID] = args
   args.shift()
 
-  const user = Gamer.users.get(userID) || message.mentions[0]
+  const user = (await Gamer.helpers.discord.fetchUser(Gamer, userID)) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`moderation/unmute:NEED_USER`))
 
   // If it was a valid duration then remove it from the rest of the text
@@ -50,7 +50,7 @@ export default new Command(`unmute`, async (message, args, context) => {
   const reason = args.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/unmute:NEED_REASON`))
 
-  const member = message.member.guild.members.get(user.id)
+  const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
   if (!member) return
 
   if (!member.roles.includes(muteRole.id)) return message.channel.createMessage(language(`moderation/unmute:NOT_MUTED`))

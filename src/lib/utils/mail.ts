@@ -76,8 +76,8 @@ export default class {
 
     const language = this.Gamer.getLanguage(message.guildID)
 
-    const botMember = message.member.guild.members.get(this.Gamer.user.id)
-    if (!botMember || !botMember.permission.has('manageChannels') || !botMember.permission.has('manageRoles'))
+    const botMember = await this.Gamer.helpers.discord.fetchMember(message.member.guild, this.Gamer.user.id)
+    if (!botMember?.permission.has('manageChannels') || !botMember.permission.has('manageRoles'))
       return message.channel.createMessage(language(`mails/mail:MISSING_PERMISSIONS`))
 
     if (!guildSettings?.mails.enabled) return message.channel.createMessage(language(`mails/mail:DISABLED`))
@@ -117,7 +117,7 @@ export default class {
       guildSettings.save()
     }
 
-    const bot = message.member.guild.members.get(this.Gamer.user.id)
+    const bot = await this.Gamer.helpers.discord.fetchMember(message.member.guild, this.Gamer.user.id)
     if (!bot?.permission.has('manageChannels'))
       return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
 
@@ -220,7 +220,7 @@ export default class {
     const botPerms = channel.permissionsOf(this.Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
 
-    const botMember = guild.members.get(this.Gamer.user.id)
+    const botMember = await this.Gamer.helpers.discord.fetchMember(guild, this.Gamer.user.id)
     if (!botMember?.permission.has('manageRoles')) return
 
     const alertRoleIDs = guildSettings?.mails.alertRoleIDs || []
@@ -259,7 +259,7 @@ export default class {
       name: content.toLowerCase()
     })
 
-    const user = this.Gamer.users.get(mail.userID)
+    const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, mail.userID)
     if (!user) return
 
     const language = this.Gamer.getLanguage(message.guildID)
@@ -342,8 +342,8 @@ export default class {
 
     const language = this.Gamer.getLanguage(message.guildID)
 
-    const botMember = message.member.guild.members.get(this.Gamer.user.id)
-    if (!botMember || !botMember.permission.has('manageChannels'))
+    const botMember = await this.Gamer.helpers.discord.fetchMember(message.member.guild, this.Gamer.user.id)
+    if (!botMember?.permission.has('manageChannels'))
       return message.channel.createMessage(language(`mails/mail:MISSING_PERMISSIONS`))
 
     const prefix = guildSettings?.prefix || this.Gamer.prefix
@@ -354,7 +354,7 @@ export default class {
       name: content.toLowerCase()
     })
 
-    const user = this.Gamer.users.get(mail.userID)
+    const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, mail.userID)
     if (!user) return
 
     // Delete the mail from the database

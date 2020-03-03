@@ -19,7 +19,7 @@ export default class extends Event {
 
     if (rawMessage.channel instanceof PrivateChannel || rawMessage.channel instanceof GroupChannel) return
 
-    const user = Gamer.users.get(userID)
+    const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
     if (!user) return
 
     if (user.bot) return
@@ -62,10 +62,10 @@ export default class extends Event {
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
     if (!message.member) return
 
-    const member = message.member.guild.members.get(userID)
+    const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
     if (!member) return
 
-    const botMember = message.member.guild.members.get(Gamer.user.id)
+    const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!botMember || !botMember.permission.has(`manageRoles`)) return
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
@@ -114,11 +114,10 @@ export default class extends Event {
 
     if (!feedbackReactions.includes(fullEmojiName)) return
 
-    const reactorMember = message.member.guild.members.get(userID)
+    const reactorMember = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
     if (!reactorMember) return
 
-    const feedbackMember = message.member.guild.members.get(feedback.authorID)
-
+    const feedbackMember = await Gamer.helpers.discord.fetchMember(message.member.guild, feedback.authorID)
     // If the user is no longer in the server we dont need to grant any xp
     if (!feedbackMember) return
 

@@ -8,7 +8,7 @@ export default new Command([`pay`, `send`, `transfer`], async (message, args, co
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
   const [userID, amountStr] = args
-  const user = Gamer.users.get(userID) || message.mentions[0]
+  const user = (await Gamer.helpers.discord.fetchUser(Gamer, userID)) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`leveling/pay:NEED_USER`))
 
   const amount = parseInt(amountStr)

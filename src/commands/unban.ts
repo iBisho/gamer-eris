@@ -6,7 +6,7 @@ export default new Command(`unban`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = message.member.guild.members.get(Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!botMember) return
 
   const language = Gamer.getLanguage(message.guildID)
@@ -27,7 +27,7 @@ export default new Command(`unban`, async (message, args, context) => {
 
   const [userID, ...text] = args
 
-  const user = Gamer.users.get(userID) || message.mentions[0]
+  const user = (await Gamer.helpers.discord.fetchUser(Gamer, userID)) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`moderation/unban:NEED_USER`))
 
   const reason = text.join(` `)

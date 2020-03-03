@@ -150,7 +150,7 @@ export default class {
   }
 
   async makeCanvas(event: GamerEvent) {
-    const eventAuthor = this.Gamer.users.get(event.authorID)
+    const eventAuthor = await this.Gamer.helpers.discord.fetchUser(this.Gamer, event.authorID)
 
     const customBackgroundBuffer = event.backgroundURL
       ? await fetch(event.backgroundURL).then(res => res.buffer())
@@ -159,18 +159,14 @@ export default class {
     const guild = this.Gamer.guilds.get(event.guildID)
 
     const attendees: string[] = []
+
     for (const id of event.attendees) {
-      const user = this.Gamer.users.get(id)
-      if (!user) continue
+      if (!guild) continue
 
-      if (!guild) {
-        attendees.push(`${user.username}#${user.discriminator}`)
-        continue
-      }
+      const member = await this.Gamer.helpers.discord.fetchMember(guild, id)
+      if (!member) continue
 
-      const member = guild.members.get(id)
-      if (member) attendees.push(`${member.nick || member.username}#${member.user.discriminator}`)
-      else attendees.push(`${user.username}#${user.discriminator}`)
+      attendees.push(`${member.nick || member.username}#${member.user.discriminator}`)
     }
 
     const canvas = new Canvas(652, 367)
@@ -426,7 +422,7 @@ export default class {
     if (guild.iconURL) embed.setThumbnail(guild.iconURL)
 
     for (const userID of event.attendees) {
-      const user = this.Gamer.users.get(userID)
+      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userID)
       if (!user) continue
 
       user
@@ -493,9 +489,10 @@ export default class {
     if (!event.dmReminders) return
 
     if (event.adChannelID) embed.addField(language(`events/events:GO_TO`), `<#${event.adChannelID}>`)
-    for (const userID of event.attendees) {
-      const user = this.Gamer.users.get(userID)
-      if (!user) continue
+
+    event.attendees.forEach(async userID => {
+      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userID)
+      if (!user) return
 
       user
         .getDMChannel()
@@ -503,7 +500,7 @@ export default class {
         .then(channel => channel.createMessage({ embed: embed.code }).catch(() => undefined))
         // Catch the promise from dmchannel
         .catch(() => undefined)
-    }
+    })
   }
 
   async processReminders() {
@@ -511,7 +508,7 @@ export default class {
     const reminders = await this.Gamer.database.models.reminder.find({ timestamp: { $lt: now } })
     if (!reminders.length) return
 
-    reminders.forEach(reminder => {
+    reminders.forEach(async reminder => {
       const channel = this.Gamer.getChannel(reminder.channelID)
       if (!channel || !(channel instanceof TextChannel)) return
 
@@ -522,7 +519,7 @@ export default class {
       ])
       if (!hasPermission) return
 
-      const user = this.Gamer.users.get(reminder.userID)
+      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, reminder.userID)
       if (!user) return
 
       const language = this.Gamer.getLanguage(reminder.guildID)

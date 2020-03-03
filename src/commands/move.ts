@@ -35,8 +35,10 @@ export default new Command(`move`, async (message, args, context) => {
     })
   } else {
     if (!message.mentions.length) return message.channel.createMessage(language(`moderation/move:NEED_MEMBERS`))
-    message.mentions.forEach(user => {
-      const member = message.member?.guild.members.get(user.id)
+    message.mentions.forEach(async user => {
+      if (!message.member) return
+
+      const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
       if (!member || !member.voiceState.channelID) return
       member.edit({ channelID }, REASON)
     })

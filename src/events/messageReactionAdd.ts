@@ -20,7 +20,7 @@ export default class extends Event {
   async execute(rawMessage: PossiblyUncachedMessage, emoji: ReactionEmoji, userID: string) {
     if (rawMessage.channel instanceof PrivateChannel || rawMessage.channel instanceof GroupChannel) return
 
-    const user = Gamer.users.get(userID)
+    const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
     if (!user || user.bot) return
 
     // Need read message history perms to get the messages
@@ -77,7 +77,7 @@ export default class extends Event {
     const joinReaction = Gamer.helpers.discord.convertEmoji(constants.emojis.greenTick, `reaction`)
     if (!joinReaction) return
 
-    const member = message.member.guild.members.get(userID)
+    const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
     if (!member) return
 
     switch (emoji.id) {
@@ -109,10 +109,10 @@ export default class extends Event {
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
     if (!message.member) return
 
-    const member = message.member.guild.members.get(userID)
+    const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
     if (!member) return
 
-    const botMember = message.member.guild.members.get(Gamer.user.id)
+    const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!botMember || !botMember.permission.has(`manageRoles`)) return
 
     const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
@@ -172,7 +172,7 @@ export default class extends Event {
     const originalAuthorID = postEmbed?.footer?.text
     if (!originalAuthorID) return
 
-    const originalAuthor = Gamer.users.get(originalAuthorID)
+    const originalAuthor = await Gamer.helpers.discord.fetchUser(Gamer, originalAuthorID)
     if (!originalAuthor) return
 
     try {
@@ -362,7 +362,7 @@ export default class extends Event {
     // Check if a valid emoji was used
     if (!feedbackEmojis.includes(fullEmojiName)) return
 
-    const reactorMember = message.member.guild.members.get(user.id)
+    const reactorMember = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
     if (!reactorMember) return
 
     const reactorIsMod = reactorMember.roles.some(id => guildSettings.staff.modRoleIDs.includes(id))
@@ -370,7 +370,7 @@ export default class extends Event {
       reactorMember.permission.has('administrator') ||
       (guildSettings.staff.adminRoleID && reactorMember.roles.includes(guildSettings.staff.adminRoleID))
 
-    const feedbackMember = message.member.guild.members.get(feedback.authorID)
+    const feedbackMember = await Gamer.helpers.discord.fetchMember(message.member.guild, feedback.authorID)
 
     const language = Gamer.getLanguage(message.member.guild.id)
 

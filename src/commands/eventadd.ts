@@ -34,7 +34,7 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
 
   for (const user of message.mentions) {
     if (event.attendees.includes(user.id)) continue
-    const member = message.member.guild.members.get(user.id)
+    const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
     if (!member) continue
     if (event.allowedRoleIDs.length && !member.roles.some(roleID => event.allowedRoleIDs.includes(roleID))) continue
     Gamer.helpers.events.joinEvent(event, user.id, language)

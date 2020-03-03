@@ -72,7 +72,7 @@ export default class {
     // If it has roles to give then give them to the user
     if (!levelData || !levelData.roleIDs.length) return
 
-    const bot = member.guild.members.get(this.Gamer.user.id)
+    const bot = await this.Gamer.helpers.discord.fetchMember(member.guild, this.Gamer.user.id)
     if (!bot) return
     // Check if the bots role is high enough to manage the role
     const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
@@ -169,8 +169,8 @@ export default class {
 
     // Need to check if roles need to be updated now for level rewards
     const oldLevel = constants.levels.find(level => level.level === settings.leveling.level)
-    const bot = member.guild.members.get(this.Gamer.user.id)
-    if (!oldLevel || !bot || !bot.permission.has('manageRoles')) return
+    const bot = await this.Gamer.helpers.discord.fetchMember(member.guild, this.Gamer.user.id)
+    if (!oldLevel || !bot?.permission.has('manageRoles')) return
 
     // Fetch all custom guild levels data
     const levelData = await this.Gamer.database.models.level.findOne({

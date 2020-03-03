@@ -25,8 +25,8 @@ export default new Command(`embed`, async (message, args, context) => {
   const emojis = await Gamer.database.models.emoji.find()
 
   const [firstWord] = args
-  const user = message.mentions.length ? message.mentions[0] : Gamer.users.get(firstWord)
-  if (user) args.shift()
+  const [user] = message.mentions
+  if (user && firstWord.startsWith('<@')) args.shift()
 
   const transformed = Gamer.helpers.transform.variables(
     args.join(' '),
