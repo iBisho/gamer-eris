@@ -137,12 +137,12 @@ export default class {
 
     const member = await guild.shard.client.getRESTGuildMember(guild.id, userID).catch(() => undefined)
 
-    console.log(`[DEBUG] fetching ${guild.name} members`)
-    // Fetch all members behind the scene so next time bot needs a member for this guild it will be cached
-    guild.fetchAllMembers().catch(error => {
-      console.log(`[DEBUG] SOMETHING WENT WRONG IN FETCHING AND IN CATCH HERE`, error)
-      return undefined
-    })
+    // console.log(`[DEBUG] fetching ${guild.name} members`)
+    // // Fetch all members behind the scene so next time bot needs a member for this guild it will be cached
+    // guild.fetchAllMembers().catch(error => {
+    //   console.log(`[DEBUG] SOMETHING WENT WRONG IN FETCHING AND IN CATCH HERE`, error)
+    //   return undefined
+    // })
 
     return member
   }
