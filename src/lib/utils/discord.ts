@@ -127,6 +127,9 @@ export default class {
   }
 
   async fetchMember(guild: Guild, id: string) {
+    // Dumb ts shit on array destructuring
+    if (!id) return
+
     const userID = id.startsWith('<@') ? id.substring(id.startsWith('<@!') ? 3 : 2, id.length - 1) : id
 
     const cachedMember = guild.members.get(userID)
@@ -141,6 +144,9 @@ export default class {
   }
 
   async fetchUser(Gamer: GamerClient, id: string) {
+    // dumb ts shit
+    if (!id) return
+
     const userID = id.startsWith('<@') ? id.substring(id.startsWith('<@!') ? 3 : 2, id.length - 1) : id
 
     const cachedUser = Gamer.users.get(userID)
