@@ -1,10 +1,10 @@
 import Event from '../lib/structures/Event'
-import { TextChannel, Member, Guild } from 'eris'
+import { TextChannel, Member, Guild, MemberPartial } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 
 export default class extends Event {
-  async execute(guild: Guild, member: Member) {
+  async execute(guild: Guild, member: Member | MemberPartial) {
     const Gamer = guild.shard.client as GamerClient
     Gamer.amplitude.push({
       authorID: member.id,
@@ -47,7 +47,7 @@ export default class extends Event {
         const transformed = Gamer.helpers.transform.variables(
           guildSettings.hibye.goodbye.message,
           member.user,
-          member.guild,
+          guild,
           member.user,
           emojis
         )
@@ -84,11 +84,11 @@ export default class extends Event {
     // Create the base embed that first can be sent to public logs
     const embed = new GamerEmbed()
       .setTitle(language(`moderation/logs:MEMBER_GONE`))
-      .addField(language(`moderation/logs:MEMBER_NAME`), member.mention, true)
+      .addField(language(`moderation/logs:MEMBER_NAME`), member.user.mention, true)
       .addField(language(`moderation/logs:USER_ID`), member.id, true)
-      .addField(language(`moderation/logs:TOTAL_MEMBERS`), member.guild.memberCount.toString(), true)
-      .setFooter(`${member.username}#${member.discriminator}`, `https://i.imgur.com/Ya0SXdI.png`)
-      .setThumbnail(member.avatarURL)
+      .addField(language(`moderation/logs:TOTAL_MEMBERS`), guild.memberCount.toString(), true)
+      .setFooter(`${member.user.username}#${member.user.discriminator}`, `https://i.imgur.com/Ya0SXdI.png`)
+      .setThumbnail(member.user.avatarURL)
       .setTimestamp()
 
     const logs = guildSettings.moderation.logs
