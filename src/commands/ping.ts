@@ -13,7 +13,7 @@ export default new Command([`ping`, `pong`], async (message, _args, context) => 
       id: message.member ? message.member.guild.shard.id : 'Unknown',
       discord: `<:discord:494050000779608064>`,
       guilds: context.client.guilds.size.toLocaleString(),
-      users: context.client.users.size.toLocaleString()
+      users: context.client.guilds.reduce((subtotal, guild) => subtotal + guild.memberCount, 0).toLocaleString()
     })
   )
 
