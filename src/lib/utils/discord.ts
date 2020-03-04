@@ -138,7 +138,7 @@ export default class {
     const member = await guild.shard.client.getRESTGuildMember(guild.id, userID).catch(() => undefined)
 
     // Fetch all members behind the scene so next time bot needs a member for this guild it will be cached
-    // guild.fetchAllMembers()
+    guild.fetchAllMembers().catch(() => undefined)
 
     return member
   }
