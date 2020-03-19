@@ -25,7 +25,7 @@ export default class {
         if (word.toUpperCase().startsWith('%RANDOM')) {
           const [search] = word.substring(6, word.length - 1)
           console.warn('search word is:', search, 'from original word', word)
-          fetch(`https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`)
+          return fetch(`https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`)
             .then(res => res.json())
             .then(res => {
               if (!res.results.length) return
