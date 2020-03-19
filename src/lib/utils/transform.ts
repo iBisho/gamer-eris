@@ -3,6 +3,7 @@ import { GamerEmoji } from '../types/database'
 import { milliseconds } from '../types/enums/time'
 import GamerClient from '../structures/GamerClient'
 import { TenorGif } from '../types/tenor'
+import nodefetch from 'node-fetch'
 
 const REGEXP = /%AUTHOR%|%AUTHORMENTION%|%USER%|%GUILD%|%USERMENTION%|%USERCOUNT%|%MEMBERCOUNT%|%AUTHORIMAGE%|%USERIMAGE%|%GUILDIMAGE%/gi
 
@@ -25,7 +26,7 @@ export default class {
         if (word.toUpperCase().startsWith('%RANDOM')) {
           const [search] = word.substring(6, word.length - 1)
           console.log('search word is:', search, 'from original word', word)
-          return fetch(`https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`)
+          return nodefetch(`https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`)
             .then(res => res.json())
             .then(res => {
               if (!res.results.length) return
