@@ -24,7 +24,7 @@ export default class {
         // User wants a random gif
         if (word.toUpperCase().startsWith('%RANDOM')) {
           const [search] = word.substring(6, word.length - 1)
-          console.warn('search word is:', search, 'from original word', word)
+          console.log('search word is:', search, 'from original word', word)
           return fetch(`https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`)
             .then(res => res.json())
             .then(res => {
