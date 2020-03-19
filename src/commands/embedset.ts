@@ -26,14 +26,7 @@ export default new Command(`embedset`, async (message, args, context) => {
 
   const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   // If the user does not have a modrole or admin role quit out
-  if (
-    !settings ||
-    !(
-      Gamer.helpers.discord.isModerator(message, settings.staff.modRoleIDs) ||
-      Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)
-    )
-  )
-    return
+  if (!Gamer.helpers.discord.isModOrAdmin(message, settings)) return
 
   const emojis = await Gamer.database.models.emoji.find()
 
