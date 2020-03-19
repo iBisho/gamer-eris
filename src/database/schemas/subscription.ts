@@ -44,7 +44,7 @@ export default new mongoose.Schema(
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }
   }
-)
+).index({ username: 1, type: 1 })
 
 export enum GamerSubscriptionType {
   TWITCH = 'twitch'

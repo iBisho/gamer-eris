@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
+import { GamerSubscriptionType } from '../database/schemas/subscription'
 
 export default new Command(`twitch`, async (message, args, context) => {
   if (!message.guildID) return
@@ -44,7 +45,7 @@ export default new Command(`twitch`, async (message, args, context) => {
   // Fetch this username from subscriptions specifically for twitch
   const userSubscription = await Gamer.database.models.subscription.findOne({
     username,
-    type: `twitch`
+    type: GamerSubscriptionType.TWITCH
   })
 
   if (!username) return helpCommand.process(message, [`twitch`], context)

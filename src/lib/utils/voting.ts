@@ -20,7 +20,8 @@ export const weeklyVoteReset = async () => {
 export const vipExpiredCheck = async () => {
   const now = Date.now()
   const expiredGuildSettings = await database.models.guild.find({
-    vip: { isVIP: true, registeredAt: { $lt: now - milliseconds.WEEK } }
+    'vip.isVIP': true,
+    'vip.registeredAt': { $lt: now - milliseconds.WEEK }
   })
 
   const usersIDsToReset = [

@@ -16,6 +16,7 @@ export default new Command([`roleinfo`, `ri`], async (message, args, context) =>
 
   const language = Gamer.getLanguage(message.guildID)
 
+  await message.member.guild.fetchAllMembers()
   const members = message.member.guild.members.filter(member => member.roles.includes(role.id))
 
   const embed = new GamerEmbed()
