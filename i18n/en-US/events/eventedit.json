@@ -28,7 +28,7 @@
   "DESCRIPTION_UPDATED": "The events description has been updated.",
   "ATTENDEES_UPDATED": "The events max allowed attendees has been updated.",
   "REPEAT_UPDATED": "The events repeat setting has been updated.",
-  "REMOVE_UPDATED": "The events remove attendess on repeat setting has been updated.",
+  "REMOVE_UPDATED": "The events remove attendees on repeat setting has been updated.",
   "DM_UPDATED": "The events send reminders in DM setting has been updated.",
   "PLATFORM_UPDATED": "The events platform has been updated.",
   "GAME_UPDATED": "The events game has been updated.",
