@@ -20,22 +20,21 @@ export default class {
 
     fullContent = lineBreakString
       .split(` `)
-      .map(async word => {
+      .map(word => {
         // User wants a random gif
         if (word.toUpperCase().startsWith('%RANDOM')) {
           const [search] = word.substring(6, word.length - 1)
           console.warn('search word is:', search, 'from original word', word)
-          const data: TenorGif | undefined = await fetch(
-            `https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`
-          )
+          fetch(`https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`)
             .then(res => res.json())
-            .catch(() => undefined)
+            .then(res => {
+              if (!res.results.length) return
+              const randomResult = this.Gamer.helpers.utils.chooseRandom((res as TenorGif).results)
+              const [media] = randomResult.media
 
-          if (!data || !data.results.length) return
-          const randomResult = this.Gamer.helpers.utils.chooseRandom(data.results)
-          const [media] = randomResult.media
-
-          return media.gif.url
+              return media.gif.url
+            })
+            .catch(() => word)
         }
 
         // User wants to use an emoji
