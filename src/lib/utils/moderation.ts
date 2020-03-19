@@ -171,14 +171,15 @@ export default class {
       if (!log.duration) continue
       // If the time has not completed yet skip
       if (now < log.timestamp + log.duration) continue
+      // Check if the bot is in the guild before fetching the database.
+      const guild = this.Gamer.guilds.get(log.guildID)
+      if (!guild) continue
       // Get the guild settings to get the mute role id
       const guildSettings = await this.Gamer.database.models.guild.findOne({ id: log.guildID })
       // If there is no guildsettings or no role id skip
       if (!guildSettings?.moderation.roleIDs.mute) continue
-
-      const guild = this.Gamer.guilds.get(log.guildID)
       // If the mute role is not present in the guild, skip.
-      if (!guild?.roles.has(guildSettings.moderation.roleIDs.mute)) continue
+      if (!guild.roles.has(guildSettings.moderation.roleIDs.mute)) continue
 
       const language = this.Gamer.getLanguage(guild.id)
       const member = await this.Gamer.helpers.discord.fetchMember(guild, log.userID)
