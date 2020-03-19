@@ -137,6 +137,8 @@ export default class GamerClient extends Client {
   guildsDisableTenor: Map<string, boolean> = new Map()
   /** This stores the custom command permissions for guilds */
   guildCommandPermissions: Map<string, GamerCommandPermission> = new Map()
+  /** This stores the guild ids that have had their members fully fetched. */
+  allMembersFetchedGuildIDs: Set<string> = new Set()
 
   constructor(options: ClientOptions) {
     super(options)

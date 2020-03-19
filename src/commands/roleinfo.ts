@@ -16,9 +16,12 @@ export default new Command([`roleinfo`, `ri`], async (message, args, context) =>
 
   const language = Gamer.getLanguage(message.guildID)
 
-  await message.member.guild.fetchAllMembers()
-  const members = message.member.guild.members.filter(member => member.roles.includes(role.id))
+  if (!Gamer.allMembersFetchedGuildIDs.has(message.member.guild.id)) {
+    await message.member.guild.fetchAllMembers()
+    Gamer.allMembersFetchedGuildIDs.add(message.member.guild.id)
+  }
 
+  const members = message.member.guild.members.filter(member => member.roles.includes(role.id))
   const embed = new GamerEmbed()
     .setAuthor(role.name, message.author.avatarURL)
     .addField(language(`roles/roleinfo:ROLE_NAME`), role.mention, true)
