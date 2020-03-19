@@ -177,14 +177,12 @@ export default class {
       if (!guildSettings?.moderation.roleIDs.mute) continue
 
       const guild = this.Gamer.guilds.get(log.guildID)
-      if (!guild) continue
-
       // If the mute role is not present in the guild, skip.
-      if (!guild.roles.has(guildSettings.moderation.roleIDs.mute)) continue
+      if (!guild?.roles.has(guildSettings.moderation.roleIDs.mute)) continue
 
       const language = this.Gamer.getLanguage(guild.id)
       const member = await this.Gamer.helpers.discord.fetchMember(guild, log.userID)
-      if (!member) continue
+      if (!member?.roles.includes(guildSettings.moderation.roleIDs.mute)) continue
 
       // Since the time has fully elapsed we need to remove the role on the user
       this.Gamer.removeGuildMemberRole(
