@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
+import { highestRole } from 'helperis'
 
 export default new Command([`rolefromall`], async (message, args, context) => {
   if (!message.member || !message.guildID) return
@@ -34,11 +35,11 @@ export default new Command([`rolefromall`], async (message, args, context) => {
     : undefined
   if (!role) return message.channel.createMessage(language(`vip/rolefromall:NEED_ROLE`))
 
-  const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
+  const botsHighestRole = highestRole(botMember)
   if (botsHighestRole.position < role.position)
     return message.channel.createMessage(language(`vip/rolefromall:BOT_TOO_LOW`))
 
-  const memberHighestRole = Gamer.helpers.discord.highestRole(message.member)
+  const memberHighestRole = highestRole(message.member)
   if (memberHighestRole.position < role.position)
     return message.channel.createMessage(language(`vip/rolefromall:USER_TOO_LOW`))
 

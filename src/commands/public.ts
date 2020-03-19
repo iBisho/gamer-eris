@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { Role } from 'eris'
+import { highestRole } from 'helperis'
 
 export default new Command(`public`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -21,7 +22,7 @@ export default new Command(`public`, async (message, args, context) => {
   const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!bot) return
 
-  const botsHighestRole = Gamer.helpers.discord.highestRole(bot)
+  const botsHighestRole = highestRole(bot)
   if (!botsHighestRole) return
 
   for (const roleNameOrID of [...args, ...message.roleMentions]) {

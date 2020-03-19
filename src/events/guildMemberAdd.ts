@@ -2,6 +2,7 @@ import Event from '../lib/structures/Event'
 import { TextChannel, Member, Guild } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
+import { highestRole } from 'helperis'
 
 export default class extends Event {
   async execute(guild: Guild, member: Member) {
@@ -18,8 +19,8 @@ export default class extends Event {
 
     const language = Gamer.getLanguage(guild.id)
 
-    const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
-    const membersHighestRole = Gamer.helpers.discord.highestRole(member)
+    const botsHighestRole = highestRole(botMember)
+    const membersHighestRole = highestRole(member)
 
     const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
     // If no custom guild settings cancel out

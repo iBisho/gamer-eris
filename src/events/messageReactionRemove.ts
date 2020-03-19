@@ -4,6 +4,7 @@ import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
+import { highestRole } from 'helperis'
 
 const eventEmojis: string[] = []
 export default class extends Event {
@@ -68,7 +69,7 @@ export default class extends Event {
     const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!botMember || !botMember.permission.has(`manageRoles`)) return
 
-    const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
+    const botsHighestRole = highestRole(botMember)
 
     const reactionRole = await Gamer.database.models.reactionRole.findOne({
       messageID: message.id

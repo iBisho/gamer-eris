@@ -3,6 +3,7 @@ import { TextChannel, Member, Guild } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import constants from '../constants'
+import { highestRole } from 'helperis'
 
 export interface OldMember {
   roles?: string[]
@@ -117,7 +118,7 @@ export default class extends Event {
     const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
     if (!botMember) return
 
-    const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
+    const botsHighestRole = highestRole(botMember)
 
     if (!botMember.permission.has('manageRoles')) return
     const rolesets = await Gamer.database.models.roleset.find({ guildID: member.guild.id })

@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
+import { highestRole } from 'helperis'
 
 export default new Command(`mute`, async (message, args, context) => {
   if (!message.member) return
@@ -38,7 +39,7 @@ export default new Command(`mute`, async (message, args, context) => {
   const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
   if (!member) return
 
-  const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
+  const botsHighestRole = highestRole(botMember)
   // Checks if the bot is higher than the user
   if (!Gamer.helpers.discord.compareMemberPosition(botMember, member) || botsHighestRole.position <= muteRole.position)
     return message.channel.createMessage(language(`moderation/mute:BOT_TOO_LOW`))

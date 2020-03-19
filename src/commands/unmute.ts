@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import GamerClient from '../lib/structures/GamerClient'
+import { highestRole } from 'helperis'
 
 export default new Command(`unmute`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -32,7 +33,7 @@ export default new Command(`unmute`, async (message, args, context) => {
   const muteRole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.mute)
   if (!muteRole) return
 
-  const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
+  const botsHighestRole = highestRole(botMember)
   if (botsHighestRole.position <= muteRole.position)
     return message.channel.createMessage(language(`moderation/unmute:BOT_TOO_LOW`))
 

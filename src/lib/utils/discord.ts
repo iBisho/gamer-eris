@@ -1,9 +1,10 @@
-import { Message, Member, Role, TextableChannel, PrivateChannel, GroupChannel, Guild } from 'eris'
+import { Message, Member, TextableChannel, PrivateChannel, GroupChannel, Guild } from 'eris'
 import config from '../../../config'
 import constants from '../../constants'
 import GamerEmbed from '../structures/GamerEmbed'
 import GamerClient from '../structures/GamerClient'
 import { GuildSettings } from '../types/settings'
+import { highestRole } from 'helperis'
 
 const emojiRegex = /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/
 
@@ -87,39 +88,9 @@ export default class {
   }
 
   compareMemberPosition(member: Member, target: Member) {
-    let memberHighestRole: Role | undefined
-    let targetHighestRole: Role | undefined
-
-    for (const roleID of member.roles) {
-      const role = member.guild.roles.get(roleID)
-      if (!role) continue
-      if (!memberHighestRole || memberHighestRole.position < role.position) memberHighestRole = role
-    }
-
-    for (const roleID of target.roles) {
-      const role = target.guild.roles.get(roleID)
-      if (!role) continue
-      if (!targetHighestRole || targetHighestRole.position < role.position) targetHighestRole = role
-    }
-    // If the member has no role they can't be higher than anyone
-    if (!memberHighestRole) return false
-    // If the member has a role but the target doesn't they do have perms to manage
-    if (!targetHighestRole) return true
+    const memberHighestRole = highestRole(member)
+    const targetHighestRole = highestRole(target)
     return memberHighestRole.position > targetHighestRole.position
-  }
-
-  highestRole(member: Member) {
-    let memberHighestRole: Role | undefined
-
-    for (const roleID of member.roles) {
-      const role = member.guild.roles.get(roleID)
-      if (!role) continue
-      if (!memberHighestRole || memberHighestRole.position < role.position) memberHighestRole = role
-    }
-
-    const everyoneRole = member.guild.roles.get(member.guild.id) as Role
-
-    return memberHighestRole || everyoneRole
   }
 
   booleanEmoji(enabled: boolean) {
@@ -131,19 +102,10 @@ export default class {
     if (!id) return
 
     const userID = id.startsWith('<@') ? id.substring(id.startsWith('<@!') ? 3 : 2, id.length - 1) : id
-
     const cachedMember = guild.members.get(userID)
     if (cachedMember) return cachedMember
 
     const member = await guild.shard.client.getRESTGuildMember(guild.id, userID).catch(() => undefined)
-
-    // console.log(`[DEBUG] fetching ${guild.name} members`)
-    // // Fetch all members behind the scene so next time bot needs a member for this guild it will be cached
-    // guild.fetchAllMembers().catch(error => {
-    //   console.log(`[DEBUG] SOMETHING WENT WRONG IN FETCHING AND IN CATCH HERE`, error)
-    //   return undefined
-    // })
-
     return member
   }
 

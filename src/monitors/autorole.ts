@@ -3,6 +3,7 @@
 import Monitor from '../lib/structures/Monitor'
 import { Message, GuildChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
+import { highestRole } from 'helperis'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -14,7 +15,7 @@ export default class extends Monitor {
     const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!bot || !bot.permission.has('manageRoles')) return
 
-    const highestRole = Gamer.helpers.discord.highestRole(bot)
+    const role = highestRole(bot)
 
     // Get the verification category id so we dont assign the role while they are chatting in verification
     const guildSettings = await Gamer.database.models.guild.findOne({
@@ -32,7 +33,7 @@ export default class extends Monitor {
       return
 
     const autorole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.autorole)
-    if (!autorole || autorole.position >= highestRole.position) return
+    if (!autorole || autorole.position >= role.position) return
 
     Gamer.amplitude.push({
       authorID: message.author.id,

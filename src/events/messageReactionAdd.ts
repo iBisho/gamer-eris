@@ -5,6 +5,7 @@ import constants from '../constants'
 import Gamer from '..'
 import GamerEmbed from '../lib/structures/GamerEmbed'
 import nodefetch from 'node-fetch'
+import { highestRole } from 'helperis'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
@@ -115,7 +116,7 @@ export default class extends Event {
     const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!botMember || !botMember.permission.has(`manageRoles`)) return
 
-    const botsHighestRole = Gamer.helpers.discord.highestRole(botMember)
+    const botsHighestRole = highestRole(botMember)
 
     const reactionRole = await Gamer.database.models.reactionRole.findOne({
       messageID: message.id

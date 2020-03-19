@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
+import { highestRole } from 'helperis'
 
 export default new Command(`give`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -37,12 +38,12 @@ export default new Command(`give`, async (message, args, context) => {
   if (!role) return message.channel.createMessage(language(`roles/give:NEED_ROLE`))
 
   // Check if the bots role is high enough to manage the role
-  const botsHighestRole = Gamer.helpers.discord.highestRole(bot)
+  const botsHighestRole = highestRole(bot)
   if (botsHighestRole.position < role.position) return message.channel.createMessage(language(`roles/give:BOT_TOO_LOW`))
   // Check if the authors role is high enough to grant this role
   if (!message.member) return
 
-  const memberHighestRole = Gamer.helpers.discord.highestRole(message.member)
+  const memberHighestRole = highestRole(message.member)
   if (memberHighestRole.position < role.position)
     return message.channel.createMessage(language(`roles/give:USER_TOO_LOW`))
 

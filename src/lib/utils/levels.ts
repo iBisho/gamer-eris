@@ -2,6 +2,7 @@ import { Member } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { milliseconds } from '../types/enums/time'
+import { highestRole } from 'helperis'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -75,7 +76,7 @@ export default class {
     const bot = await this.Gamer.helpers.discord.fetchMember(member.guild, this.Gamer.user.id)
     if (!bot) return
     // Check if the bots role is high enough to manage the role
-    const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
+    const botsHighestRole = highestRole(bot)
 
     const language = this.Gamer.getLanguage(member.guild.id)
 
@@ -182,7 +183,7 @@ export default class {
     if (!levelData || !levelData.roleIDs.length) return
 
     // Check if the bots role is high enough to manage the role
-    const botsHighestRole = this.Gamer.helpers.discord.highestRole(bot)
+    const botsHighestRole = highestRole(bot)
 
     const language = this.Gamer.getLanguage(member.guild.id)
 
