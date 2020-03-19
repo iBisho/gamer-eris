@@ -121,6 +121,9 @@ export default class {
     const bot = await this.Gamer.helpers.discord.fetchMember(message.member.guild, this.Gamer.user.id)
     if (!bot?.permission.has('manageChannels'))
       return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
+    // Make sure the category can be read since we need to create a channel inside this category
+    if (!category.permissionsOf(this.Gamer.user.id).has('readMessages'))
+      return message.channel.createMessage(language(`mails/mail:CHANNEL_CREATE_FAILED`))
 
     if (category.channels.size === 50) return message.channel.createMessage(language(`mails/mail:TOO_MANY_CHANNELS`))
 
