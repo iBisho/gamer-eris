@@ -13,7 +13,7 @@ export default new Command(`tags`, async (message, _args, context) => {
   let response = ``
   for (const tag of tags) {
     if (response.length === 2000) break
-    const text = `${tag.name}**\n`
+    const text = `**${tag.name}**\n`
     if (response.length + text.length >= 2000) break
     response += text
   }
