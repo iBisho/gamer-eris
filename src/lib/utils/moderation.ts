@@ -179,6 +179,9 @@ export default class {
       const guild = this.Gamer.guilds.get(log.guildID)
       if (!guild) continue
 
+      // If the mute role is not present in the guild, skip.
+      if (!guild.roles.has(guildSettings.moderation.roleIDs.mute)) continue
+
       const language = this.Gamer.getLanguage(guild.id)
       const member = await this.Gamer.helpers.discord.fetchMember(guild, log.userID)
       if (!member) continue
