@@ -2,7 +2,7 @@ import Event from '../lib/structures/Event'
 import { PrivateChannel, Message, Attachment, Embed, User, TextChannel, GroupChannel } from 'eris'
 import Gamer from '..'
 import { PartialMessage } from '../lib/types/discord'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export interface OldMessage {
   attachments: Attachment[]
@@ -48,7 +48,7 @@ export default class extends Event {
 
     const urlToMessage = `https://discordapp.com/channels/${message.guildID}/${message.channel.id}/${message.id}`
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .setTitle(language(`moderation/logs:MESSAGE_EDITED`))
       .setThumbnail(message.author.avatarURL)

@@ -1,14 +1,14 @@
 import Event from '../lib/structures/Event'
 import { Guild, Role, TextChannel, Constants } from 'eris'
 import Gamer from '..'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default class extends Event {
   async execute(guild: Guild, role: Role) {
     const language = Gamer.getLanguage(guild.id)
 
     // Create the base embed that first can be sent to public logs
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:ROLE_CREATED`))
       .addField(language(`moderation/logs:ROLE_NAME`), `<@&${role.id}>`, true)
       .addField(language(`moderation/logs:ROLE_ID`), role.id, true)

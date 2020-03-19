@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { milliseconds } from '../lib/types/enums/time'
 
 export default new Command([`profile`, `p`, `prof`], async (message, args, context) => {
@@ -37,7 +37,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
     return `${constants.emojis.success}: ${language(mission.title)} **[${mission.reward}] XP**`
   })
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
     .setDescription(missions.join('\n'))
     .attachFile(buffer, fileName)

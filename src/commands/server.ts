@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 import Constants from '../constants/index'
 
@@ -68,7 +68,7 @@ export default new Command(
       verificationChannels: serverSettings.verificationChannels
     })
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(language(`basic/server:TITLE`))
       .setTitle(guild.name)
       .setThumbnail(guild.iconURL || ``)

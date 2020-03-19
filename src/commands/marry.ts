@@ -2,7 +2,7 @@ import { Command } from 'yuuko'
 import { PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { TenorGif } from '../lib/types/tenor'
 import fetch from 'node-fetch'
 
@@ -121,7 +121,7 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
           return
       }
 
-      const embed = new GamerEmbed()
+      const embed = new MessageEmbed()
         .setAuthor(
           language('fun/marry:PROPOSAL', { user: message.author.username, spouse: spouseUser.username }),
           message.author.avatarURL
@@ -154,7 +154,7 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
         embed: embed.code
       })
       // Embed that tells the user they can still continue the marriage simulation
-      const thoughtOnlyEmbed = new GamerEmbed()
+      const thoughtOnlyEmbed = new MessageEmbed()
         .setAuthor(message.author.username, message.author.avatarURL)
         .setDescription(language('fun/marry:THOUGHT_ONLY'))
         .setImage('https://i.imgur.com/WwBfZfa.jpg')

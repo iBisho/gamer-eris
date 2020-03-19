@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 import fetch from 'node-fetch'
 
@@ -48,7 +48,7 @@ export default new Command([`kitten`, `cat`], async (message, _args, context) =>
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
       message.author.avatarURL

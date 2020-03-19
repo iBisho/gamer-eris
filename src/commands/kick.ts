@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`kick`, `k`], async (message, args, context) => {
@@ -35,7 +35,7 @@ export default new Command([`kick`, `k`], async (message, args, context) => {
   if (!Gamer.helpers.discord.compareMemberPosition(message.member, member))
     return message.channel.createMessage(language(`moderation/kick:USER_TOO_LOW`))
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setDescription(language(`moderation/kick:TITLE`, { guildName: message.member.guild.name, user: user.username }))
     .setThumbnail(user.avatarURL)
     .setTimestamp()

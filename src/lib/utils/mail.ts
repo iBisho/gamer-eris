@@ -2,7 +2,7 @@ import { Message, Guild, CategoryChannel, Constants, Overwrite, TextChannel, Use
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerMail } from '../types/gamer'
-import GamerEmbed from '../structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 const channelNameRegex = /^-+|[^\w-]|-+$/g
 
@@ -147,7 +147,7 @@ export default class {
 
     const prefix = guildSettings.prefix
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(
         language(`mails/mail:SENT_BY`, {
           user: message.member?.nick || mailUser.username,
@@ -203,7 +203,7 @@ export default class {
     const prefix = guildSettings?.prefix || this.Gamer.prefix
     const language = this.Gamer.getLanguage(guild.id)
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(
         language(`mails/mail:FROM`, { user: `${message.author.username}#${message.author.discriminator}` }),
         message.author.avatarURL
@@ -305,7 +305,7 @@ export default class {
       if (!success) return
     }
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(
         language(`mails/mail:REPLY_FROM`, {
           user: message.member?.nick || message.author.username,
@@ -361,7 +361,7 @@ export default class {
     // Delete the mail from the database
     this.Gamer.database.models.mail.deleteOne({ guildID: message.guildID, userID: mail.userID }).exec()
 
-    const dmEmbed = new GamerEmbed()
+    const dmEmbed = new MessageEmbed()
       .setAuthor(
         language(`mails/mail:CLOSED_BY`, {
           user: message.member?.nick || message.author.username,
@@ -410,7 +410,7 @@ export default class {
     const botPerms = modlogChannel.permissionsOf(this.Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
 
-    const logEmbed = new GamerEmbed()
+    const logEmbed = new MessageEmbed()
       .setDescription(content)
       .setTitle(
         language(`mails/mail:LOG_CLOSE`, {
@@ -424,7 +424,7 @@ export default class {
     return modlogChannel.createMessage({ embed: logEmbed.code })
   }
 
-  logMail(guildSettings: GuildSettings | null, embed: GamerEmbed) {
+  logMail(guildSettings: GuildSettings | null, embed: MessageEmbed) {
     if (!guildSettings?.mails.logChannelID) return
 
     const channel = this.Gamer.getChannel(guildSettings.mails.logChannelID)

@@ -1,7 +1,7 @@
 import Monitor from '../lib/structures/Monitor'
 import { Message, TextChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import constants from '../constants'
 import nodefetch from 'node-fetch'
 
@@ -37,7 +37,7 @@ export default class extends Monitor {
           .catch(() => undefined)
       : undefined
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.avatarURL)
       .setColor('RANDOM')
       .setDescription(message.content)

@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { Role } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
@@ -50,7 +50,7 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     .map(id => `<@&${id}>`)
     .join(`, `)
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(user.username, user.avatarURL)
     .setThumbnail(user.avatarURL)
     .setDescription(`${nickname}${userID}`)

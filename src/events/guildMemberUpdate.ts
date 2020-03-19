@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { TextChannel, Member, Guild } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import constants from '../constants'
 import { highestRole } from 'helperis'
 
@@ -23,7 +23,7 @@ export default class extends Event {
 
     const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:MEMBER_UPDATED`))
       .addField(language(`moderation/logs:NAME`), member.mention, true)
       .addField(language(`moderation/logs:USER_ID`), member.id, true)

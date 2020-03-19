@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`ban`, `b`], async (message, args, context) => {
@@ -43,7 +43,7 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
     if (banned) return message.channel.createMessage(language(`moderation/ban:ALREADY_BANNED`))
   }
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setDescription(language(`moderation/ban:TITLE`, { guildName: message.member.guild.name, username: user.username }))
     .setThumbnail(user.avatarURL)
     .setTimestamp()

@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 import fetch from 'node-fetch'
 import { TenorGif } from '../lib/types/tenor'
@@ -13,7 +13,7 @@ export default new Command(`cuddle`, async (message, _args, context) => {
 
   const user = message.mentions.length ? message.mentions[0] : message.author
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
     .setDescription(
       language(user.id === message.author.id ? `fun/cuddle:SELF` : `fun/cuddle:REPLY`, {

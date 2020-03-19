@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default new Command([`roleinfo`, `ri`], async (message, args, context) => {
   if (!message.member) return
@@ -22,7 +22,7 @@ export default new Command([`roleinfo`, `ri`], async (message, args, context) =>
   }
 
   const members = message.member.guild.members.filter(member => member.roles.includes(role.id))
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(role.name, message.author.avatarURL)
     .addField(language(`roles/roleinfo:ROLE_NAME`), role.mention, true)
     .addField(language(`roles/roleinfo:ROLE_ID`), role.id, true)

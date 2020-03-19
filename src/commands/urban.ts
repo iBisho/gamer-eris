@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { PrivateChannel, GroupChannel } from 'eris'
 
 export default new Command(`urban`, async (message, args, context) => {
@@ -26,7 +26,7 @@ export default new Command(`urban`, async (message, args, context) => {
   const [highestRated] = data.list.sort((a, b) => b.thumbs_up - a.thumbs_up)
   if (!highestRated) return
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
       message.author.avatarURL

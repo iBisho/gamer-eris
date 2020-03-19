@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { Role } from 'eris'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default new Command([`role`, `rank`], async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -24,7 +24,7 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   // No args were provided so we just list the public roles
   if (!args.length) {
     // Send in an embed so the role @ do not go through
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .setTitle(language(`roles/role:AVAILABLE`))
       .setDescription(settings.moderation.roleIDs.public.map(id => `<@&${id}>`).join(' '))

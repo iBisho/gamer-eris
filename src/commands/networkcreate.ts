@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { Constants } from 'eris'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import constants from '../constants'
 
 export default new Command(`networkcreate`, async (message, _args, context) => {
@@ -31,7 +31,7 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
 
   message.channel.createMessage(language(`network/networkcreate:PATIENCE`))
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(`${message.author.username}-${message.author.discriminator}`, message.author.avatarURL)
     .setColor('RANDOM')
     .setDescription(language(`network/networkcreate:FIRST_MESSAGE`))

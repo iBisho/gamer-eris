@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
 import { parse } from 'url'
 import config from '../../config'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { GuildTextableChannel } from 'eris'
 
 export default new Command(`imgur`, async (message, args, context) => {
@@ -38,7 +38,7 @@ export default new Command(`imgur`, async (message, args, context) => {
 
   if (!result || result.status !== 200) return message.channel.createMessage(language(`utility/imgur:FAILED`))
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setDescription(language(`utility/imgur:LINK`, { link: result.data.link }))
     .setImage(result.data.link)
 

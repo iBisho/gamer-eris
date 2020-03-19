@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
 import fetch from 'node-fetch'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { TenorGif } from '../lib/types/tenor'
 import GamerClient from '../lib/structures/GamerClient'
 import { GuildTextableChannel } from 'eris'
@@ -21,7 +21,7 @@ export default new Command(`gif`, async (message, args, context) => {
   const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
   const [media] = randomResult.media
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
     .setImage(media.gif.url)
     .setFooter(`Via Tenor`)

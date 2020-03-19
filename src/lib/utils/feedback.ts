@@ -1,6 +1,6 @@
 import { Message, TextChannel } from 'eris'
 import constants from '../../constants'
-import GamerEmbed from '../structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 
@@ -19,7 +19,7 @@ export default class {
     this.Gamer = client
   }
 
-  async sendBugReport(message: Message, channel: TextChannel, embed: GamerEmbed, settings: GuildSettings) {
+  async sendBugReport(message: Message, channel: TextChannel, embed: MessageEmbed, settings: GuildSettings) {
     const language = this.Gamer.getLanguage(channel.guild.id)
 
     const channelToUse =
@@ -65,7 +65,7 @@ export default class {
     )
   }
 
-  async sendIdea(message: Message, channel: TextChannel, embed: GamerEmbed, settings: GuildSettings) {
+  async sendIdea(message: Message, channel: TextChannel, embed: MessageEmbed, settings: GuildSettings) {
     const language = this.Gamer.getLanguage(channel.guild.id)
 
     const channelToUse =
@@ -113,7 +113,7 @@ export default class {
     )
   }
 
-  async logFeedback(embed: GamerEmbed, channelID: string) {
+  async logFeedback(embed: MessageEmbed, channelID: string) {
     // Check if this log channel is valid
     const logChannel = this.Gamer.getChannel(channelID)
     if (!logChannel || !(logChannel instanceof TextChannel)) return

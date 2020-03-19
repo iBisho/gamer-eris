@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`modlog`, `ml`], async (message, args, context) => {
@@ -89,7 +89,7 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
     )
   }
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(language(`moderation/modlog:USER_HISTORY`, { user: user?.username || 'Unknown User' }), user?.avatarURL)
     .setDescription(description.join(`\n`))
   if (user) embed.setThumbnail(user.avatarURL)

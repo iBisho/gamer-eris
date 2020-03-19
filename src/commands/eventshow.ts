@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default new Command([`eventshow`, `es`], async (message, args, context) => {
   if (!message.guildID) return
@@ -25,7 +25,7 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
   const ENABLED = language(`common:ENABLED`)
   const DISABLED = language(`common:DISABLED`)
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(message.author.username, message.author.avatarURL)
     .setTitle(`[1] ${event.title}`)
     .setDescription(`**[2]** ${event.description}`)

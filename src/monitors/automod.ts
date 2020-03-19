@@ -2,7 +2,7 @@ import Monitor from '../lib/structures/Monitor'
 import { Message, GuildTextableChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { GuildSettings } from '../lib/types/settings'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import * as confusables from 'confusables'
 import getURLs from 'get-urls'
 
@@ -23,7 +23,7 @@ export default class extends Monitor {
       if (Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)) return
     }
 
-    const embed = new GamerEmbed().setAuthor(
+    const embed = new MessageEmbed().setAuthor(
       message.member && message.member.nick ? message.member.nick : message.author.username,
       message.author.avatarURL
     )

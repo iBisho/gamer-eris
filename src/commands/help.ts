@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 import Constants from '../constants/index'
 
@@ -150,7 +150,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
 
   if (!args.length) {
     // Create the main help embed
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .addField(language(`basic/help:MOST_USED`), FEATURES)
       .addField(language(`basic/help:SEE_ALL`), CHECKWIKI)
@@ -163,7 +163,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
 
   const [commandName] = args
   if (commandName.toLowerCase() === `all`) {
-    const allEmbed = new GamerEmbed().setAuthor(message.author.username, message.author.avatarURL)
+    const allEmbed = new MessageEmbed().setAuthor(message.author.username, message.author.avatarURL)
     for (const category of categories) {
       allEmbed.addField(
         `**» ${Gamer.helpers.transform.splitCamelCase(category.name)}**:`,
@@ -185,7 +185,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   const ALIASES = language(`${category.name}/${name}:ALIASES`, { prefix })
   const NO_EXTENDED = language('basic/help:NO_EXTENDED')
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(
       language('basic/help:AUTHOR', { commandName: name }),
       Gamer.user.avatarURL,

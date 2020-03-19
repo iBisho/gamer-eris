@@ -3,7 +3,7 @@ import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
 import Gamer from '..'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import nodefetch from 'node-fetch'
 import { highestRole } from 'helperis'
 
@@ -451,7 +451,7 @@ export default class extends Event {
         }
 
         // Send a DM to the user telling them it was solved
-        const embed = new GamerEmbed()
+        const embed = new MessageEmbed()
           .setDescription(guildSettings.feedback.solvedMessage || language(`feedback/idea:SOLVED_DEFAULT`))
           .setAuthor(`Feedback From ${message.member.guild.name}`, message.member.guild.iconURL)
           .setTimestamp()
@@ -485,7 +485,7 @@ export default class extends Event {
         if (!reactorIsAdmin && !reactorIsMod) return
 
         // Send a DM to the user telling them it was solved
-        const rejectedEmbed = new GamerEmbed()
+        const rejectedEmbed = new MessageEmbed()
           .setDescription(guildSettings.feedback.rejectedMessage || language(`feedback/idea:REJECTED_DEFAULT`))
           .setAuthor(`Feedback From ${message.member.guild.name}`, message.member.guild.iconURL)
           .setTimestamp()

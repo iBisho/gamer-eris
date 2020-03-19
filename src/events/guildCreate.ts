@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { Guild } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import constants from '../constants'
 
 export default class extends Event {
@@ -12,7 +12,7 @@ export default class extends Event {
 
     // DONT NEED TRANSLATING BECAUSE BY DEFAULT ALL GUILDS START IN ENGLISH LANGUAGE
     // Create the embed that will be sent to all the server managers
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(`Alert: I was invited to ${guild.name}!`, guild.iconURL)
       .addField(
         `Why Was This Was Sent To You?`,

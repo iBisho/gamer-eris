@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel, Constants } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default class extends Event {
   async execute(channel: PrivateChannel | TextChannel | VoiceChannel | CategoryChannel) {
@@ -38,7 +38,7 @@ export default class extends Event {
 
     const NONE = language(`common:NONE`)
     // Create the base embed that first can be sent to public logs
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:CHANNEL_DELETED`))
       .addField(language(`moderation/logs:CHANNEL`), channel.mention, true)
       .addField(language(`moderation/logs:CHANNEL_ID`), channel.id, true)

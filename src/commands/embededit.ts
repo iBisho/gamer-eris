@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { TextChannel } from 'eris'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { GamerEmoji } from '../lib/types/database'
 
 export default new Command(`embededit`, async (message, args, context) => {
@@ -48,7 +48,7 @@ export default new Command(`embededit`, async (message, args, context) => {
     if (embedCode.color === 'RANDOM') embedCode.color = Math.floor(Math.random() * (0xffffff + 1))
     return messageToUse.edit({ content: embedCode.plaintext, embed: embedCode })
   } catch (error) {
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .setTitle(language(`embedding/embed:BAD_EMBED`))
       .setDescription(['```js', error, '```'].join('\n'))

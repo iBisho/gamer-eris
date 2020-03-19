@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`warn`, `w`], async (message, args, context) => {
@@ -44,7 +44,7 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   if (!Gamer.helpers.discord.compareMemberPosition(message.member, member))
     return message.channel.createMessage(language(`moderation/warn:USER_TOO_LOW`))
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setDescription(language(`moderation/warn:TITLE`, { guildName: message.member.guild.name, user: user.username }))
     .setThumbnail(user.avatarURL)
     .setTimestamp()
@@ -57,7 +57,7 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   const modlogID = await Gamer.helpers.moderation.createModlog(message, guildSettings, language, user, `warn`, reason)
 
   // Response that will get sent in the channel
-  const response = new GamerEmbed()
+  const response = new MessageEmbed()
     .setAuthor(language(`moderation/warn:MODERATOR`, { mod: message.author.username }), message.author.avatarURL)
     .addField(
       language(`moderation/modlog:MEMBER`),

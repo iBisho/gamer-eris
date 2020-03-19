@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { GamerSubscription } from '../database/schemas/subscription'
 import Gamer from '..'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { TwitchStream } from '../services/twitch/api'
 import constants from '../constants'
 
@@ -12,7 +12,7 @@ export default class extends Event {
 
     const imageURL = data.thumbnail_url.replace('{width}', '720').replace('{height}', '380')
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setDescription(`[${data.title}](https://twitch.tv/${subscription.username})`)
       .setImage(imageURL)
       .setColor(`#6441A4`)

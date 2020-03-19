@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 import { highestRole } from 'helperis'
 
@@ -59,7 +59,7 @@ export default new Command(`mute`, async (message, args, context) => {
 
   await member.addRole(guildSettings.moderation.roleIDs.mute)
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setDescription(
       language(`moderation/mute:TITLE`, { guildName: message.member.guild.name, user: member.user.username })
     )
@@ -82,7 +82,7 @@ export default new Command(`mute`, async (message, args, context) => {
   )
 
   // Response that will get sent in the channel
-  const response = new GamerEmbed()
+  const response = new MessageEmbed()
     .setAuthor(language(`moderation/warn:MODERATOR`, { mod: message.author.username }), message.author.avatarURL)
     .addField(
       language(`moderation/modlog:MEMBER`),

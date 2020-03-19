@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 import { TextChannel } from 'eris'
 import { FeedbackCollectorData } from '../lib/types/gamer'
@@ -36,7 +36,7 @@ export default new Command(`idea`, async (message, args, context) => {
   if (!settings.feedback.idea.questions.length)
     return message.channel.createMessage(language(`feedback/idea:NO_QUESTIONS`))
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setThumbnail(message.author.avatarURL)
     .setAuthor(
       language(`feedback/idea:FROM`, { user: `${message.author.username}#${message.author.discriminator}` }),

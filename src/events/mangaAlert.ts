@@ -1,6 +1,6 @@
 import Event from '../lib/structures/Event'
 import Gamer from '..'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { GamerManga } from '../database/schemas/manga'
 import { MangaAlertData } from '../services/manga'
 
@@ -8,7 +8,7 @@ export default class extends Event {
   async execute(subscription: GamerManga, title: string, image: string, data: MangaAlertData[]) {
     const payload = data.map(d => `**[${d.text}](${d.url})**`).join('\n')
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(title)
       .setDescription(payload)
       .setImage(image)

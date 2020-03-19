@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { isValidManga } from '../services/manga'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default new Command(`manga`, async (message, args, context) => {
   if (!message.guildID) return
@@ -71,7 +71,7 @@ export default new Command(`manga`, async (message, args, context) => {
         const check = await isValidManga(title)
         if (!check.valid) return message.channel.createMessage(language(`weeb/manga:NOT_FOUND`, { title }))
 
-        const embed = new GamerEmbed()
+        const embed = new MessageEmbed()
           .setImage(check.imageURL)
           .setDescription(language(`weeb/manga:SUBSCRIBED`, { title, channel: message.channel.mention }))
         message.channel.createMessage({ embed: embed.code })

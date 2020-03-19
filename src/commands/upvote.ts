@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { milliseconds } from '../lib/types/enums/time'
 
 export default new Command([`upvote`, `vote`], async (message, _args, context) => {
@@ -22,7 +22,7 @@ export default new Command([`upvote`, `vote`], async (message, _args, context) =
     ? Gamer.helpers.transform.humanizeMilliseconds(milliseconds.HOUR * 12 + upvote.timestamp - Date.now())
     : undefined
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setTitle(language('basic/upvote:CLICK_HERE'), 'https://top.gg/bot/270010330782892032/vote')
     .setDescription(language('basic/upvote:REWARDS', { amount: `**${upvote?.weeklyCount || 0}/20**` }))
     .setFooter(

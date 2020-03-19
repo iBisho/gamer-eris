@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { TextChannel, Guild, Emoji } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default class extends Event {
   async execute(guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) {
@@ -24,7 +24,7 @@ export default class extends Event {
     // If there is no channel set for logging this cancel
     if (!guildSettings?.moderation.logs.serverlogs.emojis.channelID) return
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(emojiCreated ? `moderation/logs:EMOJI_CREATED` : `moderation/logs:EMOJI_DELETED`), emojiURL)
       .addField(language(`moderation/logs:EMOJI_ANIMATED`), emoji.animated.toString(), true)
       .addField(language(`moderation/logs:NAME`), emoji.name, true)

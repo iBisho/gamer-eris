@@ -5,7 +5,7 @@ import { GamerEvent } from '../types/gamer'
 import fetch from 'node-fetch'
 import { Canvas } from 'canvas-constructor'
 import constants from '../../constants'
-import GamerEmbed from '../structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import config from '../../../config'
 import { TFunction } from 'i18next'
 
@@ -107,7 +107,7 @@ export default class {
     if (!imageChannel || !(imageChannel instanceof TextChannel)) return
     const result = await imageChannel.createMessage('', { file: buffer, name: `gamer-event-card` })
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(`Event Description:`)
       .setDescription(event.description)
       .setImage(result.attachments[0].proxy_url)
@@ -411,7 +411,7 @@ export default class {
 
     const language = this.Gamer.getLanguage(event.guildID)
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(language(`events/events:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
       .setTitle(language(`events/events:STARTING_TITLE`, { title: event.title }))
       .addField(language(`events/eventshow:RSVP_EMOJI`), `${event.attendees.length} / ${event.maxAttendees}`)
@@ -466,7 +466,7 @@ export default class {
 
     const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(event.start - now)
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(language(`events/events:REMIND`, { eventID: event.id }))
       .setDescription(event.description)
       .addField(language(`events/events:TITLE`), event.title, true)
@@ -523,7 +523,7 @@ export default class {
       if (!user) return
 
       const language = this.Gamer.getLanguage(reminder.guildID)
-      const embed = new GamerEmbed()
+      const embed = new MessageEmbed()
         .setAuthor(user.username, user.avatarURL)
         .setDescription(reminder.content)
         .setFooter(language(`events/remind:REMINDING`, { id: reminder.id }))

@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { TenorGif } from '../lib/types/tenor'
 import fetch from 'node-fetch'
 
@@ -135,7 +135,7 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
     shoppingList.pop()
   }
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
     .setDescription(shoppingList.join('\n'))
 
@@ -162,7 +162,7 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
   message.channel.createMessage(language(`fun/shopwedding:CONGRATS`, { mention: message.author.mention }))
 
   // The shopping is complete
-  const completedEmbed = new GamerEmbed()
+  const completedEmbed = new MessageEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
     .setImage('https://i.imgur.com/Dx9Z2hq.jpg')
   return message.channel.createMessage({ embed: completedEmbed.code })

@@ -1,6 +1,6 @@
 import GamerClient from '../structures/GamerClient'
 import { Message } from 'eris'
-import GamerEmbed from '../structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { TenorGif } from '../types/tenor'
 import fetch from 'node-fetch'
 
@@ -17,7 +17,10 @@ export default class {
 
     const user = message.mentions.length ? message.mentions[0] : message.author
 
-    const embed = new GamerEmbed().setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
+    const embed = new MessageEmbed().setAuthor(
+      message.member?.nick || message.author.username,
+      message.author.avatarURL
+    )
 
     // Some commands don't have these responses so we keep it out
     if (needDescription)

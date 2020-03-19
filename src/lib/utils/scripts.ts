@@ -1,7 +1,7 @@
 import { Guild, CategoryChannel, Overwrite } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import GamerEmbed from '../structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import constants from '../../constants'
 
 export default class {
@@ -83,7 +83,7 @@ export default class {
       channel.editPermission(role.id, 0, 1024, `role`)
     })
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setDescription([language('settings/setverify:THRILLED'), ``, `• **${guildSettings.prefix}verify**`].join('\n'))
       .setAuthor(language('settings/setverify:WELCOME'), `https://i.imgur.com/0LxU5Yy.jpg`)
       .setTitle(language('settings/setverify:PROCESS'))
@@ -137,7 +137,7 @@ export default class {
 
     const gamertag = `${this.Gamer.user.username}#${this.Gamer.user.discriminator}`
 
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(language(`settings/setfeedback:IDEA_FROM`, { user: gamertag }), this.Gamer.user.avatarURL)
       .setThumbnail(this.Gamer.user.avatarURL)
       .addField(language(`settings/setfeedback:IDEA_QUESTION_1`), language(`settings/setfeedback:IDEA_ANSWER_1`))
@@ -145,7 +145,7 @@ export default class {
       .setImage('https://i.imgur.com/2L9ePkb.png')
       .setTimestamp()
 
-    const bugsEmbed = new GamerEmbed()
+    const bugsEmbed = new MessageEmbed()
       .setAuthor(language(`settings/setfeedback:BUGS_FROM`, { user: gamertag }), this.Gamer.user.avatarURL)
       .setColor(`#F44A41`)
       .setThumbnail(this.Gamer.user.avatarURL)

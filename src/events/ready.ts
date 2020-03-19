@@ -7,7 +7,7 @@ import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { fetchLatestManga } from '../services/manga'
 import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
 
@@ -157,7 +157,7 @@ export default class extends Event {
     // Run the Trading Card Interval every 20 minutes
     setInterval(async () => {
       const cardSettings = await Gamer.database.models.tradingCard.find()
-      const embed = new GamerEmbed()
+      const embed = new MessageEmbed()
 
       for (const setting of cardSettings) {
         const gameName = setting.game.toLowerCase()

@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(`unban`, async (message, args, context) => {
@@ -36,7 +36,7 @@ export default new Command(`unban`, async (message, args, context) => {
   const banned = await message.member.guild.getBan(user.id).catch(() => undefined)
   if (!banned) return message.channel.createMessage(language(`moderation/unban:NOT_BANNED`))
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setDescription(
       language(`moderation/unban:TITLE`, { guildName: message.member.guild.name, username: user.username })
     )

@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command([`ping`, `pong`], async (message, _args, context) => {
@@ -7,7 +7,7 @@ export default new Command([`ping`, `pong`], async (message, _args, context) => 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
-  const embed = new GamerEmbed().setTitle(language(`basic/ping:TIME`, { time: ping / 1000 })).addField(
+  const embed = new MessageEmbed().setTitle(language(`basic/ping:TIME`, { time: ping / 1000 })).addField(
     language('basic/ping:STATS'),
     language(`basic/ping:STATS_VALUE`, {
       id: message.member ? message.member.guild.shard.id : 'Unknown',

@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { TextChannel, Member, Guild, MemberPartial } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default class extends Event {
   async execute(guild: Guild, member: Member | MemberPartial) {
@@ -82,7 +82,7 @@ export default class extends Event {
     if (!guildSettings.moderation.logs.serverlogs.members.channelID) return
 
     // Create the base embed that first can be sent to public logs
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:MEMBER_GONE`))
       .addField(language(`moderation/logs:MEMBER_NAME`), member.user.mention, true)
       .addField(language(`moderation/logs:USER_ID`), member.id, true)

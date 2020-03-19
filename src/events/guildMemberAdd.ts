@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { TextChannel, Member, Guild } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { highestRole } from 'helperis'
 
 export default class extends Event {
@@ -93,7 +93,7 @@ export default class extends Event {
     if (!guildSettings.moderation.logs.serverlogs.members.channelID) return
 
     // Create the base embed that first can be sent to public logs
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:MEMBER_JOINED`))
       .addField(language(`moderation/logs:MEMBER_NAME`), member.mention, true)
       .addField(language(`moderation/logs:USER_ID`), member.id, true)

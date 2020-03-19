@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 
@@ -49,7 +49,7 @@ export default new Command([`coinflip`, `cf`], async (message, args, context) =>
   }
 
   // Create output embed
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(message.author.username, message.author.avatarURL)
     .setImage(images[randomNumber])
     .setDescription(

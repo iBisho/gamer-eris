@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { TFunction } from 'i18next'
 import { GuildSettings } from '../lib/types/settings'
 
@@ -78,7 +78,7 @@ export default class extends Event {
 
     const NONE = language(`common:NONE`)
     // Create the base embed that first can be sent to public logs
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:CHANNEL_CREATED`))
       .addField(language(`moderation/logs:CHANNEL`), channel.mention, true)
       .addField(language(`moderation/logs:CHANNEL_ID`), channel.id, true)

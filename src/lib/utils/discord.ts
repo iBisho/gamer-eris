@@ -1,7 +1,7 @@
 import { Message, Member, TextableChannel, PrivateChannel, GroupChannel, Guild } from 'eris'
 import config from '../../../config'
 import constants from '../../constants'
-import GamerEmbed from '../structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../structures/GamerClient'
 import { GuildSettings } from '../types/settings'
 import { highestRole } from 'helperis'
@@ -10,7 +10,7 @@ const emojiRegex = /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/
 
 export default class {
   embedResponse(message: Message, text: string) {
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(
         `${message.member?.nick || message.author.username}#${message.author.discriminator}`,
         message.author.avatarURL

@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default new Command([`events`, `event`, `e`], async (message, _args, context) => {
   if (!message.guildID) return
@@ -10,7 +10,7 @@ export default new Command([`events`, `event`, `e`], async (message, _args, cont
   const events = await Gamer.database.models.event.find({ guildID: message.guildID })
   if (!events.length) return message.channel.createMessage(language('events/events:NONE'))
 
-  const embed = new GamerEmbed().setAuthor(message.author.username, message.author.avatarURL)
+  const embed = new MessageEmbed().setAuthor(message.author.username, message.author.avatarURL)
 
   while (events.length) {
     embed.setDescription(Gamer.helpers.events.listEvents(events.splice(0, 12)))

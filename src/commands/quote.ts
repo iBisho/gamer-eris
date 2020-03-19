@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 import { TextChannel } from 'eris'
 
@@ -31,7 +31,7 @@ export default new Command(`quote`, async (message, args, context) => {
 
   const urlToMessage = `https://discordapp.com/channels/${message.guildID}/${channel.id}/${messageID}`
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(`${quotedMessage.author.username}#${quotedMessage.author.discriminator}`, quotedMessage.author.avatarURL)
     .setTimestamp(quotedMessage.createdAt)
     .setDescription(

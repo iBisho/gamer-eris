@@ -1,37 +1,8 @@
 import { Message } from 'eris'
-import GamerEmbed from '../structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { GuildSettings } from './settings'
 import { TFunction } from 'i18next'
 import { Document } from 'mongoose'
-import { GamerMarriage } from '../../database/schemas/marriage'
-
-export interface GamerEmbedObject {
-  title?: string
-  author?: {
-    url?: string
-    icon_url?: string
-    iconURL?: string
-    name: string
-  }
-  description?: string
-  timestamp?: boolean
-  url?: string
-  footer?: {
-    text?: string
-    iconURL?: string
-    icon_url?: string
-  }
-  thumbnail?: string
-  image?: string
-  fields?: {
-    name: string
-    value: string
-    inline?: boolean
-  }[]
-  plaintext?: string
-  plainText?: string
-  color?: string
-}
 
 export interface Collector {
   authorID: string
@@ -45,12 +16,8 @@ export interface Collector {
 export interface FeedbackCollectorData {
   language: TFunction
   settings: GuildSettings
-  embed: GamerEmbed
+  embed: MessageEmbed
   question: string
-}
-
-export interface MarriageCollectorData {
-  marriage: GamerMarriage
 }
 
 export interface GamerLevel extends Document {

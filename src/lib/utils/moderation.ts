@@ -2,7 +2,7 @@ import { Message, User, TextChannel } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import { GuildSettings } from '../types/settings'
 import { GamerModlog } from '../types/gamer'
-import GamerEmbed from '../structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { modlogTypes } from '../types/enums/moderation'
 import { TFunction } from 'i18next'
 
@@ -154,7 +154,7 @@ export default class {
         )}`
       )
     }
-    return new GamerEmbed()
+    return new MessageEmbed()
       .setAuthor(this.Gamer.helpers.transform.toTitleCase(logData.action), user.avatarURL)
       .setColor(color)
       .setDescription(description.join(`\n`))

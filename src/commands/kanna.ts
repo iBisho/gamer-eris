@@ -1,5 +1,5 @@
 import { Command } from 'yuuko'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import GamerClient from '../lib/structures/GamerClient'
 
 const gifs = [
@@ -25,7 +25,7 @@ export default new Command(`kanna`, (message, _args, context) => {
   const randomGif = gifs[randomNum]
   const kannaReply = `fun/kanna:REPLY_NUMBER${randomNum}`
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,
       message.author.avatarURL

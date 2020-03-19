@@ -3,7 +3,7 @@ import GamerClient from './lib/structures/GamerClient'
 import { Message, GuildTextableChannel } from 'eris'
 import { Canvas } from 'canvas-constructor'
 import { join } from 'path'
-import GamerEmbed from './lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import constants from './constants'
 import HooksServices from './services/hooks'
 
@@ -147,7 +147,7 @@ process.on('unhandledRejection', error => {
 
   if (!error) return
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     .setDescription(['```js', error.stack, '```'].join(`\n`))

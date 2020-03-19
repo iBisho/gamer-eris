@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { TextChannel, Guild, Constants, User } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { modlogTypes } from '../lib/types/enums/moderation'
 
 export default class extends Event {
@@ -15,7 +15,7 @@ export default class extends Event {
 
     // Create the base embed that first can be sent to public logs
     const userTag = `${user.username}#${user.discriminator}`
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:USER_UNBANNED`))
       .addField(language(`moderation/logs:USER`), userTag, true)
       .addField(language(`moderation/logs:USER_ID`), user.id, true)

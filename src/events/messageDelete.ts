@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { TextChannel, Constants, Message, PrivateChannel, GroupChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 import { PartialMessage } from '../lib/types/discord'
 import nodefetch from 'node-fetch'
 
@@ -17,7 +17,7 @@ export default class extends Event {
     if (!guildSettings?.moderation.logs.serverlogs.messages.channelID) return
 
     // Create the base embed that first can be sent to public logs
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:MESSAGE_DELETED`))
       .addField(language(`moderation/logs:MESSAGE_ID`), message.id, true)
       .addField(language(`moderation/logs:CHANNEL`), message.channel.mention, true)

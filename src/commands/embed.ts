@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default new Command(`embed`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -44,7 +44,7 @@ export default new Command(`embed`, async (message, args, context) => {
     if (embedCode.timestamp) embedCode.timestamp = new Date().toISOString()
     await message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })
   } catch (error) {
-    const embed = new GamerEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
       .setTitle(language(`embedding/embed:BAD_EMBED`))
       .setDescription(['```js', error, '```'].join('\n'))

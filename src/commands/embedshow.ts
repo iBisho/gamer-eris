@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
 import { TextChannel } from 'eris'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default new Command(`embedshow`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -46,6 +46,6 @@ export default new Command(`embedshow`, async (message, args, context) => {
 
   // Show the embed
 
-  const responseEmbed = new GamerEmbed().setDescription(['```json', `{${payload.join(', ')}}`, '```'].join('\n'))
+  const responseEmbed = new MessageEmbed().setDescription(['```json', `{${payload.join(', ')}}`, '```'].join('\n'))
   message.channel.createMessage({ embed: responseEmbed.code })
 })

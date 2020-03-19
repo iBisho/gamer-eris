@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import fetch from 'node-fetch'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default new Command(`wisdom`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
@@ -13,7 +13,7 @@ export default new Command(`wisdom`, async (message, _args, context) => {
 
   if (!data || !data.quote.body) return message.channel.createMessage(language(`fun/advice:ERROR`))
 
-  const embed = new GamerEmbed()
+  const embed = new MessageEmbed()
     .setDescription(data.quote.body)
     .setAuthor(
       message.member ? message.member.nick || message.member.username : message.author.username,

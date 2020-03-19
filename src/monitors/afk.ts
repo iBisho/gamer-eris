@@ -1,7 +1,7 @@
 import Monitor from '../lib/structures/Monitor'
 import { Message } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import GamerEmbed from '../lib/structures/GamerEmbed'
+import { MessageEmbed } from 'helperis'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -37,7 +37,7 @@ export default class extends Monitor {
 
       // If the message saved is not an embed send it as an embed
       if (!userSettings.afk.message.startsWith(`{`)) {
-        const embed = new GamerEmbed()
+        const embed = new MessageEmbed()
           .setAuthor(message.author.username, message.author.avatarURL)
           .setTitle(`${user.username}${user.discriminator} is AFK:`)
           .setDescription(userSettings.afk.message)
