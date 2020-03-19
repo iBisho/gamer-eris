@@ -3,7 +3,7 @@ import GamerClient from '../lib/structures/GamerClient'
 
 export default new Command(
   [`remind`, `remindme`, `remindcreate`, `rc`, `remindcreate`, `remindercreate`],
-  (message, args, context) => {
+  async (message, args, context) => {
     if (!message.guildID || !message.member) return
 
     const Gamer = context.client as GamerClient
@@ -14,6 +14,15 @@ export default new Command(
     const language = Gamer.getLanguage(message.guildID)
 
     const [time] = args
+    if (time?.toLowerCase() === 'list') {
+      console.log('inside list')
+      const reminders = await Gamer.database.models.reminder.find({ userID: message.author.id })
+      return Gamer.helpers.discord.embedResponse(
+        message,
+        reminders.map(reminder => `**${reminder.id}** => ${reminder.content}`).join('\n')
+      )
+    }
+
     const startNow = Gamer.helpers.transform.stringToMilliseconds(time)
     if (!startNow) return helpCommand?.process(message, ['remind'], context)
 

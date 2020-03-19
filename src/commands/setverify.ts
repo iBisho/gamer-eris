@@ -94,11 +94,11 @@ export default new Command(`setverify`, async (message, args, context) => {
 
       return Gamer.helpers.scripts.createVerificationSystem(message.member.guild, guildSettings)
     case 'autorole':
-      if (!role) return message.channel.createMessage(language(`settings/setverify:NEED_AUTOROLE`))
-
-      guildSettings.moderation.roleIDs.autorole = role.id
+      guildSettings.moderation.roleIDs.autorole = role?.id
       guildSettings.save()
-      return message.channel.createMessage(language(`settings/setverify:AUTOROLE_SET`, { role: role.name }))
+      return message.channel.createMessage(
+        language(role ? `settings/setverify:AUTOROLE_SET` : `settings/setverify:AUTOROLE_RESET`, { role: role?.name })
+      )
   }
 
   await message.channel.createMessage(language(`settings/setverify:INVALID_USE`))

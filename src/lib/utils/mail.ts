@@ -16,6 +16,7 @@ export default class {
   async handleDM(message: Message, content: string) {
     // DM will be in english always
     const language = this.Gamer.getLanguage()
+    if (content.length) return message.channel.createMessage(language(`mails/mail:NEED_CONTENT`))
 
     const mails = await this.Gamer.database.models.mail.find({ userID: message.author.id })
     // If the user has no mails and hes trying to create a mail it needs to error because mails must be created within a guild.
