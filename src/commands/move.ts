@@ -30,7 +30,9 @@ export default new Command(`move`, async (message, args, context) => {
 
   // If a valid new channel was provided we simply move all the users in the channel over
   if (newChannel) {
-    channel.voiceMembers?.forEach(member => {
+    channel.voiceMembers?.forEach(async member => {
+      // Will force fetch uncached members
+      await Gamer.helpers.discord.fetchMember(member.guild, member.id)
       member.edit({ channelID: newChannel.id }, REASON)
     })
   } else {
