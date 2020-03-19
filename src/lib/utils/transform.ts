@@ -2,6 +2,7 @@ import { User, Guild } from 'eris'
 import { GamerEmoji } from '../types/database'
 import { milliseconds } from '../types/enums/time'
 import GamerClient from '../structures/GamerClient'
+import { TenorGif } from '../types/tenor'
 
 const REGEXP = /%AUTHOR%|%AUTHORMENTION%|%USER%|%GUILD%|%USERMENTION%|%USERCOUNT%|%MEMBERCOUNT%|%AUTHORIMAGE%|%USERIMAGE%|%GUILDIMAGE%/gi
 
@@ -19,7 +20,25 @@ export default class {
 
     fullContent = lineBreakString
       .split(` `)
-      .map(word => {
+      .map(async word => {
+        // User wants a random gif
+        if (word.toUpperCase().startsWith('%RANDOM')) {
+          const [search] = word.substring(6, word.length - 1)
+          console.warn('search word is:', search, 'from original word', word)
+          const data: TenorGif | undefined = await fetch(
+            `https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`
+          )
+            .then(res => res.json())
+            .catch(() => undefined)
+
+          if (!data || !data.results.length) return
+          const randomResult = this.Gamer.helpers.utils.chooseRandom(data.results)
+          const [media] = randomResult.media
+
+          return media.gif.url
+        }
+
+        // User wants to use an emoji
         if (!word.startsWith('{') || !word.endsWith(`}`) || !emojis) return word
 
         const name = word.substring(1, word.length - 1)
