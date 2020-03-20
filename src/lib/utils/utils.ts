@@ -6,7 +6,7 @@ export default class {
     this.Gamer = client
   }
   // Can be used to make the bot sleep
-  async sleep(seconds: number) {
+  sleep(seconds: number) {
     return new Promise(resolve => setTimeout(resolve, 1000 * seconds))
   }
 
