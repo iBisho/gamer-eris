@@ -19,7 +19,14 @@ export default new Command(
       const reminders = await Gamer.database.models.reminder.find({ userID: message.author.id })
       return Gamer.helpers.discord.embedResponse(
         message,
-        reminders.map(reminder => `**${reminder.id}** => ${reminder.content}`).join('\n')
+        reminders
+          .map(
+            reminder =>
+              `**${reminder.id}: ${Gamer.helpers.transform.humanizeMilliseconds(
+                reminder.timestamp - Date.now()
+              )}** => ${reminder.content}`
+          )
+          .join('\n')
       )
     }
 
