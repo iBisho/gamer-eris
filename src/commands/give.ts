@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { highestRole } from 'helperis'
+import { highestRole, userTag } from 'helperis'
 
 export default new Command(`give`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -48,12 +48,7 @@ export default new Command(`give`, async (message, args, context) => {
     return message.channel.createMessage(language(`roles/give:USER_TOO_LOW`))
 
   // Give the role to the user as all checks have passed
-  member.addRole(
-    role.id,
-    language(`roles/give:GIVEN_BY`, {
-      user: `${encodeURIComponent(message.author.username)}-${message.author.discriminator}`
-    })
-  )
+  member.addRole(role.id, language(`roles/give:GIVEN_BY`, { user: encodeURIComponent(userTag(member)) }))
   Gamer.amplitude.push({
     authorID: message.author.id,
     channelID: message.channel.id,
