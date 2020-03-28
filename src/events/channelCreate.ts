@@ -34,8 +34,9 @@ export default class extends Event {
     language: TFunction
   ) {
     const botPerms = channel.permissionsOf(gamerID)
+    const guildPerms = channel.guild.members.get(gamerID)?.permission
     // Don't have permissions to edit this channels perms
-    if (!botPerms.has('manageRoles') || !botPerms.has('manageChannels')) return
+    if (!botPerms.has('manageRoles') || !botPerms.has('manageChannels') || !guildPerms?.has('manageRoles')) return
 
     // Deny view perms for Verify role
     if (
@@ -53,7 +54,8 @@ export default class extends Event {
       channel.guild.roles.has(settings.moderation.roleIDs.mute) &&
       botPerms.has('sendMessages') &&
       botPerms.has('addReactions') &&
-      botPerms.has('voiceSpeak')
+      botPerms.has('voiceSpeak') &&
+      botPerms.has('readMessages')
     )
       channel.editPermission(
         settings.moderation.roleIDs.mute,
