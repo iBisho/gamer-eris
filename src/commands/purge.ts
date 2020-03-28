@@ -3,7 +3,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { milliseconds } from '../lib/types/enums/time'
 import { GuildTextableChannel } from 'eris'
 
-export default new Command([`purge`, `nuke`, `n`, `prune`], async (message, args, context) => {
+export default new Command([`purge`, `nuke`, `n`, `prune`, `clear`], async (message, args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
