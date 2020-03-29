@@ -1,6 +1,5 @@
 import { Command } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
-import { TextChannel } from 'eris'
 
 export default new Command([`reactionroleadd`, `rra`], async (message, args, context) => {
   if (!message.member) return
@@ -59,8 +58,8 @@ export default new Command([`reactionroleadd`, `rra`], async (message, args, con
   await reactionRole.save()
 
   const reactionRoleChannel = message.member.guild.channels.get(reactionRole.channelID)
-  if (!rrChannel) return
-  const messageToUse = await Gamer.getMessage(rrChannel.id, reactionRole.messageID)
+  if (!reactionRoleChannel) return
+  const messageToUse = await Gamer.getMessage(reactionRoleChannel.id, reactionRole.messageID)
   if (!messageToUse) return
 
   messageToUse.addReaction(reaction)
