@@ -155,8 +155,7 @@ export default new Command(`verify`, async (message, args, context) => {
         if (channelExists.id !== message.channel.id)
           message.channel.createMessage(language(`basic/verify:ALREADY_STARTED`)).then(msg =>
             setTimeout(() => {
-              if (!msg.channel.messages.has(msg.id)) return
-              msg.delete(language(`common:CLEAR_SPAM`))
+              msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined)
             }, 10000)
           )
         // Send a message in the existing channel to let user know
