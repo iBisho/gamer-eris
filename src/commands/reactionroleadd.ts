@@ -58,7 +58,7 @@ export default new Command([`reactionroleadd`, `rra`], async (message, args, con
 
   await reactionRole.save()
 
-  const rrChannel = (message.channel as TextChannel).guild.channels.get(reactionRole.channelID)
+  const reactionRoleChannel = message.member.guild.channels.get(reactionRole.channelID)
   if (!rrChannel) return
   const messageToUse = await Gamer.getMessage(rrChannel.id, reactionRole.messageID)
   if (!messageToUse) return
