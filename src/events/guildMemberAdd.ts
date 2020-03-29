@@ -29,32 +29,32 @@ export default class extends Event {
 
     // In case other bots/users add a role to the user we do this check
     if (botMember.permission.has('manageRoles') && botsHighestRole.position > membersHighestRole.position) {
-      if (
-        guildSettings.moderation.roleIDs.mute &&
-        guildSettings.moderation.users.mutedUserIDs.includes(member.id) &&
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        guild.roles.get(guildSettings.moderation.roleIDs.mute)?.position! < botsHighestRole.position
-      )
-        member.addRole(guildSettings.moderation.roleIDs.mute, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
-
+      if (guildSettings.moderation.roleIDs.mute && guildSettings.moderation.users.mutedUserIDs.includes(member.id)) {
+        const muteRole = guild.roles.get(guildSettings.moderation.roleIDs.mute)
+        if (!muteRole) return
+        if (muteRole.position > botsHighestRole.position) return
+        member.addRole(muteRole.id, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
+      }
       // Verify Or AutoRole
 
       // If verification is enabled and the role id is set add the verify role
-      if (
-        guildSettings.verify.enabled &&
-        guildSettings.verify.roleID &&
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        guild.roles.get(guildSettings.verify.roleID)?.position! < botsHighestRole.position
-      )
+      if (guildSettings.verify.enabled && guildSettings.verify.roleID) {
+        const verifyRole = guild.roles.get(guildSettings.verify.roleID)
+        if (!verifyRole) return
+        if (verifyRole.position > botsHighestRole.position) return
         member.addRole(guildSettings.verify.roleID, language(`basic/verify:VERIFY_ACTIVATE`))
+      }
       // If discord verification is disabled and auto role is set give the member the auto role
       else if (
         !guildSettings.verify.discordVerificationStrictnessEnabled &&
         guildSettings.moderation.roleIDs.autorole &&
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        guild.roles.get(guildSettings.moderation.roleIDs.autorole)?.position! < botsHighestRole.position
-      )
+        guild.roles.has(guildSettings.moderation.roleIDs.autorole)
+      ) {
+        const autoRole = guild.roles.get(guildSettings.moderation.roleIDs.autorole)
+        if (!autoRole) return
+        if (autoRole.position > botsHighestRole.position) return
         member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
+      }
     }
 
     // Welcome Message
