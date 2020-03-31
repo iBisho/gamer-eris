@@ -153,11 +153,9 @@ export default new Command(`verify`, async (message, args, context) => {
       if (channelExists && channelExists instanceof TextChannel) {
         // If the channel exists send error
         if (channelExists.id !== message.channel.id)
-          message.channel.createMessage(language(`basic/verify:ALREADY_STARTED`)).then(msg =>
-            setTimeout(() => {
-              msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined)
-            }, 10000)
-          )
+          message.channel
+            .createMessage(language(`basic/verify:ALREADY_STARTED`))
+            .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)).catch(), 10000))
         // Send a message in the existing channel to let user know
         return channelExists.createMessage(
           language(message.channel.id === channelExists.id ? `basic/verify:INCORRECT_USAGE` : `basic/verify:USE_THIS`, {
