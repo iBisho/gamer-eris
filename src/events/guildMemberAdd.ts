@@ -31,18 +31,16 @@ export default class extends Event {
     if (botMember.permission.has('manageRoles') && botsHighestRole.position > membersHighestRole.position) {
       if (guildSettings.moderation.roleIDs.mute && guildSettings.moderation.users.mutedUserIDs.includes(member.id)) {
         const muteRole = guild.roles.get(guildSettings.moderation.roleIDs.mute)
-        if (!muteRole) return
-        if (muteRole.position > botsHighestRole.position) return
-        member.addRole(muteRole.id, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
+        if (muteRole && muteRole.position < botsHighestRole.position)
+          member.addRole(muteRole.id, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
       }
       // Verify Or AutoRole
 
       // If verification is enabled and the role id is set add the verify role
       if (guildSettings.verify.enabled && guildSettings.verify.roleID) {
         const verifyRole = guild.roles.get(guildSettings.verify.roleID)
-        if (!verifyRole) return
-        if (verifyRole.position > botsHighestRole.position) return
-        member.addRole(guildSettings.verify.roleID, language(`basic/verify:VERIFY_ACTIVATE`))
+        if (verifyRole && verifyRole.position < botsHighestRole.position)
+          member.addRole(guildSettings.verify.roleID, language(`basic/verify:VERIFY_ACTIVATE`))
       }
       // If discord verification is disabled and auto role is set give the member the auto role
       else if (
@@ -51,9 +49,8 @@ export default class extends Event {
         guild.roles.has(guildSettings.moderation.roleIDs.autorole)
       ) {
         const autoRole = guild.roles.get(guildSettings.moderation.roleIDs.autorole)
-        if (!autoRole) return
-        if (autoRole.position > botsHighestRole.position) return
-        member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
+        if (autoRole && autoRole.position < botsHighestRole.position)
+          member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
       }
     }
 
