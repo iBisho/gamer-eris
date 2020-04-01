@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/Skillz4Killz/gamer-eris#readme",
   "dependencies": {
-    "@types/parse5": "^5.0.2",
     "canvas": "^2.6.1",
     "canvas-constructor": "^3.1.0",
     "chalk": "^3.0.0",
@@ -47,6 +46,7 @@
     "yuuko": "github:Skillz4Killz/yuuko#master"
   },
   "devDependencies": {
+    "@types/parse5": "^5.0.2",
     "@types/glob": "^7.1.1",
     "@types/i18next-node-fs-backend": "^2.1.0",
     "@types/mongoose": "^5.7.6",
