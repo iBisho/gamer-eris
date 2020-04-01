@@ -1,8 +1,7 @@
 import Event from '../lib/structures/Event'
 import { TextChannel, Member, Guild } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { MessageEmbed } from 'helperis'
-import { highestRole } from 'helperis'
+import { MessageEmbed, highestRole } from 'helperis'
 
 export default class extends Event {
   async execute(guild: Guild, member: Member) {
@@ -30,25 +29,29 @@ export default class extends Event {
 
     // In case other bots/users add a role to the user we do this check
     if (botMember.permission.has('manageRoles') && botsHighestRole.position > membersHighestRole.position) {
-      if (
-        guildSettings.moderation.roleIDs.mute &&
-        guildSettings.moderation.users.mutedUserIDs.includes(member.id) &&
-        guild.roles.has(guildSettings.moderation.roleIDs.mute)
-      )
-        member.addRole(guildSettings.moderation.roleIDs.mute, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
-
+      if (guildSettings.moderation.roleIDs.mute && guildSettings.moderation.users.mutedUserIDs.includes(member.id)) {
+        const muteRole = guild.roles.get(guildSettings.moderation.roleIDs.mute)
+        if (muteRole && muteRole.position < botsHighestRole.position)
+          member.addRole(muteRole.id, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
+      }
       // Verify Or AutoRole
 
       // If verification is enabled and the role id is set add the verify role
-      if (guildSettings.verify.enabled && guildSettings.verify.roleID && guild.roles.has(guildSettings.verify.roleID))
-        member.addRole(guildSettings.verify.roleID, language(`basic/verify:VERIFY_ACTIVATE`))
+      if (guildSettings.verify.enabled && guildSettings.verify.roleID) {
+        const verifyRole = guild.roles.get(guildSettings.verify.roleID)
+        if (verifyRole && verifyRole.position < botsHighestRole.position)
+          member.addRole(guildSettings.verify.roleID, language(`basic/verify:VERIFY_ACTIVATE`))
+      }
       // If discord verification is disabled and auto role is set give the member the auto role
       else if (
         !guildSettings.verify.discordVerificationStrictnessEnabled &&
         guildSettings.moderation.roleIDs.autorole &&
         guild.roles.has(guildSettings.moderation.roleIDs.autorole)
-      )
-        member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
+      ) {
+        const autoRole = guild.roles.get(guildSettings.moderation.roleIDs.autorole)
+        if (autoRole && autoRole.position < botsHighestRole.position)
+          member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
+      }
     }
 
     // Welcome Message

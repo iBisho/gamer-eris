@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc --noEmit --incremental=false && eslint '*/**/*.ts'",
-    "lint": "tsc --noEmit && eslint '*/**/*.ts' --quiet --fix",
+    "test": "tsc && eslint '*/**/*.ts'",
+    "lint": "tsc && eslint '*/**/*.ts' --quiet --fix",
     "lintfix": "eslint '*/**/*.ts' --quiet --fix",
     "start": "node production/src/index",
     "build": "tsc",

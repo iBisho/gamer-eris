@@ -134,14 +134,14 @@ export default new Command(`verify`, async (message, args, context) => {
       if (!guildSettings.verify.enabled)
         return message.channel
           .createMessage(language(`basic/verify:DISABLED`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined), 10000))
       // Check if a first message is saved
       const firstMessageJSON = guildSettings.verify.firstMessageJSON
 
       if (!firstMessageJSON)
         return message.channel
           .createMessage(language(`basic/verify:FIRST_MISSING`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined), 10000))
 
       // Make a channels name from the users name and removes any invalid characters since discord doesnt support all characters in channel names.
       const channelName = Gamer.helpers.discord.userToChannelName(message.author.username, message.author.discriminator)
@@ -155,7 +155,7 @@ export default new Command(`verify`, async (message, args, context) => {
         if (channelExists.id !== message.channel.id)
           message.channel
             .createMessage(language(`basic/verify:ALREADY_STARTED`))
-            .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+            .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined), 10000))
         // Send a message in the existing channel to let user know
         return channelExists.createMessage(
           language(message.channel.id === channelExists.id ? `basic/verify:INCORRECT_USAGE` : `basic/verify:USE_THIS`, {
@@ -170,12 +170,12 @@ export default new Command(`verify`, async (message, args, context) => {
       if (!categoryChannel || !(categoryChannel instanceof CategoryChannel))
         return message.channel
           .createMessage(language(`basic/verify:MISSING_CATEGORY`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined), 10000))
 
       if (categoryChannel && categoryChannel.channels && categoryChannel.channels.size === 50)
         return message.channel
           .createMessage(language(`basic/verify:MAXED`))
-          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)), 10000))
+          .then(msg => setTimeout(() => msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined), 10000))
 
       const newChannel = await message.member.guild.createChannel(channelName, 0, {
         reason: language(`basic/verify:VERIFY_CHANNEL`),
