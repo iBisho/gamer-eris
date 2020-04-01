@@ -33,10 +33,11 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
   }
 
   if (availableBoost) availableBoost.active = true
-  // Buy a boost for the user using XP
+  // Buy a boost for the user using coins
   else {
-    // If the user does not have enough xp to buy a boost cancel out
-    if (userSettings.leveling.xp < 100) return message.channel.createMessage(language(`leveling/boostme:NEED_XP`))
+    // If the user does not have enough coins to buy a boost cancel out
+    if (userSettings.leveling.currency < 500)
+      return message.channel.createMessage(language(`leveling/boostme:NEED_COINS`))
 
     const newBoost = {
       name: language(`leveling/boostme:SMALL_BOOSTER`),
@@ -51,6 +52,9 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
       boost => boost.timestamp && Date.now() < boost.timestamp
     )
     userSettings.leveling.boosts.push(newBoost)
+
+    // Remove 500 coins for the cost
+    userSettings.leveling.currency -= 500
 
     availableBoost = newBoost
   }

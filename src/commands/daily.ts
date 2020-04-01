@@ -3,7 +3,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import { milliseconds } from '../lib/types/enums/time'
 
-const dailyXPGlobalAmount = 10
+const dailyXPGlobalAmount = 50
 
 export default new Command(`daily`, async (message, _args, context) => {
   if (!message.guildID || !message.member) return
@@ -29,10 +29,10 @@ export default new Command(`daily`, async (message, _args, context) => {
     (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
     (await Gamer.database.models.user.create({ userID: message.author.id }))
 
-  userSettings.leveling.currency = userSettings.leveling.currency + 10
+  userSettings.leveling.currency = userSettings.leveling.currency + 100
   userSettings.save()
 
-  const dailyXP = guildSettings?.xp.daily || 10
+  const dailyXP = guildSettings?.xp.daily || 50
 
   // Add XP to the member for the daily amount
   Gamer.helpers.levels.addLocalXP(message.member, dailyXP, true)
