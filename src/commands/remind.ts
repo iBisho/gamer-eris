@@ -15,7 +15,6 @@ export default new Command(
 
     const [time] = args
     if (time?.toLowerCase() === 'list') {
-      console.log('inside list')
       const reminders = await Gamer.database.models.reminder.find({ userID: message.author.id })
       return Gamer.helpers.discord.embedResponse(
         message,

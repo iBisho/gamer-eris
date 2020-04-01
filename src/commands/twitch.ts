@@ -6,23 +6,16 @@ export default new Command(`twitch`, async (message, args, context) => {
   if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
-  const helpCommand = Gamer.commandForName('help')
-  if (!helpCommand) return
-
-  const language = Gamer.getLanguage(message.guildID)
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   // If the user is not an admin/mod cancel out
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
+  const helpCommand = Gamer.commandForName('help')
   const [type, username, ...gameName] = args
-  if (!type) return helpCommand.process(message, [`twitch`], context)
+  if (!type) return helpCommand?.process(message, [`twitch`], context)
+
+  const language = Gamer.getLanguage(message.guildID)
 
   if (type && type.toLowerCase() === `list`) {
     const twitchSubs = await Gamer.database.models.subscription.find()
@@ -48,7 +41,7 @@ export default new Command(`twitch`, async (message, args, context) => {
     type: GamerSubscriptionType.TWITCH
   })
 
-  if (!username) return helpCommand.process(message, [`twitch`], context)
+  if (!username) return helpCommand?.process(message, [`twitch`], context)
 
   const game = gameName.join(' ')
   const subPayload = {
@@ -98,5 +91,5 @@ export default new Command(`twitch`, async (message, args, context) => {
 
       return message.channel.createMessage(language(`gaming/twitch:UNSUBBED`, { username }))
   }
-  return helpCommand.process(message, [`twitch`], context)
+  return helpCommand?.process(message, [`twitch`], context)
 })
