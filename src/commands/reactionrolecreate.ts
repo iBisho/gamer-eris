@@ -16,7 +16,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
     `readMessageHistory`
   ])
 
-  if (!hasPermissions) return message.channel.createMessage(language(`role/reactionrolecreate:NEED_PERMS`))
+  if (!hasPermissions) return message.channel.createMessage(language(`roles/reactionrolecreate:NEED_PERMS`))
 
   const guildSettings = await Gamer.database.models.guild.findOne({
     id: message.guildID
@@ -58,7 +58,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
     { messageID }
   ])
 
-  if (reactionRole) return message.channel.createMessage(language(`role/reactionrolecreate:NAME_EXISTS`, { name }))
+  if (reactionRole) return message.channel.createMessage(language(`roles/reactionrolecreate:NAME_EXISTS`, { name }))
 
   const reaction = Gamer.helpers.discord.convertEmoji(validEmoji.fullCode, `reaction`)
   if (!reaction) return
