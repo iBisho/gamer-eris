@@ -8,9 +8,8 @@ export default new Command(`setcapture`, async (message, args, context) => {
   const language = Gamer.getLanguage(message.guildID)
 
   const guildSettings =
-    (await Gamer.database.models.guild.findOne({
-      id: message.guildID
-    })) || (await Gamer.database.models.guild.create({ id: message.guildID }))
+    (await Gamer.database.models.guild.findOne({ id: message.guildID })) ||
+    (await Gamer.database.models.guild.create({ id: message.guildID }))
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
