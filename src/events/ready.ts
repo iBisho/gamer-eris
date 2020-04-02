@@ -134,7 +134,7 @@ export default class extends Event {
               // eslint-disable-next-line @typescript-eslint/camelcase
               .map(data => ({ event_properties: data, user_id: data.authorID, event_type: data.type }))
           })
-        })
+        }).catch(() => undefined)
       }
     }, milliseconds.SECOND)
 
