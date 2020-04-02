@@ -237,7 +237,7 @@ export default class extends Event {
             const errorResponse = await message.channel.createMessage(
               language(`network/reaction:NEED_PROFILE_TO_RETWEET`)
             )
-            return setTimeout(() => errorResponse.delete(), 10000)
+            return setTimeout(() => errorResponse.delete().catch(() => undefined), 10000)
           }
 
           // Double check if bot has perms in this users wall channel
@@ -252,7 +252,7 @@ export default class extends Event {
             ])
           ) {
             const errorResponse = await message.channel.createMessage(language(`network/reaction:MISSING_PERMS_WALL`))
-            return setTimeout(() => errorResponse.delete(), 10000)
+            return setTimeout(() => errorResponse.delete().catch(() => undefined), 10000)
           }
 
           // Repost this message on the user, that reacted, wall channel
@@ -277,7 +277,7 @@ export default class extends Event {
           const success = await message.channel.createMessage(
             language(`network/reaction:THANKS_REPOSTED`, { channel: wallChannel.mention })
           )
-          return setTimeout(() => success.delete(), 10000)
+          return setTimeout(() => success.delete().catch(() => undefined), 10000)
         }
         case constants.emojis.plus: {
           // Follow the original author profile server
@@ -314,7 +314,7 @@ export default class extends Event {
               username: user.username
             })
           )
-          setTimeout(() => response.delete(), 10000)
+          setTimeout(() => response.delete().catch(() => undefined), 10000)
 
           return notificationChannel.createMessage(
             language(
@@ -331,7 +331,7 @@ export default class extends Event {
       const language = Gamer.getLanguage(message.member.guild.id)
 
       const response = await message.channel.createMessage(language(`network/reaction:FAILED`))
-      return setTimeout(() => response.delete(), 10000)
+      return setTimeout(() => response.delete().catch(() => undefined), 10000)
     }
   }
 
@@ -478,7 +478,7 @@ export default class extends Event {
         }
 
         // Deletes the feedback
-        return message.delete()
+        return message.delete().catch(() => undefined)
       // This case will run when the red x is reacted on
       case constants.emojis.redX:
         // If the user is not atleast a mod cancel everything
