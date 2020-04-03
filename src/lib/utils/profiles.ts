@@ -84,6 +84,7 @@ export default class {
     const backgroundData =
       Constants.profiles.backgrounds.find(b => b.id === backgroundID) ||
       Constants.profiles.backgrounds.find(b => b.id === 1)
+    console.log('Reached here')
     if (!backgroundData) return
 
     // SERVER XP DATA
@@ -104,6 +105,7 @@ export default class {
     let memberXP = totalMemberXP
     if (memberLevel >= 1) {
       const previousLevel = Constants.levels.find(lev => lev.level === memberLevel - 1)
+      console.log('22')
       if (!previousLevel) return
 
       memberXP = totalMemberXP - previousLevel.xpNeeded
@@ -112,6 +114,7 @@ export default class {
     let globalXP = totalGlobalXP
     if (globalLevel >= 1) {
       const previousLevel = Constants.levels.find(lev => lev.level === globalLevel - 1)
+      console.log(33)
       if (!previousLevel) return
       globalXP = totalGlobalXP - previousLevel.xpNeeded
     }
@@ -312,7 +315,7 @@ export default class {
       .addText(`${globalXP}/${globalLevelDetails.xpNeeded - previousGlobalLevelDetails?.xpNeeded}`, 190, 330)
       // global xp bar text
       .addText(`${marriage?.love || 0}%`, 190, 410)
-
+    console.log(44)
     return canvas.toBufferAsync()
   }
 }
