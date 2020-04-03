@@ -6,7 +6,6 @@ import { milliseconds } from '../lib/types/enums/time'
 
 export default new Command([`profile`, `p`, `prof`], async (message, args, context) => {
   if (!message.guildID || !message.member) return
-  console.log(1)
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
@@ -15,7 +14,6 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   const member = (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
   const buffer = await Gamer.helpers.profiles.makeCanvas(message, member, Gamer)
   if (!buffer) return
-  console.log('buffer made')
 
   const fileName = `profile.jpg`
   const UNLOCK = language('leveling/profile:UNLOCK', {
