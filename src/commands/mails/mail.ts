@@ -16,9 +16,7 @@ export default new Command([`mail`, `m`], async (message, args, context) => {
   if (message.channel.id === guildSettings.mails.supportChannelID)
     return Gamer.helpers.mail.handleSupportChannel(message, content, guildSettings)
 
-  const userIsModOrAdmin =
-    Gamer.helpers.discord.isModerator(message, guildSettings.staff.modRoleIDs) ||
-    Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)
+  const userIsModOrAdmin = Gamer.helpers.discord.isModOrAdmin(message, guildSettings)
   // Will reply or create new mail if no mail is open for this user
   if (!userIsModOrAdmin) return Gamer.helpers.mail.handleSupportChannel(message, content, guildSettings)
 

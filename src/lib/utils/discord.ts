@@ -28,20 +28,16 @@ export default class {
     return botOwners.includes(message.author.id) || botMods.includes(message.author.id)
   }
 
-  isModerator(message: Message, roleIDs: string[] = []) {
-    return roleIDs.some(id => message.member && message.member.roles.includes(id))
-  }
-
   // If the roleid is undefined its to also check the admin perm
   isAdmin(message: Message, roleID?: string) {
-    return (
-      message.member &&
-      (message.member.permission.has('administrator') || (roleID && message.member.roles.includes(roleID)))
-    )
+    return message.member?.permission.has('administrator') || (roleID && message.member?.roles.includes(roleID))
   }
 
   isModOrAdmin(message: Message, settings: GuildSettings | null) {
-    return this.isAdmin(message, settings?.staff.adminRoleID) || this.isModerator(message, settings?.staff.modRoleIDs)
+    return (
+      this.isAdmin(message, settings?.staff.adminRoleID) ||
+      Boolean(settings?.staff.modRoleIDs.some(id => message.member?.roles.includes(id)))
+    )
   }
 
   userToChannelName(username: string, discriminator: string) {
