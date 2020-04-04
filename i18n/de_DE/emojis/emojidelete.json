@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Löscht eines der erstellten Emojis.",
+  "EXTENDED": "**{{prefix}}emojidelete [Name]** ~ Löscht eines der erstellten Emojis.",
+  "USAGE": "{{prefix}}emojicreate [Name] ",
+  "ALIASES": "{{prefix}}emd",
+  "NEED_NAME": "Du hast mir keinen Namen angegeben. Ich kann kein Emoji löschen, wenn du mir nicht den Namen des Emoji gibst, welches ich löschen soll.",
+  "DOESNT_EXIST": "Das Emoji **{{name}}** ist in der globalen Emojis-Liste nicht vorhanden. Bist du dir sicher dass du das globale Emoji  löschen möchtest?",
+  "DELETED": "Das **{{name}}** emoji wurde gelöscht. "
+}
