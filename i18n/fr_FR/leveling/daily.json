@@ -5,7 +5,7 @@
 	"EXTENDED_LINE_2": "Note: **{{prefix}}daily** Vous donne également des Gamer Coins.",
 	"USAGE": "{{prefix}}daily",
 	"ALIASES": "Daily ne possède pas d'alias.",
-	"SUCCESS": "{{mention}}, Vous avez reçu {{amount}} {{emoji}} Gamer Coins et 10 d'XP.",
+	"SUCCESS": "{{mention}}, Vous avez reçu {{amount}} {{emoji}} Gamer Coins et 50 d'XP.",
 	"COOLDOWN": "Vous avez déjà utilisé la commande daily aujourd'hui. Vous pourrez la réutiliser dans `{{time}}`."
 }
 

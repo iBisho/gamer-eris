@@ -3,13 +3,13 @@ import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
 import { milliseconds } from '../lib/types/enums/time'
 
-const dailyXPGlobalAmount = 50
+const dailyXPAmount = 50
+const dailyCoinsAmount = 100
 
 export default new Command(`daily`, async (message, _args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   const language = Gamer.getLanguage(message.guildID)
 
   // Check if on cooldown
@@ -29,21 +29,19 @@ export default new Command(`daily`, async (message, _args, context) => {
     (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
     (await Gamer.database.models.user.create({ userID: message.author.id }))
 
-  userSettings.leveling.currency = userSettings.leveling.currency + 100
+  userSettings.leveling.currency = userSettings.leveling.currency + dailyCoinsAmount
   userSettings.save()
 
-  const dailyXP = guildSettings?.xp.daily || 50
-
   // Add XP to the member for the daily amount
-  Gamer.helpers.levels.addLocalXP(message.member, dailyXP, true)
+  Gamer.helpers.levels.addLocalXP(message.member, dailyXPAmount, true)
   // Add XP to the user for the global amount
-  Gamer.helpers.levels.addGlobalXP(message.member, dailyXPGlobalAmount)
+  Gamer.helpers.levels.addGlobalXP(message.member, dailyXPAmount)
 
   // Respond telling the user how much they gained
   return message.channel.createMessage(
     language(`leveling/daily:SUCCESS`, {
       mention: message.author.mention,
-      amount: dailyXP,
+      amount: dailyCoinsAmount,
       emoji: constants.emojis.coin
     })
   )

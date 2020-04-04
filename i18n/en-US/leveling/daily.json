@@ -5,7 +5,7 @@
 	"EXTENDED_LINE_2": "Note: **{{prefix}}daily** also grants you Gamer Coins.",
 	"USAGE": "{{prefix}}daily",
 	"ALIASES": "Daily does not have any aliases.",
-	"SUCCESS": "{{mention}}, You received {{amount}} {{emoji}} Gamer Coins and 10 XP.",
+	"SUCCESS": "{{mention}}, You received {{amount}} {{emoji}} Gamer Coins and 50 XP.",
 	"COOLDOWN": "You have already used the daily command today. You can use the daily command in `{{time}}`."
 }
 
