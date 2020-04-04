@@ -1,17 +1,11 @@
 import Event from '../lib/structures/Event'
-import { PrivateChannel, Message, GroupChannel } from 'eris'
+import { Message } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Event {
   async execute(message: Message, Gamer: GamerClient) {
     // If a bot or in dm, no XP we want to encourage activity in servers not dms
-    if (
-      message.channel instanceof PrivateChannel ||
-      message.channel instanceof GroupChannel ||
-      message.author.bot ||
-      !message.member
-    )
-      return
+    if (message.author.bot || !message.member) return
 
     // Update XP for the member locally
     Gamer.helpers.levels.addLocalXP(message.member, 1)

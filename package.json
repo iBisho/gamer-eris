@@ -43,7 +43,7 @@
     "parse5": "^5.1.1",
     "pino-pretty": "^3.6.1",
     "typescript": "^3.8.3",
-    "yuuko": "github:Skillz4Killz/yuuko#master"
+    "yuuko": "^2.0.0-rc3"
   },
   "devDependencies": {
     "@types/parse5": "^5.0.2",

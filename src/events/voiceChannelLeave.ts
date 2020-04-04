@@ -10,10 +10,9 @@ export default class extends Event {
       memberID: member.id,
       guildID: member.guild.id
     })
-    if (!memberSettings) return
 
     // If they don't have a joinedat then cancel.
-    if (!memberSettings.leveling.joinedVoiceAt) return
+    if (!memberSettings?.leveling.joinedVoiceAt) return
     // If the joined channel is the afk channel ignore.
     if (channel.id === channel.guild.afkChannelID) {
       memberSettings.leveling.joinedVoiceAt = 0
