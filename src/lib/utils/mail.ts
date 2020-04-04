@@ -240,7 +240,10 @@ export default class {
 
     // Await so the message sends before we make roles unmentionable again
     await this.Gamer.createMessage(mail.id, {
-      content: alertRoleIDs.map(roleID => `<@&${roleID}>`).join(' '),
+      content: alertRoleIDs
+        .filter(id => guild.roles.has(id))
+        .map(roleID => `<@&${roleID}>`)
+        .join(' '),
       embed: embed.code
     })
 
