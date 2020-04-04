@@ -7,27 +7,19 @@ export default new Command(`mute`, async (message, args, context) => {
   if (!message.member) return
 
   const Gamer = context.client as GamerClient
-  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
-  if (!botMember) return
-
   const language = Gamer.getLanguage(message.guildID)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
 
   // Check if the bot has the manage roles permissions
-  if (!botMember.permission.has('manageRoles'))
+  if (!botMember?.permission.has('manageRoles'))
     return message.channel.createMessage(language(`moderation/mute:NEED_MANAGE_ROLES`))
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   // If there is default settings the mute role won't exist
   if (!guildSettings || !guildSettings.moderation.roleIDs.mute)
     return message.channel.createMessage(language(`moderation/mute:NEED_MUTE_ROLE`))
 
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   // Check if the mute role exists
   const muteRole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.mute)

@@ -10,18 +10,10 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   if (!botMember) return
 
   const language = Gamer.getLanguage(message.guildID)
-
   if (!args.length) return message.channel.createMessage(language(`moderation/warn:NEED_USER`))
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
-
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   let [userID] = args
   args.shift()

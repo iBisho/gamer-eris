@@ -15,11 +15,7 @@ export default new Command(`setfeedback`, async (message, args, context) => {
     })) || (await Gamer.database.models.guild.create({ id: message.guildID }))
 
   // If the user is not an admin cancel out
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)
-  )
-    return
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [type, action] = args
   if (!type) return helpCommand.process(message, [`setfeedback`], context)

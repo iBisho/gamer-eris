@@ -10,16 +10,11 @@ export default new Command(`sethibye`, async (message, args, context) => {
   if (!helpCommand) return
 
   const guildSettings =
-    (await Gamer.database.models.guild.findOne({
-      id: message.guildID
-    })) || (await Gamer.database.models.guild.create({ id: message.member.guild.id }))
+    (await Gamer.database.models.guild.findOne({ id: message.guildID })) ||
+    (await Gamer.database.models.guild.create({ id: message.member.guild.id }))
 
   // If the user is not an admin cancel out
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [type, subtype, ...text] = args
   if (!type || !subtype) return helpCommand.process(message, [`sethibye`], context)

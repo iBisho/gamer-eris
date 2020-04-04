@@ -15,10 +15,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   // When this boolean is true the user is not a mod/admin so we need to check if they are the event creator
   let checkCreator = false
   // Mods/admins are allowed to edit any event
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  ) {
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) {
     // If the user is not a mod or admin check the events create rols
     if (!guildSettings?.roleIDs.eventsCreate) return
     if (!message.member.roles.includes(guildSettings.roleIDs.eventsCreate)) return

@@ -10,16 +10,10 @@ export default new Command([`tagshow`, `ts`], async (message, args, context) => 
   const [name] = args
   if (!name) return helpCommand.process(message, [`tagshow`], context)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   // If the user is not an admin cancel out
-  if (
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID) &&
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs)
-  )
-    return
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const tagName = name.toLowerCase()
 

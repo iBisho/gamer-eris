@@ -5,24 +5,16 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   const language = Gamer.getLanguage(message.guildID)
-
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [number, ...roleIDsOrNames] = args
   const eventID = parseInt(number, 10)
   const helpCommand = Gamer.commandForName(`help`)
-  if (!helpCommand) return
 
-  if (!eventID) return helpCommand.process(message, [`eventadd`], context)
+  if (!eventID) return helpCommand?.process(message, [`eventadd`], context)
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
     id: eventID,

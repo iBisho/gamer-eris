@@ -8,20 +8,13 @@ export default new Command(`manga`, async (message, args, context) => {
 
   const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName('help')
-  if (!helpCommand) return
-
   const language = Gamer.getLanguage(message.guildID)
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
-
   // If the user is not an admin/mod cancel out
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [type, ...fullTitle] = args
-  if (!type) return helpCommand.process(message, [`manga`], context)
+  if (!type) return helpCommand?.process(message, [`manga`], context)
 
   const title = fullTitle.join(' ')
   if (type && type.toLowerCase() === `list`) {
@@ -102,5 +95,5 @@ export default new Command(`manga`, async (message, args, context) => {
 
       return message.channel.createMessage(language(`weeb/manga:UNSUBBED`, { title }))
   }
-  return helpCommand.process(message, [`manga`], context)
+  return helpCommand?.process(message, [`manga`], context)
 })

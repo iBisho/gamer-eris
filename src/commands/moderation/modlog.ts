@@ -6,19 +6,11 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
   if (!message.member) return
 
   const Gamer = context.client as GamerClient
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
-
-  const language = Gamer.getLanguage(message.guildID)
-
-  if (
-    !Gamer.helpers.discord.isModerator(message, guildSettings?.staff.modRoleIDs) &&
-    !Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)
-  )
-    return
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [userID, caseID] = args
+  const language = Gamer.getLanguage(message.guildID)
   if (userID && userID.toLowerCase() === `remove`) {
     if (!caseID) return message.channel.createMessage(language(`moderation/modlog:NEED_CASE_ID`))
     const modlogID = parseInt(caseID, 10)
