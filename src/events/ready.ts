@@ -43,9 +43,7 @@ export default class extends Event {
           if (!channel || !(channel instanceof TextChannel)) continue
 
           // If missing channel perms exit out
-          if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) {
-            continue
-          }
+          if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) continue
 
           const message =
             channel.messages.get(channel.lastMessageID) ||
@@ -54,8 +52,6 @@ export default class extends Event {
           if (!message) continue
 
           const language = Gamer.getLanguage(channel.guild.id)
-          if (!language) continue
-
           // If the channel has gone inactive too long delete it so there is no spam empty unused channels
           if (Date.now() - message.timestamp > milliseconds.MINUTE * 10) {
             channel.delete(language(`basic/verify:CHANNEL_DELETE_REASON`)).catch(() => undefined)
@@ -64,7 +60,7 @@ export default class extends Event {
       })
 
       Promise.all(promises)
-    }, 2000)
+    }, milliseconds.MINUTE * 2)
 
     // Randomly select 3 new missions every 30 minutes
     setInterval(async () => {
@@ -93,9 +89,6 @@ export default class extends Event {
 
         const guild = Gamer.guilds.get(guildSettings.id)
         if (!guild) continue
-
-        const language = Gamer.getLanguage(guild.id)
-        if (!language) continue
 
         // Get all members from the database as anyone with default settings dont need to be checked
         const allMemberSettings = await Gamer.database.models.member.find()
