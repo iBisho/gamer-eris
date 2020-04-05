@@ -156,6 +156,14 @@ export default class extends Event {
       const vipGuildSettings = await Gamer.database.models.guild.findOne({ id: guildID })
       if (!vipGuildSettings) continue
       vipGuildSettings.vip.isVIP = false
+      // Reset VIP xp settings
+      if (vipGuildSettings.xp.perMessage || vipGuildSettings.xp.perMinuteVoice) {
+        vipGuildSettings.xp.perMinuteVoice = 1
+        vipGuildSettings.xp.perMessage = 1
+        if (Gamer.guildsXPPerMinuteVoice.has(guildID)) Gamer.guildsXPPerMinuteVoice.delete(guildID)
+        if (Gamer.guildsXPPerMessage.has(guildID)) Gamer.guildsXPPerMessage.delete(guildID)
+      }
+
       vipGuildSettings.save()
     }
   }

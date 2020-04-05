@@ -139,6 +139,10 @@ export default class GamerClient extends Client {
   guildCommandPermissions: Map<string, GamerCommandPermission> = new Map()
   /** This stores the guild ids that have had their members fully fetched. */
   allMembersFetchedGuildIDs: Set<string> = new Set()
+  /** The amount of xp per message setting cached as its needed on all messages */
+  guildsXPPerMessage = new Map<string, number>()
+  /** The amount of xp per minute in voice setting */
+  guildsXPPerMinuteVoice = new Map<string, number>()
 
   constructor(options: ClientOptions) {
     super(options)

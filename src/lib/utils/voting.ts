@@ -42,6 +42,14 @@ export const vipExpiredCheck = async () => {
     ...new Set(
       nonBoostedGuildSettings.map(guildSettings => {
         guildSettings.vip.isVIP = false
+        // Reset VIP xp settings
+        if (guildSettings.xp.perMessage || guildSettings.xp.perMinuteVoice) {
+          guildSettings.xp.perMinuteVoice = 1
+          guildSettings.xp.perMessage = 1
+          if (Gamer.guildsXPPerMinuteVoice.has(guildSettings.id)) Gamer.guildsXPPerMinuteVoice.delete(guildSettings.id)
+          if (Gamer.guildsXPPerMessage.has(guildSettings.id)) Gamer.guildsXPPerMessage.delete(guildSettings.id)
+        }
+
         guildSettings.save()
 
         return guildSettings.vip.userID
@@ -57,5 +65,7 @@ export const vipExpiredCheck = async () => {
     userSettings.vip.guildsRegistered = userSettings.vip.guildsRegistered.filter(
       id => !nonBoostedGuildSettings.some(guildSettings => guildSettings.id === id)
     )
+
+    userSettings.save()
   })
 }

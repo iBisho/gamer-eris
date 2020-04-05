@@ -2,24 +2,34 @@ import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 
 export default new Command(`xp`, async (message, args, context) => {
-  if (!message.member) return
+  if (!message.member || !message.guildID) return
 
   const Gamer = context.client as GamerClient
   // if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
   if (!args.length) return
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
-
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const language = Gamer.getLanguage(message.guildID)
-
   const [type, number, ...idOrRoleName] = args
   const isAdding = type.toLowerCase() === `add`
   const amount = parseInt(number, 10)
   if (!amount) return
+
+  if (type.toLowerCase() === `message`) {
+    if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`leveling/xp:NEED_VIP_MESSAGE`))
+    guildSettings.xp.perMessage = amount
+    guildSettings.save()
+    return message.channel.createMessage(language(`leveling/xp:PER_MESSAGE`, { amount }))
+  }
+
+  if (type.toLowerCase() === `voice`) {
+    if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`leveling/xp:NEED_VIP_VOICE`))
+    guildSettings.xp.perMinuteVoice = amount
+    guildSettings.save()
+    return message.channel.createMessage(language(`leveling/xp:PER_MINUTE`, { amount }))
+  }
 
   const idOrName = idOrRoleName.join(' ').toLowerCase()
   const memberID = message.mentions.length ? message.mentions[0].id : idOrName

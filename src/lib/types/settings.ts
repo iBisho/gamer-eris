@@ -210,7 +210,8 @@ export interface GuildSettings extends mongoose.Document {
   }
   xp: {
     inactiveDaysAllowed: number
-    daily: number
+    perMessage?: number
+    perMinuteVoice?: number
     prizes: {
       first: string
       second: string

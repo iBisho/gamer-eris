@@ -22,10 +22,11 @@ export default class extends Event {
 
     // Calculate the amount of total minutes spent in this voice channel
     const totalMinutesInVoice = Math.round((Date.now() - memberSettings.leveling.joinedVoiceAt) / 1000 / 60)
+    const guildXPMultiplier = Gamer.guildsXPPerMinuteVoice.get(member.guild.id)
 
     // Update voice xp to the guild
     memberSettings.leveling.joinedVoiceAt = 0
-    memberSettings.leveling.voicexp += totalMinutesInVoice
+    memberSettings.leveling.voicexp += totalMinutesInVoice * (guildXPMultiplier || 1)
     memberSettings.save()
 
     // If more than 10 minutes they have fulfilled the mission

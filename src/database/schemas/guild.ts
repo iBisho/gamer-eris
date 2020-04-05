@@ -225,8 +225,10 @@ export default new mongoose.Schema({
   xp: {
     // The max amount of days u can be inactive on a server before losing XP
     inactiveDaysAllowed: { type: Number, default: 0 },
-    // The amount of xp u gain by typing daily in this server.
-    daily: { type: Number, default: 10 },
+    // The amount of xp to grant per message
+    perMessage: Number,
+    // The amount of xp to grant per minute in voice
+    perMinuteVoice: Number,
     prizes: {
       // url image for the first place prize
       first: String,

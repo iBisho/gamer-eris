@@ -250,7 +250,7 @@ export default class extends Event {
     Gamer.helpers.logger.green(`Preparing all cached settings like prefix, languages etc into cache now...`)
     // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
     const allGuildSettings = await Gamer.database.models.guild.find()
-    for (const settings of allGuildSettings) {
+    allGuildSettings.forEach(settings => {
       if (settings.prefix !== Gamer.prefix) {
         Gamer.guildPrefixes.set(settings.id, settings.prefix)
       }
@@ -263,7 +263,9 @@ export default class extends Event {
       if (settings.disableTenor) {
         Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
       }
-    }
+      if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.id, settings.xp.perMessage)
+      if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.id, settings.xp.perMinuteVoice)
+    })
 
     const customCommands = await Gamer.database.models.command.find()
     customCommands.forEach(command => {
