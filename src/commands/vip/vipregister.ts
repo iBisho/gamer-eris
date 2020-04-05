@@ -15,7 +15,11 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
 
   const language = Gamer.getLanguage(message.guildID)
 
-  const isBooster = gamerMember.roles.includes(constants.general.nitroBoosterRoleID)
+  const isBooster =
+    gamerMember.roles.includes(constants.general.nitroBoosterRoleID) ||
+    // Allow me to give VIP to custom servers like official gaming servers
+    message.author.id === '130136895395987456'
+
   // User is not a server booster trying to use a vip only command
   if (!isBooster) {
     // Check if the user has enough votes to get FREE VIP
