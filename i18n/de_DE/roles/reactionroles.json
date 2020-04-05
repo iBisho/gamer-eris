@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Sehe alle Reaktions-Rollen auf deinem Server.",
+	"EXTENDED": "**{{prefix}}reactionroles** ~ Sehe alle Reaktion-Rollen auf deinem Server.",
+	"USAGE": "{{prefix}}reactionroles",
+	"ALIASES": "Reactionroles haben keine anderen Aliasse.",
+	"NONE": "Du kanst keine Reaktions-Rollen auf diesem Server erstellt. Bitte nutze den **reactionrolecreate** command um Reaktions-Rollen zu erstellen."
+}
