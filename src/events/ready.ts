@@ -1,7 +1,6 @@
 // This event is triggered once the bot is ready and online.
 import Event from '../lib/structures/Event'
 import Gamer from '../index'
-import { GuildSettings, MemberSettings } from '../lib/types/settings'
 import { TextChannel } from 'eris'
 import constants from '../constants'
 import config from '../../config'
@@ -16,17 +15,15 @@ export default class extends Event {
     // Clean out message collectors after 2 minutes of no response
     setInterval(async () => {
       // Fetch this guilds settings
-      const allGuildSettings = (await Gamer.database.models.guild.find()) as GuildSettings[]
+      const allGuildSettings = await Gamer.database.models.guild.find({ 'vip.isVIP': true })
 
-      const promises = [...Gamer.collectors.values()].map(async collector => {
+      Gamer.collectors.forEach(collector => {
         const guildSettings = allGuildSettings.find(g => g.id === collector.guildID)
-        // How many minutes to wait for a response for the collectors in this guild. VIP Guilds can change the time
-        const menutime = guildSettings ? guildSettings.menutime : 2
-        // If the collector had no response in X minutes delete the collector
-        if (Date.now() - collector.createdAt > 60000 * menutime) Gamer.collectors.delete(collector.authorID)
-      })
+        const menutime = guildSettings ? (guildSettings.menutime > 5 ? guildSettings.menutime : 5) : 2
 
-      Promise.all(promises)
+        if (Date.now() - collector.createdAt > milliseconds.MINUTE * menutime)
+          Gamer.collectors.delete(collector.authorID)
+      })
     }, milliseconds.MINUTE * 2)
 
     // Clean up inactive verification channels
@@ -46,7 +43,9 @@ export default class extends Event {
           if (!channel || !(channel instanceof TextChannel)) continue
 
           // If missing channel perms exit out
-          if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) continue
+          if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) {
+            continue
+          }
 
           const message =
             channel.messages.get(channel.lastMessageID) ||
@@ -58,8 +57,9 @@ export default class extends Event {
           if (!language) continue
 
           // If the channel has gone inactive too long delete it so there is no spam empty unused channels
-          if (Date.now() - message.timestamp > milliseconds.MINUTE * 10)
+          if (Date.now() - message.timestamp > milliseconds.MINUTE * 10) {
             channel.delete(language(`basic/verify:CHANNEL_DELETE_REASON`)).catch(() => undefined)
+          }
         }
       })
 
@@ -76,14 +76,16 @@ export default class extends Event {
 
       while (Gamer.missions.length < 5) {
         const randomMission = constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))]
-        if (!Gamer.missions.find(m => m.title === randomMission.title)) Gamer.missions.push(randomMission)
+        if (!Gamer.missions.find(m => m.title === randomMission.title)) {
+          Gamer.missions.push(randomMission)
+        }
       }
     }, milliseconds.MINUTE * 30)
 
     // Checks if a member is inactive to begin losing XP every day
     setInterval(async () => {
       // Fetch all guilds from db as anything with default settings wont need to be checked
-      const allGuildSettings = (await Gamer.database.models.guild.find()) as GuildSettings[]
+      const allGuildSettings = await Gamer.database.models.guild.find()
 
       for (const guildSettings of allGuildSettings) {
         // If the inactive days allowed has not been enabled then skip
@@ -96,19 +98,25 @@ export default class extends Event {
         if (!language) continue
 
         // Get all members from the database as anyone with default settings dont need to be checked
-        const allMemberSettings = (await Gamer.database.models.member.find()) as MemberSettings[]
+        const allMemberSettings = await Gamer.database.models.member.find()
 
         allMemberSettings.forEach(async memberSettings => {
           // If they have never been updated skip. Or if their XP is below 100 the minimum threshold
-          if (!memberSettings.leveling.lastUpdatedAt || memberSettings.leveling.xp < 100) return
+          if (!memberSettings.leveling.lastUpdatedAt || memberSettings.leveling.xp < 100) {
+            return
+          }
 
           // Calculate how many days it has been since this user was last updated
           const daysSinceLastUpdated = (Date.now() - memberSettings.leveling.lastUpdatedAt) / 1000 / 60 / 60 / 24
-          if (daysSinceLastUpdated < guildSettings.xp.inactiveDaysAllowed) return
+          if (daysSinceLastUpdated < guildSettings.xp.inactiveDaysAllowed) {
+            return
+          }
 
           // Get the member object
           const member = await Gamer.helpers.discord.fetchMember(guild, memberSettings.memberID)
-          if (!member) return
+          if (!member) {
+            return
+          }
 
           // Remove 1% of XP from the user for being inactive today.
           Gamer.helpers.levels.removeXP(member, Math.floor(memberSettings.leveling.xp * 0.01))
@@ -129,10 +137,14 @@ export default class extends Event {
             // eslint-disable-next-line @typescript-eslint/camelcase
             api_key: config.apiKeys.amplitude.key,
             // Splice will return the deleted items from the array
-            events: Gamer.amplitude
-              .splice(0, 10)
+            events: Gamer.amplitude.splice(0, 10).map(data => ({
               // eslint-disable-next-line @typescript-eslint/camelcase
-              .map(data => ({ event_properties: data, user_id: data.authorID, event_type: data.type }))
+              event_properties: data,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              user_id: data.authorID,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              event_type: data.type
+            }))
           })
         }).catch(() => undefined)
       }
@@ -177,7 +189,9 @@ export default class extends Event {
         if (!channel || !(channel instanceof TextChannel)) continue
 
         const botPerms = channel.permissionsOf(Gamer.user.id)
-        if (!botPerms.has(`readMessages`) || !botPerms.has(`sendMessages`) || !botPerms.has(`embedLinks`)) continue
+        if (!botPerms.has(`readMessages`) || !botPerms.has(`sendMessages`) || !botPerms.has(`embedLinks`)) {
+          continue
+        }
 
         const randomCard = cards[Math.floor(Math.random() * cards.length)]
 
@@ -235,18 +249,27 @@ export default class extends Event {
     // Add 2 more unique missions
     while (Gamer.missions.length < 5) {
       const randomMission = constants.missions[Math.floor(Math.random() * constants.missions.length)]
-      if (!Gamer.missions.find(m => m.title === randomMission.title)) Gamer.missions.push(randomMission)
+      if (!Gamer.missions.find(m => m.title === randomMission.title)) {
+        Gamer.missions.push(randomMission)
+      }
     }
 
     Gamer.helpers.logger.green(`Preparing all cached settings like prefix, languages etc into cache now...`)
     // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
     const allGuildSettings = await Gamer.database.models.guild.find()
     for (const settings of allGuildSettings) {
-      if (settings.prefix !== Gamer.prefix) Gamer.guildPrefixes.set(settings.id, settings.prefix)
-      if (settings.language !== `en-US`) Gamer.guildLanguages.set(settings.id, settings.language)
-      if (settings.mails.supportChannelID)
+      if (settings.prefix !== Gamer.prefix) {
+        Gamer.guildPrefixes.set(settings.id, settings.prefix)
+      }
+      if (settings.language !== `en-US`) {
+        Gamer.guildLanguages.set(settings.id, settings.language)
+      }
+      if (settings.mails.supportChannelID) {
         Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
-      if (settings.disableTenor) Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
+      }
+      if (settings.disableTenor) {
+        Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
+      }
     }
 
     const customCommands = await Gamer.database.models.command.find()
