@@ -1,5 +1,7 @@
 import database from '../../database/mongodb'
 import { milliseconds } from '../types/enums/time'
+import Gamer from '../..'
+import constants from '../../constants'
 
 export const weeklyVoteReset = async () => {
   const now = Date.now()
@@ -24,9 +26,21 @@ export const vipExpiredCheck = async () => {
     'vip.registeredAt': { $lt: now - milliseconds.WEEK }
   })
 
+  const gamerGuild = Gamer.guilds.get(constants.general.gamerServerID)
+  if (!gamerGuild) return
+
+  const nonBoostedGuildSettings = expiredGuildSettings.filter(async gs => {
+    if (!gs.vip.userID) return false
+
+    const member = await Gamer.helpers.discord.fetchMember(gamerGuild, gs.vip.userID)
+    if (!member) return false
+
+    return !member.roles.includes(constants.general.nitroBoosterRoleID)
+  })
+
   const usersIDsToReset = [
     ...new Set(
-      expiredGuildSettings.map(guildSettings => {
+      nonBoostedGuildSettings.map(guildSettings => {
         guildSettings.vip.isVIP = false
         guildSettings.save()
 
@@ -41,7 +55,7 @@ export const vipExpiredCheck = async () => {
 
     userSettings.vip.isVIP = false
     userSettings.vip.guildsRegistered = userSettings.vip.guildsRegistered.filter(
-      id => !expiredGuildSettings.some(guildSettings => guildSettings.id === id)
+      id => !nonBoostedGuildSettings.some(guildSettings => guildSettings.id === id)
     )
   })
 }
