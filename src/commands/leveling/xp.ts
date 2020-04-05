@@ -20,6 +20,7 @@ export default new Command(`xp`, async (message, args, context) => {
   if (type.toLowerCase() === `message`) {
     if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`leveling/xp:NEED_VIP_MESSAGE`))
     guildSettings.xp.perMessage = amount
+    Gamer.guildsXPPerMessage.set(message.guildID, amount)
     guildSettings.save()
     return message.channel.createMessage(language(`leveling/xp:PER_MESSAGE`, { amount }))
   }
@@ -28,6 +29,7 @@ export default new Command(`xp`, async (message, args, context) => {
     if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`leveling/xp:NEED_VIP_VOICE`))
     guildSettings.xp.perMinuteVoice = amount
     guildSettings.save()
+    Gamer.guildsXPPerMinuteVoice.set(message.guildID, amount)
     return message.channel.createMessage(language(`leveling/xp:PER_MINUTE`, { amount }))
   }
 
