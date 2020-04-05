@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Gebe deine Votes an andere Nutzer.",
+	"EXTENDED": "**{{prefix}}upvotedonate 10 [@User]** ~ Spende einem anderen Nutzer Votes. Du kannst dies verwenden, um Stimmen für einen Administrator zu sammeln, der dann VIP-Funktionen für euren Server freischalten kann.",
+	"USAGE": "{{prefix}}upvotedonate [betrag] [@User]",
+	"ALIASES": "{{prefix}}votedonate",
+	"NEED_USER": "Du hast keine Nutzer angegeben dem du was Spenden möchtest.",
+	"NOT_SELF": "Du kannst dir nichts selbst spenden hahaha. Ob du doof bist.",
+	"VOTE_FIRST": "Um zu spenden, musst sowohl du als auch der Benutzer mindestens 1 Stimme haben.",
+	"DONATED": "Danke fürs spenden deiner Votes!"
+}
