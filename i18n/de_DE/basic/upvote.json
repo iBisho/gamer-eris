@@ -1,0 +1,17 @@
+{
+	"DESCRIPTION": "Vote für den Bot um einzigartige Preise zu bekommen!",
+	"EXTENDED": "$t(basic/upvote:EXTENDED_LINE_1)\n$t(basic/upvote:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}upvote** ~ Bekommt den Link um für den Bot zu Voten. Erstelle eine Erinnerung welche dich alle 12 Stunden daran erinnert um großartige Preise zu bekommen.",
+	"EXTENDED_LINE_2": "Freitags, Samstags und Sonntafs gibt es DOPPELTE Votes!! Verpass es nicht!",
+	"USAGE": "{{prefix}}upvote",
+	"ALIASES": "{{prefix}}vote",
+	"CLICK_HERE": "Klicke hier um zu voten.",
+	"REWARDS": "$t(basic/upvote:REWARDS_1)\n$t(basic/upvote:REWARDS_2)\n$t(basic/upvote:REWARDS_3)\n$t(basic/upvote:REWARDS_4)\n$t(basic/upvote:EXTENDED_LINE_2)",
+	"REWARDS_1": "Aktuelle Votes der Woche: {{amount}}",
+	"REWARDS_2": "1 Vote alle 12h -> 5 Missionen statt 3 Missionen.",
+	"REWARDS_3": "1 Vote alle 12h -> 50 Lucky .slots",
+	"REWARDS_4": "100 Votes **1 Woche frei VIP**",
+	"REMINDER": "Denk daran, für den Bot zu voten um erstaunliche Belohnungen freizuschalten! Nutze `{{prefix}}upvote`! Um die benachrichtigung zu deaktivieren tippe **{{prefix}}reminddelete {{id}}**",
+	"TIME_LEFT": "Nächster Vote in: {{time}}",
+	"VOTE_NOW": "Du kannst jetzt Voten!"
+}
