@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Gebe eine Rolle einem anderen Nutzer.",
+  "EXTENDED": "$t(roles/give:EXTENDED_LINE_1)\n$t(roles/give:EXTENDED_LINE_2)\n$t(roles/give:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}give [@User | User ID] [@Rolle | Rollen ID | Rollen Name]** ~ Gibt einem Nutzer  die ausgewählte Rolle.",
+  "EXTENDED_LINE_2": "Notiz: Der Bot muss höhere Rolle haben als die Rolle, die du geben möchtest.",
+  "EXTENDED_LINE_3": "Notiz: Du musst eine höhere Rolle haben als die, welche du vergeben möchtest.",
+  "USAGE": "{{prefix}}give [@User | User ID] [@Role | Role ID | Role Name]",
+  "ALIASES": "Give hat keine anderen Aliasse.",
+  "MISSING_MANAGE_ROLES": "Ich brauche die Berechtigung **Rollen Verwalten**.",
+  "NEED_USER": "Du hast keinen Benutzer angegeben welchem du eine Rolle geben möchtest.",
+  "NEED_ROLE": "Du hast keine Rolle angegeben.",
+  "BOT_TOO_LOW": "Der Bot hat nicht die höchste Rolle um diese Rolle zu geben.",
+  "USER_TOO_LOW": "Deine höchste Rolle ist zu niedrig um diese rolle zu geben.",
+  "SUCCESS": "Die **{{role}}** Rolle wurde dem Benutzer **{{user}}** gegeben.",
+  "GIVEN_BY": "{{user}} hat den give Befehl benutzt um jemanden eine Rolle zu geben."
+}
