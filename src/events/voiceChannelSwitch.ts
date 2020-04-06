@@ -1,9 +1,13 @@
 import { Member, VoiceChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import Gamer from '../index'
+import { voiceChannelJoinServerLog } from './voiceChannelJoin'
+import { voiceChannelLeaveServerLog } from './voiceChannelLeave'
 
 export default class extends Event {
-  async execute(member: Member, channel: VoiceChannel) {
+  async execute(member: Member, channel: VoiceChannel, oldChannel: VoiceChannel) {
+    voiceChannelLeaveServerLog(member, oldChannel)
+    voiceChannelJoinServerLog(member, channel)
     // If the new channel is not afk channel then cancel
     if (channel.id !== member.guild.afkChannelID) return
 
