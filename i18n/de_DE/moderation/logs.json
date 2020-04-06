@@ -55,5 +55,8 @@
 	"CHANNEL_DELETED": "Kanal wurde gelöscht",
 	"USER_UNBANNED": "Benutzer wurde entbannt",
 	"TOTAL_USERS": "Gesamtanzahl der Benutzer",
-	"EMOJI_ANIMATED": "Animierte Emotes"
+	"EMOJI_ANIMATED": "Animierte Emotes",
+	"JOINED_VOICE": "Joined Sprach Kanal",
+	"LEFT_VOICE": "Sprach Kanal verlassen",
+	"MAX_MEMBERS": "max. Nutzer"
 }
