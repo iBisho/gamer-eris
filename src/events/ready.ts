@@ -271,15 +271,16 @@ export default class extends Event {
     Gamer.guilds.forEach(guild => {
       const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
       if (
-        !guildSettings?.moderation.logs.serverlogs.messages.channelID ||
-        !guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
-      ) {
-        guild.channels.forEach(channel => {
-          if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
+        guildSettings?.moderation.logs.serverlogs.messages.channelID &&
+        guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
+      )
+        return
 
-          channel.messages.limit = 0
-        })
-      }
+      guild.channels.forEach(channel => {
+        if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
+
+        channel.messages.limit = 0
+      })
     })
 
     const customCommands = await Gamer.database.models.command.find()
