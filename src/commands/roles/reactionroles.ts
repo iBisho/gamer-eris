@@ -12,6 +12,13 @@ export default new Command(`reactionroles`, async (message, _args, context) => {
 
   return Gamer.helpers.discord.embedResponse(
     message,
-    reactionroles.map((rr, index) => `${index + 1}. ${rr.name} => ${rr.messageID}`).join('\n')
+    reactionroles
+      .map(
+        (rr, index) =>
+          `${index + 1}. ${rr.name} => ${rr.messageID} => ${rr.reactions.map(
+            reaction => `${reaction.reaction} => ${reaction.roleIDs.map(id => `<@&${id}>`)}`
+          )}`
+      )
+      .join('\n')
   )
 })

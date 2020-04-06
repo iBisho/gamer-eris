@@ -40,7 +40,8 @@ export default new Command([`rolemessagecreate`, `rmc`], async (message, args, c
       roleID: role.id,
       roleAdded,
       channelID: channel.id,
-      message: content
+      message: content,
+      guildID: channel.guild.id
     })
 
     return message.channel.createMessage(language(`roles/rolemessagecreate:CREATED`))

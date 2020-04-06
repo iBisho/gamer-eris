@@ -4,7 +4,8 @@ export default new mongoose.Schema({
   channelID: { type: String, required: true },
   message: { type: String, required: true },
   roleAdded: { type: Boolean, default: false },
-  roleID: { type: String, required: true }
+  roleID: { type: String, required: true },
+  guildID: { type: String, required: true }
 })
 
 export interface GamerRoleMessage extends mongoose.Document {
@@ -16,4 +17,6 @@ export interface GamerRoleMessage extends mongoose.Document {
   roleAdded: boolean
   /** The role id for this role message */
   roleID: string
+  /** The guild id for where this role message was created. */
+  guildID: string
 }
