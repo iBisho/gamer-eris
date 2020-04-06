@@ -1,4 +1,4 @@
-import { Guild, CategoryChannel, Overwrite } from 'eris'
+import { Guild, CategoryChannel, Overwrite, TextChannel, NewsChannel } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { MessageEmbed } from 'helperis'
@@ -213,6 +213,12 @@ export default class {
 
       guildSettings.moderation.logs.modlogsChannelID = modlogChannel.id
     }
+
+    guild.channels.forEach(channel => {
+      if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
+
+      channel.messages.limit = 100
+    })
 
     guildSettings.save()
   }

@@ -23,10 +23,7 @@ export default class extends Monitor {
     ])
     if (!hasPermission) return
 
-    const emojis = await Gamer.database.models.emoji.find()
-
     const language = Gamer.getLanguage(message.guildID)
-
     const REASON = language(`settings/afk:REASON`)
 
     // Loop for each mention in the message
@@ -48,21 +45,13 @@ export default class extends Monitor {
         continue
       }
 
-      const embed = await Gamer.helpers.transform.variables(
-        userSettings.afk.message,
-        user,
-        message.member.guild,
-        message.author,
-        emojis
-      )
-
-      const json = JSON.parse(embed)
+      const json = JSON.parse(userSettings.afk.message)
       // Override the title and footer to prevent abuse and users getting scared the bot is posting random things
       json.title = `${user.username}${user.discriminator} is AFK:`
       json.footer.text = `${user.username}${user.discriminator} AFK Message`
 
       // Send the AFK message
-      const response = await message.channel.createMessage({ embed: JSON.parse(embed) })
+      const response = await message.channel.createMessage({ embed: json })
       setTimeout(() => response.delete(REASON), 10000)
     }
   }

@@ -1,7 +1,7 @@
 // This event is triggered once the bot is ready and online.
 import Event from '../lib/structures/Event'
 import Gamer from '../index'
-import { TextChannel } from 'eris'
+import { TextChannel, NewsChannel } from 'eris'
 import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
@@ -265,6 +265,21 @@ export default class extends Event {
       }
       if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.id, settings.xp.perMessage)
       if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.id, settings.xp.perMinuteVoice)
+    })
+
+    // Stop caching messages where we don't need server logs
+    Gamer.guilds.forEach(guild => {
+      const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
+      if (
+        !guildSettings?.moderation.logs.serverlogs.messages.channelID ||
+        !guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
+      ) {
+        guild.channels.forEach(channel => {
+          if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
+
+          channel.messages.limit = 0
+        })
+      }
     })
 
     const customCommands = await Gamer.database.models.command.find()
