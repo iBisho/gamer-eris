@@ -1,0 +1,15 @@
+{
+    "DESCRIPTION": "Wette auf einen Münzwurf.",
+    "EXTENDED": "**{{prefix}}coinflip Heads 10** ~ Setze 10 Gamer Coins auf Heads.",
+    "USAGE": "{{prefix}}coinflip [Heads/Tails] [Betrag]",
+    "ALIASES": "{{prefix}}cf",
+    "NEED_CHOICE": "Du hast keine gültige Auswahl getroffen. Bitte wähle entweder Heads oder Tails. ",
+    "NEED_AMOUNT": "Du hast keinen gültigen Betrag angegeben. Bitte wähle aus wie viel du setzten möchtest.",
+    "OPTION_NUMBER0": "Heads",
+    "OPTION_NUMBER1": "Tails",
+    "CANT_AFFORD": "Du hast nicht genug Gamer Münzen.",
+    "RESULT": "{{mention}}, die Münze landet auf {{coinflip}} und du hast {{result}} {{amount}} Gamer Coins {{emoji}}.",
+    "WIN": "Gewonnen",
+    "LOSS": "verloren"
+  }
+  

@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Versuche dein Glück in der Slot Maschine.",
+  "EXTENDED": "**{{prefix}}slots [#]** ~ Setze Gamer Coins um mehr zu gewinnen. Bekomme das Selbe Emoji in der Mitte um zu gewinnen.",
+  "USAGE": "{{prefix}}slots [Betrag]",
+  "ALIASES": "{{prefix}}slotmachine",
+  "NOT_ENOUGH_CURRENCY": "Du hast nicht genug Gamer Coins um einen großen Einsatz zu spielen.",
+  "LOSER": "Aww, du hast leider nicht gewonnen. Du hast 1 {{emoji}} Coin verloren. ",
+  "LOSER_MULTI": "Aww, du hast leider nicht gewonnen. Du hast 2 {{emoji}} Coins verloren. ",
+  "FREEBIE": "Traurig, du hast nicht gewonnen. Du hast 1 {{emoji}} Coin bekommen. Einfach erneut versuchen!",
+  "WINNER_PARTIAL": "🎉Gratulation, du hast 2 der selben Slots. du hast {{amount}} {{emoji}} bekommen. 🎉",
+  "WINNER_FULL": "🎉🎉🎉 WINNER! WINNER! WINNER! Du hast {{amount}} {{emoji}} gewonnen. 🎉🎉🎉",
+  "WINNER_MULTIPLE": "🎉🎉🎉 O wow, du hast 2 mal hintereinander gewonnen und bekommst {{amount}} {{emoji}}. 🎉🎉🎉",
+  "WINNER_LUCKY": "🎉🎉🎉 O wow, du hast 3 mal hintereinander gewonnen und bekommst {{amount}} {{emoji}}. 🎉🎉🎉",
+  "WINNER_COMPLETE": "🎉🎉🎉 OMG! Du hast den Jackpot erreicht! Alle Emotes sind die gleichen! Du hast {{amount}} {{emoji}} gewonnen. 🎉🎉🎉"
+}

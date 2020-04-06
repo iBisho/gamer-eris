@@ -1,0 +1,19 @@
+{
+  "DESCRIPTION": "Bekomme Antworten auf deine Fragen.",
+  "EXTENDED": "**{{prefix}}8ball** ~ Stelle eine Frage und bekomme eine ehrliche Antwort von der magischen Kugel.",
+  "USAGE": "{{prefix}}8ball [Deine Frage hier]",
+  "ALIASES": "{{prefix}}8ball {{prefix}}8b {{prefix}}fortune",
+  "NO_ARGS": "Du hast vergessen mir deine Frage zu nennen. Ob du doof bist.",
+  "REPLY_NUMBER0": "Absolut man!",
+  "REPLY_NUMBER1": "JA!",
+  "REPLY_NUMBER2": "Definitv!",
+  "REPLY_NUMBER3": "Vielleicht..",
+  "REPLY_NUMBER4": "Sehr wahrscheinlich..",
+  "REPLY_NUMBER5": "Wahrscheinlich",
+  "REPLY_NUMBER6": "Unwahrscheinlich",
+  "REPLY_NUMBER7": "Ich würde nicht darauf zählen.",
+  "REPLY_NUMBER8": "NEIN?!",
+  "REPLY_NUMBER9": "Definitv nicht!",
+  "REPLY_NUMBER10": "Ebenfalls Nein.",
+  "REPLY_NUMBER11": "Auf keinen Fall!"
+}

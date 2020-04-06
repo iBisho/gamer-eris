@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Küsst eine Nutzer/ Rolle und sendet ein Bild/ GIF in den Chat.",
+	"EXTENDED": "**{{prefix}}kiss [username]** ~ Sendet einen Kuss zu dem ausgwählten Nutzer.",
+	"USAGE": "{{prefix}}kiss [user]",
+	"ALIASES": "Kiss hat keine anderen Aliasse.",
+	"REPLY": "***{{mention}} wurde von {{author}} geküsst!***",
+	"SELF": "Wenn du dich so sehr liebst, musst du dich küssen. Ich mache es auch mindestens einmal am Tag!"
+}
