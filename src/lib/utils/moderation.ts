@@ -185,6 +185,10 @@ export default class {
       const member = await this.Gamer.helpers.discord.fetchMember(guild, log.userID)
       if (!member?.roles.includes(guildSettings.moderation.roleIDs.mute)) continue
 
+      guildSettings.moderation.users.mutedUserIDs = guildSettings.moderation.users.mutedUserIDs.filter(
+        id => id !== member.id
+      )
+      guildSettings.save()
       // Since the time has fully elapsed we need to remove the role on the user
       this.Gamer.removeGuildMemberRole(
         log.guildID,

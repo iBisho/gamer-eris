@@ -55,6 +55,10 @@ export default new Command(`unmute`, async (message, args, context) => {
     return message.channel.createMessage(language(`moderation/unmute:USER_TOO_LOW`))
 
   await member.removeRole(guildSettings.moderation.roleIDs.mute)
+  guildSettings.moderation.users.mutedUserIDs = guildSettings.moderation.users.mutedUserIDs.filter(
+    id => id !== member.id
+  )
+  guildSettings.save()
 
   const embed = new MessageEmbed()
     .setDescription(

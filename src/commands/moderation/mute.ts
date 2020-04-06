@@ -50,6 +50,8 @@ export default new Command(`mute`, async (message, args, context) => {
   if (!reason) return message.channel.createMessage(language(`moderation/mute:NEED_REASON`))
 
   await member.addRole(guildSettings.moderation.roleIDs.mute)
+  guildSettings.moderation.users.mutedUserIDs.push(member.id)
+  guildSettings.save()
 
   const embed = new MessageEmbed()
     .setDescription(
