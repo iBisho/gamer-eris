@@ -75,32 +75,16 @@ export default class {
 
     const bot = await this.Gamer.helpers.discord.fetchMember(member.guild, this.Gamer.user.id)
     if (!bot) return
+
     // Check if the bots role is high enough to manage the role
     const botsHighestRole = highestRole(bot)
-
     const language = this.Gamer.getLanguage(member.guild.id)
-
     const REASON = language('leveling/xp:ROLE_ADD_REASON')
 
-    const rolesToAdd = []
     for (const roleID of levelData.roleIDs) {
       const role = member.guild.roles.get(roleID)
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
-      if (REASON) {
-        member.addRole(roleID, REASON)
-        this.Gamer.amplitude.push({
-          authorID: member.id,
-          guildID: member.guild.id,
-          timestamp: Date.now(),
-          memberID: member.id,
-          type: 'ROLE_ADDED'
-        })
-      } else rolesToAdd.push(roleID)
-    }
-    if (!rolesToAdd.length) return
-
-    for (const roleID of rolesToAdd) {
       member.addRole(roleID, REASON)
       this.Gamer.amplitude.push({
         authorID: member.id,

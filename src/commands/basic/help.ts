@@ -70,6 +70,7 @@ const categories = [
       `setprefix`,
       `setprofanity`,
       `setstaff`,
+      `settag`,
       `settenor`,
       `setverify`,
       `setwhitelisted`,

@@ -33,9 +33,7 @@ export default class extends Monitor {
     // If there were no valid tags just cancel
     if (!validTags.length) return
 
-    const guildSettings = await Gamer.database.models.guild.findOne({
-      id: message.guildID
-    })
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
     const disabledChannels = guildSettings ? guildSettings.tags.disabledChannels : []
     if (disabledChannels.includes(message.channel.id)) return
