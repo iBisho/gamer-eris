@@ -185,7 +185,7 @@ export default new Command(`verify`, async (message, args, context) => {
 
       // Convert all the %variables%
       const emojis = await Gamer.database.models.emoji.find()
-      const transformed = Gamer.helpers.transform.variables(
+      const transformed = await Gamer.helpers.transform.variables(
         guildSettings.verify.firstMessageJSON,
         message.author,
         message.member.guild,

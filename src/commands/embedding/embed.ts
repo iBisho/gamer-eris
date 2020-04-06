@@ -24,13 +24,15 @@ export default new Command(`embed`, async (message, args, context) => {
   const [user] = message.mentions
   if (user && firstWord.startsWith('<@')) args.shift()
 
-  const transformed = Gamer.helpers.transform.variables(
+  const transformed = await Gamer.helpers.transform.variables(
     args.join(' '),
     user,
     message.member.guild,
     message.author,
     emojis
   )
+
+  console.log('transformed', transformed)
 
   try {
     const embedCode = JSON.parse(transformed)

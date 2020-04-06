@@ -38,7 +38,7 @@ export default new Command(`capture`, async (message, args, context) => {
     })
     if (!tag) return
 
-    const transformed = Gamer.helpers.transform.variables(tag.embedCode)
+    const transformed = await Gamer.helpers.transform.variables(tag.embedCode)
     const embedCode = JSON.parse(transformed)
     message.channel.createMessage({ embed: embedCode })
   }

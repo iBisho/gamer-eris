@@ -48,7 +48,7 @@ export default class extends Monitor {
         continue
       }
 
-      const embed = Gamer.helpers.transform.variables(
+      const embed = await Gamer.helpers.transform.variables(
         userSettings.afk.message,
         user,
         message.member.guild,

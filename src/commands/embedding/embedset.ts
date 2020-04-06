@@ -34,7 +34,7 @@ export default new Command(`embedset`, async (message, args, context) => {
   args.shift()
   if (!type) return
 
-  const transformed = Gamer.helpers.transform.variables(
+  const transformed = await Gamer.helpers.transform.variables(
     args.join(' '),
     message.mentions[0],
     message.member.guild,

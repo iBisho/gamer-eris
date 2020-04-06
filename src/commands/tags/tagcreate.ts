@@ -35,7 +35,7 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
 
   try {
     const emojis = await Gamer.database.models.emoji.find()
-    const transformed = Gamer.helpers.transform.variables(
+    const transformed = await Gamer.helpers.transform.variables(
       text.join(' '),
       message.author,
       message.member.guild,

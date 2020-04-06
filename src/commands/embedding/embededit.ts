@@ -32,7 +32,7 @@ export default new Command(`embededit`, async (message, args, context) => {
 
   const emojis = (await Gamer.database.models.emoji.find()) as GamerEmoji[]
 
-  const transformed = Gamer.helpers.transform.variables(
+  const transformed = await Gamer.helpers.transform.variables(
     args.join(' '),
     message.mentions[0],
     message.member.guild,

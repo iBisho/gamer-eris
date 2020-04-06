@@ -59,7 +59,7 @@ export default class extends Event {
       try {
         const emojis = await Gamer.database.models.emoji.find()
         const isEmbed = guildSettings.hibye.welcome.message.startsWith('{')
-        const transformed = Gamer.helpers.transform.variables(
+        const transformed = await Gamer.helpers.transform.variables(
           guildSettings.hibye.welcome.message,
           member.user,
           member.guild,

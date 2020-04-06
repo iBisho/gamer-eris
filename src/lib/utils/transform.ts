@@ -13,41 +13,42 @@ export default class {
     this.Gamer = client
   }
 
-  variables(string: string, user?: User, guild?: Guild, author?: User, emojis?: GamerEmoji[]) {
+  async variables(string: string, user?: User, guild?: Guild, author?: User, emojis?: GamerEmoji[]) {
     let fullContent = ``
 
     const lineBreakRegex = / *%LINEBREAK% */gi
     const lineBreakString = string.replace(/\n/g, ` %LINEBREAK% `)
 
-    fullContent = lineBreakString
-      .split(` `)
-      .map(word => {
-        // User wants a random gif
-        if (word.toUpperCase().startsWith('%RANDOM')) {
-          const [search] = word.substring(6, word.length - 1)
-          console.log('search word is:', search, 'from original word', word)
-          return nodefetch(`https://api.tenor.com/v1/search?q=${search || 'random'}&key=LIVDSRZULELA&limit=50`)
-            .then(res => res.json())
-            .then(res => {
-              if (!res.results.length) return
-              const randomResult = this.Gamer.helpers.utils.chooseRandom((res as TenorGif).results)
-              const [media] = randomResult.media
+    const promises = lineBreakString.split(` `).map(async word => {
+      // User wants a random gif
+      if (word.toUpperCase().startsWith('%RANDOM')) {
+        const search = word.substring(7, word.length - 1)
+        const res = await nodefetch(
+          `https://api.tenor.com/v1/search?q=${search === '%' ? 'random' : search}&key=LIVDSRZULELA&limit=50`
+        )
+          .then(res => res.json())
+          .catch(() => undefined)
+        if (!res) return word
 
-              return media.gif.url
-            })
-            .catch(() => word)
-        }
+        if (!res.results.length) return word
+        const randomResult = this.Gamer.helpers.utils.chooseRandom((res as TenorGif).results)
+        const [media] = randomResult.media
 
-        // User wants to use an emoji
-        if (!word.startsWith('{') || !word.endsWith(`}`) || !emojis) return word
+        return media.gif.url
+      }
 
-        const name = word.substring(1, word.length - 1)
-        const foundEmoji = emojis.find(e => e.name === name.toLowerCase())
-        if (!foundEmoji) return word
+      // User wants to use an emoji
+      if (!word.startsWith('{') || !word.endsWith(`}`) || !emojis) return word
 
-        return foundEmoji.fullCode
-      })
-      .join(` `)
+      const name = word.substring(1, word.length - 1)
+      const foundEmoji = emojis.find(e => e.name === name.toLowerCase())
+      if (!foundEmoji) return word
+
+      return foundEmoji.fullCode
+    })
+
+    const res = await Promise.all(promises)
+    fullContent = res.join(` `)
 
     fullContent = fullContent.replace(lineBreakRegex, `\n`)
 

@@ -55,7 +55,7 @@ export default class extends Monitor {
 
       Gamer.emit(`processXP`, message, Gamer)
 
-      const transformed = Gamer.helpers.transform.variables(
+      const transformed = await Gamer.helpers.transform.variables(
         tag.embedCode,
         message.author,
         message.member.guild,
