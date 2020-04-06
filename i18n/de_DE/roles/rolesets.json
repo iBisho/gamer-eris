@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Sehe alle deine rolesets auf deinem Server.",
+	"EXTENDED": "**{{prefix}}rolesets** ~ Sehe alle deine rolesets auf deinem Server.",
+	"USAGE": "{{prefix}}rolesets",
+	"ALIASES": "Rolesets hat keine anderen Aliasse.",
+	"NONE": "Du hast bisher keine rolesets auf diesem Server erstellt. Bitte nutze den **rolesetcreate** Befehl um ein roleset zu erstellen,"
+}
