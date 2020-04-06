@@ -1,5 +1,5 @@
 export default [
-  { xpNeeded: 1, name: `Level 0`, level: 0 },
+  { xpNeeded: 50, name: `Level 0`, level: 0 },
   { xpNeeded: 100, name: `Level 1`, level: 1 },
   { xpNeeded: 300, name: `Level 2`, level: 2 },
   { xpNeeded: 700, name: `Level 3`, level: 3 },

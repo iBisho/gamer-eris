@@ -124,7 +124,8 @@ export default class {
     const mRatio = (marriage?.love || 0) / 100
     const mProgress = xpBarWidth * mRatio
 
-    const sRatio = memberXP / (serverLevelDetails.xpNeeded - previousServerLevelDetails.xpNeeded)
+    const sRatio =
+      memberXP / (serverLevelDetails.xpNeeded - previousServerLevelDetails.xpNeeded || serverLevelDetails.xpNeeded)
     const sProgress = xpBarWidth * sRatio
     const gRatio = globalXP / (globalLevelDetails.xpNeeded - previousGlobalLevelDetails.xpNeeded)
     const gProgress = xpBarWidth * gRatio
@@ -302,12 +303,18 @@ export default class {
         .addBeveledRect(45, 390, mProgress, 30, 25)
     }
 
+    console.log(memberXP, serverLevelDetails, previousServerLevelDetails)
     canvas
       // server xp bar text
       .setColor(sRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
-      .addText(`${memberXP}/${serverLevelDetails.xpNeeded - previousServerLevelDetails?.xpNeeded}`, 190, 260)
+      .addText(
+        `${memberXP}/${serverLevelDetails.xpNeeded - previousServerLevelDetails?.xpNeeded ||
+          serverLevelDetails.xpNeeded}`,
+        190,
+        260
+      )
       // global xp bar text
       .addText(`${globalXP}/${globalLevelDetails.xpNeeded - previousGlobalLevelDetails?.xpNeeded}`, 190, 330)
       // global xp bar text
