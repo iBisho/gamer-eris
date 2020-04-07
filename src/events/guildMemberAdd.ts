@@ -101,6 +101,10 @@ export default class extends Event {
       .addField(language(`moderation/logs:MEMBER_NAME`), member.mention, true)
       .addField(language(`moderation/logs:USER_ID`), member.id, true)
       .addField(language(`moderation/logs:TOTAL_MEMBERS`), member.guild.memberCount.toString(), true)
+      .addField(
+        language(`moderation/logs:ACCOUNT_AGE`),
+        Gamer.helpers.transform.humanizeMilliseconds(Date.now() - member.user.createdAt)
+      )
       .setFooter(`${member.username}#${member.discriminator}`, `https://i.imgur.com/Ya0SXdI.png`)
       .setThumbnail(member.avatarURL)
       .setTimestamp()

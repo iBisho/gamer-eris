@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { TextChannel, Member, Guild, MemberPartial } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { MessageEmbed } from 'helperis'
+import { MessageEmbed, userTag } from 'helperis'
 
 export default class extends Event {
   async execute(guild: Guild, member: Member | MemberPartial) {
@@ -81,13 +81,18 @@ export default class extends Event {
     // If there is no channel set for logging this cancel
     if (!guildSettings.moderation.logs.serverlogs.members.channelID) return
 
+    const NONE = language(`common:NONE`)
     // Create the base embed that first can be sent to public logs
     const embed = new MessageEmbed()
       .setTitle(language(`moderation/logs:MEMBER_GONE`))
       .addField(language(`moderation/logs:MEMBER_NAME`), member.user.mention, true)
       .addField(language(`moderation/logs:USER_ID`), member.id, true)
       .addField(language(`moderation/logs:TOTAL_MEMBERS`), guild.memberCount.toString(), true)
-      .setFooter(`${member.user.username}#${member.user.discriminator}`, `https://i.imgur.com/Ya0SXdI.png`)
+      .addField(
+        language(`moderation/logs:ROLES`),
+        member instanceof Member ? member.roles.map(id => `<@&${id}>`).join(' ') || NONE : NONE
+      )
+      .setFooter(userTag(member.user), `https://i.imgur.com/Ya0SXdI.png`)
       .setThumbnail(member.user.avatarURL)
       .setTimestamp()
 
