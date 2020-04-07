@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Sehe alle deine Rollen-Nachrichten auf deinem Server.",
+	"EXTENDED": "**{{prefix}}rolemessages** ~ Sehe alle deine Rollen-Nachrichten auf deinem Server. ",
+	"USAGE": "{{prefix}}rolemessages",
+	"ALIASES": "Rolemessages hat keine anderen Aliasse.",
+	"NONE": "Du hast keine Rollen-Nachrichten erstellt. Bitte nutze rolemessagecreate um Rollen-Nachrichten zu erstellen."
+}
