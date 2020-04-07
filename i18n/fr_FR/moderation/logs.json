@@ -55,5 +55,8 @@
 	"CHANNEL_DELETED": "Salon supprimé",
 	"USER_UNBANNED": "Utilisateur débanni",
 	"TOTAL_USERS": "Total d'utilisateurs",
-	"EMOJI_ANIMATED": "Emoji animés"
+	"EMOJI_ANIMATED": "Emoji animés",
+	"JOINED_VOICE": "Salon vocal rejoint",
+	"LEFT_VOICE": "Salon vocal quitté",
+	"MAX_MEMBERS": "Ulitisateurs maximum"
 }
