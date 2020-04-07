@@ -28,7 +28,7 @@
   "DESCRIPTION_UPDATED": "La description de l'évènement a été mis à jour.",
   "ATTENDEES_UPDATED": "Le nombre de participants maximum a été mis à jour.",
   "REPEAT_UPDATED": "Le paramètre de la répétition de l'évènement a été mis à jour.",
-  "REMOVE_UPDATED": "Le paramètre de la supression des ancients participants de l'évènement a été mis à jour.",
+  "REMOVE_UPDATED": "Le paramètre de la suppression des participants des evenements répétitif a été mis à jour. ",
   "DM_UPDATED": "Le paramètre des rappels en message privé de l'évènement a été mis à jour.",
   "PLATFORM_UPDATED": "La plateforme de l'évènement a été mis à jour.",
   "GAME_UPDATED": "Le jeu de l'évènement a été mis à jour.",
