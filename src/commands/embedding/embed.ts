@@ -32,8 +32,6 @@ export default new Command(`embed`, async (message, args, context) => {
     emojis
   )
 
-  console.log('transformed', transformed)
-
   try {
     const embedCode = JSON.parse(transformed)
     if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
