@@ -303,7 +303,6 @@ export default class {
         .addBeveledRect(45, 390, mProgress, 30, 25)
     }
 
-    console.log(memberXP, serverLevelDetails, previousServerLevelDetails)
     canvas
       // server xp bar text
       .setColor(sRatio > 0.6 ? mode.xpbarRatioUp : mode.xpbarRatioDown)
