@@ -1,0 +1,20 @@
+{
+	"DESCRIPTION": "Configurez le système de messagerie selon vos besoins.",
+  "EXTENDED": "$t(settings/setmail:EXTENDED_LINE_1)\n$t(settings/setmail:EXTENDED_LINE_2)\n$t(settings/setmail:EXTENDED_LINE_3)\n$t(settings/setmail:EXTENDED_LINE_4)\n$t(settings/setmail:EXTENDED_LINE_5)",
+  "EXTENDED_LINE_1": "**{{prefix}}setmail enable** ~ Active le système de messagerie.",
+	"EXTENDED_LINE_2": "**{{prefix}}setmail disable** ~ Désactive le système de messagerie.",
+  "EXTENDED_LINE_3": "**{{prefix}}setmail channel [#Salon]** ~ Défini le salon d'envoi des mails .",
+  "EXTENDED_LINE_4": "**{{prefix}}setmail logs [#Salon]** ~ Défini le salon des logs. Tous les messages envoyés et reçus seront envoyé ici-même.",
+	"EXTENDED_LINE_5": "**{{prefix}}setmail roles [@Rôle | Rôle ID | Nom de Rôle]** ~ Ajoute ou retire des rôles qui seront mentionné quand un mail sera reçu.",
+  "USAGE": "{{prefix}}setmail [enable | disable | channel | roles] *[#Salon | @Rôle]*",
+  "ALIASES": "Setmail n'a pas d'alias.",
+	"ALREADY_ENABLED": "Le système de messagerie est déjà activé.",
+  "ENABLED": "Le système de messagerie est maintenant activé.",
+  "ALREADY_DISABLED": "Le système de messagerie est déjà désactivé.",
+  "DISABLED": "Le système de messagerie est maintenant désactivé.",
+  "SUPPORT_CHANNEL_SET": "La salon de support est maintenant défini. Les membres peuvent désormais envoyer des messages sans utiliser de commandes ou répondre à leur mails.",
+  "LOG_CHANNEL_SET": "Le salon des logs est maintenant défini. Tous les e-mails envoyés et reçus seront enregistrés dans ce salon à l'avenir.",
+  "NEED_ROLES": "Vous n'avez fourni aucun rôle à ajouter/supprimer de la liste des rôles d'alerte.",
+  "ALERT_ROLES_UPDATED": "Les rôles d'alerte ont été mis à jour.",
+  "CATEGORY_UPDATED": "Le salon de la catégorie de messagerie a été mis à jour."
+}
