@@ -1,12 +1,12 @@
 {
   "DESCRIPTION": "DANGEROUS! Use this command to remove all data associated with your account or your server.",
-  "EXTENDED": "$t(settings/afk:EXTENDED_LINE_1)\n$t(settings/afk:EXTENDED_LINE_2)\n\n$t(settings/afk:EXTENDED_LINE_3)\n$t(settings/afk:EXTENDED_LINE_4)",
-  "EXTENDED_LINE_1": "**{{prefix}}reset** ~ ⚠️ `DANGEROUS!` Use this command to remove all data associated with your account or your server.",
+  "EXTENDED": "$t(settings/reset:EXTENDED_LINE_1)\n\n$t(settings/reset:EXTENDED_LINE_2)\n\n$t(settings/reset:EXTENDED_LINE_3)\n$t(settings/reset:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}reset** ~ ⚠️ `DANGEROUS!` DO NOT USE THIS COMMAND UNLESS YOU KNOW WHAT YOUR DOING! Contact support with the {{prefix}}invite command for help first if you need. Use this command to remove all data associated with your account or your server.",
   "EXTENDED_LINE_2": "⚠️ `If used in DM with the bot`, this will erase all your custom settings and anything related to you in the database. Notice: This does not remove guild data regarding your account, for example any mod logs you have will remain until that guild chooses to remove them.",
   "EXTENDED_LINE_3": "⚠️ `If used in a server(owner only)`, this will erase all your custom settings and anything related to your server in the database.",
-  "EXTENDED_LINE_4": "⚠️ This can not be undone❗❗❗ Once data is removed it is gone forever.",
+  "EXTENDED_LINE_4": "⚠️ This can not be undone❗ Once data is removed it is gone forever❗",
   "USAGE": "{{prefix}}reset",
   "ALIASES": "Reset does not have any aliases.",
-	"OWNER_ONLY": "Only the server owner can reset a guild.",
-	"GUILD_RESET": "Who are you? What are you? Where am I? All information related to this server has been removed."
+  "OWNER_ONLY": "Only the server owner can reset a guild.",
+  "GUILD_RESET": "Who are you? What are you? Where am I? All information related to this server has been removed."
 }
