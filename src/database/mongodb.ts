@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import AnalyticSchema, { GamerAnalytic } from './schemas/analytics'
 import ClientSchema, { ClientSettings } from './schemas/client'
 import CommandSchema, { GamerCommandPermission } from './schemas/command'
 import EmojiSchema from './schemas/emoji'
@@ -48,6 +49,7 @@ const connectionString = config.mongoConnectionString
 class Database {
   connection: mongoose.Connection
   models = {
+    analytics: mongoose.model<GamerAnalytic>('Analytic', AnalyticSchema),
     client: mongoose.model<ClientSettings>('Client', ClientSchema),
     command: mongoose.model<GamerCommandPermission>('Command', CommandSchema),
     emoji: mongoose.model<GamerEmoji>('Emoji', EmojiSchema),

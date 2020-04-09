@@ -136,13 +136,14 @@ export default class GamerClient extends Client {
   /** This stores the guilds that have disabled Tenor Gifs */
   guildsDisableTenor: Map<string, boolean> = new Map()
   /** This stores the custom command permissions for guilds */
-  guildCommandPermissions: Map<string, GamerCommandPermission> = new Map()
+  guildCommandPermissions = new Map<string, GamerCommandPermission>()
   /** This stores the guild ids that have had their members fully fetched. */
-  allMembersFetchedGuildIDs: Set<string> = new Set()
+  allMembersFetchedGuildIDs = new Set<string>()
   /** The amount of xp per message setting cached as its needed on all messages */
   guildsXPPerMessage = new Map<string, number>()
   /** The amount of xp per minute in voice setting */
   guildsXPPerMinuteVoice = new Map<string, number>()
+  vipGuildIDs = new Set<string>()
 
   constructor(options: ClientOptions) {
     super(options)

@@ -13,6 +13,15 @@ export default class extends Event {
       type: 'MEMBER_REMOVED'
     })
 
+    Gamer.database.models.analytics.create({
+      guildID: guild.id,
+      userID: member.id,
+      messageID: 'N/A',
+      channelID: 'N/A',
+      timestamp: Date.now(),
+      type: 'MEMBER_REMOVED'
+    })
+
     const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
     if (!botMember) return
 

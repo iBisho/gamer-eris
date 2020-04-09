@@ -265,6 +265,7 @@ export default class extends Event {
       }
       if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.id, settings.xp.perMessage)
       if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.id, settings.xp.perMinuteVoice)
+      if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.id)
     })
 
     // Stop caching messages where we don't need server logs

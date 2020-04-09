@@ -56,6 +56,7 @@ const categories = [
     name: `settings`,
     commands: [
       `afk`,
+      `reset`,
       `setcapital`,
       `setcapture`,
       `setevents`,
@@ -125,7 +126,7 @@ const categories = [
     commands: [`purge`, `nick`, `ban`, `unban`, `kick`, `mute`, `move`, `unmute`, `warn`, `modlog`, `reason`]
   },
   { name: `mails`, commands: [`mail`, `label`] },
-  { name: `vip`, commands: [`vipregister`, `roletoall`, `rolefromall`, `export`] },
+  { name: `vip`, commands: [`analyze`, `analyzechannel`, `vipregister`, `roletoall`, `rolefromall`, `export`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`] },
   { name: `gaming`, commands: [`twitch`, `capture`] },
   { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`] },
