@@ -104,22 +104,24 @@ export default new Command([`analyze`, `analytics`], async (message, _args, cont
 
   const topUsers = [...userMessages.keys()].sort((a, b) => userMessages.get(b)! - userMessages.get(a)!).slice(0, 3)
 
+  const NONE = language(`common:NONE`)
+
   const embed = new MessageEmbed()
     .setAuthor(message.member.guild.name, message.member.guild.iconURL)
     .addField(language(`vip/analyze:TOTAL_MESSAGES`), totalMessages.toString(), true)
     .addField(
       language(`vip/analyze:TOP_CHANNELS`),
-      topChannels.map(id => `<#${id}> ${channelMessages.get(id)!}`).join('\n'),
+      topChannels.map(id => `<#${id}> ${channelMessages.get(id)!}`).join('\n') || NONE,
       true
     )
     .addField(
       language(`vip/analyze:INACTIVE_CHANNELS`),
-      leastActiveChannels.map(id => `<#${id}> ${channelMessages.get(id)!}`).join('\n'),
+      leastActiveChannels.map(id => `<#${id}> ${channelMessages.get(id) || 0}`).join('\n') || NONE,
       true
     )
     .addField(
       language(`vip/analyze:TOP_USERS`),
-      topUsers.map(id => `<@!${id}> ${userMessages.get(id)!}`).join('\n'),
+      topUsers.map(id => `<@!${id}> ${userMessages.get(id)!}`).join('\n') || NONE,
       true
     )
     .addField(
