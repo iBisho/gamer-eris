@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Sehe deine Statistiken für einen speziellen Kanal.",
+  "EXTENDED": "$t(vip/analyzechannel:EXTENDED_LINE_1)\n$t(vip/analyzechannel:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}analyzechannel [#Channel]** ~ Zeigt deine Statistiken des Kanals.",
+  "EXTENDED_LINE_2": "Um weitere Statistiken anzufordern, kontaktiere uns bitte auf dem Support-Server mit dem Befehl {{prefix}}invite .",
+  "USAGE": "{{prefix}}analyzechannel [Channel]",
+  "ALIASES": "{{prefix}}analyticschannel"
+}
