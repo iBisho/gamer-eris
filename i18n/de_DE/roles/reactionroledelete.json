@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Lösche eine Reaktions-Rolle auf deinem Server.",
+  "EXTENDED": "**{{prefix}}reactionroledelete [Name]** ~ Löscht die Reaktions-Rolle mit dem angegebenen Namen auf deinem Server.",
+  "USAGE": "{{prefix}}reactionroledelete [Name]",
+  "ALIASES": "{{prefix}}rrd",
+  "DELETED": "Die **{{name}}** Reaktions-Rolle wurde von dem Server entfernt. "
+}
