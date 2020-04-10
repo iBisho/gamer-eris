@@ -42,7 +42,7 @@ export default class extends Event {
     if (member.bot) return
 
     const memberSettings =
-      (await Gamer.database.models.member.findOne({ memberID: member.id })) ||
+      (await Gamer.database.models.member.findOne({ memberID: member.id, guildID: member.guild.id })) ||
       (await Gamer.database.models.member.create({
         memberID: member.id,
         guildID: member.guild.id,
