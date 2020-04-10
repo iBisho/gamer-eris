@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Füge eine Reaktion zu einer Reaktions-Rolle hinzu.",
+  "EXTENDED": "$t(roles/reactionroleadd:EXTENDED_LINE_1)\n$t(roles/reactionroleadd:EXTENDED_LINE_2)\n$t(roles/reactionroleadd:EXTENDED_LINE_3)\n$t(roles/reactionroleadd:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}reactionroleadd [Name] [Emoji Name] [@Role | Role ID | Role Name]** ~ Fügt der Reaktions-Rolle das Emoji mit dem angegebenen Namen hinzu und legt die Rolle fest, die für diese Reaktion verwendet werden soll.",
+  "EXTENDED_LINE_2": "Die Reaktions-Rolle, zu dem du die Reaktion hinzufügen möchtest, muss bereits mit dem Befehl {{prefix}}reactionrolecreate erstellt worden sein.",
+  "EXTENDED_LINE_3": "Das **[Emoji Name]** muss von dir in dem Bot mit dem *{{prefix}}emojicreate* Befehl erstellt worden sein.",
+  "EXTENDED_LINE_4": "Notiz: Der Bot muss höhere Rolle haben als die Rolle, die du nehmen möchtest.",
+  "USAGE": "{{prefix}}reactionroleadd [Name] [Emoji Name] [@Role | Role ID | Role Name]",
+  "ALIASES": "{{prefix}}rra",
+  "NOT_FOUND": "Es wurde keine Reaktions-Rolle mit dem Namen: **{{name}}** gefunden.",
+  "UPDATED": "Die Reaktions-Rolle mit dem Namen: **{{name}}** wurde geupdated."
+}
