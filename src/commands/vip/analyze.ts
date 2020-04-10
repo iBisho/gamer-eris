@@ -2,7 +2,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import { MessageEmbed } from 'helperis'
-import { TextChannel, NewsChannel, Constants } from 'eris'
+import { TextChannel, NewsChannel } from 'eris'
 
 export default new Command([`analyze`, `analytics`], async (message, _args, context) => {
   if (!message.guildID || !message.member) return
@@ -79,36 +79,46 @@ export default new Command([`analyze`, `analytics`], async (message, _args, cont
       // Skip server log channels
       if (serverlogChannelIDs.includes(channel.id)) return false
 
-      const everyoneRole = message.member.guild.roles.get(message.guildID)
-      const everyoneSendPerm = everyoneRole?.permissions.has('sendMessages')
-      const everyoneOverwrite = channel.permissionOverwrites.get(message.guildID)
+      return true
+      // const everyoneRole = message.member.guild.roles.get(message.guildID)
+      // const everyoneSendPerm = everyoneRole?.permissions.has('sendMessages')
+      // const everyoneOverwrite = channel.permissionOverwrites.get(message.guildID)
 
-      if (everyoneOverwrite && everyoneOverwrite.allow & Constants.Permissions.sendMessages) return true
-      if (everyoneOverwrite && everyoneOverwrite.deny & Constants.Permissions.sendMessages) return false
-      if (everyoneOverwrite && everyoneOverwrite.allow & Constants.Permissions.readMessages) return true
-      if (everyoneOverwrite && everyoneOverwrite.deny & Constants.Permissions.readMessages) return false
+      // if (everyoneOverwrite && everyoneOverwrite.allow & Constants.Permissions.sendMessages) return true
+      // if (everyoneOverwrite && everyoneOverwrite.deny & Constants.Permissions.sendMessages) return false
+      // if (everyoneOverwrite && everyoneOverwrite.allow & Constants.Permissions.readMessages) return true
+      // if (everyoneOverwrite && everyoneOverwrite.deny & Constants.Permissions.readMessages) return false
 
-      return everyoneSendPerm || false
+      // return everyoneSendPerm || false
     })
     .map(channel => channel.id)
 
   const topChannels = [...channelMessages.keys()]
-    .filter(id => message.member?.guild.channels.has(id) && relevantChannels.includes(id))
+    .filter(id => message.member?.guild.channels.has(id))
     .sort((a, b) => channelMessages.get(b)! - channelMessages.get(a)!)
-    .slice(0, 3)
+    .slice(0, 10)
 
   const leastActiveChannels = relevantChannels
-    .sort()
-    .sort((a, b) => channelMessages.get(a)! - channelMessages.get(b)!)
-    .slice(0, 3)
+    .sort((a, b) => (channelMessages.get(a) || 0) - (channelMessages.get(b) || 0))
+    .slice(0, 10)
 
-  const topUsers = [...userMessages.keys()].sort((a, b) => userMessages.get(b)! - userMessages.get(a)!).slice(0, 3)
+  const topUsers = [...userMessages.keys()].sort((a, b) => userMessages.get(b)! - userMessages.get(a)!).slice(0, 10)
 
   const NONE = language(`common:NONE`)
 
   const embed = new MessageEmbed()
     .setAuthor(message.member.guild.name, message.member.guild.iconURL)
     .addField(language(`vip/analyze:TOTAL_MESSAGES`), totalMessages.toString(), true)
+    .addField(
+      language(`vip/analyze:MEMBERS_STATS`),
+      language(`vip/analyze:MEMBER_JOIN_LEAVE`, {
+        joined: membersJoined,
+        left: membersLeft,
+        net: membersJoined - membersLeft
+      }),
+      true
+    )
+    .addBlankField()
     .addField(
       language(`vip/analyze:TOP_CHANNELS`),
       topChannels.map(id => `<#${id}> ${channelMessages.get(id)!}`).join('\n') || NONE,
@@ -122,15 +132,6 @@ export default new Command([`analyze`, `analytics`], async (message, _args, cont
     .addField(
       language(`vip/analyze:TOP_USERS`),
       topUsers.map(id => `<@!${id}> ${userMessages.get(id)!}`).join('\n') || NONE,
-      true
-    )
-    .addField(
-      language(`vip/analyze:MEMBERS_STATS`),
-      language(`vip/analyze:MEMBER_JOIN_LEAVE`, {
-        joined: membersJoined,
-        left: membersLeft,
-        net: membersJoined - membersLeft
-      }),
       true
     )
 
