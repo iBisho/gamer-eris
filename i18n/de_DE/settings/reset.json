@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "ACHTUNG! Verwende diesen Befehl, um alle Daten zu entfernen, die deinem Konto oder deinem Server zugeordnet sind.",
+  "EXTENDED": "$t(settings/reset:EXTENDED_LINE_1)\n$t(settings/reset:EXTENDED_LINE_2)\n$t(settings/reset:EXTENDED_LINE_3)\n$t(settings/reset:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}reset** ~ ⚠️ `ACHTUNG` VERWENDE DEN BEFEHL NICHT WENN DU NICHT WEIßT WAS DU MACHST. Kontaktiere uns als erstes mit dem {{prefix}}invite Befehl wenn du hilfe brauchst. Verwenden Sie diesen Befehl, um alle Daten zu entfernen, die Ihrem Konto oder Ihrem Server zugeordnet sind.",
+  "EXTENDED_LINE_2": "⚠️ `Bei Verwendung in DM mit dem Bot`, werden alle deine benutzerdefinierten Einstellungen und alle mit Ihnen verbundenen Daten in der Datenbank gelöscht. Hinweis: Dadurch werden keine Serverdaten in Bezug auf Ihr Konto entfernt. Beispielsweise bleiben alle Mod-Protokolle, die du hast, erhalten, bis du sie entfernst.",
+  "EXTENDED_LINE_3": "⚠️ `Bei Verwendung (nur Server-Eigentümer)`, es wird alle deine Einstellungen und alles, was mit dem Server in der Datenbank zu tun hat.",
+  "EXTENDED_LINE_4": "⚠️ Es kann nicht rückgänig gemacht werden❗ Werden die Daten einmal gelöscht, sind die für immer weg❗",
+  "USAGE": "{{prefix}}reset",
+  "ALIASES": "Reset hat keine anderen Aliasse.",
+  "OWNER_ONLY": "Nur der Server-Eigentümer kann den Server zurücksetzen.",
+  "GUILD_RESET": "Wer bist du? Was bist du? Wo bin ich? Hmm. Alle Informationen zu deinem Server wurden entfernt."
+}
