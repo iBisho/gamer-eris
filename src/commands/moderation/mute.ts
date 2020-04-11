@@ -55,7 +55,7 @@ export default new Command(`mute`, async (message, args, context) => {
 
   const embed = new MessageEmbed()
     .setDescription(
-      language(`moderation/mute:TITLE`, { guildName: message.member.guild.name, user: member.user.username })
+      language(`moderation/mute:TITLE`, { guildName: message.member.guild.name, username: member.user.username })
     )
     .setThumbnail(member.user.avatarURL)
     .setTimestamp()
