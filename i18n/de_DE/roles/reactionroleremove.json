@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Entferne eine Reaktion von einer Reaktions-Rolle von deinem Server.",
+  "EXTENDED": "$t(roles/reactionroleremove:EXTENDED_LINE_1)\n$t(roles/reactionroleremove:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}reactionroleremove [Name] [Emoji Name]** ~ Entfernt ein Emoji von der Reaktions-Rolle mit dem angegebenem Namen",
+  "EXTENDED_LINE_2": "Das **[Emoji Name]** muss von dir in dem Bot mit dem *{{prefix}}emojicreate* Befehl erstellt worden sein.",
+  "USAGE": "{{prefix}}reactionroleremove [Name] [Emoji Name]",
+  "ALIASES": "{{prefix}}rrr"
+}
