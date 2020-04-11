@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Erstelle eine Reaktions-Rolle auf deinem Server.",
+  "EXTENDED": "$t(roles/reactionrolecreate:EXTENDED_LINE_1)\n$t(roles/reactionrolecreate:EXTENDED_LINE_2)\n$t(roles/reactionrolecreate:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}reactionrolecreate [Message ID] [Name] [Emoji Name] [@Role | Role ID | Role Name]** ~ Erstelle eine Reaktione-Rolle mit einem zuvor erstelltem Emoji und die Rolle welche einem Nutzer gegeben bzw. entfernt wird sobald dieser die Reaktion an klickt.",
+  "EXTENDED_LINE_2": "Das **[Emoji Name]** muss von dir in dem Bot mit dem *{{prefix}}emojicreate* Befehl erstellt worden sein.",
+  "EXTENDED_LINE_3": "Notiz: Der Bot muss höhere Rolle haben als die Rolle, die du nehmen möchtest.",
+  "USAGE": "{{prefix}}reactionrolecreate [Message ID] [Name] [Emoji Name] [@Role | Role ID | Role Name]",
+  "ALIASES": "{{prefix}}rrc",
+  "NAME_EXISTS": "Die Reaktions-Rolle konnte nicht erstellt werden. Entweder wird der **{{name}}** bereits von einer anderen Reaktionsrolle verwendet, oder in dieser Nachricht befindet sich bereits ein Reaktions-Rolle. Wenn du versuchst die Reaktions-Rolle zu bearbeiten, nutze die **reactionroleadd** oder **reactionroleremove** Befehle.",
+  "CREATED": "Die **{{name}}** Reaktions-Rolle wurde auf dem Server erstellt.",
+  "NEED_PERMS": "Um die Reaktion-Rolle erstellen zu können brauche ich folgende Berechtigungen: Reaktionen hinzufügen, Externe Emojis nutzen, Nachrichtenverlauf anzeigen sowie lesen."
+}
