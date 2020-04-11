@@ -16,5 +16,7 @@
   "NEED_VIP_MESSAGE": "You can only set a custom amount of XP per message on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
   "PER_MESSAGE": "You have set the XP per message to be **{{amount}}**.",
   "NEED_VIP_VOICE": "You can only set a custom amount of XP per minute in voice on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
-  "PER_MINUTE": "You have set the XP per minute in voice to be **{{amount}}**."
+  "PER_MINUTE": "You have set the XP per minute in voice to be **{{amount}}**.",
+  "NEED_VIP_INACTIVITY": "You can only set a custom amount of days of inactivity before users lose XP on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
+  "INACTIVITY": "You have set the maximum days of inactivity before losing XP to **{{amount}}**."
 }

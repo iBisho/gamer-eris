@@ -33,6 +33,13 @@ export default new Command(`xp`, async (message, args, context) => {
     return message.channel.createMessage(language(`leveling/xp:PER_MINUTE`, { amount }))
   }
 
+  if (type.toLowerCase() === `activity`) {
+    if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`leveling/xp:NEED_VIP_INACTIVITY`))
+    guildSettings.xp.inactiveDaysAllowed = amount
+    guildSettings.save()
+    return message.channel.createMessage(language(`leveling/xp:INACTIVITY`, { amount }))
+  }
+
   const idOrName = idOrRoleName.join(' ').toLowerCase()
   const memberID = message.mentions.length ? message.mentions[0].id : idOrName
 
