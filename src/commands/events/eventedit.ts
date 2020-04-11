@@ -102,7 +102,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       const reminder = Gamer.helpers.transform.stringToMilliseconds(value)
       if (!reminder) return helpCommand?.process(message, [`eventedit`], context)
 
-      if (event.reminders.includes(reminder)) event.reminders = event.reminders.filter(r => r === reminder)
+      if (event.reminders.includes(reminder)) event.reminders = event.reminders.filter(r => r !== reminder)
       else event.reminders.push(reminder)
       response = `events/eventedit:REMINDERS_UPDATED`
       break
