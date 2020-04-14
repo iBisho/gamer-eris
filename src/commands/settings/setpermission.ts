@@ -150,36 +150,24 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
   if (!command) return helpCommand?.process(message, [`setpermission`], context)
 
   const perms = Gamer.guildCommandPermissions.get(`${message.guildID}.${commandName}`)
+  const allCommandsPerm = Gamer.guildCommandPermissions.get(`${message.guildID}.allcommands`)
   if (!perms) {
-    if (enable) return message.channel.createMessage(language(`settings/setpermission:ALREADY_ENABLED_COMMAND`))
+    if (enable && (!allCommandsPerm || allCommandsPerm.enabled))
+      return message.channel.createMessage(language(`settings/setpermission:ALREADY_ENABLED_COMMAND`))
 
     // Disable the command fully
-    if (!targets.length) {
-      message.channel.createMessage(language(`settings/setpermission:COMMAND_UPDATED`))
-
-      const newPerms = await Gamer.database.models.command.create({
-        name: command.names[0],
-        guildID: message.guildID,
-        enabled: false,
-        exceptionChannelIDs: [],
-        exceptionRoleIDs: []
-      })
-      return Gamer.guildCommandPermissions.set(`${message.guildID}.${commandName}`, newPerms)
-    }
-    // Update the targeted channels
     message.channel.createMessage(language(`settings/setpermission:COMMAND_UPDATED`))
 
     const channelIDs = new Set(message.channelMentions)
-
     const newPerms = await Gamer.database.models.command.create({
       name: command.names[0],
       guildID: message.guildID,
-      enabled: true,
-      exceptionChannelIDs: [...channelIDs],
+      enabled: enable,
+      exceptionChannelIDs: targets.length ? [...channelIDs] : [],
       exceptionRoleIDs: roleIDs
     })
 
-    return Gamer.guildCommandPermissions.set(`${message.guildID}.${command.names[0]}`, newPerms)
+    return Gamer.guildCommandPermissions.set(`${message.guildID}.${commandName}`, newPerms)
   }
 
   // No targets were made so it affects the whole command
