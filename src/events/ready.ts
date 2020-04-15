@@ -6,9 +6,9 @@ import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
-// import { MessageEmbed } from 'helperis'
-// import { fetchLatestManga } from '../services/manga'
-// import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
+import { MessageEmbed } from 'helperis'
+import { fetchLatestManga } from '../services/manga'
+import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
 
 export default class extends Event {
   async execute() {
@@ -100,57 +100,60 @@ export default class extends Event {
       Gamer.helpers.moderation.processMutes()
     }, milliseconds.MINUTE)
 
-    // // All processes that need to be run every day
-    // setInterval(() => {
-    //   weeklyVoteReset()
-    //   vipExpiredCheck()
-    //   Gamer.helpers.levels.processInactiveXPRemoval()
-    // }, milliseconds.DAY)
-    // // Begin fetching manga
-    // setInterval(() => fetchLatestManga(), milliseconds.MINUTE * 30)
-    // // Run the Trading Card Interval every 20 minutes
-    // setInterval(async () => {
-    //   const cardSettings = await Gamer.database.models.tradingCard.find()
-    //   const embed = new MessageEmbed()
-    //   for (const setting of cardSettings) {
-    //     const gameName = setting.game.toLowerCase()
-    //     const cards =
-    //       gameName === `arenaofvalor`
-    //         ? constants.cards.arenaofvalor
-    //         : gameName === `mobilelegends`
-    //         ? constants.cards.mobilelegends
-    //         : gameName === `rulesofsurvival`
-    //         ? constants.cards.rulesofsurvival
-    //         : []
-    //     const guild = Gamer.guilds.get(setting.guildID)
-    //     if (!guild) continue
-    //     const channel = guild.channels.get(setting.channelID)
-    //     if (!channel || !(channel instanceof TextChannel)) continue
-    //     const botPerms = channel.permissionsOf(Gamer.user.id)
-    //     if (!botPerms.has(`readMessages`) || !botPerms.has(`sendMessages`) || !botPerms.has(`embedLinks`)) {
-    //       continue
-    //     }
-    //     const randomCard = cards[Math.floor(Math.random() * cards.length)]
-    //     const language = Gamer.getLanguage(guild.id)
-    //     if (!language) continue
-    //     setting.lastItemName = randomCard.name
-    //     setting.save()
-    //     embed
-    //       .setAuthor(language(`gaming/capture:GUESS`), Gamer.user.avatarURL)
-    //       .setTitle(language(`gaming/capture:TITLE`, { prefix: Gamer.guildPrefixes.get(guild.id) || Gamer.prefix }))
-    //       .setImage(randomCard.image)
-    //       .setFooter(`Add this game to your server to capture more cards with the invite command.`)
-    //     channel.createMessage({ embed: embed.code })
-    //   }
-    // }, milliseconds.MINUTE * 20)
-    // // Clears out any user who is past the slowmode of 2 seconds
-    // setInterval(() => {
-    //   if (!Gamer.slowmode.size) return
-    //   const now = Date.now()
-    //   Gamer.slowmode.forEach((timestamp, userID) => {
-    //     if (now - timestamp > 2000) Gamer.slowmode.delete(userID)
-    //   })
-    // }, milliseconds.SECOND)
+    // All processes that need to be run every day
+    setInterval(() => {
+      weeklyVoteReset()
+      vipExpiredCheck()
+      Gamer.helpers.levels.processInactiveXPRemoval()
+    }, milliseconds.DAY)
+
+    // Begin fetching manga
+    setInterval(() => fetchLatestManga(), milliseconds.MINUTE * 30)
+    // Run the Trading Card Interval every 20 minutes
+    setInterval(async () => {
+      const cardSettings = await Gamer.database.models.tradingCard.find()
+      const embed = new MessageEmbed()
+      for (const setting of cardSettings) {
+        const gameName = setting.game.toLowerCase()
+        const cards =
+          gameName === `arenaofvalor`
+            ? constants.cards.arenaofvalor
+            : gameName === `mobilelegends`
+            ? constants.cards.mobilelegends
+            : gameName === `rulesofsurvival`
+            ? constants.cards.rulesofsurvival
+            : []
+        const guild = Gamer.guilds.get(setting.guildID)
+        if (!guild) continue
+        const channel = guild.channels.get(setting.channelID)
+        if (!channel || !(channel instanceof TextChannel)) continue
+        const botPerms = channel.permissionsOf(Gamer.user.id)
+        if (!botPerms.has(`readMessages`) || !botPerms.has(`sendMessages`) || !botPerms.has(`embedLinks`)) {
+          continue
+        }
+        const randomCard = cards[Math.floor(Math.random() * cards.length)]
+        const language = Gamer.getLanguage(guild.id)
+        if (!language) continue
+        setting.lastItemName = randomCard.name
+        setting.save()
+        embed
+          .setAuthor(language(`gaming/capture:GUESS`), Gamer.user.avatarURL)
+          .setTitle(language(`gaming/capture:TITLE`, { prefix: Gamer.guildPrefixes.get(guild.id) || Gamer.prefix }))
+          .setImage(randomCard.image)
+          .setFooter(`Add this game to your server to capture more cards with the invite command.`)
+        channel.createMessage({ embed: embed.code })
+      }
+    }, milliseconds.MINUTE * 20)
+
+    // Clears out any user who is past the slowmode of 2 seconds
+    setInterval(() => {
+      if (!Gamer.slowmode.size) return
+      const now = Date.now()
+      Gamer.slowmode.forEach((timestamp, userID) => {
+        if (now - timestamp > 2000) Gamer.slowmode.delete(userID)
+      })
+    }, milliseconds.SECOND)
+
     // // Clears all cooldowns every 5 seconds
     // setInterval(() => {
     //   const now = Date.now()
