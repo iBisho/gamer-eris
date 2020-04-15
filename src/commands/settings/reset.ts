@@ -35,7 +35,7 @@ export default new Command(`reset`, async (message, _args, context) => {
     Gamer.database.models.label.deleteMany({ guildID }),
     Gamer.database.models.level.deleteMany({ guildID }),
     Gamer.database.models.mail.deleteMany({ guildID }),
-    Gamer.database.models.member.deleteMany({ guildID }),
+    Gamer.database.models.member.deleteMany({ guildID }).catch(() => undefined),
     Gamer.database.models.mission.deleteMany({ guildID }),
     Gamer.database.models.modlog.deleteMany({ guildID }),
     Gamer.database.models.reactionRole.deleteMany({ guildID }),
