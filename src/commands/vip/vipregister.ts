@@ -52,5 +52,7 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
   userSettings.vip.isVIP = true
   userSettings.save()
 
+  Gamer.vipGuildIDs.add(message.guildID)
+
   return message.channel.createMessage(language(`vip/vipregister:REGISTERED_VIP`))
 })

@@ -15,6 +15,7 @@
   "USERID": "User ID: {{id}}",
   "SEND_REPLY": "Send A Reply?",
   "SEND_REPLY_INFO": "**{{prefix}}m response here**",
+  "SEND_REPLY_INFO_SUPPORT": "**{{prefix}}m response here** OR send a message in {{channel}}",
   "CLOSE": "Close The Mail?",
   "CLOSE_INFO": "**{{prefix}}m close reason to close here**",
   "REPLY_SENT_TO_MODS": "Your mail has been sent to the support team. Once they reply, the message will be sent in your Direct Messages with Gamer.",

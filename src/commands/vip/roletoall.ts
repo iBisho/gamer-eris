@@ -52,6 +52,11 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
     language(`vip/roletoall:PATIENCE`, { amount: message.member.guild.members.size, mention: message.author.mention })
   )
 
+  if (!Gamer.allMembersFetchedGuildIDs.has(message.member.guild.id)) {
+    await message.member.guild.fetchAllMembers()
+    Gamer.allMembersFetchedGuildIDs.add(message.member.guild.id)
+  }
+
   // Create a counter that will help us rate limit the amount of members we are editing
   // Otherwise all role commands like .role .mute .verify stuff would not work until this finished
   let counter = 0

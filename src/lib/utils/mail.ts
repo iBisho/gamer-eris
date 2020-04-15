@@ -322,8 +322,15 @@ export default class {
       .setDescription(content)
       .addField(
         language(`mails/mail:SEND_REPLY`),
-        language(`mails/mail:SEND_REPLY_INFO`, { prefix: this.Gamer.prefix })
+        language(
+          guildSettings?.mails.supportChannelID ? `mails/mail:SEND_REPLY_INFO` : `mails/mail:SEND_REPLY_INFO_SUPPORT`,
+          {
+            prefix: this.Gamer.prefix,
+            channel: `<#${guildSettings?.mails.supportChannelID}>`
+          }
+        )
       )
+      .setFooter(mail.topic)
       .setTimestamp()
     if (message.attachments.length) embed.setImage(message.attachments[0].url)
 
@@ -406,16 +413,6 @@ export default class {
 
     const channel = message.channel as GuildChannel
     channel.delete(language(`mails/mail:CHANNEL_DELETE_REASON`, { user: encodeURIComponent(message.author.username) }))
-    this.logMail(guildSettings, dmEmbed)
-
-    if (!guildSettings?.moderation.logs.modlogsChannelID) return
-
-    const modlogChannel = message.member.guild.channels.get(guildSettings.moderation.logs.modlogsChannelID)
-    if (!modlogChannel || !(modlogChannel instanceof TextChannel)) return
-
-    const botPerms = modlogChannel.permissionsOf(this.Gamer.user.id)
-    if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
-
     const logEmbed = new MessageEmbed()
       .setDescription(content)
       .setTitle(
@@ -427,7 +424,9 @@ export default class {
       .setThumbnail(message.author.avatarURL)
       .setFooter(message.author.username)
       .setTimestamp()
-    return modlogChannel.createMessage({ embed: logEmbed.code })
+
+    this.logMail(guildSettings, dmEmbed)
+    return this.logMail(guildSettings, logEmbed)
   }
 
   logMail(guildSettings: GuildSettings | null, embed: MessageEmbed) {
