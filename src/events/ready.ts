@@ -1,71 +1,73 @@
 // This event is triggered once the bot is ready and online.
 import Event from '../lib/structures/Event'
-// import Gamer from '../index'
-// import { TextChannel, NewsChannel } from 'eris'
-// import constants from '../constants'
+import Gamer from '../index'
+import { TextChannel } from 'eris'
+import constants from '../constants'
 // import config from '../../config'
 // import fetch from 'node-fetch'
-// import { milliseconds } from '../lib/types/enums/time'
+import { milliseconds } from '../lib/types/enums/time'
 // import { MessageEmbed } from 'helperis'
 // import { fetchLatestManga } from '../services/manga'
 // import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
 
 export default class extends Event {
   async execute() {
-    // // Clean out message collectors after 2 minutes of no response
-    // setInterval(async () => {
-    //   // Fetch this guilds settings
-    //   const allGuildSettings = await Gamer.database.models.guild.find({ 'vip.isVIP': true })
-    //   Gamer.collectors.forEach(collector => {
-    //     const guildSettings = allGuildSettings.find(g => g.id === collector.guildID)
-    //     const menutime = guildSettings ? (guildSettings.menutime > 5 ? guildSettings.menutime : 5) : 2
-    //     if (Date.now() - collector.createdAt > milliseconds.MINUTE * menutime)
-    //       Gamer.collectors.delete(collector.authorID)
-    //   })
-    // }, milliseconds.MINUTE * 2)
-    // // Clean up inactive verification channels
-    // setInterval(async () => {
-    //   // Fetch this guilds settings
-    //   const allGuildSettings = await Gamer.database.models.guild.find({ 'verify.enabled': true })
-    //   // We only loop over saved settings guilds because if they use defaults they they wont have verify enabled anyway
-    //   const promises = allGuildSettings.map(async guildSettings => {
-    //     // If this server does not enable the verification system skip or if they have no verification channels.
-    //     if (!guildSettings.verify.channelIDs.length) return
-    //     const guild = Gamer.guilds.get(guildSettings.id)
-    //     if (!guild) return
-    //     for (const channelID of guildSettings.verify.channelIDs) {
-    //       const channel = guild.channels.get(channelID)
-    //       if (!channel || !(channel instanceof TextChannel)) continue
-    //       // If missing channel perms exit out
-    //       if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) continue
-    //       const message =
-    //         channel.messages.get(channel.lastMessageID) ||
-    //         (await channel.getMessage(channel.lastMessageID).catch(() => undefined))
-    //       // If no message something is very wrong as the first json message should always be there to be safe just cancel
-    //       if (!message) continue
-    //       const language = Gamer.getLanguage(channel.guild.id)
-    //       // If the channel has gone inactive too long delete it so there is no spam empty unused channels
-    //       if (Date.now() - message.timestamp > milliseconds.MINUTE * 10) {
-    //         channel.delete(language(`basic/verify:CHANNEL_DELETE_REASON`)).catch(() => undefined)
-    //       }
-    //     }
-    //   })
-    //   Promise.all(promises)
-    // }, milliseconds.MINUTE * 2)
-    // // Randomly select 3 new missions every 30 minutes
-    // setInterval(async () => {
-    //   // Remove all missions first before creating any new missions
-    //   await Gamer.database.models.mission.deleteMany({})
-    //   Gamer.missionsStartTimestamp = Date.now()
-    //   // Find 3 new random missions to use for today
-    //   Gamer.missions = []
-    //   while (Gamer.missions.length < 5) {
-    //     const randomMission = constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))]
-    //     if (!Gamer.missions.find(m => m.title === randomMission.title)) {
-    //       Gamer.missions.push(randomMission)
-    //     }
-    //   }
-    // }, milliseconds.MINUTE * 30)
+    // Clean out message collectors after 2 minutes of no response
+    setInterval(async () => {
+      // Fetch this guilds settings
+      const allGuildSettings = await Gamer.database.models.guild.find({ 'vip.isVIP': true })
+      Gamer.collectors.forEach(collector => {
+        const guildSettings = allGuildSettings.find(g => g.id === collector.guildID)
+        const menutime = guildSettings ? (guildSettings.menutime > 5 ? guildSettings.menutime : 5) : 2
+        if (Date.now() - collector.createdAt > milliseconds.MINUTE * menutime)
+          Gamer.collectors.delete(collector.authorID)
+      })
+    }, milliseconds.MINUTE * 2)
+
+    // Clean up inactive verification channels
+    setInterval(async () => {
+      // Fetch this guilds settings
+      const allGuildSettings = await Gamer.database.models.guild.find({ 'verify.enabled': true })
+      // We only loop over saved settings guilds because if they use defaults they they wont have verify enabled anyway
+      const promises = allGuildSettings.map(async guildSettings => {
+        // If this server does not enable the verification system skip or if they have no verification channels.
+        if (!guildSettings.verify.channelIDs.length) return
+        const guild = Gamer.guilds.get(guildSettings.id)
+        if (!guild) return
+        for (const channelID of guildSettings.verify.channelIDs) {
+          const channel = guild.channels.get(channelID)
+          if (!channel || !(channel instanceof TextChannel)) continue
+          // If missing channel perms exit out
+          if (!channel.permissionsOf(Gamer.user.id).has('manageChannels')) continue
+          const message =
+            channel.messages.get(channel.lastMessageID) ||
+            (await channel.getMessage(channel.lastMessageID).catch(() => undefined))
+          // If no message something is very wrong as the first json message should always be there to be safe just cancel
+          if (!message) continue
+          const language = Gamer.getLanguage(channel.guild.id)
+          // If the channel has gone inactive too long delete it so there is no spam empty unused channels
+          if (Date.now() - message.timestamp > milliseconds.MINUTE * 10) {
+            channel.delete(language(`basic/verify:CHANNEL_DELETE_REASON`)).catch(() => undefined)
+          }
+        }
+      })
+      Promise.all(promises)
+    }, milliseconds.MINUTE * 2)
+    // Randomly select 3 new missions every 30 minutes
+    setInterval(async () => {
+      // Remove all missions first before creating any new missions
+      await Gamer.database.models.mission.deleteMany({})
+      Gamer.missionsStartTimestamp = Date.now()
+      // Find 3 new random missions to use for today
+      Gamer.missions = []
+      while (Gamer.missions.length < 5) {
+        const randomMission = constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))]
+        if (!Gamer.missions.find(m => m.title === randomMission.title)) {
+          Gamer.missions.push(randomMission)
+        }
+      }
+    }, milliseconds.MINUTE * 30)
+
     // // Create product analytics for the bot
     // setInterval(() => {
     //   // Rate limit is 100 batches of 10 events per second
