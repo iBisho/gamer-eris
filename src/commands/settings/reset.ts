@@ -28,6 +28,7 @@ export default new Command(`reset`, async (message, _args, context) => {
 
   await Promise.all([
     Gamer.database.models.guild.deleteOne({ id: guildID }),
+    Gamer.database.models.analytics.deleteMany({ guildID }),
     Gamer.database.models.command.deleteMany({ guildID }),
     Gamer.database.models.event.deleteMany({ guildID }),
     Gamer.database.models.feedback.deleteMany({ guildID }),
@@ -46,6 +47,18 @@ export default new Command(`reset`, async (message, _args, context) => {
     Gamer.database.models.tag.deleteMany({ guildID }),
     Gamer.database.models.tradingCard.deleteMany({ guildID })
   ])
+
+  // Remove data from cache as well
+  Gamer.guildPrefixes.delete(guildID)
+  Gamer.guildLanguages.delete(guildID)
+  Gamer.guildSupportChannelIDs.delete(guildID)
+  Gamer.guildsDisableTenor.delete(guildID)
+  Gamer.guildsXPPerMessage.delete(guildID)
+  Gamer.guildsXPPerMinuteVoice.delete(guildID)
+  Gamer.vipGuildIDs.delete(guildID)
+  Gamer.guildCommandPermissions.forEach((_value, key) =>
+    key.startsWith(guildID) ? Gamer.guildCommandPermissions.delete(guildID) : undefined
+  )
 
   const [mangaSubs, twitchSubs] = await Promise.all([
     Gamer.database.models.manga.find(),

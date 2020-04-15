@@ -27,6 +27,7 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
   const enable = [`on`, ON, ENABLED].includes(type.toLowerCase())
   const roleID = targets.join(' ')
   const roleIDs = [...message.roleMentions]
+  const channelIDs = new Set(message.channelMentions)
   if (!roleIDs.includes(roleID) && message.member.guild.roles.has(roleID)) roleIDs.push(roleID)
 
   if (commandName.toLowerCase() === 'allcommands') {
@@ -34,14 +35,18 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
     if (!perms) {
       if (enable) return message.channel.createMessage(language(`settings/setpermission:ALREADY_ENABLED_ALL_COMMANDS`))
 
-      message.channel.createMessage(language(`settings/setpermission:DISABLED_ALL_COMMANDS`))
+      message.channel.createMessage(
+        language(
+          targets.length ? `settings/setpermission:COMMAND_UPDATED` : `settings/setpermission:DISABLED_ALL_COMMANDS`
+        )
+      )
 
       const payload = {
         name: 'allcommands',
         guildID: message.guildID,
-        enabled: false,
-        exceptionChannelIDs: [],
-        exceptionRoleIDs: []
+        enabled: enable || targets.length,
+        exceptionChannelIDs: [...channelIDs],
+        exceptionRoleIDs: roleIDs
       }
 
       const newPerms = await Gamer.database.models.command.create(payload)
@@ -158,7 +163,6 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
     // Disable the command fully
     message.channel.createMessage(language(`settings/setpermission:COMMAND_UPDATED`))
 
-    const channelIDs = new Set(message.channelMentions)
     const newPerms = await Gamer.database.models.command.create({
       name: command.names[0],
       guildID: message.guildID,
