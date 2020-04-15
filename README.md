@@ -30,3 +30,4 @@ To store data, I use [MongoDB](https://mongodb.com). This is used to store infor
 ## Developers
 
 - Skillz4Killz; [Discord](https://discord.gg/rWMuMdk) or [Github](https://github.com/Skillz4Killz).
+- Resynth; [GitHub](https://github.com/resynth1943) or [Blog](https://resynth1943.now.sh).
