@@ -154,7 +154,9 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
   const command = Gamer.commandForName(commandName)
   if (!command) return helpCommand?.process(message, [`setpermission`], context)
 
-  const perms = Gamer.guildCommandPermissions.get(`${message.guildID}.${commandName}`)
+  const [name] = command.names
+
+  const perms = Gamer.guildCommandPermissions.get(`${message.guildID}.${name}`)
   const allCommandsPerm = Gamer.guildCommandPermissions.get(`${message.guildID}.allcommands`)
   if (!perms) {
     if (enable && (!allCommandsPerm || allCommandsPerm.enabled))
@@ -171,7 +173,7 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
       exceptionRoleIDs: roleIDs
     })
 
-    return Gamer.guildCommandPermissions.set(`${message.guildID}.${commandName}`, newPerms)
+    return Gamer.guildCommandPermissions.set(`${message.guildID}.${name}`, newPerms)
   }
 
   // No targets were made so it affects the whole command
@@ -191,7 +193,7 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
   }
 
   if (!message.channelMentions.length && !roleIDs.length)
-    return message.channel.createMessage(language(`settings/setpermission:NO_CHANNELS_ROLES PROVIDED`))
+    return message.channel.createMessage(language(`settings/setpermission:NO_CHANNELS_ROLES`))
 
   // Specific channels or roles were targeted
   if (message.channelMentions.length) {
