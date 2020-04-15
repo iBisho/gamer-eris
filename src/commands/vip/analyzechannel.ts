@@ -60,7 +60,7 @@ export default new Command([`analyzechannel`, `analyticschannel`], async (messag
     }
   }
 
-  const topUsers = [...userMessages.keys()].sort((a, b) => userMessages.get(b)! - userMessages.get(a)!).slice(0, 3)
+  const topUsers = [...userMessages.keys()].sort((a, b) => userMessages.get(b)! - userMessages.get(a)!).slice(0, 10)
 
   const NONE = language(`common:NONE`)
   const embed = new MessageEmbed()

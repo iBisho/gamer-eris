@@ -205,6 +205,16 @@ export default new Command(`verify`, async (message, args, context) => {
       if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
       if (!embedCode.color) embedCode.color = 0x41ebf4
       // send a message to the new channel
-      return newChannel.createMessage({ content: message.author.mention, embed: embedCode })
+      newChannel.createMessage({ content: message.author.mention, embed: embedCode })
+
+      // Purge all messages in this channel
+      const messages = await message.channel.getMessages(500)
+      const sortedMessages = messages.sort((a, b) => b.timestamp - a.timestamp).map(m => m.id)
+      // This would remove the oldest message(probably the first message in the channel)
+      sortedMessages.pop()
+
+      if (message.channel instanceof TextChannel) message.channel.deleteMessages(sortedMessages).catch(() => undefined)
+
+      return
   }
 })
