@@ -1,7 +1,7 @@
 // This event is triggered once the bot is ready and online.
 import Event from '../lib/structures/Event'
 import Gamer from '../index'
-import { TextChannel } from 'eris'
+import { TextChannel, NewsChannel } from 'eris'
 import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
@@ -184,38 +184,38 @@ export default class extends Event {
       }
     }
     Gamer.helpers.logger.green(`Preparing all cached settings like prefix, languages etc into cache now...`)
-    // // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
-    // const allGuildSettings = await Gamer.database.models.guild.find()
-    // allGuildSettings.forEach(settings => {
-    //   if (settings.prefix !== Gamer.prefix) {
-    //     Gamer.guildPrefixes.set(settings.id, settings.prefix)
-    //   }
-    //   if (settings.language !== `en-US`) {
-    //     Gamer.guildLanguages.set(settings.id, settings.language)
-    //   }
-    //   if (settings.mails.supportChannelID) {
-    //     Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
-    //   }
-    //   if (settings.disableTenor) {
-    //     Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
-    //   }
-    //   if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.id, settings.xp.perMessage)
-    //   if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.id, settings.xp.perMinuteVoice)
-    //   if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.id)
-    // })
-    // // Stop caching messages where we don't need server logs
-    // Gamer.guilds.forEach(guild => {
-    //   const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
-    //   if (
-    //     guildSettings?.moderation.logs.serverlogs.messages.channelID &&
-    //     guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
-    //   )
-    //     return
-    //   guild.channels.forEach(channel => {
-    //     if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
-    //     channel.messages.limit = 0
-    //   })
-    // })
+    // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
+    const allGuildSettings = await Gamer.database.models.guild.find()
+    allGuildSettings.forEach(settings => {
+      if (settings.prefix !== Gamer.prefix) {
+        Gamer.guildPrefixes.set(settings.id, settings.prefix)
+      }
+      if (settings.language !== `en-US`) {
+        Gamer.guildLanguages.set(settings.id, settings.language)
+      }
+      if (settings.mails.supportChannelID) {
+        Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
+      }
+      if (settings.disableTenor) {
+        Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
+      }
+      if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.id, settings.xp.perMessage)
+      if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.id, settings.xp.perMinuteVoice)
+      if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.id)
+    })
+    // Stop caching messages where we don't need server logs
+    Gamer.guilds.forEach(guild => {
+      const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
+      if (
+        guildSettings?.moderation.logs.serverlogs.messages.channelID &&
+        guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
+      )
+        return
+      guild.channels.forEach(channel => {
+        if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
+        channel.messages.limit = 0
+      })
+    })
     // const customCommands = await Gamer.database.models.command.find()
     // customCommands.forEach(command => {
     //   Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
