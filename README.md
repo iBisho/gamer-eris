@@ -17,7 +17,10 @@ To stay online 24/7 is my real test!
 To moderate the servers is my cause!
 I will join servers across the land.
 Watching far and wide!
-![Pikachu saying "woah!"](https://media1.tenor.com/images/8304f77f7152694ef2979e2fbf4c27c0/tenor.gif?itemid=15018367)
+
+<div align=center>
+    <img width="200" alt="Pikachu saying 'woah!'" src="https://media1.tenor.com/images/8304f77f7152694ef2979e2fbf4c27c0/tenor.gif?itemid=15018367" />
+</div>
 
 ### Technology Used
 
