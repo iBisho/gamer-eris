@@ -3,8 +3,8 @@ import Event from '../lib/structures/Event'
 import Gamer from '../index'
 import { TextChannel } from 'eris'
 import constants from '../constants'
-// import config from '../../config'
-// import fetch from 'node-fetch'
+import config from '../../config'
+import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
 // import { MessageEmbed } from 'helperis'
 // import { fetchLatestManga } from '../services/manga'
@@ -68,36 +68,38 @@ export default class extends Event {
       }
     }, milliseconds.MINUTE * 30)
 
-    // // Create product analytics for the bot
-    // setInterval(() => {
-    //   // Rate limit is 100 batches of 10 events per second
-    //   for (let i = 0; i < 100; i++) {
-    //     if (!Gamer.amplitude.length) break
-    //     fetch(config.apiKeys.amplitude.url, {
-    //       method: `POST`,
-    //       headers: { 'Content-Type': `application/json`, Accept: '*/*' },
-    //       body: JSON.stringify({
-    //         // eslint-disable-next-line @typescript-eslint/camelcase
-    //         api_key: config.apiKeys.amplitude.key,
-    //         // Splice will return the deleted items from the array
-    //         events: Gamer.amplitude.splice(0, 10).map(data => ({
-    //           // eslint-disable-next-line @typescript-eslint/camelcase
-    //           event_properties: data,
-    //           // eslint-disable-next-line @typescript-eslint/camelcase
-    //           user_id: data.authorID,
-    //           // eslint-disable-next-line @typescript-eslint/camelcase
-    //           event_type: data.type
-    //         }))
-    //       })
-    //     }).catch(() => undefined)
-    //   }
-    // }, milliseconds.SECOND)
-    // // All processes that need to be run every minute
-    // setInterval(() => {
-    //   Gamer.helpers.events.process()
-    //   Gamer.helpers.events.processReminders()
-    //   Gamer.helpers.moderation.processMutes()
-    // }, milliseconds.MINUTE)
+    // Create product analytics for the bot
+    setInterval(() => {
+      // Rate limit is 100 batches of 10 events per second
+      for (let i = 0; i < 100; i++) {
+        if (!Gamer.amplitude.length) break
+        fetch(config.apiKeys.amplitude.url, {
+          method: `POST`,
+          headers: { 'Content-Type': `application/json`, Accept: '*/*' },
+          body: JSON.stringify({
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            api_key: config.apiKeys.amplitude.key,
+            // Splice will return the deleted items from the array
+            events: Gamer.amplitude.splice(0, 10).map(data => ({
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              event_properties: data,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              user_id: data.authorID,
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              event_type: data.type
+            }))
+          })
+        }).catch(() => undefined)
+      }
+    }, milliseconds.SECOND)
+
+    // All processes that need to be run every minute
+    setInterval(() => {
+      Gamer.helpers.events.process()
+      Gamer.helpers.events.processReminders()
+      Gamer.helpers.moderation.processMutes()
+    }, milliseconds.MINUTE)
+
     // // All processes that need to be run every day
     // setInterval(() => {
     //   weeklyVoteReset()
@@ -214,6 +216,7 @@ export default class extends Event {
     // customCommands.forEach(command => {
     //   Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
     // })
-    // return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
+
+    return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }
 }
