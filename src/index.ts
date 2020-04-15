@@ -86,7 +86,7 @@ Gamer.globalCommandRequirements = {
     if (isAdmin || !context.commandName) return true
 
     const command = Gamer.commandForName(context.commandName)
-    if (!command) return
+    if (!command) return true
 
     const [commandName] = command.names
 
