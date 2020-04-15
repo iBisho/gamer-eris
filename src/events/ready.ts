@@ -154,35 +154,36 @@ export default class extends Event {
       })
     }, milliseconds.SECOND)
 
-    // // Clears all cooldowns every 5 seconds
-    // setInterval(() => {
-    //   const now = Date.now()
-    //   for (const [id, timestamp] of Gamer.cooldowns.entries()) {
-    //     if (now < timestamp) continue
-    //     // Remove the cooldown as the time has passed
-    //     Gamer.cooldowns.delete(id)
-    //   }
-    // }, milliseconds.SECOND * 5)
-    // // Everything below this is required in order to start the bot even though some are done in intervals
-    // weeklyVoteReset()
-    // Gamer.helpers.logger.green(`Loading all tags into cache now...`)
-    // // Set the tags in cache
-    // const tags = await Gamer.database.models.tag.find()
-    // for (const tag of tags) Gamer.tags.set(`${tag.guildID}.${tag.name}`, tag)
-    // Gamer.helpers.logger.green(`Preparing all missions into cache now...`)
-    // // Set the missions on startup
-    // // Remove all missions first before creating any new missions
-    // await Gamer.database.models.mission.deleteMany({}).catch(error => console.log(error))
-    // // Always add the first mission on bootup to encourage users to add gamer to more servers
-    // Gamer.missions.push(constants.missions[0])
-    // // Add 2 more unique missions
-    // while (Gamer.missions.length < 5) {
-    //   const randomMission = constants.missions[Math.floor(Math.random() * constants.missions.length)]
-    //   if (!Gamer.missions.find(m => m.title === randomMission.title)) {
-    //     Gamer.missions.push(randomMission)
-    //   }
-    // }
-    // Gamer.helpers.logger.green(`Preparing all cached settings like prefix, languages etc into cache now...`)
+    // Clears all cooldowns every 5 seconds
+    setInterval(() => {
+      const now = Date.now()
+      for (const [id, timestamp] of Gamer.cooldowns.entries()) {
+        if (now < timestamp) continue
+        // Remove the cooldown as the time has passed
+        Gamer.cooldowns.delete(id)
+      }
+    }, milliseconds.SECOND * 5)
+
+    // Everything below this is required in order to start the bot even though some are done in intervals
+    weeklyVoteReset()
+    Gamer.helpers.logger.green(`Loading all tags into cache now...`)
+    // Set the tags in cache
+    const tags = await Gamer.database.models.tag.find()
+    for (const tag of tags) Gamer.tags.set(`${tag.guildID}.${tag.name}`, tag)
+    Gamer.helpers.logger.green(`Preparing all missions into cache now...`)
+    // Set the missions on startup
+    // Remove all missions first before creating any new missions
+    await Gamer.database.models.mission.deleteMany({}).catch(error => console.log(error))
+    // Always add the first mission on bootup to encourage users to add gamer to more servers
+    Gamer.missions.push(constants.missions[0])
+    // Add 2 more unique missions
+    while (Gamer.missions.length < 5) {
+      const randomMission = constants.missions[Math.floor(Math.random() * constants.missions.length)]
+      if (!Gamer.missions.find(m => m.title === randomMission.title)) {
+        Gamer.missions.push(randomMission)
+      }
+    }
+    Gamer.helpers.logger.green(`Preparing all cached settings like prefix, languages etc into cache now...`)
     // // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
     // const allGuildSettings = await Gamer.database.models.guild.find()
     // allGuildSettings.forEach(settings => {
