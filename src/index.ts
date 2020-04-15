@@ -83,10 +83,15 @@ Gamer.globalCommandRequirements = {
     // If it is the support channel and NOT a server admin do not allow command
     if (message.channel.id === supportChannelID && !isAdmin) return false
 
-    if (isAdmin) return true
+    if (isAdmin || !context.commandName) return true
+
+    const command = Gamer.commandForName(context.commandName)
+    if (!command) return
+
+    const [commandName] = command.names
 
     // Check custom command permissions for this command on this server
-    const commandPerms = Gamer.guildCommandPermissions.get(`${message.guildID}.${context.commandName}`)
+    const commandPerms = Gamer.guildCommandPermissions.get(`${message.guildID}.${commandName}`)
     const allCommandsPerms = Gamer.guildCommandPermissions.get(`${message.guildID}.allcommands`)
 
     // If no custom its enabled
