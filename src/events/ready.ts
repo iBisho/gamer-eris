@@ -115,7 +115,7 @@ export default class extends Event {
     setInterval(() => {
       weeklyVoteReset()
       vipExpiredCheck()
-      Gamer.helpers.levels.processInactiveXPRemoval()
+      // Gamer.helpers.levels.processInactiveXPRemoval()
     }, milliseconds.DAY)
 
     // Begin fetching manga
