@@ -119,5 +119,6 @@ export default new Command(`idea`, async (message, args, context) => {
     })
   }
 
-  return
+  Gamer.helpers.feedback.sendIdea(message, channel, embed, settings)
+  return Gamer.helpers.levels.completeMission(message.member, `idea`, message.guildID)
 })

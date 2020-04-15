@@ -118,5 +118,6 @@ export default new Command([`bugs`, `bug`], async (message, args, context) => {
     })
   }
 
-  return
+  Gamer.helpers.feedback.sendBugReport(message, channel, embed, settings)
+  return Gamer.helpers.levels.completeMission(message.member, `idea`, message.guildID)
 })
