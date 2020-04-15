@@ -26,25 +26,26 @@ export default new Command(`reset`, async (message, _args, context) => {
   if (message.member.guild.ownerID !== message.author.id)
     return message.channel.createMessage(language(`settings/reset:OWNER_ONLY`))
 
-  Gamer.database.models.guild.deleteOne({ id: guildID })
-
-  Gamer.database.models.command.deleteMany({ guildID })
-  Gamer.database.models.event.deleteMany({ guildID })
-  Gamer.database.models.feedback.deleteMany({ guildID })
-  Gamer.database.models.label.deleteMany({ guildID })
-  Gamer.database.models.level.deleteMany({ guildID })
-  Gamer.database.models.mail.deleteMany({ guildID })
-  Gamer.database.models.member.deleteMany({ guildID })
-  Gamer.database.models.mission.deleteMany({ guildID })
-  Gamer.database.models.modlog.deleteMany({ guildID })
-  Gamer.database.models.reactionRole.deleteMany({ guildID })
-  Gamer.database.models.reminder.deleteMany({ guildID })
-  Gamer.database.models.roleMessages.deleteMany({ guildID })
-  Gamer.database.models.roleset.deleteMany({ guildID })
-  Gamer.database.models.shortcut.deleteMany({ guildID })
-  Gamer.database.models.survey.deleteMany({ guildID })
-  Gamer.database.models.tag.deleteMany({ guildID })
-  Gamer.database.models.tradingCard.deleteMany({ guildID })
+  await Promise.all([
+    Gamer.database.models.guild.deleteOne({ id: guildID }),
+    Gamer.database.models.command.deleteMany({ guildID }),
+    Gamer.database.models.event.deleteMany({ guildID }),
+    Gamer.database.models.feedback.deleteMany({ guildID }),
+    Gamer.database.models.label.deleteMany({ guildID }),
+    Gamer.database.models.level.deleteMany({ guildID }),
+    Gamer.database.models.mail.deleteMany({ guildID }),
+    Gamer.database.models.member.deleteMany({ guildID }),
+    Gamer.database.models.mission.deleteMany({ guildID }),
+    Gamer.database.models.modlog.deleteMany({ guildID }),
+    Gamer.database.models.reactionRole.deleteMany({ guildID }),
+    Gamer.database.models.reminder.deleteMany({ guildID }),
+    Gamer.database.models.roleMessages.deleteMany({ guildID }),
+    Gamer.database.models.roleset.deleteMany({ guildID }),
+    Gamer.database.models.shortcut.deleteMany({ guildID }),
+    Gamer.database.models.survey.deleteMany({ guildID }),
+    Gamer.database.models.tag.deleteMany({ guildID }),
+    Gamer.database.models.tradingCard.deleteMany({ guildID })
+  ])
 
   const [mangaSubs, twitchSubs] = await Promise.all([
     Gamer.database.models.manga.find(),
