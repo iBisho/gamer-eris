@@ -1,8 +1,8 @@
 // This event is triggered once the bot is ready and online.
 import Event from '../lib/structures/Event'
 import Gamer from '../index'
-// import { TextChannel, NewsChannel } from 'eris'
-// import constants from '../constants'
+import { TextChannel, NewsChannel } from 'eris'
+import constants from '../constants'
 // import config from '../../config'
 // import fetch from 'node-fetch'
 // import { milliseconds } from '../lib/types/enums/time'
@@ -190,66 +190,66 @@ export default class extends Event {
 
     // weeklyVoteReset()
 
-    // Gamer.helpers.logger.green(`Loading all tags into cache now...`)
-    // // Set the tags in cache
-    // const tags = await Gamer.database.models.tag.find()
-    // for (const tag of tags) Gamer.tags.set(`${tag.guildID}.${tag.name}`, tag)
+    Gamer.helpers.logger.green(`Loading all tags into cache now...`)
+    // Set the tags in cache
+    const tags = await Gamer.database.models.tag.find()
+    for (const tag of tags) Gamer.tags.set(`${tag.guildID}.${tag.name}`, tag)
 
-    // Gamer.helpers.logger.green(`Preparing all missions into cache now...`)
-    // // Set the missions on startup
-    // // Remove all missions first before creating any new missions
-    // await Gamer.database.models.mission.deleteMany({}).catch(error => console.log(error))
-    // // Always add the first mission on bootup to encourage users to add gamer to more servers
-    // Gamer.missions.push(constants.missions[0])
-    // // Add 2 more unique missions
-    // while (Gamer.missions.length < 5) {
-    //   const randomMission = constants.missions[Math.floor(Math.random() * constants.missions.length)]
-    //   if (!Gamer.missions.find(m => m.title === randomMission.title)) {
-    //     Gamer.missions.push(randomMission)
-    //   }
-    // }
+    Gamer.helpers.logger.green(`Preparing all missions into cache now...`)
+    // Set the missions on startup
+    // Remove all missions first before creating any new missions
+    await Gamer.database.models.mission.deleteMany({}).catch(error => console.log(error))
+    // Always add the first mission on bootup to encourage users to add gamer to more servers
+    Gamer.missions.push(constants.missions[0])
+    // Add 2 more unique missions
+    while (Gamer.missions.length < 5) {
+      const randomMission = constants.missions[Math.floor(Math.random() * constants.missions.length)]
+      if (!Gamer.missions.find(m => m.title === randomMission.title)) {
+        Gamer.missions.push(randomMission)
+      }
+    }
 
-    // Gamer.helpers.logger.green(`Preparing all cached settings like prefix, languages etc into cache now...`)
-    // // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
-    // const allGuildSettings = await Gamer.database.models.guild.find()
-    // allGuildSettings.forEach(settings => {
-    //   if (settings.prefix !== Gamer.prefix) {
-    //     Gamer.guildPrefixes.set(settings.id, settings.prefix)
-    //   }
-    //   if (settings.language !== `en-US`) {
-    //     Gamer.guildLanguages.set(settings.id, settings.language)
-    //   }
-    //   if (settings.mails.supportChannelID) {
-    //     Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
-    //   }
-    //   if (settings.disableTenor) {
-    //     Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
-    //   }
-    //   if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.id, settings.xp.perMessage)
-    //   if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.id, settings.xp.perMinuteVoice)
-    //   if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.id)
-    // })
+    Gamer.helpers.logger.green(`Preparing all cached settings like prefix, languages etc into cache now...`)
+    // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
+    const allGuildSettings = await Gamer.database.models.guild.find()
+    allGuildSettings.forEach(settings => {
+      if (settings.prefix !== Gamer.prefix) {
+        Gamer.guildPrefixes.set(settings.id, settings.prefix)
+      }
+      if (settings.language !== `en-US`) {
+        Gamer.guildLanguages.set(settings.id, settings.language)
+      }
+      if (settings.mails.supportChannelID) {
+        Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
+      }
+      if (settings.disableTenor) {
+        Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
+      }
+      if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.id, settings.xp.perMessage)
+      if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.id, settings.xp.perMinuteVoice)
+      if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.id)
+    })
 
-    // // Stop caching messages where we don't need server logs
-    // Gamer.guilds.forEach(guild => {
-    //   const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
-    //   if (
-    //     guildSettings?.moderation.logs.serverlogs.messages.channelID &&
-    //     guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
-    //   )
-    //     return
+    // Stop caching messages where we don't need server logs
+    Gamer.guilds.forEach(guild => {
+      const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
+      if (
+        guildSettings?.moderation.logs.serverlogs.messages.channelID &&
+        guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
+      )
+        return
 
-    //   guild.channels.forEach(channel => {
-    //     if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
+      guild.channels.forEach(channel => {
+        if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
 
-    //     channel.messages.limit = 0
-    //   })
-    // })
+        channel.messages.limit = 0
+      })
+    })
 
-    // const customCommands = await Gamer.database.models.command.find()
-    // customCommands.forEach(command => {
-    //   Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
-    // })
+    const customCommands = await Gamer.database.models.command.find()
+    customCommands.forEach(command => {
+      Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
+    })
 
     return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }
