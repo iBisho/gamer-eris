@@ -21,13 +21,13 @@ export default new Command([`reactionroledelete`, `rrd`], async (message, args, 
   if (!name) return helpCommand.process(message, [`reactionroledelete`], context)
 
   const reactionRole = await Gamer.database.models.reactionRole.findOne({
-    name,
+    name: name.toLowerCase(),
     guildID: message.guildID
   })
 
   if (!reactionRole) return message.channel.createMessage(language(`role/reactionroleadd:NOT_FOUND`, { name }))
 
-  Gamer.database.models.reactionRole.deleteOne({ name, guildID: message.guildID }).exec()
+  Gamer.database.models.reactionRole.deleteOne({ name: name.toLowerCase(), guildID: message.guildID }).exec()
 
   return message.channel.createMessage(language(`roles/reactionroledelete:DELETED`, { name }))
 })

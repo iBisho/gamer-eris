@@ -52,7 +52,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
 
   const reactionRole = await Gamer.database.models.reactionRole.findOne().or([
     {
-      name,
+      name: name.toLowerCase(),
       guildID: message.guildID
     },
     { messageID }
@@ -64,7 +64,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
   if (!reaction) return
 
   await Gamer.database.models.reactionRole.create({
-    name,
+    name: name.toLowerCase(),
     reactions: [
       {
         reaction,

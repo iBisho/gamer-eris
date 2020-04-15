@@ -6,15 +6,15 @@ export default new Command(`reset`, async (message, _args, context) => {
 
   // IN DM. User wanting to reset his own settings
   if (!message.member) {
-    Gamer.database.models.user.deleteOne({ userID: message.author.id })
-    Gamer.database.models.upvote.deleteOne({ userID: message.author.id })
-    Gamer.database.models.marriage.deleteOne({ authorID: message.author.id })
-    Gamer.database.models.marriage.deleteOne({ spouseID: message.author.id })
+    Gamer.database.models.user.deleteOne({ userID: message.author.id }).exec()
+    Gamer.database.models.upvote.deleteOne({ userID: message.author.id }).exec()
+    Gamer.database.models.marriage.deleteOne({ authorID: message.author.id }).exec()
+    Gamer.database.models.marriage.deleteOne({ spouseID: message.author.id }).exec()
 
-    Gamer.database.models.reminder.deleteMany({ userID: message.author.id })
-    Gamer.database.models.mission.deleteMany({ userID: message.author.id })
-    Gamer.database.models.emoji.deleteMany({ authorID: message.author.id })
-    Gamer.database.models.member.deleteMany({ memberID: message.author.id })
+    Gamer.database.models.reminder.deleteMany({ userID: message.author.id }).exec()
+    Gamer.database.models.mission.deleteMany({ userID: message.author.id }).exec()
+    Gamer.database.models.emoji.deleteMany({ authorID: message.author.id }).exec()
+    Gamer.database.models.member.deleteMany({ memberID: message.author.id }).exec()
     // DM has no translations
     return message.channel.createMessage(`All your settings have been removed from the database.`)
   }
@@ -26,27 +26,28 @@ export default new Command(`reset`, async (message, _args, context) => {
   if (message.member.guild.ownerID !== message.author.id)
     return message.channel.createMessage(language(`settings/reset:OWNER_ONLY`))
 
-  await Promise.all([
-    Gamer.database.models.guild.deleteOne({ id: guildID }),
-    Gamer.database.models.analytics.deleteMany({ guildID }),
-    Gamer.database.models.command.deleteMany({ guildID }),
-    Gamer.database.models.event.deleteMany({ guildID }),
-    Gamer.database.models.feedback.deleteMany({ guildID }),
-    Gamer.database.models.label.deleteMany({ guildID }),
-    Gamer.database.models.level.deleteMany({ guildID }),
-    Gamer.database.models.mail.deleteMany({ guildID }),
-    Gamer.database.models.member.deleteMany({ guildID }).catch(() => undefined),
-    Gamer.database.models.mission.deleteMany({ guildID }),
-    Gamer.database.models.modlog.deleteMany({ guildID }),
-    Gamer.database.models.reactionRole.deleteMany({ guildID }),
-    Gamer.database.models.reminder.deleteMany({ guildID }),
-    Gamer.database.models.roleMessages.deleteMany({ guildID }),
-    Gamer.database.models.roleset.deleteMany({ guildID }),
-    Gamer.database.models.shortcut.deleteMany({ guildID }),
-    Gamer.database.models.survey.deleteMany({ guildID }),
-    Gamer.database.models.tag.deleteMany({ guildID }),
-    Gamer.database.models.tradingCard.deleteMany({ guildID })
-  ])
+  Gamer.database.models.guild.deleteOne({ id: guildID }).exec()
+  Gamer.database.models.analytics.deleteMany({ guildID }).exec()
+  Gamer.database.models.command.deleteMany({ guildID }).exec()
+  Gamer.database.models.event.deleteMany({ guildID }).exec()
+  Gamer.database.models.feedback.deleteMany({ guildID }).exec()
+  Gamer.database.models.label.deleteMany({ guildID }).exec()
+  Gamer.database.models.level.deleteMany({ guildID }).exec()
+  Gamer.database.models.mail.deleteMany({ guildID }).exec()
+  Gamer.database.models.member
+    .deleteMany({ guildID })
+    .exec()
+    .catch(() => undefined)
+  Gamer.database.models.mission.deleteMany({ guildID }).exec()
+  Gamer.database.models.modlog.deleteMany({ guildID }).exec()
+  Gamer.database.models.reactionRole.deleteMany({ guildID }).exec()
+  Gamer.database.models.reminder.deleteMany({ guildID }).exec()
+  Gamer.database.models.roleMessages.deleteMany({ guildID }).exec()
+  Gamer.database.models.roleset.deleteMany({ guildID }).exec()
+  Gamer.database.models.shortcut.deleteMany({ guildID }).exec()
+  Gamer.database.models.survey.deleteMany({ guildID }).exec()
+  Gamer.database.models.tag.deleteMany({ guildID }).exec()
+  Gamer.database.models.tradingCard.deleteMany({ guildID }).exec()
 
   // Remove data from cache as well
   Gamer.guildPrefixes.delete(guildID)

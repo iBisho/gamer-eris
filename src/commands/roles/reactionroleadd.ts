@@ -41,7 +41,7 @@ export default new Command([`reactionroleadd`, `rra`], async (message, args, con
   if (!roleIDs.length) return helpCommand.process(message, [`reactionrolecreate`], context)
 
   const reactionRole = await Gamer.database.models.reactionRole.findOne({
-    name,
+    name: name.toLowerCase(),
     guildID: message.guildID
   })
 

@@ -24,7 +24,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
   if (!validEmoji) return message.channel.createMessage(language(`emojis/emojicreate:NEED_VALID_EMOJI`))
 
   const reactionRole = await Gamer.database.models.reactionRole.findOne({
-    name,
+    name: name.toLowerCase(),
     guildID: message.guildID
   })
 
