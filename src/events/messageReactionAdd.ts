@@ -124,6 +124,7 @@ export default class extends Event {
     const emojiKey = `${emoji.name}:${emoji.id}`.toLowerCase()
 
     const relevantReaction = reactionRole.reactions.find(r => r.reaction.toLowerCase() === emojiKey)
+    console.log('reaction role', message.id, message.member.guild.name, emoji, userID, relevantReaction, reactionRole)
     if (!relevantReaction) return
 
     for (const roleID of relevantReaction.roleIDs) {
