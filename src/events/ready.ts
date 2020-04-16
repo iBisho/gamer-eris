@@ -204,18 +204,18 @@ export default class extends Event {
       if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.id)
     })
     // Stop caching messages where we don't need server logs
-    Gamer.guilds.forEach(guild => {
-      const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
-      if (
-        guildSettings?.moderation.logs.serverlogs.messages.channelID &&
-        guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
-      )
-        return
-      guild.channels.forEach(channel => {
-        if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
-        channel.messages.limit = 0
-      })
-    })
+    // Gamer.guilds.forEach(guild => {
+    //   const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
+    //   if (
+    //     guildSettings?.moderation.logs.serverlogs.messages.channelID &&
+    //     guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
+    //   )
+    //     return
+    //   guild.channels.forEach(channel => {
+    //     if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel)) return
+    //     channel.messages.limit = 0
+    //   })
+    // })
 
     const customCommands = await Gamer.database.models.command.find()
     customCommands.forEach(command => {
