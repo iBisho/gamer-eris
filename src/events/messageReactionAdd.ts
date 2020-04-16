@@ -118,15 +118,13 @@ export default class extends Event {
 
     const botsHighestRole = highestRole(botMember)
 
-    const reactionRole = await Gamer.database.models.reactionRole.findOne({
-      messageID: message.id
-    })
+    const reactionRole = await Gamer.database.models.reactionRole.findOne({ messageID: message.id })
     if (!reactionRole) return
 
-    const emojiKey = `${emoji.name}:${emoji.id}`
+    const emojiKey = `${emoji.name}:${emoji.id}`.toLowerCase()
 
-    const relevantReaction = reactionRole.reactions.find(r => r.reaction === emojiKey)
-    if (!relevantReaction || !relevantReaction.roleIDs.length) return
+    const relevantReaction = reactionRole.reactions.find(r => r.reaction.toLowerCase() === emojiKey)
+    if (!relevantReaction) return
 
     for (const roleID of relevantReaction.roleIDs) {
       const role = message.member.guild.roles.get(roleID)
