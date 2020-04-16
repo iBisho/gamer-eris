@@ -1,7 +1,7 @@
 // This event is triggered once the bot is ready and online.
 import Event from '../lib/structures/Event'
 import Gamer from '../index'
-import { TextChannel } from 'eris'
+import { TextChannel, NewsChannel } from 'eris'
 import constants from '../constants'
 import config from '../../config'
 import fetch from 'node-fetch'
