@@ -108,10 +108,14 @@ export default class extends Event {
   }
 
   async handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
+    console.log('reaction role1', message.id)
     if (!message.member) return
+
+    console.log('reaction role2', message.id, message.member.guild.name, emoji, userID)
 
     const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
     if (!member) return
+    console.log('reaction role3', message.id, message.member.guild.name, emoji, userID)
 
     const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!botMember || !botMember.permission.has(`manageRoles`)) return
@@ -119,12 +123,13 @@ export default class extends Event {
     const botsHighestRole = highestRole(botMember)
 
     const reactionRole = await Gamer.database.models.reactionRole.findOne({ messageID: message.id })
+    console.log('reaction role4', message.id, message.member.guild.name, emoji, userID, reactionRole)
     if (!reactionRole) return
 
     const emojiKey = `${emoji.name}:${emoji.id}`.toLowerCase()
 
     const relevantReaction = reactionRole.reactions.find(r => r.reaction.toLowerCase() === emojiKey)
-    console.log('reaction role', message.id, message.member.guild.name, emoji, userID, relevantReaction, reactionRole)
+    console.log('reaction role5', message.id, message.member.guild.name, emoji, userID, relevantReaction, reactionRole)
     if (!relevantReaction) return
 
     for (const roleID of relevantReaction.roleIDs) {
