@@ -38,7 +38,7 @@ export default new Command(
       modRoles: settings?.staff.modRoleIDs.length
         ? settings.staff.modRoleIDs.map((roleID: string) => `<@&${roleID}>`).join(` `)
         : NONE,
-      admins: settings?.staff.adminRoleID ? `<@${settings.staff.adminRoleID}>` : NONE,
+      admins: settings?.staff.adminRoleID ? `<@&${settings.staff.adminRoleID}>` : NONE,
       ideaEnabled: settings?.feedback.idea.channelID ? ENABLED : DISABLED,
       bugsEnabled: settings?.feedback.bugs.channelID ? ENABLED : DISABLED,
       autorole: settings?.moderation.roleIDs.autorole ? `<@&${settings.moderation.roleIDs.autorole}>` : NONE,
