@@ -71,12 +71,10 @@ export default class {
   }
 
   async createMail(message: Message, content: string, guildSettings: GuildSettings | null, user?: User) {
-    if (!message.guildID || !message.member) return
+    if (!message.member) return
 
     const mailUser = user || message.author
-
-    const language = this.Gamer.getLanguage(message.guildID)
-
+    const language = this.Gamer.getLanguage(message.member.guild.id)
     const botMember = await this.Gamer.helpers.discord.fetchMember(message.member.guild, this.Gamer.user.id)
     if (!botMember?.permission.has('manageChannels') || !botMember.permission.has('manageRoles'))
       return message.channel.createMessage(language(`mails/mail:MISSING_PERMISSIONS`))
@@ -88,7 +86,7 @@ export default class {
 
     const [firstWord] = content.split(' ')
     const label = await this.Gamer.database.models.label.findOne({
-      guildID: message.guildID,
+      guildID: message.member.guild.id,
       name: firstWord.toLowerCase()
     })
 
@@ -103,7 +101,7 @@ export default class {
     if (!category || !(category instanceof CategoryChannel)) {
       const overwrites: Overwrite[] = [
         { id: this.Gamer.user.id, allow: Constants.Permissions.readMessages, deny: 0, type: 'member' },
-        { id: message.guildID, allow: 0, deny: Constants.Permissions.readMessages, type: 'role' }
+        { id: message.member.guild.id, allow: 0, deny: Constants.Permissions.readMessages, type: 'role' }
       ]
       const ids = guildSettings.staff.modRoleIDs
       if (guildSettings.staff.adminRoleID) ids.push(guildSettings.staff.adminRoleID)
@@ -133,7 +131,7 @@ export default class {
     this.Gamer.amplitude.push({
       authorID: mailUser.id,
       channelID: channel.id,
-      guildID: message.guildID,
+      guildID: message.member.guild.id,
       messageID: message.id,
       timestamp: message.timestamp,
       type: 'MAIL_CREATE'
@@ -144,7 +142,7 @@ export default class {
     await this.Gamer.database.models.mail.create({
       id: channel.id,
       userID: mailUser.id,
-      guildID: message.guildID,
+      guildID: message.member.guild.id,
       topic
     })
 
