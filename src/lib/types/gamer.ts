@@ -10,7 +10,7 @@ export interface Collector {
   channelID: string
   guildID: string
   data: unknown
-  callback(message: Message, collector: Collector): Promise<void>
+  callback(message: Message, collector: Collector): Promise<unknown>
 }
 
 export interface FeedbackCollectorData {
