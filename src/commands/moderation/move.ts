@@ -28,6 +28,11 @@ export default new Command(`move`, async (message, args, context) => {
     user: `${message.author.username}#${message.author.discriminator}`
   })
 
+  if (!Gamer.allMembersFetchedGuildIDs.has(message.member.guild.id)) {
+    await message.member.guild.fetchAllMembers()
+    Gamer.allMembersFetchedGuildIDs.add(message.member.guild.id)
+  }
+
   // If a valid new channel was provided we simply move all the users in the channel over
   if (newChannel) {
     channel.voiceMembers?.forEach(async member => {
