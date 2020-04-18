@@ -29,15 +29,6 @@ export default class extends Event {
       this.handleServerLogs(message, oldMessage)
       return Gamer.runMonitors(message)
     }
-
-    // Since we only have a partial message because the edited message was uncached we need to fetch it
-    const messageToProcess = await message.channel.getMessage(message.id).catch(() => undefined)
-    // This handles when another bot deletes a message. For example, a URL filter
-    if (!messageToProcess) return
-    // Most embeds will always trigger a messageUpdate
-    if (!messageToProcess.editedTimestamp) return
-    this.handleServerLogs(messageToProcess, oldMessage)
-    Gamer.runMonitors(messageToProcess)
   }
 
   async handleServerLogs(message: Message, oldMessage: OldMessage | null) {
