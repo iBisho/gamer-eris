@@ -37,7 +37,6 @@ const Gamer = new GamerClient({
   ignoreGlobalRequirements: false,
   restMode: true,
   // getAllUsers: true,
-  ignoreBots: false,
   intents: [
     'guilds',
     'guildMembers',
