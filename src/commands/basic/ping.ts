@@ -4,8 +4,8 @@ import { Command } from 'yuuko'
 
 export default new Command([`ping`, `pong`], async message => {
   console.warn(
-    `[PING COMMAND DEBUG MODE] NOW: ${Date.now()} TIMESTAMP: ${message.timestamp} USERID: ${
-      message.author.id
+    `[PING COMMAND DEBUG MODE] NOW: ${Date.now()} TIMESTAMP: ${message.timestamp} USERID: ${message.author.id}, BOT: ${
+      message.author.bot
     }, CHANNELID: ${message.channel.id}, GUILD: ${message.member?.guild.name} ${message.guildID}`
   )
   console.log(message.content)
