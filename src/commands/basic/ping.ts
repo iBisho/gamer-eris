@@ -10,6 +10,8 @@ export default new Command([`ping`, `pong`], async message => {
   )
   console.log(message.content)
   if (!message.guildID) return
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   console.log('GUILDID', message.guildID, message.member?.guild.id, message.channel.guild.id)
 
   return
