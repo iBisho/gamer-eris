@@ -12,6 +12,7 @@ import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
 
 export default class extends Event {
   async execute() {
+    Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
     // Clean out message collectors after 2 minutes of no response
     setInterval(async () => {
       // Fetch this guilds settings

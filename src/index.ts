@@ -125,7 +125,7 @@ Gamer.globalCommandRequirements = {
 }
 
 Gamer.addCommandDir(`${__dirname}/commands`)
-  .addDirectory(`${__dirname}/monitors`)
+  // .addDirectory(`${__dirname}/monitors`)
   .addDirectory(`${__dirname}/events`)
   .connect()
 
