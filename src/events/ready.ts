@@ -14,6 +14,7 @@ export default class extends Event {
   async execute() {
     const guild = Gamer.guilds.get('699849839672033390')
     console.warn(guild?.name, guild?.id, guild?.memberCount)
+    console.warn(guild)
     await guild?.leave()
 
     Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
