@@ -6,9 +6,11 @@ export default new Command([`ping`, `pong`], async message => {
   console.warn(
     `[PING COMMAND DEBUG MODE] NOW: ${Date.now()} TIMESTAMP: ${message.timestamp} USERID: ${
       message.author.id
-    }, CHANNELID: ${message.channel.id}, GUILD: ${message.member?.guild.name}`
+    }, CHANNELID: ${message.channel.id}, GUILD: ${message.member?.guild.name} ${message.guildID}`
   )
   console.log(message.content)
+  if (!message.guildID) return
+  console.log('GUILDID', message.guildID, message.member?.guild.id, message.channel.guild.id)
 
   return
   // const ping = Date.now() - message.timestamp
