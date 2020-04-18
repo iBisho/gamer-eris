@@ -12,6 +12,10 @@ import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
 
 export default class extends Event {
   async execute() {
+    const guild = Gamer.guilds.get('699849839672033390')
+    console.warn(guild?.name, guild?.id, guild?.memberCount)
+    await guild?.leave()
+
     Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
     // Clean out message collectors after 2 minutes of no response
     setInterval(async () => {
