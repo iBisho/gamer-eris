@@ -52,8 +52,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
       () => undefined
     )
     if (reactionRoleMessage) {
-      // TODO: uncomment when eris master works
-      // reactionRoleMessage.removeMessageReactionEmoji(`${validEmoji.name}:${validEmoji.id}`)
+      reactionRoleMessage.removeMessageReactionEmoji(`${validEmoji.name}:${validEmoji.id}`)
     }
   }
 
