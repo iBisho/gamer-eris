@@ -7,11 +7,10 @@ export default new Command([`kick`, `k`], async (message, args, context) => {
 
   const Gamer = context.client as GamerClient
   const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
-  if (!botMember) return
 
   const language = Gamer.getLanguage(message.guildID)
   // Check if the bot has the kick permissions
-  if (!botMember.permission.has('kickMembers'))
+  if (!botMember?.permission.has('kickMembers'))
     return message.channel.createMessage(language(`moderation/kick:NEED_KICK_PERMS`))
 
   const [userID, ...text] = args

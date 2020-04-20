@@ -6,14 +6,10 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
 
   const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName('help')
-  if (!helpCommand) return
-
-  if (!args.length) return helpCommand.process(message, [`shortcutcreate`], context)
+  if (!args.length) return helpCommand?.process(message, [`shortcutcreate`], context)
 
   const language = Gamer.getLanguage(message.guildID)
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
@@ -26,7 +22,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
   }
 
   const [name] = args
-  if (!name) return helpCommand.process(message, [`shortcutcreate`], context)
+  if (!name) return helpCommand?.process(message, [`shortcutcreate`], context)
   // Remove the shortcut name so first item is the command name
   args.shift()
 
@@ -51,7 +47,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
     authorID: message.author.id,
     deleteTrigger,
     guildID: message.guildID,
-    name
+    name: name.toLowerCase()
   }
 
   await Gamer.database.models.shortcut.create(payload)
