@@ -46,7 +46,7 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
       if (!args.length) return message.channel.createMessage(language(`settings/setprofanity:NO_WORDS`))
 
       settings.moderation.filters.profanity.words = settings.moderation.filters.profanity.words.filter(
-        word => !args.includes(word)
+        word => !args.includes(word.toLowerCase())
       )
       settings.save()
       return message.channel.createMessage(language(`settings/setprofanity:REMOVED`))
@@ -73,7 +73,7 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
           return message.channel.createMessage(language(`settings/setprofanity:ADDED`))
         case `remove`:
           settings.moderation.filters.profanity.strictWords = settings.moderation.filters.profanity.strictWords.filter(
-            word => !args.includes(word)
+            word => !args.includes(word.toLowerCase())
           )
           settings.save()
           return message.channel.createMessage(language(`settings/setprofanity:REMOVED`))

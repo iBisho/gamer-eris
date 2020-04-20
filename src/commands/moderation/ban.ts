@@ -26,7 +26,7 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
   if (!reason) return message.channel.createMessage(language(`moderation/ban:NEED_REASON`))
 
   const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
-  if (!user) return
+  if (!user) return message.channel.createMessage(language(`moderation/ban:NEED_USER`))
 
   const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
   // If this user is still a member in the guild we need to do extra checks
