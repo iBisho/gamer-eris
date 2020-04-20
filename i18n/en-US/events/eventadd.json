@@ -6,5 +6,5 @@
   "USAGE": "{{prefix}}eventjoin [Event ID] [@User | @Role]",
   "ALIASES": "{{prefix}}eadd",
   "PATIENCE": "Please hold on while I try to add all these users to the event. The more users there are, the longer it can take. I will let you know once I have added all the users.",
-  "ADDED": "{{mention}}, all the users have been marked as **Attending** to this event."
+  "ADDED": "{{mention}}, all the users have been marked added to this event."
 }
