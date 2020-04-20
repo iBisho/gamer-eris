@@ -78,6 +78,12 @@ export default {
       name: `Free Fire 3`,
       buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire3.png`)),
       vipNeeded: false
+    },
+    {
+      id: 7,
+      name: `ATS - Submitted By BeardCaliper
+      #1897`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/ats.jpg`))
     }
   ],
   backgroundPackages: [],
