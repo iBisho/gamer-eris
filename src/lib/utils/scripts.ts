@@ -46,7 +46,7 @@ export default class {
         language('settings/setverify:THANKS'),
         ``,
         language('settings/setverify:UNLOCK'),
-        `• **${guildSettings.prefix}verify end**`
+        `**${guildSettings.prefix}verify end**`
       ].join('\n'),
       author: {
         name: language('settings/setverify:AMAZING'),
@@ -84,7 +84,7 @@ export default class {
     })
 
     const embed = new MessageEmbed()
-      .setDescription([language('settings/setverify:THRILLED'), ``, `• **${guildSettings.prefix}verify**`].join('\n'))
+      .setDescription([language('settings/setverify:THRILLED'), ``, `**${guildSettings.prefix}verify**`].join('\n'))
       .setAuthor(language('settings/setverify:WELCOME'), `https://i.imgur.com/0LxU5Yy.jpg`)
       .setTitle(language('settings/setverify:PROCESS'))
       .setFooter(language('settings/setverify:HELP'))

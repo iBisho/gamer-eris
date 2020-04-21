@@ -1,4 +1,4 @@
-import { Message, Member, TextableChannel, PrivateChannel, GroupChannel, Guild } from 'eris'
+import { Message, Member, PrivateChannel, Guild, GuildChannel } from 'eris'
 import config from '../../../config'
 import constants from '../../constants'
 import { MessageEmbed } from 'helperis'
@@ -73,8 +73,9 @@ export default class {
     }
   }
 
-  checkPermissions(channel: TextableChannel, userID: string, permissions: string[]) {
-    if (channel instanceof PrivateChannel || channel instanceof GroupChannel) return false
+  checkPermissions(channel: GuildChannel | PrivateChannel, userID: string, permissions: string[]) {
+    if (channel instanceof PrivateChannel) return true
+
     const perms = channel.permissionsOf(userID)
     return permissions.every(permission => perms.has(permission))
   }

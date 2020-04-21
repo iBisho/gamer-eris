@@ -1,7 +1,7 @@
 import Event from '../lib/structures/Event'
 import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { MessageEmbed } from 'helperis'
+import { MessageEmbed, highestRole } from 'helperis'
 import { TFunction } from 'i18next'
 import { GuildSettings } from '../lib/types/settings'
 
@@ -33,30 +33,38 @@ export default class extends Event {
     settings: GuildSettings,
     language: TFunction
   ) {
-    const botPerms = channel.permissionsOf(gamerID)
-    const guildPerms = channel.guild.members.get(gamerID)?.permission
+    const Gamer = channel.guild.shard.client as GamerClient
+    const botMember = channel.guild.members.get(gamerID)
+    const hasPermission = Gamer.helpers.discord.checkPermissions(channel, gamerID, [
+      `manageRoles`,
+      `manageChannels`,
+      `readMessages`
+    ])
     // Don't have permissions to edit this channels perms
-    if (!botPerms.has('manageRoles') || !botPerms.has('manageChannels') || !guildPerms?.has('manageRoles')) return
+    if (!hasPermission || !botMember?.permission?.has('manageRoles')) return
+
+    const botHighestRole = highestRole(botMember)
 
     // Deny view perms for Verify role
-    if (
-      settings.verify.categoryID &&
-      settings.verify.roleID &&
-      channel.parentID !== settings.verify.categoryID &&
-      channel.guild.roles.has(settings.verify.roleID) &&
-      botPerms.has('readMessages')
-    )
+    if (settings.verify.categoryID && settings.verify.roleID && channel.parentID !== settings.verify.categoryID) {
+      const role = channel.guild.roles.get(settings.verify.roleID)
+      if (!role || role.position > botHighestRole.position) return
+
       channel.editPermission(settings.verify.roleID, 0, 1024, `role`, language(`basic/verify:PERMISSION`))
+    }
 
     // If the mute role exists disable all SEND/SPEAK permissions
-    if (
-      settings.moderation.roleIDs.mute &&
-      channel.guild.roles.has(settings.moderation.roleIDs.mute) &&
-      botPerms.has('sendMessages') &&
-      botPerms.has('addReactions') &&
-      botPerms.has('voiceSpeak') &&
-      botPerms.has('readMessages')
-    )
+    if (settings.moderation.roleIDs.mute) {
+      const role = channel.guild.roles.get(settings.moderation.roleIDs.mute)
+      if (!role || role.position > botHighestRole.position) return
+
+      const hasMutePermission = Gamer.helpers.discord.checkPermissions(channel, gamerID, [
+        `sendMessages`,
+        `addReactions`,
+        `voiceSpeak`
+      ])
+      if (!hasMutePermission) return
+
       channel.editPermission(
         settings.moderation.roleIDs.mute,
         0,
@@ -65,6 +73,7 @@ export default class extends Event {
         `role`,
         language(`moderation/mute:PERMISSION`)
       )
+    }
   }
 
   async handleServerlog(

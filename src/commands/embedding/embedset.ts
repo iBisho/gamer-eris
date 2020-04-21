@@ -36,7 +36,7 @@ export default new Command(`embedset`, async (message, _args, context) => {
       if (!msg.guildID || !msg.member) return
 
       const CANCEL_OPTIONS = language(`common:CANCEL_OPTIONS`, { returnObjects: true })
-      if (CANCEL_OPTIONS.includes(msg.content)) {
+      if ([...CANCEL_OPTIONS, 'q', 'quit'].includes(msg.content)) {
         msg.channel.createMessage(language(`embedding/embedset:CANCELLED`, { mention: msg.author.mention }))
         return helperMessage.delete().catch(() => undefined)
       }
