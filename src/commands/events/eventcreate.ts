@@ -10,7 +10,9 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
 
   if (
     !Gamer.helpers.discord.isModOrAdmin(message, guildSettings) &&
-    (!guildSettings?.roleIDs.eventsCreate || !message.member.roles.includes(guildSettings.roleIDs.eventsCreate))
+    (!guildSettings?.roleIDs.eventsCreate ||
+      (guildSettings.roleIDs.eventsCreate !== message.guildID &&
+        !message.member.roles.includes(guildSettings.roleIDs.eventsCreate)))
   )
     return
 
