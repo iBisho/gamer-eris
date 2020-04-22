@@ -147,7 +147,7 @@ export default new Command(`embedset`, async (message, _args, context) => {
           }
 
           const [fieldName, fieldValue, inline] = fullValue.join(' ').split('%%')
-          embed.addField(fieldName, fieldValue, inline.endsWith(' true'))
+          embed.addField(fieldName, fieldValue, Boolean(inline?.endsWith(' true')))
           break
         default:
           // If they used the command wrong show them the help

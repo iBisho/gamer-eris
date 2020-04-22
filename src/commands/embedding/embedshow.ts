@@ -34,15 +34,24 @@ export default new Command(`embedshow`, async (message, args, context) => {
   if (embed.title) payload.push(`"title": "${embed.title}"`)
   if (embed.description) payload.push(`"description": "${embed.description}"`)
   if (embed.color) payload.push(`"color": ${embed.color}`)
-  if (embed.author)
-    payload.push(
-      `"author": { "name": "${embed.author.name}", "icon_url": "${embed.author.icon_url}", "url": "${embed.author.url}"}`
-    )
+  if (embed.author) {
+    let author = `"author": { "name": "${embed.author.name}"`
+    if (embed.author.icon_url) author += `, "icon_url": "${embed.author.icon_url}"`
+    if (embed.author.url) author += `, "url": "${embed.author.url}"`
+    author += ` }`
+
+    payload.push(author)
+  }
   if (fields.length) payload.push(`"fields": [${fields.join(', ')}]`)
   if (embed.url) payload.push(`"url": "${embed.url}"`)
   if (embed.image) payload.push(`"image": { "url": "${embed.image.url}" }`)
   if (embed.timestamp) payload.push(`"timestamp": ${embed.timestamp}`)
-  if (embed.footer) payload.push(`"footer": { "text": "${embed.footer.text}", "icon_url": "${embed.footer.icon_url}" }`)
+  if (embed.footer) {
+    let footer = `"footer": { "text": "${embed.footer.text}"`
+    if (embed.footer.icon_url) footer += `, "icon_url": "${embed.footer.icon_url}"`
+    footer += ` }`
+    payload.push(footer)
+  }
 
   // Show the embed
 
