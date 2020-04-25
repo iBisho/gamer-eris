@@ -163,3 +163,29 @@ export default new Command(`embedset`, async (message, _args, context) => {
     }
   })
 })
+
+description Be advised that according to Discord's ToS, members must be at least 13 years of age in order to validly hold an account. Furthermore, users between 13 years of age, and the age of majority in their jurisdiction need consent from their legal guardian in order to participate.
+
+https://discordapp.com/terms
+
+Follow these rules for a safe and enjoyable community experience.
+
+If you witness conduct that violates these rules, please @mention or direct message an available Administrator or Moderator. If none are readily available, you may use @Gamer Team for situations that require immediate intervention.
+
+authorname %guild% %user%
+authoricon %userimage%
+thumbnail %guildimage%
+
+field :smiley: 1. Be cool, kind, and civil.%% Treat all members with respect and express your thoughts in a constructive manner.
+field :card_index: 2. Use an appropriate name and avatar. %% Avoid special characters, emoji, obscenities, and impersonation.
+field :incoming_envelope: 3. Do not spam(Unless testing the bot spam filter ofcourse). %% Avoid excessive messages, images, formatting, emoji, commands, and @mentions.
+field :loudspeaker: 4. No self-promotion or advertisements. %% This includes unsolicited references and links to other social media, servers, communities, and services in chat or direct messages.
+field :shield: 5. No personal information. %% Protect your privacy and the privacy of others.
+field :head_bandage: 6. No harassment, abuse, or bullying. %% We have zero-tolerance for harming others.
+field :anger_right: 7. No racist, sexist, anti-LGBTQ+, or otherwise offensive content. %% We have zero-tolerance for hate speech.
+field :classical_building: 8. No political or religious topics. %% These complex subjects result in controversial and offensive posts.
+field :rotating_light: 9. No piracy, sexual, NSFW, or otherwise suspicious content. %% We do not condone illegal or suspicious discussions and activity.
+field :thinking: 10. Rules are subject to common sense. %% These rules are not comprehensive and use of loopholes to violate the spirit of these rules is subject to enforcement.
+field :scroll: 11. Discord Terms of Service and Community Guidelines apply. %% You must be at least 13 years old to use Discord, and abide by all other terms and guidelines.
+
+footertext Thank You Minecraft we love you!

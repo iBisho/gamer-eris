@@ -20,7 +20,10 @@ export default new Command([`nick`], async (message, args, context) => {
     const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!botMember) return
 
-    if (!Gamer.helpers.discord.compareMemberPosition(botMember, message.member))
+    if (
+      message.member.id === message.member.guild.ownerID ||
+      !Gamer.helpers.discord.compareMemberPosition(botMember, message.member)
+    )
       return message.channel.createMessage(language(`moderation/nick:BOT_TOO_LOW`))
 
     message.member.edit({ nick: `` }, REASON)
@@ -33,7 +36,7 @@ export default new Command([`nick`], async (message, args, context) => {
 
   // They did not provide a user so they are only trying to change their own nickname
   if (member.id === message.author.id) {
-    if (!Gamer.helpers.discord.compareMemberPosition(botMember, message.member))
+    if (member.id === member.guild.ownerID || !Gamer.helpers.discord.compareMemberPosition(botMember, message.member))
       return message.channel.createMessage(language(`moderation/nick:BOT_TOO_LOW`))
 
     message.member.edit({ nick: args.join(` `).substring(0, 32) }, REASON)

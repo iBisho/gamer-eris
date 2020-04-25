@@ -48,7 +48,7 @@ export default class extends Event {
     // Deny view perms for Verify role
     if (settings.verify.categoryID && settings.verify.roleID && channel.parentID !== settings.verify.categoryID) {
       const role = channel.guild.roles.get(settings.verify.roleID)
-      if (!role || role.position > botHighestRole.position) return
+      if (!role || role.position >= botHighestRole.position) return
 
       channel.editPermission(settings.verify.roleID, 0, 1024, `role`, language(`basic/verify:PERMISSION`))
     }

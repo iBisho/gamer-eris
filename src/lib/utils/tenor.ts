@@ -42,7 +42,7 @@ export default class {
         .then(res => res.json())
         .catch(() => undefined)
 
-      if (!data || !data.results.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
+      if (!data || !data.results?.length) return message.channel.createMessage(language(`fun/advice:ERROR`))
       const randomResult = this.Gamer.helpers.utils.chooseRandom(data.results)
       const [media] = randomResult.media
 

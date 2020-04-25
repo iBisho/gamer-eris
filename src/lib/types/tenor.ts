@@ -1,6 +1,6 @@
 export interface TenorGif {
   weburl: string
-  results: TenorGifData[]
+  results?: TenorGifData[]
 }
 
 export interface TenorGifData {

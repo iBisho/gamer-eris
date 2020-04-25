@@ -1,6 +1,5 @@
 import { Command } from 'yuuko'
 import { MessageEmbed } from 'helperis'
-import { Role } from 'eris'
 import GamerClient from '../../lib/structures/GamerClient'
 
 export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, args, context) => {
@@ -46,7 +45,7 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   const userID = language(`basic/user:ID`, { id: user.id, url: user.avatarURL })
 
   const roles = member.roles
-    .sort((a, b) => (member.guild.roles.get(b) as Role).position - (member.guild.roles.get(a) as Role).position)
+    .sort((a, b) => (member.guild.roles.get(b)?.position || 0) - (member.guild.roles.get(a)?.position || 0))
     .map(id => `<@&${id}>`)
     .join(`, `)
 
