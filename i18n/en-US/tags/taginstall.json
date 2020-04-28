@@ -1,4 +1,5 @@
 {
+  "DESCRIPTION": "Install the public tags from another server.",
   "EXTENDED": "$t(tags/taginstall:EXTENDED_LINE_1)\n$t(tags/taginstall:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}taginstall aov** ~ Import the public tags from the Arena of Valor server.",
   "EXTENDED_LINE_2": "**{{prefix}}taginstall 223909216866402304** ~ Import the public tags from the any server using the server id.",

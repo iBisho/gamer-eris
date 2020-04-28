@@ -1,4 +1,5 @@
 {
+  "DESCRIPTION": "Uninstalls the tags from another server.",
   "EXTENDED": "$t(tags/taguninstall:EXTENDED_LINE_1)\n$t(tags/taguninstall:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}taguninstall aov** ~ Removes the public tags from the Arena of Valor server.",
   "EXTENDED_LINE_2": "**{{prefix}}taguninstall 223909216866402304** ~ Removes the public tags from your server that you installed using the server id.",
