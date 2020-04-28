@@ -59,6 +59,7 @@
   "MENTION_PREFIX": "The prefix on this server is set to: **{{prefix}}**",
   "WHITELISTED_TENOR": "Via Whitelisted Tenor",
   "TENOR": "Via Tenor",
+  "NSFW_COMMAND": "This command is an NSFW command. It will only work inside an NSFW channel.",
   "GLOBAL_OPTIONS": ["g", "global"],
   "VOICE_OPTIONS": ["v", "voice"],
   "CANCEL_OPTIONS": ["q", "quit"]

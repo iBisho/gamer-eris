@@ -8,8 +8,11 @@ import { GuildTextableChannel } from 'eris'
 export default new Command(`gif`, async (message, args, context) => {
   if (!message.guildID) return
 
-  if (!(message.channel as GuildTextableChannel).nsfw) return
   const Gamer = context.client as GamerClient
+  const language = Gamer.getLanguage(message.guildID)
+
+  if (!(message.channel as GuildTextableChannel).nsfw)
+    return message.channel.createMessage(language(`common:NSFW_COMMAND`))
 
   const data: TenorGif | undefined = await fetch(
     `https://api.tenor.com/v1/search?q=${args[0]}&key=LIVDSRZULELA&limit=50`
