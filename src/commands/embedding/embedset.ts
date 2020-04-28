@@ -7,8 +7,6 @@ export default new Command(`embedset`, async (message, _args, context) => {
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
-  // const helpCommand = Gamer.commandForName(`help`)
-  // if (!args.length) return helpCommand?.process(message, [`embed`], context)
 
   const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
@@ -50,6 +48,7 @@ export default new Command(`embedset`, async (message, _args, context) => {
         `title`,
         `titleurl`,
         `thumbnail`,
+        `image`,
         `description`,
         `footericon`,
         `footertext`,
@@ -112,6 +111,9 @@ export default new Command(`embedset`, async (message, _args, context) => {
           break
         case `thumbnail`:
           embed.setThumbnail(transformed)
+          break
+        case `image`:
+          embed.setImage(transformed)
           break
         case `description`:
           embed.setDescription(transformed)
