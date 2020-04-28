@@ -39,6 +39,7 @@ export default new Command(`embed`, async (message, args, context) => {
     if (embedCode.color === 'RANDOM') embedCode.color = Math.floor(Math.random() * (0xffffff + 1))
     if (embedCode.timestamp) embedCode.timestamp = new Date().toISOString()
     await message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })
+    if (settings?.vip.isVIP) message.delete().catch(() => undefined)
   } catch (error) {
     const embed = new MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
