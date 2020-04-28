@@ -217,6 +217,7 @@ export interface GuildSettings extends mongoose.Document {
       second: string
       third: string
     }
+    disableMissions?: boolean
   }
   network: {
     channelIDs: {

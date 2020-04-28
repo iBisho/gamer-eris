@@ -17,29 +17,6 @@ export default new Command(`xp`, async (message, args, context) => {
   const amount = parseInt(number, 10)
   if (!amount) return
 
-  if (type.toLowerCase() === `message`) {
-    if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`leveling/xp:NEED_VIP_MESSAGE`))
-    guildSettings.xp.perMessage = amount
-    Gamer.guildsXPPerMessage.set(message.guildID, amount)
-    guildSettings.save()
-    return message.channel.createMessage(language(`leveling/xp:PER_MESSAGE`, { amount }))
-  }
-
-  if (type.toLowerCase() === `voice`) {
-    if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`leveling/xp:NEED_VIP_VOICE`))
-    guildSettings.xp.perMinuteVoice = amount
-    guildSettings.save()
-    Gamer.guildsXPPerMinuteVoice.set(message.guildID, amount)
-    return message.channel.createMessage(language(`leveling/xp:PER_MINUTE`, { amount }))
-  }
-
-  if (type.toLowerCase() === `activity`) {
-    if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`leveling/xp:NEED_VIP_INACTIVITY`))
-    guildSettings.xp.inactiveDaysAllowed = amount
-    guildSettings.save()
-    return message.channel.createMessage(language(`leveling/xp:INACTIVITY`, { amount }))
-  }
-
   const idOrName = idOrRoleName.join(' ').toLowerCase()
   const memberID = message.mentions.length ? message.mentions[0].id : idOrName
 

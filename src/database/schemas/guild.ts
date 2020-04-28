@@ -236,7 +236,8 @@ export default new mongoose.Schema({
       second: String,
       // url image for the third place prize
       third: String
-    }
+    },
+    disableMissions: Boolean
   },
   network: {
     channelIDs: {

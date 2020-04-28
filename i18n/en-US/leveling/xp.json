@@ -1,11 +1,8 @@
 {
   "DESCRIPTION": "Add/Remove XP from a member.",
-  "EXTENDED": "$t(leveling/xp:EXTENDED_LINE_1)\n$t(leveling/xp:EXTENDED_LINE_2)\n$t(leveling/xp:EXTENDED_LINE_3)\n$t(leveling/xp:EXTENDED_LINE_4)\n$t(leveling/xp:EXTENDED_LINE_5)",
+  "EXTENDED": "$t(leveling/xp:EXTENDED_LINE_1)\n$t(leveling/xp:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}xp add 5 @user :** ~ Adds 5 XP to the user.",
   "EXTENDED_LINE_2": "**{{prefix}}xp remove 5 @user :** ~ Removes 5XP from the user.",
-  "EXTENDED_LINE_3": "**{{prefix}}xp message 5** ~ `VIP ONLY!` Set the amount of XP per message for your server.",
-  "EXTENDED_LINE_4": "**{{prefix}}xp voice 5** ~ `VIP ONLY!` Set the amount of XP per minute in voice for your server.",
-  "EXTENDED_LINE_5": "**{{prefix}}xp inactivity 3** ~ `VIP ONLY!` Set the amount days before considering a user inactive. Inactive users will lose 1% XP per day..",
   "USAGE": "{{prefix}}xp [add | remove] [amount] *[User]*",
   "ALIASES": "XP has no aliases.",
   "ADDED": "{{mention}} has been given {{amount}} XP.",
@@ -13,11 +10,5 @@
   "ADDED_ALL": "Successfully added {{amount}} XP to all members with the {{rolename}} role.",
   "REMOVED_ALL": "All members that have the {{rolename}} have lost {{amount}} XP.",
   "ROLE_REMOVE_REASON": "Level rewards removed.",
-  "ROLE_ADD_REASON": "Level rewards added.",
-  "NEED_VIP_MESSAGE": "You can only set a custom amount of XP per message on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
-  "PER_MESSAGE": "You have set the XP per message to be **{{amount}}**.",
-  "NEED_VIP_VOICE": "You can only set a custom amount of XP per minute in voice on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
-  "PER_MINUTE": "You have set the XP per minute in voice to be **{{amount}}**.",
-  "NEED_VIP_INACTIVITY": "You can only set a custom amount of days of inactivity before users lose XP on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
-  "INACTIVITY": "You have set the maximum days of inactivity before losing XP to **{{amount}}**."
+  "ROLE_ADD_REASON": "Level rewards added."
 }

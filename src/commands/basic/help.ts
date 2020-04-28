@@ -75,6 +75,7 @@ const categories = [
       `settenor`,
       `setverify`,
       `setwhitelisted`,
+      `setxp`,
       `viewprofanity`
     ]
   },
@@ -129,7 +130,7 @@ const categories = [
   { name: `vip`, commands: [`analyze`, `analyzechannel`, `vipregister`, `roletoall`, `rolefromall`, `export`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`] },
   { name: `gaming`, commands: [`twitch`, `capture`] },
-  { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`] },
+  { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`, `embedset`] },
   { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] },
   { name: `tags`, commands: [`tagcreate`, `tagdelete`, `tagshow`, `taginstall`, `taguninstall`, `tagpublic`] },
   { name: `shortcuts`, commands: [`shortcutcreate`, `shortcutremove`, `shortcuts`] },

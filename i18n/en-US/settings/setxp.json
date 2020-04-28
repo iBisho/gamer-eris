@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "Set the XP settings for your server.",
+  "EXTENDED": "$t(settings/setxp:EXTENDED_LINE_1)\n$t(settings/setxp:EXTENDED_LINE_2)\n$t(settings/setxp:EXTENDED_LINE_3)\n$t(settings/setxp:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}setxp message 5** ~ `VIP ONLY!` Set the amount of XP per message for your server.",
+  "EXTENDED_LINE_2": "**{{prefix}}setxp voice 5** ~ `VIP ONLY!` Set the amount of XP per minute in voice for your server.",
+  "EXTENDED_LINE_3": "**{{prefix}}setxp inactivity 3** ~ `VIP ONLY!` Set the amount days before considering a user inactive. Inactive users will lose 1% XP per day..",
+  "EXTENDED_LINE_4": "**{{prefix}}setxp missions** ~ Enables/Disables the missions on your server. By default they will be enabled. If they are disabled, the {{prefix}}profile command will no longer list missions.",
+  "USAGE": "{{prefix}}setxp [message | voice | inactivity | missions] *[amount]*",
+  "ALIASES": "Setxp does not have any aliases",
+  "NEED_VIP_MESSAGE": "You can only set a custom amount of XP per message on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
+  "PER_MESSAGE": "You have set the XP per message to be **{{amount}}**.",
+  "NEED_VIP_VOICE": "You can only set a custom amount of XP per minute in voice on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
+  "PER_MINUTE": "You have set the XP per minute in voice to be **{{amount}}**.",
+  "NEED_VIP_INACTIVITY": "You can only set a custom amount of days of inactivity before users lose XP on a VIP server. Use the **invite** command to join the support server to find out more about how to become VIP.",
+  "INACTIVITY": "You have set the maximum days of inactivity before losing XP to **{{amount}}**.",
+  "MISSIONS": "You have {{status}} the missions setting in the database. Use the profile command to see how it looks."
+}

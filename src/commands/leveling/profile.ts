@@ -20,11 +20,14 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
     prefix: Gamer.guildPrefixes.get(message.guildID) || Gamer.prefix
   })
 
-  const missionData = await Gamer.database.models.mission.find({ userID: member.id })
-  const upvote = await Gamer.database.models.upvote.findOne({
-    userID: member.id,
-    timestamp: { $gt: message.timestamp - milliseconds.HOUR * 12 }
-  })
+  const [guildSettings, missionData, upvote] = await Promise.all([
+    await Gamer.database.models.guild.findOne({ id: member.guild.id }),
+    await Gamer.database.models.mission.find({ userID: member.id }),
+    await Gamer.database.models.upvote.findOne({
+      userID: member.id,
+      timestamp: { $gt: message.timestamp - milliseconds.HOUR * 12 }
+    })
+  ])
 
   const missions = Gamer.missions.map((mission, index) => {
     if (index > 2 && !upvote) return `${constants.emojis.questionMark} || ${UNLOCK} ||`
@@ -37,17 +40,17 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
     return `${constants.emojis.success}: ${language(mission.title)} **[${mission.reward}] XP**`
   })
 
-  const embed = new MessageEmbed()
-    .setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
-    .setDescription(missions.join('\n'))
-    .attachFile(buffer, fileName)
-    .setFooter(
-      language(`leveling/profile:NEW_IN`, {
-        time: Gamer.helpers.transform.humanizeMilliseconds(
-          milliseconds.MINUTE * 30 - (Date.now() - Gamer.missionsStartTimestamp)
-        )
-      })
-    )
+  const embed = new MessageEmbed().attachFile(buffer, fileName).setFooter(
+    language(`leveling/profile:NEW_IN`, {
+      time: Gamer.helpers.transform.humanizeMilliseconds(
+        milliseconds.MINUTE * 30 - (Date.now() - Gamer.missionsStartTimestamp)
+      )
+    })
+  )
+
+  if (guildSettings && !guildSettings.xp.disableMissions) {
+    embed.setDescription(missions.join('\n')).setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
+  }
 
   const canAttachFile = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, ['attachFiles'])
   if (!canAttachFile)
