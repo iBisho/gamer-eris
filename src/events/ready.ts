@@ -229,6 +229,8 @@ export default class extends Event {
       Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
     })
 
+    Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
+
     for (const guild of Gamer.guilds.values()) {
       if (!Gamer.allMembersFetchedGuildIDs.has(guild.id)) {
         Gamer.helpers.logger.yellow(`[DEBUG] Fetching Guild ${guild.name} ID: ${guild.id} Count: ${guild.memberCount}`)
@@ -236,7 +238,5 @@ export default class extends Event {
         Gamer.allMembersFetchedGuildIDs.add(guild.id)
       }
     }
-
-    return Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }
 }
