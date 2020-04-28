@@ -1,9 +1,10 @@
 {
 	"DESCRIPTION": "Create a reminder for yourself.",
-	"EXTENDED": "$t(events/remind:EXTENDED_LINE_1)\n$t(events/remind:EXTENDED_LINE_2)\n$t(events/remind:EXTENDED_LINE_3)",
+	"EXTENDED": "$t(events/remind:EXTENDED_LINE_1)\n$t(events/remind:EXTENDED_LINE_2)\n$t(events/remind:EXTENDED_LINE_3)\n$t(events/remind:EXTENDED_LINE_4)",
 	"EXTENDED_LINE_1": "**{{prefix}}remind 1d12h [Reminder message]** ~ Create a reminder to send yourself.",
 	"EXTENDED_LINE_2": "**{{prefix}}remind 5m 1d [Reminder message]** ~ Create a recurring reminder every day starting in 5 minutes.",
-	"EXTENDED_LINE_3": "If the second arg is also formatted like a time, it will be made into a recurring event at that interval.",
+	"EXTENDED_LINE_3": "**{{prefix}}remind list** ~ List all the reminders you have created and how much time is left until that reminder.",
+	"EXTENDED_LINE_4": "If the second arg is also formatted like a time, it will be made into a recurring event at that interval.",
 	"USAGE": "{{prefix}}remind [Time From Now] *[Frequency Interval Time]* [Message]",
 	"ALIASES": "{{prefix}}remindme",
 	"CREATED": "{{mention}}, I will remind you about this when it is time!",
