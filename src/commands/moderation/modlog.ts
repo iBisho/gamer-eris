@@ -54,36 +54,12 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
     else modlogTypes[log.action] = 1
   }
 
-  const description: string[] = []
-  for (const key of Object.keys(modlogTypes)) {
-    let value = 0
-
-    if (key === `ban`) {
-      if (!modlogTypes.ban) continue
-      value = modlogTypes.ban
-    } else if (key === `unban`) {
-      if (!modlogTypes.unban) continue
-      value = modlogTypes.unban
-    } else if (key === `mute`) {
-      if (!modlogTypes.mute) continue
-      value = modlogTypes.mute
-    } else if (key === `unmute`) {
-      if (!modlogTypes.unmute) continue
-      value = modlogTypes.unmute
-    } else if (key === `warn`) {
-      if (!modlogTypes.warn) continue
-      value = modlogTypes.warn
-    } else if (key === `kick`) {
-      if (!modlogTypes.kick) continue
-      value = modlogTypes.kick
-    }
-    description.push(
-      language(`moderation/modlog:DETAILS`, {
-        type: Gamer.helpers.transform.toTitleCase(key),
-        amount: value
-      })
-    )
-  }
+  const description = Object.entries(modlogTypes).map(([key, value]) =>
+    language(`moderation/modlog:DETAILS`, {
+      type: Gamer.helpers.transform.toTitleCase(key),
+      amount: value
+    })
+  )
 
   const embed = new MessageEmbed()
     .setAuthor(language(`moderation/modlog:USER_HISTORY`, { user: user?.username || 'Unknown User' }), user?.avatarURL)
