@@ -24,7 +24,11 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
     )
   }
 
-  const user = message.mentions.length ? message.mentions[0] : await Gamer.helpers.discord.fetchUser(Gamer, userID)
+  const user = message.mentions.length
+    ? message.mentions[0]
+    : userID
+    ? await Gamer.helpers.discord.fetchUser(Gamer, userID)
+    : message.author
 
   const modlogs = await Gamer.database.models.modlog.find({
     guildID: message.guildID,
