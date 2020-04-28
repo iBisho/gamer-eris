@@ -519,12 +519,18 @@ export default class {
       ])
       if (!hasPermission) return
 
-      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, reminder.userID)
-      if (!user) return
+      const guild = this.Gamer.guilds.get(reminder.guildID)
+      if (!guild) return
+
+      const member = await this.Gamer.helpers.discord.fetchMember(guild, reminder.userID)
+      if (!member) {
+        this.Gamer.database.models.reminder.deleteOne({ _id: reminder._id }).exec()
+        return
+      }
 
       const language = this.Gamer.getLanguage(reminder.guildID)
       const embed = new MessageEmbed()
-        .setAuthor(user.username, user.avatarURL)
+        .setAuthor(member.username, member.avatarURL)
         .setDescription(reminder.content)
         .setFooter(language(`events/remind:REMINDING`, { id: reminder.id }))
 
