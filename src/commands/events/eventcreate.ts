@@ -60,9 +60,10 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
       if (!msg.guildID || !msg.member) return
 
       const CANCEL_OPTIONS = language(`common:CANCEL_OPTIONS`, { returnObjects: true })
-      if ([`q`, `quit`, ...CANCEL_OPTIONS].includes(msg.content)) {
+      if ([`q`, `quit`, ...CANCEL_OPTIONS].includes(msg.content.toLowerCase())) {
         message.channel.createMessage(language(`events/eventcreate:SAVED`, { mention: msg.author.mention }))
         helperMessage.delete().catch(() => undefined)
+        Gamer.helpers.events.advertiseEvent(event, guildSettings.eventsAdvertiseChannelID)
         return
       }
 

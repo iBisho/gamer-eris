@@ -59,7 +59,7 @@
   "MENTION_PREFIX": "Das Präfix auf diesem Server ist: **{{prefix}}**",
   "WHITELISTED_TENOR": "via. whitelistet Tenor",
   "TENOR": "via. Tenor",
-  "GLOBAL_OPTIONS": ["G", "Global"],
-  "VOICE_OPTIONS": ["S", "Sprach"],
-  "CANCEL_OPTIONS": ["Q", "Quittieren"]
+  "GLOBAL_OPTIONS": ["g", "global"],
+  "VOICE_OPTIONS": ["s", "sprach"],
+  "CANCEL_OPTIONS": ["q", "quittieren"]
 }
