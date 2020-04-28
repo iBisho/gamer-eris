@@ -36,14 +36,20 @@ export default new Command(
     const serverSettings = {
       language: languageName,
       modRoles: settings?.staff.modRoleIDs.length
-        ? settings.staff.modRoleIDs.map((roleID: string) => `<@&${roleID}>`).join(` `)
+        ? settings.staff.modRoleIDs
+            .filter(id => guild.roles.has(id))
+            .map((roleID: string) => `<@&${roleID}>`)
+            .join(` `)
         : NONE,
       admins: settings?.staff.adminRoleID ? `<@&${settings.staff.adminRoleID}>` : NONE,
       ideaEnabled: settings?.feedback.idea.channelID ? ENABLED : DISABLED,
       bugsEnabled: settings?.feedback.bugs.channelID ? ENABLED : DISABLED,
       autorole: settings?.moderation.roleIDs.autorole ? `<@&${settings.moderation.roleIDs.autorole}>` : NONE,
       publicRoles: settings?.moderation.roleIDs.public.length
-        ? settings.moderation.roleIDs.public.map((roleID: string) => `<@&${roleID}>`).join(` `)
+        ? settings.moderation.roleIDs.public
+            .filter(id => guild.roles.has(id))
+            .map((roleID: string) => `<@&${roleID}>`)
+            .join(` `)
         : NONE,
       verifyRole: settings?.verify.roleID ? `<@&${settings.verify.roleID}>` : NONE,
       verifyCategory: verifyCategory ? verifyCategory.name : NONE,

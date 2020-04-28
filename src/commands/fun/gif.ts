@@ -17,7 +17,7 @@ export default new Command(`gif`, async (message, args, context) => {
     .then(res => res.json())
     .catch(() => undefined)
 
-  if (!data || !data.results.length) return
+  if (!data || !data.results?.length) return
   const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
   const [media] = randomResult.media
 

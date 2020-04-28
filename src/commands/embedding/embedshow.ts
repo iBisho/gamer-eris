@@ -44,6 +44,7 @@ export default new Command(`embedshow`, async (message, args, context) => {
   }
   if (fields.length) payload.push(`"fields": [${fields.join(', ')}]`)
   if (embed.url) payload.push(`"url": "${embed.url}"`)
+  if (embed.thumbnail) payload.push(`"thumbnail": { "url": "${embed.thumbnail.url}" }`)
   if (embed.image) payload.push(`"image": { "url": "${embed.image.url}" }`)
   if (embed.timestamp) payload.push(`"timestamp": ${embed.timestamp}`)
   if (embed.footer) {

@@ -1,7 +1,7 @@
 {
   "DESCRIPTION": "Try your luck at some slot machines.",
-  "EXTENDED": "**{{prefix}}slots [#]** ~ Bet some Gamer coins to have a chance at winning more! Get the same emoji in the middle to win!",
-  "USAGE": "{{prefix}}slots [Amount]",
+  "EXTENDED": "**{{prefix}}slots** ~ Try your luck at winning some slots! Get the same emojis in a row to win. If you upvote the bot, you will get a much higher reward rate.",
+  "USAGE": "{{prefix}}slots",
   "ALIASES": "{{prefix}}slotmachine",
   "NOT_ENOUGH_CURRENCY": "You do not have enough Gamer coins to make that large a bet.",
   "LOSER": "Aww, you did not win the slot machine. You have lost 1 {{emoji}} coin.",

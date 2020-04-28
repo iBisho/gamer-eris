@@ -31,7 +31,7 @@ export default class {
         if (!res) return word
 
         if (!res.results.length) return word
-        const randomResult = this.Gamer.helpers.utils.chooseRandom((res as TenorGif).results)
+        const randomResult = this.Gamer.helpers.utils.chooseRandom((res as TenorGif).results || [])
         const [media] = randomResult.media
 
         return media.gif.url

@@ -146,7 +146,7 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
       .then(res => res.json())
       .catch(() => undefined)
 
-    const randomResult = data?.results.length ? Gamer.helpers.utils.chooseRandom(data.results) : undefined
+    const randomResult = data?.results?.length ? Gamer.helpers.utils.chooseRandom(data.results) : undefined
     const [media] = randomResult ? randomResult.media : []
     if (media) embed.setImage(media.gif.url).setFooter(`Via Tenor`)
   }
