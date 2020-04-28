@@ -233,6 +233,8 @@ export default class extends Event {
 
     for (const guild of Gamer.guilds.values()) {
       if (!Gamer.allMembersFetchedGuildIDs.has(guild.id)) {
+        if (guild.memberCount === guild.members.size) continue
+
         Gamer.helpers.logger.yellow(`[DEBUG] Fetching Guild ${guild.name} ID: ${guild.id} Count: ${guild.memberCount}`)
         await guild.fetchAllMembers()
         Gamer.allMembersFetchedGuildIDs.add(guild.id)
