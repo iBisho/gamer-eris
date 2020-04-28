@@ -3,6 +3,7 @@ import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerMail } from '../types/gamer'
 import { MessageEmbed } from 'helperis'
+import nodefetch from 'node-fetch'
 
 const channelNameRegex = /^-+|[^\w-]|-+$/g
 
@@ -161,7 +162,20 @@ export default class {
       .addField(language(`mails/mail:CLOSE`), language(`mails/mail:CLOSE_INFO`, { prefix }), true)
       .setFooter(language(`mails/mail:USERID`, { id: mailUser.id }))
       .setTimestamp()
-    if (message.attachments.length) embed.setImage(message.attachments[0].url)
+
+    if (message.attachments.length) {
+      // Since this mail has an image we need to store that image cause this message will be deleted
+      const imageStorageChannel = guildSettings.moderation.logs.serverlogs.emojis.channelID
+        ? message.member.guild.channels.get(guildSettings.moderation.logs.serverlogs.emojis.channelID)
+        : undefined
+      if (imageStorageChannel && imageStorageChannel instanceof TextChannel) {
+        try {
+          const buffer = await nodefetch(message.attachments[0].url).then(res => res.buffer())
+          const result = await imageStorageChannel.createMessage('', { file: buffer, name: `mail-image` })
+          embed.setImage(result.attachments[0].proxy_url)
+        } catch {}
+      }
+    }
 
     const alertRoleIDs = guildSettings?.mails.alertRoleIDs || []
     const modifiedRoleIDs: string[] = []
@@ -215,7 +229,19 @@ export default class {
       .addField(language(`mails/mail:CLOSE`), language(`mails/mail:CLOSE_INFO`, { prefix }), true)
       .setTimestamp()
 
-    if (message.attachments.length) embed.setImage(message.attachments[0].url)
+    if (message.attachments.length) {
+      // Since this mail has an image we need to store that image cause this message will be deleted
+      const imageStorageChannel = guildSettings?.moderation.logs.serverlogs.emojis.channelID
+        ? guild.channels.get(guildSettings.moderation.logs.serverlogs.emojis.channelID)
+        : undefined
+      if (imageStorageChannel && imageStorageChannel instanceof TextChannel) {
+        try {
+          const buffer = await nodefetch(message.attachments[0].url).then(res => res.buffer())
+          const result = await imageStorageChannel.createMessage('', { file: buffer, name: `mail-image` })
+          embed.setImage(result.attachments[0].proxy_url)
+        } catch {}
+      }
+    }
 
     const channel = guild.channels.get(mail.id)
     if (!channel) return
