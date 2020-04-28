@@ -1,10 +1,8 @@
 {
   "DESCRIPTION": "Ajoute/Retire de l'XP d'un membre.",
-  "EXTENDED": "$t(leveling/xp:EXTENDED_LINE_1)\n$t(leveling/xp:EXTENDED_LINE_2)\n$t(leveling/xp:EXTENDED_LINE_3)\n$t(leveling/xp:EXTENDED_LINE_4)",
+  "EXTENDED": "$t(leveling/xp:EXTENDED_LINE_1)\n$t(leveling/xp:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}xp add 5 @membre :** ~ Ajoute 5 d'XP au membre spécifié.",
   "EXTENDED_LINE_2": "**{{prefix}}xp remove 5 @membre :** ~ Retire 5 d'XP au membre spécifié.",
-  "EXTENDED_LINE_3": "**{{prefix}}xp message 5** ~ `VIP UNIQUEMENT!` Ajuster le gain d'XP par message envoyé.",
-  "EXTENDED_LINE_4": "**{{prefix}}xp voice 5** ~ `VIP UNIQUEMENT!` Ajuster le gain d'XP vocal par minute.",
   "USAGE": "{{prefix}}xp [add | remove] [Quantité] *[Membre]*",
   "ALIASES": "XP n'a pas d'alias.",
   "ADDED": "{{amount}} d'XP ont été donné à {{mention}} .",
@@ -12,9 +10,5 @@
   "ADDED_ALL": "{{amount}} d'XP ont bien été donnés aux membres possédant le rôle {{rolename}}.",
   "REMOVED_ALL": "Tous les membres possédant le rôle {{rolename}} ont perdu {{amount}} d'XP.",
   "ROLE_REMOVE_REASON": "Récompense de niveau retiré.",
-  "ROLE_ADD_REASON": "Récompense de niveau ajoutée.",
-  "NEED_VIP_MESSAGE": "Vous ne pouvez ajuster les gains d'XP par message que si votre serveur est enregistré en tant que VIP. Pour enregistrer votre serveur en tant que VIP, utilisez la commande **.invite** pour rejoindre le serveur de support et découvrir la démarche à suivre.",
-  "PER_MESSAGE": "Le gain d'XP est maintenant de **{{amount}}**XP par message.",
-  "NEED_VIP_VOICE": "Vous ne pouvez ajuster les gains d'XP vocal par minute que si votre serveur est enregistré en tant que VIP. Pour enregistrer votre serveur en tant que VIP, utilisez la commande **.invite** pour rejoindre le serveur de support et découvrir la démarche à suivre.",
-  "PER_MINUTE": "Le gain d'XP vocal est maintenant de **{{amount}}**XP par minute."
+  "ROLE_ADD_REASON": "Récompense de niveau ajoutée."
 }
