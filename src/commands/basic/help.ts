@@ -167,41 +167,41 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
 
   const [commandName] = args
 
-  if (commandName.toLowerCase() === `details`) {
-    const details = new MessageEmbed().setAuthor(message.author.username, message.author.avatarURL)
-    let description = ''
-    let first = true
+  // if (commandName.toLowerCase() === `details`) {
+  //   const details = new MessageEmbed().setAuthor(message.author.username, message.author.avatarURL)
+  //   let description = ''
+  //   let first = true
 
-    for (const category of categories) {
-      const categoryDetail = `${first ? '' : '\n'}**» ${Gamer.helpers.transform.splitCamelCase(category.name)}**:\n`
-      if (first) first = false
+  //   for (const category of categories) {
+  //     const categoryDetail = `${first ? '' : '\n'}**» ${Gamer.helpers.transform.splitCamelCase(category.name)}**:\n`
+  //     if (first) first = false
 
-      if (description.length + categoryDetail.length > 2000) {
-        details.setDescription(description)
-        await message.channel.createMessage({ embed: details.code })
-        description = ''
-      }
+  //     if (description.length + categoryDetail.length > 2000) {
+  //       details.setDescription(description)
+  //       await message.channel.createMessage({ embed: details.code })
+  //       description = ''
+  //     }
 
-      description += categoryDetail
+  //     description += categoryDetail
 
-      for (const name of category.commands) {
-        const detail = `\`${Gamer.helpers.transform.splitCamelCase(name)}\`: ${language(
-          `${category.name}/${name}:DESCRIPTION`
-        )}\n`
+  //     for (const name of category.commands) {
+  //       const detail = `\`${Gamer.helpers.transform.splitCamelCase(name)}\`: ${language(
+  //         `${category.name}/${name}:DESCRIPTION`
+  //       )}\n`
 
-        if (description.length + detail.length > 2000) {
-          details.setDescription(description)
-          await message.channel.createMessage({ embed: details.code })
-          description = ''
-        }
+  //       if (description.length + detail.length > 2000) {
+  //         details.setDescription(description)
+  //         await message.channel.createMessage({ embed: details.code })
+  //         description = ''
+  //       }
 
-        description += detail
-      }
-    }
+  //       description += detail
+  //     }
+  //   }
 
-    details.setDescription(description)
-    return message.channel.createMessage({ embed: details.code })
-  }
+  //   details.setDescription(description)
+  //   return message.channel.createMessage({ embed: details.code })
+  // }
 
   if (commandName.toLowerCase() === `all`) {
     const allEmbed = new MessageEmbed().setAuthor(message.author.username, message.author.avatarURL)
