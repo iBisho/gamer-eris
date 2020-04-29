@@ -17,6 +17,12 @@ const feedbackEmojis = [
   constants.emojis.redX
 ]
 
+const randomRepliesNetwork = [
+  'network/reaction:THANKS_LIKED',
+  'network/reaction:THANKS_LIKED_1',
+  'network/reaction:THANKS_LIKED_2'
+]
+
 export default class extends Event {
   async execute(rawMessage: PossiblyUncachedMessage, emoji: ReactionEmoji, userID: string) {
     if (rawMessage.channel instanceof PrivateChannel || rawMessage.channel instanceof GroupChannel) return
@@ -203,13 +209,15 @@ export default class extends Event {
         case constants.emojis.heart: {
           // Send a notification to the original authors notification channel saying x user liked it
           await notificationChannel.createMessage(
-            language(`network/reaction:LIKED`, { user: reactorTag, guildName: guild.name })
+            language(`network/reaction:LIKED`, { username: reactorTag, guildName: guild.name })
           )
           // Post the original embed so the user knows which post was liked
           await notificationChannel.createMessage({ embed: postEmbed })
 
           // Send a response like post delete it
-          const liked = await message.channel.createMessage(language(`network/reaction:THANKS_LIKED`))
+          const liked = await message.channel.createMessage(
+            language(Gamer.helpers.utils.chooseRandom(randomRepliesNetwork), { username: reactorTag })
+          )
           return setTimeout(() => liked.delete().catch(() => undefined), 10000)
         }
         case constants.emojis.repeat: {
