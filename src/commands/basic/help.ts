@@ -128,11 +128,11 @@ const categories = [
   },
   { name: `mails`, commands: [`mail`, `label`] },
   { name: `vip`, commands: [`analyze`, `analyzechannel`, `vipregister`, `roletoall`, `rolefromall`, `export`] },
-  { name: `network`, commands: [`networkcreate`, `networkfollow`] },
+  { name: `network`, commands: [`networkcreate`, `networkfollow`, `mirrorcreate`, `mirroredit`] },
   { name: `gaming`, commands: [`twitch`, `capture`] },
   { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`, `embedset`] },
   { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] },
-  { name: `tags`, commands: [`tagcreate`, `tagdelete`, `tagshow`, `taginstall`, `taguninstall`, `tagpublic`] },
+  { name: `tags`, commands: [`tags`, `tagcreate`, `tagdelete`, `tagshow`, `taginstall`, `taguninstall`, `tagpublic`] },
   { name: `shortcuts`, commands: [`shortcutcreate`, `shortcutremove`, `shortcuts`] },
   { name: `weeb`, commands: [`manga`] }
 ]

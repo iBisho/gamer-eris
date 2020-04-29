@@ -229,16 +229,11 @@ export default class extends Event {
       Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
     })
 
+    const mirrors = await Gamer.database.models.mirror.find()
+    mirrors.forEach(mirror => {
+      Gamer.mirrors.set(mirror.sourceChannelID, mirror)
+    })
+
     Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
-
-    for (const guild of Gamer.guilds.values()) {
-      if (!Gamer.allMembersFetchedGuildIDs.has(guild.id)) {
-        if (guild.memberCount === guild.members.size) continue
-
-        Gamer.helpers.logger.yellow(`[DEBUG] Fetching Guild ${guild.name} ID: ${guild.id} Count: ${guild.memberCount}`)
-        await guild.fetchAllMembers()
-        Gamer.allMembersFetchedGuildIDs.add(guild.id)
-      }
-    }
   }
 }

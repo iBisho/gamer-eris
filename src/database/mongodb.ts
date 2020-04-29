@@ -12,6 +12,7 @@ import MailSchema from './schemas/mail'
 import MangaSchema from './schemas/manga'
 import MarriageSchema, { GamerMarriage } from './schemas/marriage'
 import MemberSchema from './schemas/member'
+import MirrorSchema, { GamerMirror } from './schemas/mirrors'
 import MissionSchema from './schemas/mission'
 import ModlogSchema from './schemas/modlog'
 import ReactionRoleSchema from './schemas/reactionrole'
@@ -62,6 +63,7 @@ class Database {
     manga: mongoose.model<GamerManga>('Manga', MangaSchema),
     marriage: mongoose.model<GamerMarriage>('Marriage', MarriageSchema),
     member: mongoose.model<MemberSettings>('Member', MemberSchema),
+    mirror: mongoose.model<GamerMirror>('Mirror', MirrorSchema),
     mission: mongoose.model<GamerMission>('Mission', MissionSchema),
     modlog: mongoose.model<GamerModlog>('Modlog', ModlogSchema),
     reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),

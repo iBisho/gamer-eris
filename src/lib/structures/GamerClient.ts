@@ -30,6 +30,7 @@ import constants from '../../constants'
 import { AmplitudeEvent } from '../types/amplitude'
 import Gamer from '../..'
 import { GamerCommandPermission } from '../../database/schemas/command'
+import { GamerMirror } from '../../database/schemas/mirrors'
 
 const rootFolder = join(__dirname, `..`, `..`, `..`, `..`)
 const assetsFolder = join(rootFolder, `assets`)
@@ -144,6 +145,7 @@ export default class GamerClient extends Client {
   /** The amount of xp per minute in voice setting */
   guildsXPPerMinuteVoice = new Map<string, number>()
   vipGuildIDs = new Set<string>()
+  mirrors = new Map<string, GamerMirror>()
 
   constructor(options: ClientOptions) {
     super(options)
