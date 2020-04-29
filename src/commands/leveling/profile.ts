@@ -40,16 +40,19 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
     return `${constants.emojis.success}: ${language(mission.title)} **[${mission.reward}] XP**`
   })
 
-  const embed = new MessageEmbed().attachFile(buffer, fileName).setFooter(
-    language(`leveling/profile:NEW_IN`, {
-      time: Gamer.helpers.transform.humanizeMilliseconds(
-        milliseconds.MINUTE * 30 - (Date.now() - Gamer.missionsStartTimestamp)
-      )
-    })
-  )
+  const embed = new MessageEmbed().attachFile(buffer, fileName)
 
   if (guildSettings && !guildSettings.xp.disableMissions) {
-    embed.setDescription(missions.join('\n')).setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
+    embed
+      .setDescription(missions.join('\n'))
+      .setTitle(language(`leveling/profile:CURRENT_MISSIONS`))
+      .setFooter(
+        language(`leveling/profile:NEW_IN`, {
+          time: Gamer.helpers.transform.humanizeMilliseconds(
+            milliseconds.MINUTE * 30 - (Date.now() - Gamer.missionsStartTimestamp)
+          )
+        })
+      )
   }
 
   const canAttachFile = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, ['attachFiles'])
