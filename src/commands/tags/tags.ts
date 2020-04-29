@@ -1,7 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 
-export default new Command(`tags`, async (message, _args, context) => {
+export default new Command([`tags`, `tag`], async (message, _args, context) => {
   if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
