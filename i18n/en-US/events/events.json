@@ -2,7 +2,7 @@
   "DESCRIPTION": "View, create, join and manage events.",
   "EXTENDED": "**{{prefix}}events** ~ Lists all current events on the server. [Click Here To Learn More](https://gamer.netlify.com/lfg-events-feature)",
   "USAGE": "{{prefix}}events",
-  "ALIASES": "{{prefix}}e",
+  "ALIASES": "{{prefix}}e {{prefix}}event",
   "INVALID_EVENT": "There was no event able to be found with the ID number you provided.",
   "STARTING_GUILD": "The event [ {{eventID}} ] you joined on the server {{guildName}} has now started!",
   "STARTING_TITLE": "Event Title: {{title}}",

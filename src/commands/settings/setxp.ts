@@ -41,7 +41,7 @@ export default new Command(`setxp`, async (message, args, context) => {
       guildSettings.save()
       Gamer.guildsXPPerMinuteVoice.set(message.guildID, amount)
       return message.channel.createMessage(language(`settings/setxp:PER_MINUTE`, { amount }))
-    case 'activity':
+    case 'inactivity':
       if (!guildSettings?.vip.isVIP)
         return message.channel.createMessage(language(`settings/setxp:NEED_VIP_INACTIVITY`))
 

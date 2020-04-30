@@ -17,6 +17,7 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
 
   if (firstIDGuild && !Gamer.vipGuildIDs.has(message.guildID))
     return message.channel.createMessage(language(`network/mirrorcreate:VIP_ONLY_GUILD`))
+
   const mirrorChannel = firstIDGuild
     ? firstIDGuild.channels.get(secondID)
     : message.member.guild.channels.get(message.channelMentions[0] || firstID)
