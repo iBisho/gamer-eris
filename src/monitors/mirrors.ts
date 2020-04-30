@@ -14,7 +14,7 @@ export default class extends Monitor {
     const mirror = Gamer.mirrors.get(message.channel.id)
     if (!mirror) return
 
-    const webhookExists = await Gamer.getWebhook(mirror.webhookID)
+    const webhookExists = await Gamer.getWebhook(mirror.webhookID).catch(() => undefined)
     if (!webhookExists) return
 
     // This is a mirror channel so we need to execute a webhook for it
