@@ -9,6 +9,7 @@ import { milliseconds } from '../lib/types/enums/time'
 import { MessageEmbed } from 'helperis'
 import { fetchLatestManga } from '../services/manga'
 import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
+import rolesets from '../commands/roles/rolesets'
 
 export default class extends Event {
   async execute() {
@@ -233,6 +234,34 @@ export default class extends Event {
     mirrors.forEach(mirror => {
       Gamer.mirrors.set(mirror.sourceChannelID, mirror)
     })
+
+    const guildIDsToFetchMembers = allGuildSettings.filter(gs => gs.moderation.logs.serverlogs.roles).map(gs => gs.id)
+    const [roleMessages, roleSets] = await Promise.all([
+      Gamer.database.models.roleMessages.find(),
+      Gamer.database.models.roleset.find()
+    ])
+
+    roleMessages.forEach(rm => {
+      if (guildIDsToFetchMembers.includes(rm.guildID)) return
+      guildIDsToFetchMembers.push(rm.guildID)
+    })
+    roleSets.forEach(rs => {
+      if (guildIDsToFetchMembers.includes(rs.guildID)) return
+      guildIDsToFetchMembers.push(rs.guildID)
+    })
+
+    for (const guildID of guildIDsToFetchMembers) {
+      const guild = Gamer.guilds.get(guildID)
+      if (!guild) continue
+
+      Gamer.helpers.logger.yellow(
+        `[DEBUG] 1 Fetching Guilds: ${guild.name} ID: ${guild.id} Count: ${guild.members.size} / ${guild.memberCount}`
+      )
+      await guild.fetchAllMembers()
+      Gamer.helpers.logger.green(
+        `[DEBUG] 2 Fetching Guilds: ${guild.name} ID: ${guild.id} Count: ${guild.members.size} / ${guild.memberCount}`
+      )
+    }
 
     Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }
