@@ -18,6 +18,7 @@ export default class extends Monitor {
     if (!webhookExists) {
       // Remove the webhook
       Gamer.mirrors.delete(message.channel.id)
+      Gamer.database.models.mirror.deleteOne({ _id: mirror._id }).exec()
       return
     }
 
