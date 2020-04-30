@@ -9,7 +9,6 @@ import { milliseconds } from '../lib/types/enums/time'
 import { MessageEmbed } from 'helperis'
 import { fetchLatestManga } from '../services/manga'
 import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
-import rolesets from '../commands/roles/rolesets'
 
 export default class extends Event {
   async execute() {
