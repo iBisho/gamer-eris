@@ -250,7 +250,10 @@ export default class extends Event {
       guildIDsToFetchMembers.push(rs.guildID)
     })
 
-    for (const guildID of guildIDsToFetchMembers) {
+    // Always fetch gamer guild
+    guildIDsToFetchMembers.push(constants.general.gamerServerID)
+
+    for (const guildID of [...new Set(guildIDsToFetchMembers)]) {
       const guild = Gamer.guilds.get(guildID)
       if (!guild) continue
 
