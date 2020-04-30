@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Zeigt alle deine Tags auf dem Server.",
+  "EXTENDED": "**{{prefix}}tags** ~ Zeigt alle deine Tags auf dem Server.",
+  "USAGE": "{{prefix}}tags",
+  "ALIASES": "{{prefix}}tag"
+}
