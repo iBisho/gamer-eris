@@ -39,6 +39,12 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
+  // Extra layer of security to prevent abuse
+  if (firstIDGuild) {
+    const targetGuildSettings = await Gamer.database.models.guild.findOne({ id: firstID })
+    if (!Gamer.helpers.discord.isAdmin(message, targetGuildSettings?.staff.adminRoleID)) return
+  }
+
   // All requirements passed time to create a webhook.
   const webhook = await mirrorChannel.createWebhook(
     { name, avatar: Gamer.user.avatarURL },
