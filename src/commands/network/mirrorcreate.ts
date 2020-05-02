@@ -46,11 +46,14 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
     if (!Gamer.helpers.discord.isAdmin(message, targetGuildSettings?.staff.adminRoleID)) return
   }
 
+  const webhookExists = await Gamer.database.models.mirror.findOne({ mirrorChannelID: mirrorChannel.id })
   // All requirements passed time to create a webhook.
-  const webhook = await mirrorChannel.createWebhook(
-    { name, avatar: Gamer.user.avatarURL },
-    language(`network/mirrorcreate:MIRROR_CREATE_REASON`, { username: encodeURIComponent(userTag(message.author)) })
-  )
+  const webhook = !webhookExists
+    ? await mirrorChannel.createWebhook(
+        { name, avatar: Gamer.user.avatarURL },
+        language(`network/mirrorcreate:MIRROR_CREATE_REASON`, { username: encodeURIComponent(userTag(message.author)) })
+      )
+    : undefined
 
   const mirror = await Gamer.database.models.mirror.create({
     name: name.toLowerCase(),
@@ -58,8 +61,8 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
     mirrorChannelID: mirrorChannel.id,
     sourceGuildID: message.member.guild.id,
     mirrorGuildID: mirrorChannel.guild.id,
-    webhookToken: webhook.token,
-    webhookID: webhook.id
+    webhookToken: webhookExists?.webhookToken || webhook?.token,
+    webhookID: webhookExists?.webhookID || webhook?.id
   })
 
   // Add in cache
