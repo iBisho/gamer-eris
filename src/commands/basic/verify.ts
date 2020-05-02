@@ -203,7 +203,9 @@ export default new Command(`verify`, async (message, args, context) => {
       }
       const embedCode = JSON.parse(transformed)
       if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
-      if (!embedCode.color) embedCode.color = 0x41ebf4
+      if (typeof embedCode.thumbnail === 'string') embedCode.thumbnail = { url: embedCode.thumbnail }
+      if (embedCode.color === 'RANDOM') embedCode.color = Math.floor(Math.random() * (0xffffff + 1))
+      if (embedCode.timestamp) embedCode.timestamp = new Date().toISOString()
       // send a message to the new channel
       newChannel.createMessage({ content: message.author.mention, embed: embedCode })
 
