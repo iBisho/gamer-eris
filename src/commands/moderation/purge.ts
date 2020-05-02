@@ -35,6 +35,8 @@ export default new Command([`purge`, `nuke`, `n`, `prune`, `clear`], async (mess
     if (now - msg.timestamp > maxAge) return false
     // if users were mentioned we remove their messages
     if (message.mentions.length) return message.mentions.some(user => user.id === msg.author.id)
+    // If the filter is a user ID useful when user is gone and cant @
+    if (args.includes(msg.author.id)) return true
     // Check the filter types
     if (filter === `links`) return /https?:\/\/[^ /.]+\.[^ /.]+/.test(msg.content)
     if (filter === `invites`)
