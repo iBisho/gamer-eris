@@ -189,8 +189,14 @@ export default class {
     }
 
     await channel.createMessage({
-      content: alertRoleIDs.map(roleID => `<@&${roleID}>`).join(' '),
-      embed: embed.code
+      content: alertRoleIDs
+        .filter(id => message.member?.guild.roles.has(id))
+        .map(roleID => `<@&${roleID}>`)
+        .join(' '),
+      embed: embed.code,
+      allowedMentions: {
+        roles: alertRoleIDs
+      }
     })
 
     // Disable the mentionable roles again after message is sent

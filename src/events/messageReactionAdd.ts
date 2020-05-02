@@ -50,6 +50,7 @@ export default class extends Event {
 
     // Message might be from other users
     this.handleReactionRole(message, emoji, userID, guild)
+    this.handleAutoRole(message, guild, userID)
 
     // Messages must be from Gamer
     if (message.author.id !== Gamer.user.id) return
@@ -528,5 +529,37 @@ export default class extends Event {
           return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
         }
     }
+  }
+
+  async handleAutoRole(message: Message, guild: Guild, userID: string) {
+    // Autorole must be the first role granted to be 100% confirmed that the user is in fact verified.
+    if (!message.member || message.member.roles.length > 1) return
+    if (Gamer.debugModeEnabled)
+      Gamer.helpers.logger.debug(
+        `AUTOROLE ON REACTION: MessageID: ${message.id} UserID: ${userID} Guild Name: ${guild.name} ID: ${guild.id}`
+      )
+
+    const language = Gamer.getLanguage(message.guildID)
+    const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
+    if (!bot || !bot.permission.has('manageRoles')) return
+
+    const role = highestRole(bot)
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+    if (!guildSettings?.moderation.roleIDs.autorole) return
+
+    const autorole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.autorole)
+    if (!autorole || autorole.position >= role.position) return
+
+    Gamer.amplitude.push({
+      authorID: message.author.id,
+      channelID: message.channel.id,
+      guildID: guild.id,
+      messageID: message.id,
+      timestamp: message.timestamp,
+      memberID: message.member.id,
+      type: 'ROLE_ADDED'
+    })
+
+    return message.member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
   }
 }

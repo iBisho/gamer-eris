@@ -251,7 +251,7 @@ export default class extends Event {
 
     // Always fetch gamer guild
     guildIDsToFetchMembers.push(constants.general.gamerServerID)
-
+    Gamer.debugModeEnabled = true
     for (const guildID of [...new Set(guildIDsToFetchMembers)]) {
       const guild = Gamer.guilds.get(guildID)
       if (!guild) continue
@@ -265,6 +265,7 @@ export default class extends Event {
       )
     }
 
+    Gamer.debugModeEnabled = false
     Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
   }
 }

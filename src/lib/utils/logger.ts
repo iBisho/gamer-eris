@@ -1,6 +1,10 @@
 import chalk from 'chalk'
 
 export default class {
+  debug(text: unknown) {
+    console.log(chalk.redBright(`[${this.getTime()}] => [DEBUG MODE]: ${JSON.stringify(text)}`))
+  }
+
   yellow(text: string) {
     console.log(chalk.yellowBright(`[${this.getTime()}] => ${text}`))
   }

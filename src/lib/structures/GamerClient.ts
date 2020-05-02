@@ -146,6 +146,8 @@ export default class GamerClient extends Client {
   guildsXPPerMinuteVoice = new Map<string, number>()
   vipGuildIDs = new Set<string>()
   mirrors = new Map<string, GamerMirror>()
+  /** Debug boolean to enable all the DEBUG logs during moments where we need to debug. */
+  debugModeEnabled = false
 
   constructor(options: ClientOptions) {
     super(options)
