@@ -1,10 +1,10 @@
 {
-  "DESCRIPTION": "Una manera fácil de compartir el enlace del tablón de Gamer.",
-  "EXTENDED": "**{{prefix}}invite** ~ Muesta el enlace de invitación al bot para invitarlo a tu servidor y también un enlace para unirse al Servidor de Soporte si necesitas ayuda.",
+  "DESCRIPTION": "Muestra el enlace de invitación del bot para invitarlo a tu servidor y también el enlace para unirse al Servidor de Soporte por si necesitas ayuda.",
+  "EXTENDED": "**{{prefix}}invite** ~ Muestra el enlace de invitación del bot para invitarlo a tu servidor y también un enlace para unirse al Servidor de Soporte si necesitas ayuda.",
   "USAGE": "{{prefix}}invite",
   "ALIASES": "{{prefix}}join",
   "EMBED_DESCRIPTION": "¡Visita nuestra página web en **https://gamer.netlify.com** para añadir el bot a tu servidor!",
   "LINKS": "$t(basic/invite:LINKS_LINE_1)\n$t(basic/invite:LINKS_LINE_2)",
-  "LINKS_LINE_1": "**»** 1 **Invita al Bot*: [Pulsa Aquí para invitar al Bot]({{invite}})",
-  "LINKS_LINE_2": "**»** 1 **Necesitas Ayuda?**: [Servidor de Soporte](https://discord.gg/J4NqJ72)"
+  "LINKS_LINE_1": "**»** <:g4m3rwhite:443416083874054145> **Invita al Bot*: [Pulsa aquí para invitar al Bot]({{invite}})",
+  "LINKS_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Necesitas Ayuda?**: [Servidor de Soporte](https://discord.gg/J4NqJ72)"
 }
