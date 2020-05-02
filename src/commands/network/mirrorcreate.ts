@@ -24,7 +24,6 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
   if (!mirrorChannel || (!(mirrorChannel instanceof TextChannel) && !(mirrorChannel instanceof NewsChannel)))
     return message.channel.createMessage(language(`network/mirrorcreate:INVALID_CHANNEL`))
 
-  console.log(mirrorChannel.name)
   // Make sure the bot has the permissions to create webhooks
   const hasPermission = Gamer.helpers.discord.checkPermissions(mirrorChannel, Gamer.user.id, [
     `manageWebhooks`,
