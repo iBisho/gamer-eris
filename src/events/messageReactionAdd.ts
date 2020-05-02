@@ -536,7 +536,7 @@ export default class extends Event {
     if (!message.member || message.member.roles.length > 1) return
     if (Gamer.debugModeEnabled)
       Gamer.helpers.logger.debug(
-        `AUTOROLE ON REACTION: MessageID: ${message.id} UserID: ${userID} Guild Name: ${guild.name} ID: ${guild.id}`
+        `AUTOROLE ON REACTION ADD: MessageID: ${message.id} UserID: ${userID} Guild Name: ${guild.name} ID: ${guild.id}`
       )
 
     const language = Gamer.getLanguage(message.guildID)

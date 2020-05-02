@@ -1,5 +1,5 @@
 // Logs that a command run (even if it was inhibited)
-import { PossiblyUncachedMessage, Message, PrivateChannel, GroupChannel } from 'eris'
+import { PossiblyUncachedMessage, Message, PrivateChannel, GroupChannel, Guild } from 'eris'
 import Event from '../lib/structures/Event'
 import { ReactionEmoji } from '../lib/types/discord'
 import constants from '../constants'
@@ -20,10 +20,11 @@ export default class extends Event {
 
     if (rawMessage.channel instanceof PrivateChannel || rawMessage.channel instanceof GroupChannel) return
 
-    const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
-    if (!user) return
+    const guild = rawMessage.channel.guild
+    if (!guild) return
 
-    if (user.bot) return
+    const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
+    if (!user || user.bot) return
 
     // Need read message history perms to get the messages
     const botPerms = rawMessage.channel.permissionsOf(Gamer.user.id)
@@ -40,6 +41,7 @@ export default class extends Event {
     if (eventEmojis.includes(emoji.id)) this.handleEventReaction(message, emoji, userID)
     this.handleReactionRole(message, emoji, userID)
     this.handleFeedbackReaction(message, emoji, userID)
+    this.handleAutoRole(message, guild, userID)
   }
 
   async handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
@@ -128,5 +130,40 @@ export default class extends Event {
     if (upEmojis.includes(fullEmojiName)) return Gamer.helpers.levels.removeXP(feedbackMember, 3)
     if (downEmojis.includes(fullEmojiName)) return Gamer.helpers.levels.addLocalXP(feedbackMember, 3, true)
     return
+  }
+
+  async handleAutoRole(message: Message, guild: Guild, userID: string) {
+    // Autorole must be the first role granted to be 100% confirmed that the user is in fact verified.
+    if (!message.member || message.member.roles.length > 1) return
+    if (Gamer.debugModeEnabled)
+      Gamer.helpers.logger.debug(
+        `AUTOROLE ON REACTION REM: MessageID: ${message.id} UserID: ${userID} Guild Name: ${guild.name} ID: ${guild.id}`
+      )
+
+    const language = Gamer.getLanguage(message.guildID)
+    const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
+    if (!bot || !bot.permission.has('manageRoles')) return
+
+    const role = highestRole(bot)
+    const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+    if (!guildSettings?.moderation.roleIDs.autorole) return
+
+    const autorole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.autorole)
+    if (!autorole || autorole.position >= role.position) return
+
+    Gamer.amplitude.push({
+      authorID: message.author.id,
+      channelID: message.channel.id,
+      guildID: guild.id,
+      messageID: message.id,
+      timestamp: message.timestamp,
+      memberID: message.member.id,
+      type: 'ROLE_REMOVED'
+    })
+
+    return message.member.removeRole(
+      guildSettings.moderation.roleIDs.autorole,
+      language(`basic/verify:AUTOROLE_ASSIGNED`)
+    )
   }
 }
