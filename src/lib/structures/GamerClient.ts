@@ -103,7 +103,7 @@ export default class GamerClient extends Client {
     feedback: new FeedbackHelper(this),
     leaderboards: new LeaderboardHelper(this),
     levels: new LevelsHelper(this),
-    logger: new LoggerHelper(),
+    logger: new LoggerHelper(this),
     mail: new MailHelper(this),
     moderation: new ModerationHelper(this),
     profiles: new ProfileHelper(this),
