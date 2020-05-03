@@ -22,13 +22,16 @@ export default class extends Monitor {
       return
     }
 
+    let username = mirror.anonymous
+      ? `${Gamer.helpers.utils.chooseRandom(funnyAnonymousNames)}#0000`
+      : userTag(message.author)
+    if (!username.endsWith(' - Gamer Mirror')) username += ' - Gamer Mirror'
+
     // This is a mirror channel so we need to execute a webhook for it
     Gamer.executeWebhook(mirror.webhookID, mirror.webhookToken, {
       content: message.content,
       embeds: message.embeds,
-      username: mirror.anonymous
-        ? `${Gamer.helpers.utils.chooseRandom(funnyAnonymousNames)}#0000 - Gamer Mirror`
-        : `${userTag(message.author)} - Gamer Mirror`,
+      username: username.substring(0, 80) || 'Unknown User - Gamer Mirror',
       avatarURL: mirror.anonymous ? Gamer.user.avatarURL : message.author.avatarURL,
       allowedMentions: {
         everyone: false,

@@ -256,13 +256,9 @@ export default class extends Event {
       const guild = Gamer.guilds.get(guildID)
       if (!guild) continue
 
-      Gamer.helpers.logger.yellow(
-        `[DEBUG] 1 Fetching Guilds: ${guild.name} ID: ${guild.id} Count: ${guild.members.size} / ${guild.memberCount}`
-      )
+      Gamer.helpers.logger.debug(`${guild.name} Count: ${guild.members.size} / ${guild.memberCount}`, 'yellow')
       await guild.fetchAllMembers()
-      Gamer.helpers.logger.green(
-        `[DEBUG] 2 Fetching Guilds: ${guild.name} ID: ${guild.id} Count: ${guild.members.size} / ${guild.memberCount}`
-      )
+      Gamer.helpers.logger.debug(`${guild.name} Count: ${guild.members.size} / ${guild.memberCount}`, 'green')
     }
 
     Gamer.debugModeEnabled = false
