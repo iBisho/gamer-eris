@@ -22,7 +22,7 @@
 	"SETTINGSVALUE": "$t(basic/server:SETTINGSVALUE_LINE_1)\n$t(basic/server:SETTINGSVALUE_LINE_2)\n$t(basic/server:SETTINGSVALUE_LINE_3)\n$t(basic/server:SETTINGSVALUE_LINE_4)",
 	"SETTINGSVALUE_LINE_1": "Lenguaje: {{language}}",
 	"SETTINGSVALUE_LINE_2": "Roles de Moderadores: {{modRoles}}",
-	"SETTINGSVALUE_LINE_3": "Administradores: {{admins}}",
+	"SETTINGSVALUE_LINE_3": "Rol de Administrador: {{admins}}",
 	"SETTINGSVALUE_LINE_4": "Feedback: **Idea:** {{ideaEnabled}} | **Reportes de Bugs**: {{bugEnabled}}",
 	"TITLE": "Estadísticas del Servidor »"
 }
