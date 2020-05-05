@@ -9,6 +9,7 @@ import { milliseconds } from '../lib/types/enums/time'
 import { MessageEmbed } from 'helperis'
 import { fetchLatestManga } from '../services/manga'
 import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
+import { dailyLifeTasksReset } from '../lib/utils/marriage'
 
 export default class extends Event {
   async execute() {
@@ -111,6 +112,7 @@ export default class extends Event {
       weeklyVoteReset()
       vipExpiredCheck()
       Gamer.helpers.levels.processInactiveXPRemoval()
+      dailyLifeTasksReset()
     }, milliseconds.DAY)
 
     // Begin fetching manga

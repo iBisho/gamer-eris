@@ -6,6 +6,7 @@ export default new mongoose.Schema({
   step: { type: Number, required: true },
   accepted: Boolean,
   weddingShopCounter: { type: Number, default: 0 },
+  lifeCounter: { type: Number, default: 0 },
   love: { type: Number, default: 20 }
 })
 
@@ -20,6 +21,8 @@ export interface GamerMarriage extends mongoose.Document {
   accepted: boolean
   /** How many items in the shopping list for the wedding ceremoney has been completed. */
   weddingShopCounter: number
+  /** How many of the daily life tasks have been completed. */
+  lifeCounter: number
   /** The counter for the amount of love in a marriage. If it drops below 10 it will randomly end the marriage. */
   love: number
 }

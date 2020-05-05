@@ -6,46 +6,18 @@ import { TenorGif } from '../../lib/types/tenor'
 import fetch from 'node-fetch'
 
 const searchCriteria = [
-  { name: 'wedding album', cost: 5 },
-  { name: 'wedding budget', cost: 10 },
-  { name: 'wedding party', cost: 10 },
-  { name: 'guest list', cost: 10 },
-  { name: 'planner', cost: 500 },
-  { name: 'wedding hall', cost: 1000 },
-  { name: 'gamer bot', cost: 10 },
-  { name: 'photographer', cost: 500 },
-  { name: 'engagement party', cost: 1000 },
-  { name: 'jesters', cost: 500 },
-  { name: 'caterers', cost: 500 },
-  { name: 'wedding dress', cost: 1000 },
-  { name: 'wedding website', cost: 100 },
-  { name: 'share social media', cost: 100 },
-  { name: 'pretty font', cost: 200 },
-  { name: 'vaccination shots', cost: 300 },
-  { name: "bridesmaid's dresses.", cost: 1000 },
-  { name: 'wedding invitations', cost: 200 },
-  { name: 'wedding chairs', cost: 200 },
-  { name: 'florist', cost: 500 },
-  { name: 'limo', cost: 300 },
-  { name: 'dinner venue', cost: 500 },
-  { name: 'wedding cake', cost: 300 },
-  { name: 'wedding shoes', cost: 1000 },
-  { name: 'hair and makeup artists', cost: 500 },
-  { name: 'dj', cost: 500 },
-  { name: 'wedding ring', cost: 6000 },
-  { name: 'slow dance', cost: 1000 },
-  { name: 'slow dance', cost: 1000 },
-  { name: 'marriage license', cost: 20 },
-  { name: 'assigned seats', cost: 10 },
-  { name: 'bridesmaids gifts', cost: 500 },
-  { name: 'wedding vows', cost: 10 },
-  { name: 'haircut', cost: 20 },
-  { name: 'hair dye', cost: 20 },
-  { name: 'painful waxing', cost: 20 },
-  { name: 'dobby sock', cost: 1 }
+  { name: 'career', cost: -500 },
+  { name: 'house', cost: 67 },
+  { name: 'tesla car', cost: 33 },
+  { name: 'gas station', cost: 10 },
+  { name: 'electricity bill', cost: 16 },
+  { name: 'water bill', cost: 3 },
+  { name: 'groceries', cost: 6 },
+  { name: 'romantic dinner', cost: 100 },
+  { name: 'conversation', cost: 0 }
 ]
 
-export default new Command(`shopwedding`, async (message, _args, context) => {
+export default new Command(`life`, async (message, _args, context) => {
   if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
@@ -54,16 +26,15 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
   const marriage = await Gamer.database.models.marriage
     .findOne()
     .or([{ authorID: message.author.id }, { spouseID: message.author.id, accepted: true }])
+  if (!marriage) return message.channel.createMessage(language('fun/life:NOT_MARRIED'))
 
-  if (!marriage) return message.channel.createMessage(language('fun/shopwedding:NOT_MARRIED'))
-
-  const item = searchCriteria[marriage.weddingShopCounter]
-  if (!item) return message.channel.createMessage(language(`fun/shopwedding:COMPLETE`))
+  const item = searchCriteria[marriage.lifeCounter]
+  if (!item) return message.channel.createMessage(language(`fun/life:COMPLETE`))
   // If no settings for the user they wont have any coins to spend anyway
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
   if (!userSettings)
     return message.channel.createMessage(
-      language(`fun/shopwedding:NEED_COINS`, {
+      language(`fun/life:NEED_COINS`, {
         emoji: constants.emojis.coin,
         cost: item.cost,
         needed: item.cost
@@ -78,7 +49,7 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
 
       if (userSettings.leveling.currency + spouseSettings.leveling.currency < item.cost)
         return message.channel.createMessage(
-          language(`fun/shopwedding:NEED_COINS`, {
+          language(`fun/life:NEED_COINS`, {
             emoji: constants.emojis.coin,
             cost: item.cost,
             needed: item.cost - (userSettings.leveling.currency + spouseSettings.leveling.currency)
@@ -95,7 +66,7 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
     // Since the marriage hasnt been accepted yet we cancel out since the user doesnt have enough coins
     else
       return message.channel.createMessage(
-        language(`fun/shopwedding:NEED_COINS`, {
+        language(`fun/life:NEED_COINS`, {
           emoji: constants.emojis.coin,
           cost: item.cost,
           needed: item.cost - userSettings.leveling.currency
@@ -107,18 +78,17 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
     userSettings.save()
   }
 
-  const SHOPPING_LIST: string[] = language('fun/shopwedding:SHOPPING_LIST', {
+  const SHOPPING_LIST: string[] = language('fun/life:SHOPPING_LIST', {
     mention: message.author.mention,
     coins: constants.emojis.coin,
     returnObjects: true
   })
 
-  if (SHOPPING_LIST.length === marriage.weddingShopCounter + 1)
-    return message.channel.createMessage(language('fun/shopwedding:COMPLETE'))
+  if (SHOPPING_LIST.length === marriage.lifeCounter) return message.channel.createMessage(language('fun/life:COMPLETE'))
 
   const shoppingList = SHOPPING_LIST.map(
     (i, index) =>
-      `${index <= marriage.weddingShopCounter ? `✅` : `📝`} ${index + 1}. ${i} ${searchCriteria[index].cost} ${
+      `${index <= marriage.lifeCounter ? `✅` : `📝`} ${index + 1}. ${i} ${searchCriteria[index].cost} ${
         constants.emojis.coin
       }`
   )
@@ -151,19 +121,17 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
     if (media) embed.setImage(media.gif.url).setFooter(`Via Tenor`)
   }
 
-  marriage.weddingShopCounter++
+  marriage.lifeCounter++
   marriage.love++
-  marriage.step++
   marriage.save()
 
   message.channel.createMessage({ embed: embed.code })
-  if (marriage.weddingShopCounter !== SHOPPING_LIST.length) return
-
-  message.channel.createMessage(language(`fun/shopwedding:CONGRATS`, { mention: message.author.mention }))
+  if (marriage.lifeCounter !== SHOPPING_LIST.length) return
 
   // The shopping is complete
   const completedEmbed = new MessageEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
-    .setImage('https://i.imgur.com/Dx9Z2hq.jpg')
-  return message.channel.createMessage({ embed: completedEmbed.code })
+    .setDescription(language(`fun/life:CONGRATS`, { mention: message.author.mention }))
+    .setImage('https://i.imgur.com/LQtEyux.png')
+  return message.channel.createMessage({ content: message.author.mention, embed: completedEmbed.code })
 })

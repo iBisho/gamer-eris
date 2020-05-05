@@ -16,7 +16,7 @@ export default new Command([`balance`, `bal`, `wallet`, `money`, `coins`], async
   return message.channel.createMessage(
     language(`leveling/balance:SUCCESS`, {
       mention: message.author.mention,
-      amount: userSettings.leveling.currency,
+      amount: userSettings.leveling.currency.toLocaleString(),
       emoji: constants.emojis.coin
     })
   )

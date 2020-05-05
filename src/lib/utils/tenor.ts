@@ -51,6 +51,8 @@ export default class {
 
     message.channel.createMessage({ embed: embed.code })
 
+    if (user.id !== message.author.id) completeMarriageTask(message, commandName)
+
     return message.member
       ? this.Gamer.helpers.levels.completeMission(message.member, commandName, message.guildID)
       : undefined

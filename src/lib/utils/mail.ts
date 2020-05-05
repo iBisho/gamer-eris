@@ -138,7 +138,8 @@ export default class {
       type: 'MAIL_CREATE'
     })
 
-    const topic = content.substring(0, content.length > 50 ? 50 : content.length)
+    const finalContent = content.substring(label ? content.indexOf(' ') + 1 : 0)
+    const topic = finalContent.substring(0, finalContent.length > 50 ? 50 : finalContent.length)
 
     await this.Gamer.database.models.mail.create({
       id: channel.id,
@@ -157,7 +158,7 @@ export default class {
         }),
         mailUser.avatarURL
       )
-      .setDescription(content)
+      .setDescription(finalContent)
       .addField(language(`mails/mail:SEND_REPLY`), language(`mails/mail:SEND_REPLY_INFO`, { prefix }), true)
       .addField(language(`mails/mail:CLOSE`), language(`mails/mail:CLOSE_INFO`, { prefix }), true)
       .setFooter(language(`mails/mail:USERID`, { id: mailUser.id }))
