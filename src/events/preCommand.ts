@@ -1,20 +1,33 @@
 // Logs that a command run (even if it was inhibited)
-import { Message } from 'eris'
+import { Message, TextChannel, NewsChannel } from 'eris'
 import Event from '../lib/structures/Event'
 import { Command, CommandContext } from 'yuuko'
 import GamerClient from '../lib/structures/GamerClient'
+import { userTag } from 'helperis'
 
 export default class extends Event {
   async execute(command: Command, message: Message, _args: string[], context: CommandContext) {
-    if (!message.guildID || !message.member) return
-
     const Gamer = context.client as GamerClient
 
     const [name] = command.names
 
-    // if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
+    const channelName =
+      message.channel instanceof TextChannel || message.channel instanceof NewsChannel
+        ? message.channel.name
+        : 'UNKNWON'
+    const tag = userTag(message.author)
 
-    Gamer.helpers.logger.blue(`[${context.commandName}] Command ran in ${message.member.guild.name}`)
+    Gamer.helpers.logger.debug(
+      `[${context.commandName}] Command Ran in ${message.member?.guild.name || 'DM'} by ${tag} ID: ${
+        message.author.id
+      } in channel ${channelName} ID: ${message.channel.id}`,
+      'blue'
+    )
+
+    if (!Gamer.debugModeEnabled)
+      Gamer.helpers.logger.blue(`[${context.commandName}] Command ran in ${message.member?.guild.name || 'DM'}`)
+
+    if (!message.guildID || !message.member) return
 
     Gamer.amplitude.push({
       authorID: message.author.id,

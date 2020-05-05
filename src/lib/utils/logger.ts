@@ -11,7 +11,7 @@ export default class {
   debug(text: unknown, color: 'red' | 'yellow' | 'green' | 'blue' = 'red') {
     if (!this.Gamer.debugModeEnabled) return
 
-    const finaltext = `[DEBUG MODE]: ${JSON.stringify(text)}`
+    const finaltext = `[DEBUG MODE]: ${typeof text === 'string' ? text : JSON.stringify(text)}`
     if (color === 'yellow') this.yellow(finaltext)
     else if (color === 'green') this.green(finaltext)
     else if (color === 'blue') this.blue(finaltext)
@@ -31,7 +31,7 @@ export default class {
   }
 
   setTime(text: unknown) {
-    return `[${this.getTime()}] => ${JSON.stringify(text)}`
+    return `[${this.getTime()}] => ${typeof text === 'string' ? text : JSON.stringify(text)}`
   }
 
   getTime() {
