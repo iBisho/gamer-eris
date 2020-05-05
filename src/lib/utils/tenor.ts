@@ -3,6 +3,7 @@ import { Message } from 'eris'
 import { MessageEmbed } from 'helperis'
 import { TenorGif } from '../types/tenor'
 import fetch from 'node-fetch'
+import { completeMarriageTask } from './marriage'
 
 export default class {
   Gamer: GamerClient

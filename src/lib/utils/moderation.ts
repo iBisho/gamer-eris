@@ -18,7 +18,7 @@ export default class {
     guildSettings: GuildSettings | null,
     language: TFunction,
     user: User,
-    action: `ban` | `unban` | `mute` | `unmute` | `warn` | `kick`,
+    action: `ban` | `unban` | `mute` | `unmute` | `warn` | `kick` | `note`,
     reason: string,
     duration?: number
   ) {
