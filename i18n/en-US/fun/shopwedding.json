@@ -4,7 +4,7 @@
   "USAGE": "{{prefix}}shopwedding",
   "ALIASES": "Shopwedding does not have any aliases.",
   "NOT_MARRIED": "To begin shopping for your wedding, you have to atleast propose to someone. Use the **marry** command to propose to someone first.",
-  "COMPLETE": "You have completed your wedding planning already. To continue with your marriage, you need to use the **wedding** command.",
+  "COMPLETE": "You have completed your wedding planning already. To continue with your marriage, you need to use the **life** command.",
   "CONGRATS": "$t(fun/shopwedding:CONGRATS_1)\n\n$t(fun/shopwedding:CONGRATS_2)\n$t(fun/shopwedding:CONGRATS_3)",
   "CONGRATS_1": "{{mention}}, Wow, you managed to get all the wedding planning done. Did it feel annoying at all? That is just a small example of how much time and energy a marriage truly takes. The costs of a relationship are not just about money but about spending the time to make it succeed. Every day you will need to do things you may not always want to, in order to make your partner happy. To continue to the next step of your marriage, go ahead and use the **life** command. Never forget, to learn to live every moment here and now, afterall:",
   "CONGRATS_2": "Which comes first? Yesterday or Tomorrow? ... All we know is that what we think of as past, present, and future is nothing more than a story stitched together in our basal ganglia. Our entire concept of time is an artificial concept.",
