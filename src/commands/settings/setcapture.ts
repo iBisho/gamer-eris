@@ -15,7 +15,7 @@ export default new Command(`setcapture`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
 
   const [game, reset] = args
-  const validGames = [`arenaofvalor`, `mobilelegends`, `rulesofsurvival`]
+  const validGames = [`arenaofvalor`, `mobilelegends`, `rulesofsurvival`, `baseball`]
   if (!game || !validGames.includes(game.toLowerCase()))
     return message.channel.createMessage(
       language(`settings/setcapture:INVALID_GAME`, { validGames: validGames.join(', ') })

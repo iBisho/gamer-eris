@@ -4,6 +4,7 @@
   "EXTENDED_LINE_1": "**{{prefix}}setcapture arenaofvalor [#Channel]** ~ Set the card game for Arena of Valor game.",
   "EXTENDED_LINE_2": "**{{prefix}}setcapture mobilelegends [#Channel]** ~ Set the card game for Mobile Legends Bang Bang game.",
   "EXTENDED_LINE_3": "**{{prefix}}setcapture rulesofsurvival [#Channel]** ~ Set the card game for Rules of Survival game.",
+  "EXTENDED_LINE_4": "**{{prefix}}setcapture baseball [#Channel]** ~ Set the card game for Baseball game.",
   "USAGE": "{{prefix}}setcapture [Game Name] *[#Channel]*",
   "ALIASES": "Setcapture does not have any aliases",
   "INVALID_GAME": "The game you entered is not a valid game. The valid games are {{validGames}}.",

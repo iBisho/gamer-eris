@@ -130,6 +130,8 @@ export default class extends Event {
             ? constants.cards.mobilelegends
             : gameName === `rulesofsurvival`
             ? constants.cards.rulesofsurvival
+            : gameName === `baseball`
+            ? constants.cards.baseball
             : []
         const guild = Gamer.guilds.get(setting.guildID)
         if (!guild) continue
