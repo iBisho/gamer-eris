@@ -43,7 +43,7 @@ export default class extends Monitor {
       .setDescription(message.content)
       .setFooter(message.author.id)
       .setTimestamp()
-    if (buffer) embed.attachFile(buffer, 'imagepost.png')
+    if (buffer) embed.attachFile(buffer, `imagepost.${message.attachments[0].url.endsWith('.gif') ? 'gif' : 'png'}`)
 
     try {
       // Send the message the user posted as an embed
