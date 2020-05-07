@@ -18,14 +18,15 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
 
   if (!hasPermissions) return message.channel.createMessage(language(`roles/reactionrolecreate:NEED_PERMS`))
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
-
-  // If the user is not an admin cancel out
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [messageID, name, emoji, ...roleIDsOrNames] = args
+
+  if (messageID === 'setup') {
+    return Gamer.helpers.scripts.createReactionRoleColors(message)
+  }
+
   if (!messageID || !name || !emoji) return helpCommand.process(message, [`reactionrolecreate`], context)
 
   const messageToUse =

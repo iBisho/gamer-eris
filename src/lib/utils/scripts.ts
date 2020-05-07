@@ -1,8 +1,31 @@
-import { Guild, CategoryChannel, Overwrite, TextChannel, NewsChannel } from 'eris'
+import { Guild, CategoryChannel, Overwrite, TextChannel, NewsChannel, Message } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import { MessageEmbed } from 'helperis'
+import { MessageEmbed, userTag } from 'helperis'
 import constants from '../../constants'
+
+const reactionRoleData = [
+  { name: 'red', hex: '#ff0000', emoji: constants.emojis.colors.red },
+  { name: 'purplered', hex: '#33032b', emoji: constants.emojis.colors.purplered },
+  { name: 'purple', hex: '#4b0082', emoji: constants.emojis.colors.purple },
+  { name: 'pinkpurple', hex: '#c000ff', emoji: constants.emojis.colors.pinkpurple },
+  { name: 'pink', hex: '#ff5f9a', emoji: constants.emojis.colors.pink },
+  { name: 'pastelyellow', hex: '#fffad1', emoji: constants.emojis.colors.pastelyellow },
+  { name: 'pastelred', hex: '#ff876c', emoji: constants.emojis.colors.pastelred },
+  { name: 'pastelpurple', hex: '#dac2dc', emoji: constants.emojis.colors.pastelpurple },
+  { name: 'pastelpink', hex: '#fbccd3', emoji: constants.emojis.colors.pastelpink },
+  { name: 'pastelorange', hex: '#f7af4b', emoji: constants.emojis.colors.pastelorange },
+  { name: 'pastelgreen', hex: '#bdecb6', emoji: constants.emojis.colors.pastelgreen },
+  { name: 'pastelblue', hex: '#c8dcf4', emoji: constants.emojis.colors.pastelblue },
+  { name: 'orange', hex: '#fe6019', emoji: constants.emojis.colors.orange },
+  { name: 'limegreen', hex: '#65ff00', emoji: constants.emojis.colors.limegreen },
+  { name: 'lightorange', hex: '#ff9a00', emoji: constants.emojis.colors.lightorange },
+  { name: 'lightblue', hex: '#4fadab', emoji: constants.emojis.colors.lightblue },
+  { name: 'brown', hex: '#4f3205', emoji: constants.emojis.colors.brown },
+  { name: 'brightyellow', hex: '#ffff00', emoji: constants.emojis.colors.brightyellow },
+  { name: 'brightpink', hex: '#ff0078', emoji: constants.emojis.colors.brightpink },
+  { name: 'blue', hex: '#223480', emoji: constants.emojis.colors.blue }
+]
 
 export default class {
   Gamer: GamerClient
@@ -265,5 +288,80 @@ export default class {
     })
 
     return muteRole
+  }
+
+  async createReactionRoleColors(message: Message) {
+    const language = this.Gamer.getLanguage(message.guildID)
+    const member = message.member
+    if (!member || member.guild.roles.size + 20 > 250)
+      return message.channel.createMessage(language(`roles/reactionrolecreate:MAX_ROLES`))
+
+    const hasPermission = this.Gamer.helpers.discord.checkPermissions(message.channel, this.Gamer.user.id, [
+      `readMessages`,
+      `sendMessages`,
+      `embedLinks`,
+      `externalEmojis`,
+      `readMessageHistory`,
+      `addReactions`
+    ])
+    if (!hasPermission) return message.channel.createMessage(language(`roles/reactionrolecreate:MISSING_PERMISSION`))
+
+    const reactionRole = await this.Gamer.database.models.reactionRole.findOne({
+      name: 'colors',
+      guildID: message.guildID
+    })
+
+    if (reactionRole) return message.channel.createMessage(language(`roles/reactionrolecreate:NAME_EXISTS`, { name }))
+
+    const exists = await this.Gamer.database.models.roleset.findOne({
+      name: 'colors',
+      guildID: message.guildID
+    })
+    if (exists) return message.channel.createMessage(language(`roles/rolesetcreate:EXISTS`, { name }))
+
+    // Create all 20 roles
+
+    const roles = await Promise.all(
+      reactionRoleData.map(data =>
+        member.guild.createRole(
+          { name: data.name, color: parseInt(data.hex.replace('#', ''), 16) },
+          language('roles/reactionrolecreate:SETUP_REASON', { username: encodeURIComponent(userTag(message.author)) })
+        )
+      )
+    )
+
+    // Send a message
+    const embed = new MessageEmbed()
+      .setAuthor(language('roles/reactionrolecreate:COLOR_WHEEL'), 'https://i.imgur.com/wIrhA5A.jpg')
+      .setDescription(language('roles/reactionrolecreate:PICK_COLOR'))
+      .addField(language('roles/reactionrolecreate:DONT_FORGET'), language('roles/reactionrolecreate:ONLY_ONE'))
+      .setFooter(language('roles/reactionrolecreate:CUSTOMIZE_PICKER'), member.guild.iconURL)
+    const baseMessage = await message.channel.createMessage({ embed: embed.code })
+
+    // Create reaction role
+    this.Gamer.database.models.reactionRole.create({
+      name: 'colors',
+      reactions: roles.map((role, index) => ({
+        reaction: this.Gamer.helpers.discord.convertEmoji(reactionRoleData[index].emoji, `reaction`),
+        roleIDs: [role.id]
+      })),
+      messageID: baseMessage.id,
+      channelID: baseMessage.channel.id,
+      guildID: message.guildID,
+      authorID: message.author.id
+    })
+
+    // Create a roleset
+    await this.Gamer.database.models.roleset.create({
+      name: 'colors',
+      roleIDs: roles.map(role => role.id),
+      guildID: message.guildID
+    })
+
+    // Create all 20 reactions
+    return reactionRoleData.forEach(data => {
+      const reaction = this.Gamer.helpers.discord.convertEmoji(data.emoji, `reaction`)
+      if (reaction) baseMessage.addReaction(reaction)
+    })
   }
 }

@@ -15,7 +15,8 @@ export default class extends Monitor {
     if (!hasPermissions) return
 
     const lowercaseContent = message.content.toLowerCase()
-    const [firstWord] = lowercaseContent.split(' ')
+    const words = lowercaseContent.split(' ')
+    const [firstWord] = words
 
     const validTags: GamerTag[] = []
 
@@ -26,8 +27,12 @@ export default class extends Monitor {
       if (!lowercaseContent.includes(tagData.name)) continue
       // If its basic type and the first word is not the tag name skip
       if (`basic` === tagData.type && firstWord !== tagData.name) continue
+      // The tag trigger is a part of a mention/emoji
+      const possibleTriggers = words.filter(
+        word => word.includes(tagData.name) && !word.startsWith('<') && !word.endsWith('>')
+      )
       // This should be a valid tag to run
-      validTags.push(tagData)
+      if (possibleTriggers.length) validTags.push(tagData)
     }
 
     // If there were no valid tags just cancel

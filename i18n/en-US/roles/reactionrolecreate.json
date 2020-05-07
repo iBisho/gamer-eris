@@ -8,5 +8,12 @@
   "ALIASES": "{{prefix}}rrc",
   "NAME_EXISTS": "The reaction role menu was unable to be created. Either the **{{name}}** is already taken by another reaction role OR this message already has a reaction role menu on it. If you are trying to edit the reaction role, use **reactionroleadd** or **reactionroleremove** commands.",
   "CREATED": "The **{{name}}** reaction role has been created on this server.",
-  "NEED_PERMS": "In order to create a reaction role, I need to have Add Reactions, External Emojis, and Read Message History permissions in this channel."
+  "NEED_PERMS": "In order to create a reaction role, I need to have View Channel, Send Messages, Embed Links, Add Reactions, External Emojis, and Read Message History permissions in this channel.",
+  "MAX_ROLES": "There is not enough space on this server to create more roles for the reaction role setup color wheel.",
+  "COLOR_WHEEL": "The Wheel Of Color",
+  "PICK_COLOR": "Tired of boring, drab white or black? Want to add a little color into your life? Look no further than Gamer's very own color picker. Simply find the color below you wish to make your name and click it. It's that simple! Tired of your new color? Just pick a new one and you're good to go!",
+  "DONT_FORGET": "Don't Forget",
+  "ONLY_ONE": "You can only have one color at a time. We don't have the technology (yet!) to mix two colors together. When you click a different color it will remove the first color from your name so don't worry about accumulating too many color roles.",
+  "CUSTOMIZE_PICKER": "Customize the color picker by reading our reaction role guide at http://gamer.netlify.com or try .help reactionrolecreate",
+  "SETUP_REASON": "{{username}} ran the reaction role setup."
 }

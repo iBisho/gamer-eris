@@ -1,0 +1,14 @@
+{
+  "DESCRIPTION": "Roll a dice.",
+  "EXTENDED": "$t(gaming/dice:EXTENDED_LINE_1)\n$t(gaming/dice:EXTENDED_LINE_2)\n$t(gaming/dice:EXTENDED_LINE_3)\n$t(gaming/dice:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}dice** ~ Rolls a normal dice to get a value from 1-6.",
+  "EXTENDED_LINE_2": "**{{prefix}}dice 2d20** ~ Rolls two dice with a value from 1-20. It will also add up all the dice together to give a total as well.",
+  "EXTENDED_LINE_3": "**{{prefix}}dice 2d20 +5 -4 +1** ~ `Advanced:` Use modifiers to update the result as you wish.",
+  "EXTENDED_LINE_4": "`Note:` If you see any issues with the Advanced version please contact me on the support server using the invite command. 🙏",
+  "USAGE": "{{prefix}}dice *[amount of dice and highest value separated by `d`] [Modifiers]*",
+  "ALIASES": "Dice does not have any aliases.",
+  "REQUEST": "**Request:** {{value}}",
+  "ROLLS": "**Rolls:**",
+  "FINAL_ROLLS": "**Final Rolls:**",
+  "TOTAL": "**Total:**"
+}

@@ -3,6 +3,8 @@ import { MessageEmbed } from 'helperis'
 import GamerClient from '../../lib/structures/GamerClient'
 import Constants from '../../constants/index'
 
+const gifs = [{ name: 'mirrorcreate', gif: 'https://i.imgur.com/ORLsc42.gif' }]
+
 const categories = [
   { name: `basic`, commands: [`help`, `ping`, `invite`, `server`, `upvote`, `upvotedonate`, `user`] },
   {
@@ -129,7 +131,7 @@ const categories = [
   { name: `mails`, commands: [`mail`, `label`] },
   { name: `vip`, commands: [`analyze`, `analyzechannel`, `vipregister`, `roletoall`, `rolefromall`, `export`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`, `mirrorcreate`, `mirroredit`] },
-  { name: `gaming`, commands: [`twitch`, `capture`] },
+  { name: `gaming`, commands: [`twitch`, `capture`, `dice`] },
   { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`, `embedset`] },
   { name: `emojis`, commands: [`emojis`, `emojicreate`, `emojidelete`] },
   { name: `tags`, commands: [`tags`, `tagcreate`, `tagdelete`, `tagshow`, `taginstall`, `taguninstall`, `tagpublic`] },
@@ -236,6 +238,9 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
     .addField(language('basic/help:MAIN_USAGE'), USAGE, true)
     .addField(language('basic/help:MAIN_ALIASES'), ALIASES, true)
     .addField(language('basic/help:MORE'), Constants.general.gamerServerInvite)
+
+  const data = gifs.find(g => g.name === name)
+  if (data) embed.setImage(data.gif)
 
   return message.channel.createMessage({ embed: embed.code })
 })
