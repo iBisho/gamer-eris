@@ -2,5 +2,6 @@
   "DESCRIPTION": "Shows a list of all tag on your server.",
   "EXTENDED": "**{{prefix}}tags** ~ Shows a list of all tag on your server.",
   "USAGE": "{{prefix}}tags",
-  "ALIASES": "{{prefix}}tag"
+  "ALIASES": "{{prefix}}tag",
+  "NONE": "You have not created any tags on this server at this time. To create a tag on this server, use the tagcreate command."
 }
