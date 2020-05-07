@@ -99,7 +99,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
         return Gamer.collectors.set(message.author.id, collector)
       }
 
-      const roleID = message.roleMentions.length ? message.roleMentions[0] : value
+      const roleID = msg.roleMentions.length ? msg.roleMentions[0] : value
 
       let response = `events/eventedit:TITLE_UPDATED`
       switch (type.toLowerCase()) {
@@ -228,7 +228,6 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
           else event.alertRoleIDs.push(roleToAlert.id)
           response = `events/eventedit:ALERTROLE_UPDATED`
           break
-
         case `template`:
           event.templateName = value
           response = `events/eventedit:TEMPLATE_UPDATED`
