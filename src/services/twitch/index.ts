@@ -60,7 +60,7 @@ export async function runCronSubscribe() {
       stream.meta.userID = userID
       await stream.save()
     } catch (e) {
-      // console.warn('Error while subscription to twitch ', stream.username, e)
+      console.warn('Error while subscription to twitch ', stream.username, e)
       // Marked as failed once. Retry again later.
       // This might be useful later to know how many subscriptions are getting stuck
       stream.meta.retries = stream.meta.retries + 1
