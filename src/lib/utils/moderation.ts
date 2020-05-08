@@ -5,6 +5,7 @@ import { GamerModlog } from '../types/gamer'
 import { MessageEmbed } from 'helperis'
 import { modlogTypes } from '../types/enums/moderation'
 import { TFunction } from 'i18next'
+import { milliseconds } from '../types/enums/time'
 
 export default class {
   Gamer: GamerClient
@@ -200,5 +201,36 @@ export default class {
       log.needsUnmute = false
       log.save()
     }
+  }
+
+  /** Cleans up any inactive verification channels after 10 minutes of inactivity. */
+  async processVerificationChannels() {
+    // We only loop over saved settings guilds because if they use defaults they they wont have verify enabled anyway
+    const allGuildSettings = await this.Gamer.database.models.guild.find({ 'verify.enabled': true })
+
+    allGuildSettings.forEach(async guildSettings => {
+      if (!guildSettings.verify.channelIDs.length) return
+
+      const guild = this.Gamer.guilds.get(guildSettings.id)
+      if (!guild) return
+
+      guildSettings.verify.channelIDs.forEach(async channelID => {
+        const channel = guild.channels.get(channelID)
+        if (!(channel instanceof TextChannel) || !channel.permissionsOf(this.Gamer.user.id).has('manageChannels'))
+          return
+
+        const message =
+          channel.messages.get(channel.lastMessageID) ||
+          (await channel.getMessage(channel.lastMessageID).catch(() => undefined))
+
+        // If the channel has gone inactive too long delete it so there is no spam empty unused channels
+        if (!message) return
+
+        const language = this.Gamer.getLanguage(guild.id)
+        if (Date.now() - message.timestamp < milliseconds.MINUTE * 10) return
+
+        channel.delete(language(`basic/verify:CHANNEL_DELETE_REASON`)).catch(() => undefined)
+      })
+    })
   }
 }

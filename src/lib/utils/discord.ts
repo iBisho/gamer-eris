@@ -5,6 +5,8 @@ import { MessageEmbed } from 'helperis'
 import GamerClient from '../structures/GamerClient'
 import { GuildSettings } from '../types/settings'
 import { highestRole } from 'helperis'
+import Gamer from '../..'
+import { milliseconds } from '../types/enums/time'
 
 const emojiRegex = /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/
 
@@ -119,5 +121,17 @@ export default class {
     if (user) Gamer.users.add(user)
 
     return user
+  }
+
+  /** Clean out message collectors after they expire. D */
+  async processMessageCollectors() {
+    const allGuildSettings = await Gamer.database.models.guild.find({ 'vip.isVIP': true })
+    Gamer.collectors.forEach(collector => {
+      const guildSettings = allGuildSettings.find(g => g.id === collector.guildID)
+      const menutime = guildSettings ? (guildSettings.menutime > 5 ? guildSettings.menutime : 5) : 2
+      if (Date.now() - collector.createdAt < milliseconds.MINUTE * menutime) return
+
+      Gamer.collectors.delete(collector.authorID)
+    })
   }
 }
