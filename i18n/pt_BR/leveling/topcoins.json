@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Veja o ranking de moedas para o seu servidor ou o ranking global",
+  "EXTENDED": "O comando {{prefix}}topcoins pode ser usado para exibir o ranking e ver os melhores jogadores com moedas.",
+  "USAGE": "{{prefix}}topcoins *[User | global]*",
+  "ALIASES": "Não há um comando alternativo.",
+  "COINS": "MOEDAS"
+}
