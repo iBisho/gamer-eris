@@ -12,6 +12,167 @@ export default class {
     this.Gamer = client
   }
 
+  async makeLocalCoinsCanvas(message: Message, member: Member) {
+    const language = this.Gamer.getLanguage(member.guild.id)
+
+    const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
+    if (!userSettings?.leveling.currency) {
+      message.channel.createMessage(language(`leveling/leaderboard:NO_COINS`, { member: member.mention }))
+      return
+    }
+
+    const memberIDs = member.guild.members.map(m => m.id)
+
+    if (!this.Gamer.allMembersFetchedGuildIDs.has(member.guild.id)) {
+      await member.guild.fetchAllMembers()
+      this.Gamer.allMembersFetchedGuildIDs.add(member.guild.id)
+    }
+
+    const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
+      this.Gamer.database.models.user
+        .find({ 'leveling.currency': { $gt: userSettings.leveling.currency }, userID: { $in: memberIDs } })
+        .countDocuments(),
+      this.Gamer.database.models.user
+        .find({
+          'leveling.currency': { $gt: userSettings.leveling.currency },
+          userID: { $in: memberIDs }
+        })
+        .sort('leveling.currency')
+        .limit(1),
+      this.Gamer.database.models.user
+        .find({ 'leveling.currency': { $lt: userSettings.leveling.currency }, userID: { $in: memberIDs } })
+        .sort('-leveling.currency')
+        .limit(1),
+      this.Gamer.database.models.user
+        .find({ userID: { $in: memberIDs } })
+        .sort('-leveling.currency')
+        .limit(3)
+    ])
+
+    const [nextUser] = nextUsers
+    const [prevUser] = prevUsers
+
+    if (!nextUser && !prevUser) {
+      message.channel.createMessage(language(`leveling/leaderboard:NOT_ENOUGH`))
+      return
+    }
+
+    const rankText = nextUser
+      ? `${this.transformXP(nextUser.leveling.currency - userSettings.leveling.currency)} Coins Behind`
+      : prevUser
+      ? `${this.transformXP(userSettings.leveling.currency - prevUser.leveling.currency)} Coins Ahead`
+      : 'Unknown'
+
+    const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
+    const username = member.user.username.replace(
+      /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
+      ``
+    )
+
+    const topUserData = []
+    // Run a loop for the top 3 users
+    for (const userData of topUsers) {
+      // Get the user
+      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userData.userID)
+      if (!user) continue
+
+      topUserData.push({
+        avatarUrl: user.avatarURL,
+        currentXP: userData.leveling.currency,
+        username: user.username,
+        discriminator: user.discriminator
+      })
+    }
+
+    return this.buildCanvas(
+      language('leveling/leaderboard:SERVER'),
+      userAvatar,
+      username,
+      member.user.discriminator,
+      rank + 1,
+      userSettings.leveling.currency,
+      rankText,
+      topUserData,
+      language,
+      true
+    )
+  }
+
+  async makeGlobalCoinsCanvas(message: Message, member: Member) {
+    const language = this.Gamer.getLanguage(member.guild.id)
+
+    const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
+    if (!userSettings?.leveling.currency) {
+      message.channel.createMessage(language(`leveling/leaderboard:NO_COINS`, { member: member.mention }))
+      return
+    }
+
+    const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
+      this.Gamer.database.models.user
+        .find({ 'leveling.currency': { $gt: userSettings.leveling.currency } })
+        .countDocuments(),
+      this.Gamer.database.models.user
+        .find({
+          'leveling.currency': { $gt: userSettings.leveling.currency }
+        })
+        .sort('leveling.currency')
+        .limit(1),
+      this.Gamer.database.models.user
+        .find({ 'leveling.currency': { $lt: userSettings.leveling.currency } })
+        .sort('-leveling.currency')
+        .limit(1),
+      this.Gamer.database.models.user.find().sort('-leveling.currency').limit(3)
+    ])
+
+    const [nextUser] = nextUsers
+    const [prevUser] = prevUsers
+
+    if (!nextUser && !prevUser) {
+      message.channel.createMessage(language(`leveling/leaderboard:NOT_ENOUGH`))
+      return
+    }
+
+    const rankText = nextUser
+      ? `${this.transformXP(nextUser.leveling.currency - userSettings.leveling.currency)} Coins Behind`
+      : prevUser
+      ? `${this.transformXP(userSettings.leveling.currency - prevUser.leveling.currency)} Coins Ahead`
+      : 'Unknown'
+
+    const userAvatar = await fetch(member.user.avatarURL).then(res => res.buffer())
+    const username = member.user.username.replace(
+      /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g,
+      ``
+    )
+
+    const topUserData = []
+    // Run a loop for the top 3 users
+    for (const userData of topUsers) {
+      // Get the user
+      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userData.userID)
+      if (!user) continue
+
+      topUserData.push({
+        avatarUrl: user.avatarURL,
+        currentXP: userData.leveling.currency,
+        username: user.username,
+        discriminator: user.discriminator
+      })
+    }
+
+    return this.buildCanvas(
+      language('leveling/leaderboard:GLOBAL'),
+      userAvatar,
+      username,
+      member.user.discriminator,
+      rank + 1,
+      userSettings.leveling.currency,
+      rankText,
+      topUserData,
+      language,
+      true
+    )
+  }
+
   async makeLocalCanvas(message: Message, member: Member) {
     const language = this.Gamer.getLanguage(member.guild.id)
 
@@ -39,10 +200,7 @@ export default class {
         .find({ 'leveling.xp': { $lt: memberSettings.leveling.xp }, guildID: member.guild.id })
         .sort('-leveling.xp')
         .limit(1),
-      this.Gamer.database.models.member
-        .find({ guildID: member.guild.id })
-        .sort('-leveling.xp')
-        .limit(3)
+      this.Gamer.database.models.member.find({ guildID: member.guild.id }).sort('-leveling.xp').limit(3)
     ])
 
     const [nextUser] = nextUsers
@@ -114,10 +272,7 @@ export default class {
         .find({ 'leveling.xp': { $lt: userSettings.leveling.xp } })
         .sort('-leveling.xp')
         .limit(1),
-      this.Gamer.database.models.user
-        .find()
-        .sort('-leveling.xp')
-        .limit(3)
+      this.Gamer.database.models.user.find().sort('-leveling.xp').limit(3)
     ])
 
     const [nextUser] = nextUsers
@@ -195,10 +350,7 @@ export default class {
         .find({ 'leveling.voicexp': { $lt: memberSettings.leveling.voicexp }, guildID: member.guild.id })
         .sort('-leveling.voicexp')
         .limit(1),
-      this.Gamer.database.models.member
-        .find({ guildID: member.guild.id })
-        .sort('-leveling.voicexp')
-        .limit(3)
+      this.Gamer.database.models.member.find({ guildID: member.guild.id }).sort('-leveling.voicexp').limit(3)
     ])
 
     const [nextUser] = nextUsers
@@ -262,7 +414,8 @@ export default class {
     userXP: number,
     rankText: string,
     topUsers: TopUserLeaderboard[],
-    language: TFunction
+    language: TFunction,
+    coins = false
   ) {
     const canvas = new Canvas(636, 358)
       // set left background (white or black)
@@ -316,7 +469,7 @@ export default class {
       .addText(`#`, 275, 95)
       .addText(language(`leveling/leaderboard:NAME`), 370, 95)
       .addText(language(`leveling/leaderboard:LEVEL`), 480, 95)
-      .addText(language(`leveling/leaderboard:EXP`), 540, 95)
+      .addText(language(coins ? `leveling/topcoins:COINS` : `leveling/leaderboard:EXP`), 540, 95)
       .addText(language(`leveling/leaderboard:PRIZE`), 600, 95)
 
     let userY = 140

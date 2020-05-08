@@ -1,6 +1,6 @@
 {
   "DESCRIPTION": "Setup or update the trading card module.",
-  "EXTENDED": "$t(settings/setcapture:EXTENDED_LINE_1)\n$t(settings/setcapture:EXTENDED_LINE_2)\n\n$t(settings/setcapture:EXTENDED_LINE_3)",
+  "EXTENDED": "$t(settings/setcapture:EXTENDED_LINE_1)\n$t(settings/setcapture:EXTENDED_LINE_2)\n$t(settings/setcapture:EXTENDED_LINE_3)\n$t(settings/setcapture:EXTENDED_LINE_4)",
   "EXTENDED_LINE_1": "**{{prefix}}setcapture arenaofvalor [#Channel]** ~ Set the card game for Arena of Valor game.",
   "EXTENDED_LINE_2": "**{{prefix}}setcapture mobilelegends [#Channel]** ~ Set the card game for Mobile Legends Bang Bang game.",
   "EXTENDED_LINE_3": "**{{prefix}}setcapture rulesofsurvival [#Channel]** ~ Set the card game for Rules of Survival game.",
