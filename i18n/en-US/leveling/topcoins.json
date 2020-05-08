@@ -3,5 +3,6 @@
   "EXTENDED": "The {{prefix}}topcoins command can be used to view the leaderboard to see the top players with coins.",
   "USAGE": "{{prefix}}topcoins *[User | global]*",
 	"ALIASES": "Topcoins does not have any aliases.",
-	"COINS": "Coins"
+  "COINS": "Coins",
+  "CURRENT_COINS": "{{amount}} Coins"
 }

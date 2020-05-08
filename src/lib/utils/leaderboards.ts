@@ -446,7 +446,9 @@ export default class {
       .setTextAlign(`center`)
       .setTextFont(`18px SFTBold`)
       .addResponsiveText(
-        language('leveling/leaderboard:CURRENT_XP', { amount: this.transformXP(userXP) }),
+        language(coins ? 'leveling/topcoins:CURRENT_COINS' : 'leveling/leaderboard:CURRENT_XP', {
+          amount: this.transformXP(userXP)
+        }),
         120,
         257,
         140
