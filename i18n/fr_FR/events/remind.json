@@ -1,9 +1,10 @@
 {
 	"DESCRIPTION": "Créer des rappels pour vous-même.",
-	"EXTENDED": "$t(events/remind:EXTENDED_LINE_1)\n$t(events/remind:EXTENDED_LINE_2)\n$t(events/remind:EXTENDED_LINE_3)",
+	"EXTENDED": "$t(events/remind:EXTENDED_LINE_1)\n$t(events/remind:EXTENDED_LINE_2)\n$t(events/remind:EXTENDED_LINE_3)\n$t(events/remind:EXTENDED_LINE_4)",
 	"EXTENDED_LINE_1": "**{{prefix}}remind 1d12h [Message du rappel]** ~ Créer un rappel qui vous sera envoyé.",
 	"EXTENDED_LINE_2": "**{{prefix}}remind 5m 1d [Message du rappel]** ~ Créer un rappel qui débutera dans 5 minutes et sera répété tous les jours .",
-	"EXTENDED_LINE_3": "Si le deuxième argument est également écrit dans le format temps, il sera créé comme un rappel répétitif avec l'interval spécifié.",
+	"EXTENDED_LINE_3": "**{{prefix}}remind list** ~ Énumére tous les rappels que vous avez créés et combien de temps il vous reste avant ce rappel.",
+	"EXTENDED_LINE_4": "Si le deuxième argument est également écrit dans le format temps, il sera créé comme un rappel répétitif avec l'interval spécifié.",
 	"USAGE": "{{prefix}}remind [Heure du début] *[Fréquence de rappel]* [Message]",
 	"ALIASES": "{{prefix}}remindme",
 	"CREATED": "{{mention}}, Je te rappelerai quand il sera temps!",
