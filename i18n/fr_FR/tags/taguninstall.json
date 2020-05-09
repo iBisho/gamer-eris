@@ -1,4 +1,5 @@
 {
+  "DESCRIPTION": "Désinstaller les tags publiques à partir d'un autre serveur.",
   "EXTENDED": "$t(tags/taguninstall:EXTENDED_LINE_1)\n$t(tags/taguninstall:EXTENDED_LINE_2)",
   "EXTENDED_LINE_1": "**{{prefix}}taguninstall aov** ~ Supprime tous les tags provenant du serveur **Arena of Valor**.",
   "EXTENDED_LINE_2": "**{{prefix}}taguninstall 223909216866402304** ~ Supprime tous les tags du serveur spéficié précédemment importé via son ID serveur.",
