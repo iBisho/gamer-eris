@@ -2,5 +2,6 @@
 	"DESCRIPTION": "Permet de voir l'avatar d'un utilisateur sur le serveur.",
 	"EXTENDED": "Cette commande affiche uniquement l'image brute. Pour voir une version customisée de l'avatar, merci d'utiliser la commande {{prefix}}logo.",
 	"USAGE": "{{prefix}}avatar",
-	"ALIASES": "{{prefix}}userimage {{prefix}}pfp"
+	"ALIASES": "{{prefix}}userimage {{prefix}}pfp",
+	"DOWNLOAD": "[Cliquez ici pour Télécharger]({{url}})"
 }
