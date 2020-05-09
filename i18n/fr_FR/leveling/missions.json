@@ -20,6 +20,7 @@
   "8BALL": "Demandez conseil auprès de la 8ball 5 fois en utilisant la commande **.8ball**.",
   "GUILDADDED": "Ajoutez Gamer sur votre serveur en utilisant la commande **.invite**.",
   "MINES": "Faites une partie de démineur en utilisant la commande **.minesweeper**.",
-  "LMAO": "Partagez une bonne barre de rire en utilisant la commande **.laugh**.",
-  "SLOTS": "Faites une partie de machine à sous en utilisant la commande **.slots**."
+  "LMAO": "Partagez une bonne bouffée de rire avec les autres en utilisant la commande **.lmao**.",
+  "SLOTS": "Faites une partie de machine à sous en utilisant la commande **.slots**.",
+  "WALLPOST": "Créez un post sur votre mur. Pour obtenir un mur, utilisez la commande .networkcreate."
 }
