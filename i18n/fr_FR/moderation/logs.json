@@ -58,5 +58,7 @@
 	"EMOJI_ANIMATED": "Emoji animés",
 	"JOINED_VOICE": "Salon vocal rejoint",
 	"LEFT_VOICE": "Salon vocal quitté",
-	"MAX_MEMBERS": "Ulitisateurs maximum"
+	"MAX_MEMBERS": "Utilisateurs maximum",
+	"ACCOUNT_AGE": "Âge du compte",
+	"ROLES": "Rôles"
 }
