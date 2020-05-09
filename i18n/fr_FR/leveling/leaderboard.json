@@ -4,6 +4,7 @@
   "USAGE": "{{prefix}}leaderboard *[Utilisateur | global]*",
   "ALIASES": "{{prefix}}lb",
   "NO_POINTS": "Le membre {{member}} n'a pas d'EXP pour le moment. La commande leaderboard nécessite d'avoir au minimum 1 d'EXP.",
+  "NO_COINS": "{{member}} n'a pas de Gamer Coins pour le moment. Cette commande nécessite que le membre ait au moins 1 pièce. Utilisez la commande machine à sous pour gagner des pièces.",
   "NOT_ENOUGH": "Il n'y a pas assez de membre sur le classement pour que le bot puisse afficher le classement pour le moment. Veuillez rééssayer plus tard.",
   "RANK": "Rang {{position}}",
   "BEHIND": "{{amount}} EXP Derrière",
