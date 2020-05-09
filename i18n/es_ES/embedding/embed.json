@@ -1,0 +1,20 @@
+{
+	"DESCRIPTION": "Realiza una incrustación desde el objeto incrustado que ingresas.",
+	"EXTENDED": "$t(embedding/embed:EXTENDED_LINE_1)\n$t(embedding/embed:EXTENDED_LINE_2)\n$t(embedding/embed:EXTENDED_LINE_3)\n$t(embedding/embed:EXTENDED_LINE_4)\n$t(embedding/embed:EXTENDED_LINE_5)\n$t(embedding/embed:EXTENDED_LINE_6)\n$t(embedding/embed:EXTENDED_LINE_7)\n$t(embedding/embed:EXTENDED_LINE_8)\n$t(embedding/embed:EXTENDED_LINE_9)\n$t(embedding/embed:EXTENDED_LINE_10)\n$t(embedding/embed:EXTENDED_LINE_11)\n$t(embedding/embed:EXTENDED_LINE_12)\n$t(embedding/embed:EXTENDED_LINE_13)",
+	"EXTENDED_LINE_1": "**» Dos opciones para crear un incrustado:**",
+	"EXTENDED_LINE_2": "**{{prefix}}embed [@usuario] {objeto}** ~ Incrusta el objeto ofrecido. Ofrece un @usuario primero si quieres usar variables de usuario.",
+	"EXTENDED_LINE_3": "**» Posibles variables que puedes usar en incrustaciones:**",
+	"EXTENDED_LINE_4": "**%author%** ~ Muestra el nombre del autor.",
+	"EXTENDED_LINE_5": "**%authormention%** ~ Menciona el nombre del autor.",
+	"EXTENDED_LINE_6": "**%authorimage%** ~ Muestra la imagen del autor en un campo de imagen.",
+	"EXTENDED_LINE_7": "**%user%** ~ Muestra el nombre de los usuarios activando.",
+	"EXTENDED_LINE_8": "**%usermention%** ~ Menciona el nombre de los usuarios activando.",
+	"EXTENDED_LINE_9": "**%userimage%** ~ Muestra la imagen de los usuarios activando en el un campo de imagen.",
+	"EXTENDED_LINE_10": "**%guild%** ~ Muestra el nombre del servidor.",
+	"EXTENDED_LINE_11": "**%guildimage%** ~ Muestra la imagen del servidor en un campo de imagen.",
+	"EXTENDED_LINE_12": "**»** Las variables de usuario solamente funcionan cuando se menciona a un usuario junto con el comando.",
+	"EXTENDED_LINE_13": "**CREE SU OBJETO INCRUSTADO EN ESTE SITIO WEB: <https://embedbuilder.nadekobot.me/>**.",
+	"USAGE": "{{prefix}}embed [@Usuario] {objeto}",
+	"ALIASES": "El incrustado no tiene ningún alias.",
+	"BAD_EMBED": "Este no era un **objeto incrustado válido**. ¡Lo mejor es usar el generador de incrustaciones <https://embedbuilder.nadekobot.me/>!"
+}
