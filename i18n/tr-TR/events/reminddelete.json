@@ -1,7 +1,0 @@
-{
-	"DESCRIPTION": "Delete one of your reminders.",
-	"EXTENDED": "**{{prefix}}reminddelete [Reminder ID]** ~ Delete the reminder with this id. You will no longer be reminded once deleted.",
-	"USAGE": "{{prefix}}reminddelete [Reminder ID]",
-	"ALIASES": "{{prefix}}rd {{prefix}}remindmedelete {{prefix}}reminderdelete",
-	"DELETED": "{{mention}}, The reminder with the id you provided has been deleted."
-}

@@ -1,8 +1,0 @@
-{
-  "DESCRIPTION": "Review or manage the entire modlog history of a member.",
-  "EXTENDED": "**{{prefix}}removemodlog [Modlog ID #]** ~ Deletes the log from the database.",
-  "USAGE": "{{prefix}}modlogremove [ID #]",
-  "ALIASES": "{{prefix}}rml",
-  "NOT_FOUND": "The modlog with id of #{{id}} was not found.",
-  "REMOVED": "The modlog with id of #{{id}} was removed."
-}

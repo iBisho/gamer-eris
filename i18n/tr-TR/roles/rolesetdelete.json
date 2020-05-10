@@ -1,8 +1,0 @@
-{
-  "DESCRIPTION": "Delete a roleset on your server.",
-  "EXTENDED": "**{{prefix}}rolesetdelete [Name]** ~ Deletes the roleset with the provided name on your server.",
-  "USAGE": "{{prefix}}rolesetdelete [Name]",
-  "ALIASES": "{{prefix}}rsd",
-  "DELETED": "The roleset has been deleted from this server.",
-  "INVALID_NAME": "There was no roleset found with the name **{{name}}**."
-}

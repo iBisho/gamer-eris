@@ -1,8 +1,0 @@
-{
-  "DESCRIPTION": "Send a random Supernatural GIF to a friend!",
-  "EXTENDED": "$t(fun/supernatural:EXTENDED_LINE_1)\n$t(fun/supernatural:EXTENDED_LINE_2)",
-  "EXTENDED_LINE_1": "**{{prefix}}supernatural** ~ Sends a random Supernatural gif into the channel.",
-  "EXTENDED_LINE_2": "**{{prefix}}supernatural user** ~ Sends a random Supernatural gif into the channel and mentions the user.",
-  "USAGE": "{{prefix}}supernatural [user]",
-  "ALIASES": "{{prefix}}sn"
-}

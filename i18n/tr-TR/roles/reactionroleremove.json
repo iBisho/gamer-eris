@@ -1,8 +1,0 @@
-{
-  "DESCRIPTION": "Remove a reaction from a reaction role on your server.",
-  "EXTENDED": "$t(roles/reactionroleremove:EXTENDED_LINE_1)\n$t(roles/reactionroleremove:EXTENDED_LINE_2)",
-  "EXTENDED_LINE_1": "**{{prefix}}reactionroleremove [Name] [Emoji Name]** ~ Removes the Emoji from the reaction role with the provided name.",
-  "EXTENDED_LINE_2": "The **[Emoji Name]** must be an emoji that you created using the *{{prefix}}emojicreate* command.",
-  "USAGE": "{{prefix}}reactionroleremove [Name] [Emoji Name]",
-  "ALIASES": "{{prefix}}rrr"
-}

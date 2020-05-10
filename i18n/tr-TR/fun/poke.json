@@ -1,8 +1,0 @@
-{
-	"DESCRIPTION": "Pokes the mentioned user/role and sends a gif in chat.",
-	"EXTENDED": "**{{prefix}}poke [@user]** ~ Pokes the mentioned user/role and sends a gif into the chat.",
-	"USAGE": "{{prefix}}poke [@user]",
-	"ALIASES": "Poke does not have any aliases.",
-	"REPLY": "***{{mention}} was poked by {{author}}!***",
-	"SELF": "Sometimes I need to poke myself awake as well. Rise and shine!"
-}

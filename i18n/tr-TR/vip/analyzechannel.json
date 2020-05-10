@@ -1,8 +1,0 @@
-{
-  "DESCRIPTION": "View your servers analytics for one channel in specific.",
-  "EXTENDED": "$t(vip/analyzechannel:EXTENDED_LINE_1)\n$t(vip/analyzechannel:EXTENDED_LINE_2)",
-  "EXTENDED_LINE_1": "**{{prefix}}analyzechannel [#Channel]** ~ Shows your server's analytics",
-  "EXTENDED_LINE_2": "To request more analytics please contact me on my support server using the {{prefix}}invite command.",
-  "USAGE": "{{prefix}}analyzechannel [Channel]",
-  "ALIASES": "{{prefix}}analyticschannel"
-}

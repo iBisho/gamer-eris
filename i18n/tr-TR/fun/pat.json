@@ -1,8 +1,0 @@
-{
-	"DESCRIPTION": "Pats the mentioned user/role and sends an image in chat.",
-	"EXTENDED": "**{{prefix}}pat @user** ~ Pats the user on the head.",
-	"USAGE": "{{prefix}}pat [@user]",
-	"ALIASES": "Pat does not have any aliases.",
-	"REPLY": "***{{mention}} was patted by {{author}}!***",
-	"SELF": "A pat a day keeps the party alive!"
-}

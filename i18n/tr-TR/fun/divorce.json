@@ -1,8 +1,0 @@
-{
-  "DESCRIPTION": "Divorce your spouse.",
-  "EXTENDED": "**{{prefix}}divorce** ~ Divorces your current spouse if you have one. If the marriage was accepted, then there will be a penalty to divorce.",
-  "USAGE": "{{prefix}}divorce",
-  "ALIASES": "Divorce does not have any aliases.",
-	"NOT_MARRIED": "{{mention}}, I can not divorce you if you are not already married. Use the **profile** command to see the details of your marriage.",
-	"DIVORCED": "{{mention}}, you are now divorced. You are once again in the sad and lonely single life."
-}

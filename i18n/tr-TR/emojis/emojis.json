@@ -1,8 +1,0 @@
-{
-	"DESCRIPTION": "Shows a list of all your global emojis you have saved in the database.",
-	"EXTENDED": "**{{prefix}}emojis** ~ Shows all your global emojis.",
-	"USAGE": "{{prefix}}emojis",
-	"ALIASES": "{{prefix}}em",
-	"NONE": "You have not created any custom global emojis."
-}
-

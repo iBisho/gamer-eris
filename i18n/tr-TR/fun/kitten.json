@@ -1,7 +1,0 @@
-{
-	"DESCRIPTION": "Random Kitten GIF or Image!",
-	"EXTENDED": "**{{prefix}}kitten** ~ Sends the most adorable kitten into your chat.",
-	"USAGE": "{{prefix}}kitten",
-	"ALIASES": "{{prefix}}cat",
-	"FACT": "**Random Cat Fact** 🐱: {{fact}}"
-}

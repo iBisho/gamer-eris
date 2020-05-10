@@ -1,7 +1,0 @@
-{
-	"DESCRIPTION": "View all the role messages on your server.",
-	"EXTENDED": "**{{prefix}}rolemessages** ~ View all the role messages on your server.",
-	"USAGE": "{{prefix}}rolemessages",
-	"ALIASES": "Rolemessages does not have any aliases.",
-	"NONE": "You have not created any role messages on this server. Please use the rolemessagecreate command to create a role message."
-}

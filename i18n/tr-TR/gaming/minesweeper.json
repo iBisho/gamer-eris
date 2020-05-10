@@ -1,7 +1,0 @@
-{
-	"DESCRIPTION": "Play a minesweeper game.",
-	"EXTENDED": "Creates a minesweeper game for you on the channel.",
-	"USAGE": "{{prefix}}minesweeper",
-	"ALIASES": "{{prefix}}mines",
-	"INSTRUCTIONS": "If you see the 💥 you lose. The goal of the game is to open all the cells of the board which do not contain a bomb. You lose if you set off a bomb cell. Any cell that is not a bomb will tell you the total number of bombs in the eight neighboring cells. Tap a cell to start!"
-}

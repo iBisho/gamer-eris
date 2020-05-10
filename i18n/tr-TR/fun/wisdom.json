@@ -1,7 +1,0 @@
-{
-  "DESCRIPTION": "Sends some wisdom in chat.",
-  "EXTENDED": "**{{prefix}}wisdom** ~ Get the most well thought of wisdom.",
-  "USAGE": "{{prefix}}wisdom",
-  "ALIASES": "Wisdom does not have any aliases.",
-  "ERROR": "Sorry, the API we use seems to be having problems right now. Try again later"
-}

@@ -1,7 +1,0 @@
-{
-  "DESCRIPTION": "Shows the embedcode for your tags.",
-  "EXTENDED": "**{{prefix}}tagshow [Name]** ~ Shows the embed code for your tag.",
-  "USAGE": "{{prefix}}tagshow [Name]",
-  "ALIASES": "{{prefix}}ts",
-  "INVALID_NAME": "I was unable to find a tag on this server named **{{name}}**."
-}

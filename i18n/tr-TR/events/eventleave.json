@@ -1,8 +1,0 @@
-{
-  "DESCRIPTION": "Leave an event if you no longer can attend it!",
-  "EXTENDED": "**{{prefix}}eventleave [Event ID]** ~ Removes you from the event.",
-  "USAGE": "{{prefix}}eventleave [Event ID]",
-  "ALIASES": "{{prefix}}el",
-  "NOT_JOINED": "You are not able to leave this event because you were never marked as attending.",
-  "LEFT": "You have successfully left this event."
-}
