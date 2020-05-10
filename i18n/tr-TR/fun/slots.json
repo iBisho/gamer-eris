@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Try your luck at some slot machines.",
+  "EXTENDED": "**{{prefix}}slots** ~ Try your luck at winning some slots! Get the same emojis in a row to win. If you upvote the bot, you will get a much higher reward rate.",
+  "USAGE": "{{prefix}}slots",
+  "ALIASES": "{{prefix}}slotmachine",
+  "NOT_ENOUGH_CURRENCY": "You do not have enough Gamer coins to make that large a bet.",
+  "LOSER": "Aww, you did not win the slot machine. You have lost 1 {{emoji}} coin.",
+  "LOSER_MULTI": "Aww, you did not win the slot machine. You have lost 2 {{emoji}} coin.",
+  "FREEBIE": "Sadly, you did not win. You have been given 1 {{emoji}} coin. Cheer up and try again!",
+  "WINNER_PARTIAL": "🎉Congrats, you got 2 of the same slots. You have been given {{amount}} {{emoji}}. 🎉",
+  "WINNER_FULL": "🎉🎉🎉 WINNER! WINNER! WINNER! You just won {{amount}} {{emoji}}. 🎉🎉🎉",
+  "WINNER_MULTIPLE": "🎉🎉🎉 O wow, you got 2 winning rows! You won {{amount}} {{emoji}}. 🎉🎉🎉",
+  "WINNER_LUCKY": "🎉🎉🎉 O wow, you got 3 winning rows! You won {{amount}} {{emoji}}. 🎉🎉🎉",
+  "WINNER_COMPLETE": "🎉🎉🎉 OMG! You just hit the jackpot! All the slots are the same! You won {{amount}} {{emoji}}. 🎉🎉🎉"
+}

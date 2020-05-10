@@ -1,0 +1,18 @@
+{
+	"DESCRIPTION": "Manage labels for your mails to better organize your tickets.",
+	"EXTENDED": "$t(mails/label:EXTENDED_LINE_1)\n$t(mails/label:EXTENDED_LINE_2)\n$t(mails/label:EXTENDED_LINE_3)\n$t(mails/label:EXTENDED_LINE_4)",
+	"EXTENDED_LINE_1": "**{{prefix}}label create [Label Name] [Category ID]** ~ Creates a label with a unique name that will send mails to a category.",
+	"EXTENDED_LINE_2": "**{{prefix}}label delete [Label Name]** ~ Deletes a label if you no longer need it.",
+	"EXTENDED_LINE_3": "**{{prefix}}label list** ~ Lists all the labels you have on your server.",
+	"EXTENDED_LINE_4": "**{{prefix}}label set [Label Name]** ~ Use this in a mail channel to automatically move the channel to that category tied to this label.",
+	"USAGE": "{{prefix}}label [create | delete | list] [Label Name] [Category ID]",
+	"ALIASES": "Label does not have any aliases.",
+	"CREATE_NEED_CATEGORY": "A category id must be provided in order to create a label. Use the `help label` to get help on how to use this command.",
+	"CREATED": "The **{{name}}** label has been created on this server.",
+	"INVALID_NAME": "The **{{name}}** label was not able to be found on this server.",
+	"DELETED": "The **{{name}}** label has been deleted from this server.",
+	"NO_LABELS": "There were no labels found on this server to list.",
+	"NOT_MAIL_CHANNEL": "The labels can only be used to move a valid mail channel. This is not a mail channel.",
+	"REASON": "Moved the channel as requested by the {{name}} label by {{author}}",
+	"MOVED": "The mail has been labelled with the {{name}} label and moved to the corresponding category."
+}

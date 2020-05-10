@@ -1,0 +1,17 @@
+{
+	"DESCRIPTION": "İnanılmaz ödüller kazanmak için bota oy verin!",
+	"EXTENDED": "$t(basic/upvote:EXTENDED_LINE_1)\n$t(basic/upvote:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}upvote** ~ Gamer bota oy verme linkini gönderir. 12 saatte bir oy vermek için hatırlatıcı oluşturur ve ödüller kazanabilirsiniz.",
+	"EXTENDED_LINE_2": "Cuma, Cumartesi ve Pazar 2x oy verilir! Kaçırmayın!",
+	"USAGE": "{{prefix}}upvote",
+	"ALIASES": "{{prefix}}vote",
+	"CLICK_HERE": "Oy vermek için tıkla",
+	"REWARDS": "$t(basic/upvote:REWARDS_1)\n\n$t(basic/upvote:REWARDS_2)\n$t(basic/upvote:REWARDS_3)\n$t(basic/upvote:REWARDS_4)\n\n$t(basic/upvote:EXTENDED_LINE_2)",
+	"REWARDS_1": "Bu haftanın oyları: {{amount}}",
+	"REWARDS_2": "1 Oy / 12s - 3 görev yerine 5 görev.",
+	"REWARDS_3": "1 Oy / 12s - 50 Şans .slots",
+	"REWARDS_4": "100 Oy - **Ücretsiz 1 Hafta VIP**",
+	"REMINDER": "Bota oy vermeyi ve Ödüller kazanmayı unutma! `{{prefix}}upvote`! Bu uyarıyı kapatmak için **{{prefix}}reminddelete {{id}}**",
+	"TIME_LEFT": "Bir Sonraki Oy Zamanı: {{time}}",
+	"VOTE_NOW": "Şu an Oy Atabilirsin!"
+}

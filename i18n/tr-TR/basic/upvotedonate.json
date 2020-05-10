@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Oynuzu başka bir kullanıcıya verin.",
+	"EXTENDED": "**{{prefix}}upvotedonate 10 [@User]** ~ Oynuzu başka bir kullanıcıya verin. Bunu oylarınızı sunucunun VIP özelliklerini açabilecek bir admine göndermek için kullanabilirsiniz.",
+	"USAGE": "{{prefix}}upvotedonate [miktar] [@Kullanıcı]",
+	"ALIASES": "{{prefix}}votedonate",
+	"NEED_USER": "Oyunu göndermek için bir kullanıcı etiketlemelisin.",
+	"NOT_SELF": "Kendi kendine gönderemezsin xD. Yazık sana!",
+	"VOTE_FIRST": "Oy göndermek için, senin de göndereceğin kişinin de en az 1 oyu olmalıdır.",
+	"DONATED": "Oyunu bağışladığın için teşekkürler!"
+}

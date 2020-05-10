@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Delete a tag on the server.",
+  "EXTENDED": "**{{prefix}}tagdelete [Name]** ~ Delete a tag.",
+  "USAGE": "{{prefix}}tagdelete [Name]",
+  "ALIASES": "{{prefix}}td",
+  "INVALID_NAME": "I was unable to find a tag on this server named **{{name}}**.",
+  "DELETED": "I **removed** the {{name}} tag from the server."
+}

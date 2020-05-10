@@ -1,0 +1,18 @@
+{
+  "DESCRIPTION": "Manage role rewards for your servers leveling system.",
+  "EXTENDED": "$t(leveling/levelrole:EXTENDED_LINE_1)\n$t(leveling/levelrole:EXTENDED_LINE_2)\n$t(leveling/levelrole:EXTENDED_LINE_3)\n$t(leveling/levelrole:EXTENDED_LINE_4)\n$t(leveling/levelrole:EXTENDED_LINE_5)\n\n$t(leveling/levelrole:EXTENDED_LINE_6)",
+  "EXTENDED_LINE_1": "**{{prefix}}levelrole create [#] [role]** ~ Gives a role when the user achieves this level.",
+  "EXTENDED_LINE_2": "**{{prefix}}levelrole add [#] [role]** ~ Add another role to give when the user reaches this level. You must have created a levelrole already.",
+  "EXTENDED_LINE_3": "**{{prefix}}levelrole remove [#] [role] [role2]** ~ Remove a role to give when the user reaches this level. You must have created a levelrole already.",
+  "EXTENDED_LINE_4": "**{{prefix}}levelrole delete [#]** ~ Deletes the level role.",
+  "EXTENDED_LINE_5": "**{{prefix}}levelrole list** ~ Lists all your levelroles on the servers.",
+  "EXTENDED_LINE_6": "• Advanced: You can use the unique rolesets to make sure that a user only has 1 level role at any time.",
+  "USAGE": "{{prefix}}levelrole [create | add | remove] [Level Number] [Roles]",
+  "ALIASES": "Levelrole does not have any aliases.",
+  "CREATED": "The role rewards for level #{{level}} have been created.",
+  "ROLES_ADDED": "The role has been added to the role rewards for this level.",
+	"ROLES_REMOVED": "The role has been removed from the role rewards for this level.",
+  "EXISTS": "There is already a levelrole setup for this server.",
+  "NONE": "You have not created any levelroles on this server.",
+  "DELETED": "You have successfully deleted the {{number}} level role."
+}

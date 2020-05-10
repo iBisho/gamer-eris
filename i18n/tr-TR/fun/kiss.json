@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Kisses the mentioned user/role and sends an image in chat.",
+	"EXTENDED": "**{{prefix}}kiss [username]** ~ Sends a kiss to the chosen user.",
+	"USAGE": "{{prefix}}kiss [user]",
+	"ALIASES": "Kiss does not have any aliases.",
+	"REPLY": "***{{mention}} was kissed by {{author}}!***",
+	"SELF": "When you love yourself so much, you have to kiss yourself. I do it atleast once a day as well!"
+}

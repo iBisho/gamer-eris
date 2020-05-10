@@ -1,0 +1,19 @@
+{
+  "DESCRIPTION": "View your servers analytics.",
+  "EXTENDED": "$t(vip/analyze:EXTENDED_LINE_1)\n$t(vip/analyze:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}analyze** ~ Shows your server's analytics",
+  "EXTENDED_LINE_2": "To request more analytics please contact me on my support server using the {{prefix}}invite command.",
+  "USAGE": "{{prefix}}analyze",
+  "ALIASES": "{{prefix}}analytics",
+  "NEED_VIP": "⭐ The analytics feature is only available to VIP servers. To find out more about how to unlock this feature, please contact the support team using the **invite** command.",
+  "PATIENCE": "Depending on how large your server is this can take a while to analyze. Please bare with me and I will alert you when its complete.",
+  "TOTAL_MESSAGES": "Total Messages:",
+  "TOP_CHANNELS": "Most Active Channels:",
+  "INACTIVE_CHANNELS": "Least Active Channels:",
+  "TOP_USERS": "Most Active Users:",
+  "MEMBERS_STATS": "Member Stats:",
+  "MEMBER_JOIN_LEAVE": "$t(vip/analyze:MEMBER_JOIN_LEAVE_1)\n$t(vip/analyze:MEMBER_JOIN_LEAVE_2)\n$t(vip/analyze:MEMBER_JOIN_LEAVE_3)",
+  "MEMBER_JOIN_LEAVE_1": "Members Joined: {{joined}}",
+  "MEMBER_JOIN_LEAVE_2": "Members Left: {{left}}",
+  "MEMBER_JOIN_LEAVE_3": "Net: {{net}}"
+}

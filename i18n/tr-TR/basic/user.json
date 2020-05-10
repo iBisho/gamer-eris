@@ -1,0 +1,19 @@
+{
+	"DESCRIPTION": "Kullanıcı bilgisini gösterir.",
+	"EXTENDED": "$t(basic/user:EXTENDED_LINE_1)\n$t(basic/user:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}user** ~ Kendi bilginizi gösterir.",
+	"EXTENDED_LINE_2": "**{{prefix}}user @kullanıcı** ~ Başka bir kullanıcının bilgisini gösterir",
+	"USAGE": "{{prefix}}user *[@user]*",
+	"ALIASES": "{{prefix}}ui {{prefix}}userinfo",
+	"LOADING": "Kullanıcı bilgisi yükleniyor...",
+	"NICKNAME": "**Nick:** {{nickname}}\n",
+	"ID": "**Kullanıcı ID:** [{{id}}]({{url}})",
+	"JOINED": "Katılım Tarihleri",
+	"JOINED_VALUE": "**Discorda Katıldı:** {{memberDate}}\n**Katıldı {{guildName}}:** {{guildDate}}",
+	"SETTINGS": "Kullanıcı Ayarları",
+	"SETTINGS_VALUES": "$t(basic/user:SETTINGS_VALUES_LINE_1)\n$t(basic/user:SETTINGS_VALUES_LINE_2)",
+	"SETTINGS_VALUES_LINE_1": "**AFK Durumu:** {{afk}}",
+	"SETTINGS_VALUES_LINE_2": "**AFK Mesajı:** {{afkMessage}}",
+	"PERMISSIONS": "İzinler",
+	"ROLES": "Roller"
+}

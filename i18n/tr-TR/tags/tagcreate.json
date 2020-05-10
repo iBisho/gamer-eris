@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Create a tag on the server.",
+  "EXTENDED": "$t(tags/tagcreate:EXTENDED_LINE_1)\n$t(tags/tagcreate:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}tagcreate [Name] basic {object}** ~ Create a tag that will the bot will send whenever this word is said as the first word in the message.",
+  "EXTENDED_LINE_2": "**{{prefix}}tagcreate [Name] advanced {object}** ~ Create a tag that will the bot will send whenever this word is said anywhere in the message.",
+  "USAGE": "{{prefix}}tagcreate [Name] [basic | advanced] {object}",
+  "ALIASES": "{{prefix}}tc",
+  "EXISTS": "Tag `{{name}}` already exists on this server.",
+  "BASIC": "basic",
+  "ADVANCED": "advanced",
+  "SAVED": "A new tag has been saved on your server with the name: **[{{name}}]**.",
+  "WRONG_NAME": "I was unable to find a tag on this server named **[{{name}}]**.",
+  "REMOVED": "I **removed** the {{name}} tag from the server.",
+  "NO_TAGS": "You have **not made any tags** on this server yet!"
+}

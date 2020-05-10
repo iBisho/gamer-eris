@@ -1,0 +1,11 @@
+{
+  "LIKED": "{{username}} has liked your post in {{guildName}} guild.",
+	"THANKS_LIKED": "{{username}}, OH EM GEE! You liked that too huh? 😉. Sadly, since I am just a meager bot, I was not given any feelings so I can not like it myself 😢.",
+	"THANKS_LIKED_1": "{{username}}, OHH I see how it is. You like their messages but when I send a message I never get a like. 😉",
+	"THANKS_LIKED_2": "{{username}}, NICE! It feels so good to see you like me. 😉",
+  "NEED_PROFILE_TO_RETWEET": "You have not set up your own profile server, so I am unable to repost this to your wall. Please invite me to your private server and run the **createnetwork** command.",
+	"MISSING_PERMS_WALL": "I do not have enough permissions on your profile server's wall channel. Please make sure that I have all the following permissions in your own wall channel. **READ MESSAGES, SEND MESSAGES, EMBED LINKS, ADD REACTIONS, READ MESSAGE HISTORY, EXTERNAL EMOJIS**.",
+	"REPOSTED": "{{username}} has reposted your post from {{guildName}} guild and it has now been shared to {{newGuildName}} guild.",
+	"THANKS_REPOSTED": "Thank you for reposting this user's post. You can now find it on your own wall channel {{channel}}. Wonder if I could create my own profile, so I can repost everyones post to my profile? 😢",
+	"FAILED": "Something went wrong. I have alerted my developers."
+}

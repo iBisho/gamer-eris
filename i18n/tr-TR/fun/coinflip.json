@@ -1,0 +1,15 @@
+{
+    "DESCRIPTION": "Bet on a coinflip.",
+    "EXTENDED": "**{{prefix}}coinflip Heads 10** ~ Bets 10 Gamer Coins on Heads.",
+    "USAGE": "{{prefix}}coinflip [Heads/Tails] [Amount]",
+    "ALIASES": "{{prefix}}cf",
+    "NEED_CHOICE": "You did not provide a valid choice. Please select either Heads or Tails.",
+    "NEED_AMOUNT": "You did not provide a valid amount. Please select how much you want to gamble.",
+    "OPTION_NUMBER0": "Heads",
+    "OPTION_NUMBER1": "Tails",
+    "CANT_AFFORD": "You do not have enough Gamer Coins.",
+    "RESULT": "{{mention}}, the coin landed on {{coinflip}} and you {{result}} {{amount}} Gamer Coins {{emoji}}.",
+    "WIN": "won",
+    "LOSS": "lost"
+  }
+  

@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Delete an event from the database.",
+	"EXTENDED": "**{{prefix}}eventdelete [Event ID]** ~ Delete the event with the corresponding event id.",
+	"USAGE": "{{prefix}}eventdelete [Event ID]",
+	"ALIASES": "{{prefix}}ed",
+	"DELETE": "You have successfully deleted this event."
+}

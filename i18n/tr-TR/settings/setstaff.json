@@ -1,0 +1,13 @@
+{
+	"DESCRIPTION": "Set the mod/admin roles for your server.",
+	"EXTENDED": "$t(settings/setstaff:EXTENDED_LINE_1)\n$t(settings/setstaff:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}setstaff admin [@Role]** ~ Sets the admin role. If this role is already set as the admin role, it will reset the admin role.",
+	"EXTENDED_LINE_2": "**{{prefix}}setstaff mod [@Role]** ~ Adds/Removes a role from the servers mod roles.",
+	"USAGE": "{{prefix}}setstaff [admin | mod] [@Role | Role ID | Role Name]",
+	"ALIASES": "Setstaff does not have any aliases",
+	"INVALID_ROLE": "You did not provide a valid role to use.",
+	"ADMINROLE_RESET": "The admin role has been removed. You  no longer have any role set as the admin role on this server.",
+	"ADMINROLE_SET": "The admin role has been set. Anyone with this role will have all permissions to manage the bot for your server.",
+	"MODROLE_REMOVED": "The role has been removed from the servers mod roles.",
+	"MODROLE_ADDED": "The role has been added to the servers mod roles."
+}

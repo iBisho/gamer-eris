@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Lets you see the embed code of an embed so that you can easily edit it using an embed builder",
+	"EXTENDED": "$t(embedding/embedshow:EXTENDED_LINE_1)\n$t(embedding/embedshow:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "To get the ID of a message, make sure that Developer Mode is on in your client and right click the message whose code you'd like to copy and select **Copy ID**.",
+	"EXTENDED_LINE_2": "**{{prefix}}embedshow [Message ID]** ~ Shows you the embed code for the message with ID.",
+	"USAGE": "{{prefix}}embedshow [Message ID]",
+	"ALIASES": "Embedshow does not have any aliases.",
+	"NO_EMBED": "The message you provided does not contain any embed that I can show.",
+	"SUCCESS": "Here is the embed code for the message with ID {{id}}, you can copy this code and paste it in the [Embed Builder](https://embedbuilder.nadekobot.me) to edit it."
+}

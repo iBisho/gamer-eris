@@ -1,0 +1,20 @@
+{
+  "DESCRIPTION": "View the leaderboard for your server or the global leaderboard.",
+  "EXTENDED": "The {{prefix}}leaderboard command can be used to view your server's leaderboard.",
+  "USAGE": "{{prefix}}leaderboard *[User | global]*",
+  "ALIASES": "{{prefix}}lb",
+  "NO_POINTS": "{{member}} has no XP at this time. The leaderboard command requires the member to have atleast 1 XP.",
+  "NOT_ENOUGH": "There are not enough members on the leaderboard to gather enough data at this time. Please check again later.",
+  "RANK": "Rank {{position}}",
+  "BEHIND": "{{amount}} EXP Behind",
+  "AHEAD": "{{amount}} EXP Ahead",
+  "UNKNOWN": "Unknown",
+  "CURRENT_XP": "{{amount}} EXP",
+  "GLOBAL": "GLOBAL LEADERBOARD",
+  "VOICE": "VOICE LEADERBOARD",
+  "SERVER": "SERVER LEADERBOARD",
+  "NAME": "Name",
+  "LEVEL": "Level",
+  "EXP": "EXP",
+  "PRIZE": "Prize"
+}

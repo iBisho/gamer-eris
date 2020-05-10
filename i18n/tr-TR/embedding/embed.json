@@ -1,0 +1,20 @@
+{
+	"DESCRIPTION": "Makes an embed from the embed object you input.",
+	"EXTENDED": "$t(embedding/embed:EXTENDED_LINE_1)\n$t(embedding/embed:EXTENDED_LINE_2)\n$t(embedding/embed:EXTENDED_LINE_3)\n$t(embedding/embed:EXTENDED_LINE_4)\n$t(embedding/embed:EXTENDED_LINE_5)\n$t(embedding/embed:EXTENDED_LINE_6)\n$t(embedding/embed:EXTENDED_LINE_7)\n$t(embedding/embed:EXTENDED_LINE_8)\n$t(embedding/embed:EXTENDED_LINE_9)\n$t(embedding/embed:EXTENDED_LINE_10)\n$t(embedding/embed:EXTENDED_LINE_11)\n$t(embedding/embed:EXTENDED_LINE_12)\n$t(embedding/embed:EXTENDED_LINE_13)",
+	"EXTENDED_LINE_1": "**» Two options to create an embed:**",
+	"EXTENDED_LINE_2": "**{{prefix}}embed [@user] {object}** ~ Embeds the given object. Provide a @User first if you want to use User variables.",
+	"EXTENDED_LINE_3": "**» Possible variables that you can use in embeds:**",
+	"EXTENDED_LINE_4": "**%author%** ~ Displays the authors name.",
+	"EXTENDED_LINE_5": "**%authormention%** ~ Mentions the authors name.",
+	"EXTENDED_LINE_6": "**%authorimage%** ~ Displays the authors image in an image field.",
+	"EXTENDED_LINE_7": "**%user%** ~ Displays the activating users' name.",
+	"EXTENDED_LINE_8": "**%usermention%** ~ Mentions the activating users' name.",
+	"EXTENDED_LINE_9": "**%userimage%** ~ Displays the activating users' image in an image field.",
+	"EXTENDED_LINE_10": "**%guild%** ~ Displays the server's name.",
+	"EXTENDED_LINE_11": "**%guildimage%** ~ Displays the server's image in an image field.",
+	"EXTENDED_LINE_12": "**»** User variables only work when mentioning a user together with the command.",
+	"EXTENDED_LINE_13": "**CREATE YOUR EMBED OBJECT ON THIS WEBSITE: <https://embedbuilder.nadekobot.me/>**.",
+	"USAGE": "{{prefix}}embed [@User] {object}",
+	"ALIASES": "Embed does not have any aliases.",
+	"BAD_EMBED": "This was not a **valid embed object**. Best is to use the embed builder <https://embedbuilder.nadekobot.me/>!"
+}

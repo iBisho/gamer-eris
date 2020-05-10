@@ -1,0 +1,13 @@
+{
+	"DESCRIPTION": "Search for words and phrases on urban dictionary.",
+	"EXTENDED": "**{{prefix}}urban [term/phrase]** ~ Get one of those typical urban explanations.",
+	"USAGE": "{{prefix}}urban [term/phrase]",
+	"ALIASES": "Urban does not have any aliases.",
+	"NO_SEARCH_TERM": "No search term provided!",
+	"DEFINITION": "Definition",
+	"EXAMPLE": "Example",
+	"AUTHOR": "Author",
+	"NO_RESULTS": "No results found for `{{term}}`.",
+	"NSFW": "The urban command can only be used in a NSFW channel or in a private channel with the bot.",
+	"CREDITS": "Via Urban Dictionary"
+}

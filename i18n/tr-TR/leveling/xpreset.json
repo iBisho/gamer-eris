@@ -1,0 +1,16 @@
+{
+	"DESCRIPTION": "Reset the XP for a member, role, or the entire server.",
+	"EXTENDED": "$t(leveling/xpreset:EXTENDED_LINE_1)\n$t(leveling/xpreset:EXTENDED_LINE_2)\n$t(leveling/xpreset:EXTENDED_LINE_3)\n$t(leveling/xpreset:EXTENDED_LINE_4)",
+	"EXTENDED_LINE_1": "**{{prefix}}xpreset** ~ Resets the entire servers XP.",
+	"EXTENDED_LINE_2": "**{{prefix}}xpreset @user** ~ Reset this members XP.",
+	"EXTENDED_LINE_3": "**{{prefix}}xpreset @role** ~ Reset the XP for all members that have this role.",
+	"EXTENDED_LINE_4": "**This is a very powerful and dangerous command. Please use wisely. Once XP is reset, it can not be restored.**",
+	"USAGE": "{{prefix}}xpreset *[User] [Role]*",
+	"ALIASES": "XPReset does not have any aliases.",
+	"CANCELLED": "Cancelling XPReset as requested.",
+	"MEMBER": "The XP has been reset for {{member}}.",
+	"PATIENCE": "Please hold on, this can take a while... I will let you know once it is complete.",
+	"ROLE": "The XP has been reset for all members that have the {{role}} role.",
+	"ALL": "The XP has been reset for every member on the server."
+}
+

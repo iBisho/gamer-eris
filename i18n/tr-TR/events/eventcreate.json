@@ -1,0 +1,18 @@
+{
+  "DESCRIPTION": "Create a new event in your server so people can RSVP.",
+  "EXTENDED": "$t(events/eventcreate:EXTENDED_LINE_1)\n$t(events/eventcreate:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}eventcreate** ~ Creates a brand new event using the default template.",
+  "EXTENDED_LINE_2": "**{{prefix}}eventcreate [Template Name]** ~ Creates an event from an existing template.",
+  "USAGE": "{{prefix}}eventcreate *[Tempate Name]*",
+  "ALIASES": "{{prefix}}ec",
+  "DEFAULT_TITLE": "Time To Get Your Game On!",
+  "DEFAULT_DESCRIPTION": "Join the event to let others know you will be able to play with them at the time of the event.",
+  "DEFAULT_PLATFORM": "Cross Platform",
+  "DEFAULT_GAME": "Gamer Role Play Hehehe",
+  "DEFAULT_ACTIVITY": "Playing All Night Long!",
+  "CREATE_FAILED": "Sorry, an error has occurred and I was unable to create an event for you. Please contact my developers with the **.fb dev your message here.**.",
+  "CREATE_SUCCESS": "You have successfully created a new event on this server with an ID of **[ {{number}} ]**.",
+  "SAVED": "{{mention}}, You have successfully saved the event.",
+  "INVALID_EDIT": "{{mention}}, the type you provided was not a valid option. Please try again. To stop this interface menu, type `quit`.",
+  "INVALID_TIME": "{{mention}}, the time you provided was not valid. Please try again. To stop this interface menu, type `quit`."
+}

@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Add a reaction to a reaction role on your server.",
+  "EXTENDED": "$t(roles/reactionroleadd:EXTENDED_LINE_1)\n$t(roles/reactionroleadd:EXTENDED_LINE_2)\n$t(roles/reactionroleadd:EXTENDED_LINE_3)\n$t(roles/reactionroleadd:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}reactionroleadd [Name] [Emoji Name] [@Role | Role ID | Role Name]** ~ Adds the Emoji to the reaction role with the provided name and sets the roles to be used for this reaction.",
+  "EXTENDED_LINE_2": "The reaction role that you are trying to add the reaction to must already have been created with the {{prefix}}reactionrolecreate command.",
+  "EXTENDED_LINE_3": "The **[Emoji Name]** must be an emoji that you created using the *{{prefix}}emojicreate* command.",
+  "EXTENDED_LINE_4": "Note: The bot must have a role higher than the role you are trying to save in the database.",
+  "USAGE": "{{prefix}}reactionroleadd [Name] [Emoji Name] [@Role | Role ID | Role Name]",
+  "ALIASES": "{{prefix}}rra",
+  "NOT_FOUND": "There was no reaction role found with the name: **{{name}}**",
+  "UPDATED": "The **{{name}}** reaction role has been updated."
+}

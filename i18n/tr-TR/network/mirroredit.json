@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Allows you to edit the settings for one of your mirror channel that you have created..",
+  "EXTENDED": "$t(network/mirroredit:EXTENDED_LINE_1)\n$t(network/mirroredit:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}mirroredit [Name] [delete]** ~ Toggles the option whether messages sent by users in the source channel are deleted after copying over to the mirror channel.",
+  "EXTENDED_LINE_2": "**{{prefix}}mirroredit [Name] [anonymous]** ~ Toggles the option whether messages that are copied to the mirror channel should show the real username or a fake name. All fake names will have #0000 and are guaranteed to make you smile :)",
+  "USAGE": "{{prefix}}mirroredit [Name] [delete | anonymous]",
+  "ALIASES": "{{prefix}}me",
+  "VIP_ONLY_GUILD": "Customizing the mirror channel setting are only available for VIP guild. To learn how to become a VIP, please use the invite command to join our support server.",
+  "NOT_FOUND": "I was unable to find any mirror channel setup named **{{name}}**.",
+  "DELETED": "Deleting the message sent in the source channel has been **{{status}}**.",
+  "ANONYMOUS": "Randomizing the names for the messages sent to the mirror channel has been **{{status}}**."
+}

@@ -1,0 +1,11 @@
+{
+	"DESCRIPTION": "Get Gamer Coins and XP per day.",
+	"EXTENDED": "$t(leveling/daily:EXTENDED_LINE_1)\n$t(leveling/daily:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "This command can only be used in one server per day. The XP will only be granted to that server's leaderboard and the global leaderboard. You will be given XP for the server and also a certain set amount of XP for the global leaderboard.",
+	"EXTENDED_LINE_2": "Note: **{{prefix}}daily** also grants you Gamer Coins.",
+	"USAGE": "{{prefix}}daily",
+	"ALIASES": "Daily does not have any aliases.",
+	"SUCCESS": "{{mention}}, You received {{amount}} {{emoji}} Gamer Coins and 50 XP.",
+	"COOLDOWN": "You have already used the daily command today. You can use the daily command in `{{time}}`."
+}
+

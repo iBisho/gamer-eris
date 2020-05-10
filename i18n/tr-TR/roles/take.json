@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Take a role to another member.",
+  "EXTENDED": "$t(roles/take:EXTENDED_LINE_1)\n$t(roles/take:EXTENDED_LINE_2)\n$t(roles/take:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}take [@User | User ID] [@Role | Role ID | Role Name]** ~ Take the role from the user.",
+  "EXTENDED_LINE_2": "Note: The bot must have a role higher than the role you are trying to take.",
+  "EXTENDED_LINE_3": "Note: You must have a role higher than the role you are trying to take.",
+  "USAGE": "{{prefix}}take [@User | User ID] [@Role | Role ID | Role Name]",
+  "ALIASES": "Take does not have any aliases.",
+  "MISSING_MANAGE_ROLES": "In order to take a role from a user I need to have the **Manage Roles** permission.",
+  "NEED_USER": "You did not provide a user to whom to take a role from.",
+  "NEED_ROLE": "You did not provide a role to take.",
+  "BOT_TOO_LOW": "The bot's highest role is too low to take this role.",
+  "USER_TOO_LOW": "You're highest role is too low to take this role.",
+  "SUCCESS": "The **{{role}}** role has been taken from **{{user}}**.",
+  "GIVEN_BY": "{{user}} used the take command to take the role from this user."
+}

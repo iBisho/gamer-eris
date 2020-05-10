@@ -1,0 +1,7 @@
+{
+  "DESCRIPTION": "Check your balance.",
+  "EXTENDED": "**{{prefix}}balance** ~ Checks how many {{emoji}} Gamer Coins you own.",
+  "USAGE": "{{prefix}}balance",
+  "ALIASES": "{{prefix}}bal {{prefix}}wallet",
+  "SUCCESS": "{{mention}}, You own {{amount}} {{emoji}} Gamer Coins."
+}

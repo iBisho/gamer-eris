@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Enable or disable using a whitelisted or raw Tenor GIFS in fun commands.",
+  "EXTENDED": "**{{prefix}}settenor** ~ Enable or disable using a whitelisted or raw Tenor GIFS in fun commands.",
+  "USAGE": "{{prefix}}settenor",
+  "ALIASES": "Settenor does not have any aliases.",
+  "DISABLED": "I will no longer fetch current trending GIFs from Tenor. A random group of GIFs that were manually verified will be used instead.",
+  "ENABLED": "You like to live on the edge as well huh? I will post the top trending GIFs from Tenor."
+}

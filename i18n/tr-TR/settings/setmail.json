@@ -1,0 +1,20 @@
+{
+	"DESCRIPTION": "Set up the mail system as per your needs.",
+  "EXTENDED": "$t(settings/setmail:EXTENDED_LINE_1)\n$t(settings/setmail:EXTENDED_LINE_2)\n$t(settings/setmail:EXTENDED_LINE_3)\n$t(settings/setmail:EXTENDED_LINE_4)\n$t(settings/setmail:EXTENDED_LINE_5)",
+  "EXTENDED_LINE_1": "**{{prefix}}setmail enable** ~ Enables the mail system.",
+	"EXTENDED_LINE_2": "**{{prefix}}setmail disable** ~ Disables the mail system.",
+  "EXTENDED_LINE_3": "**{{prefix}}setmail channel [#Channel]** ~ Sets the support channel for your server.",
+  "EXTENDED_LINE_4": "**{{prefix}}setmail logs [#Channel]** ~ Sets the log channel for your server. All mails sent and received will be logged here.",
+	"EXTENDED_LINE_5": "**{{prefix}}setmail roles [@Role | Role ID | Role Name]** ~ Adds or removes the roles that should be @mentioned when a new mail is sent.",
+  "USAGE": "{{prefix}}setmail [enable | disable | channel | roles] *[#Channel | @Role]*",
+  "ALIASES": "Setmail does not have any aliases.",
+	"ALREADY_ENABLED": "The mail system is already enabled on this server.",
+  "ENABLED": "The mail system is now enabled on the server.",
+  "ALREADY_DISABLED": "The mail system is already disabled on this server.",
+  "DISABLED": "The mail system is now disabled on the server.",
+  "SUPPORT_CHANNEL_SET": "The support channel is now set. Users can simply type in this channel without a command to send a mail or reply to their mail.",
+  "LOG_CHANNEL_SET": "The log channel is now set. All mails sent and received will be logged in this channel going forward.",
+  "NEED_ROLES": "You did not provide any roles to add/remove from the alert roles list.",
+  "ALERT_ROLES_UPDATED": "The new mail alert roles have been updated.",
+  "CATEGORY_UPDATED": "The mail category channel has been updated."
+}

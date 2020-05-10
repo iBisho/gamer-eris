@@ -1,0 +1,9 @@
+{
+	"DESCRIPTION": "Makes the tags on your server able to be installed from any server.",
+	"EXTENDED": "$t(tags/tagpublic:EXTENDED_LINE_1)\n$t(tags/tagpublic:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}tagpublic [Tag Names]** ~ Makes all tags public so other servers can install them on their servers.",
+	"EXTENDED_LINE_2": "Note: You can enter as many tags as you like and it will make them public.",
+	"EXPORTED": "The tags have been successfully made public.",
+	"USAGE": "{{prefix}}tagpublic [Tag Names]",
+	"ALIASES": "Tagpublic does not have any aliases."
+}

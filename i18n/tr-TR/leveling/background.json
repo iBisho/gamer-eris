@@ -1,0 +1,22 @@
+{
+	"DESCRIPTION": "Select a custom background picture for your profile.",
+	"EXTENDED": "$t(leveling/background:EXTENDED_LINE_1)\n$t(leveling/background:EXTENDED_LINE_2)\n$t(leveling/background:EXTENDED_LINE_3)\n\n$t(leveling/background:EXTENDED_LINE_4)",
+	"EXTENDED_LINE_1": "**{{prefix}}background set [Background ID] [black or white]** ~ Sets a background and theme.",
+	"EXTENDED_LINE_2": "**{{prefix}}background view [Background ID] [black or white]** ~ View how a background and theme will look before setting it.",
+	"EXTENDED_LINE_3": "» To request a custom background, you must be a Nitro Booster of the Gamer support server. Use the invite command to join the server for more details.",
+	"EXTENDED_LINE_4": "» To see all the available backgrounds please check out our wiki page.",
+	"USAGE": "{{prefix}}background *[Category Name Or Background ID]*",
+	"ALIASES": "{{prefix}}bg",
+	"SELECTION_TITLE": "Type the number for your custom background selection.",
+	"SELECTION_FOOTER": "Please select a background by number or cancel with [q]uit.",
+	"INVALID": "There is no background with the ID {{id}}!",
+	"PREVIEW_TITLE": "Selected background [{{id}}] ({{name}})",
+	"PREVIEW_DESCRIPTION": "Do you really want to select that background? Please use one of the reactions to take action:",
+	"PREVIEW_BASIC": "{{greenTick}} Yes\n{{redX}} No",
+	"PREVIEW_VIP": "{{sunglasses}} **Dark** theme\n{{flashlight}} **Light** theme.",
+	"SAVED": "You have successfully changed your background. Loading your profile now...",
+	"VIP_THEME": "⭐ Sorry, but the dark theme is only for VIP users. If you want to become VIP, join the gamer server with the invite command and boost the gamer server.",
+	"UNLOCKABLE": "Background #{{id}} is not unlockable with currency.",
+	"NEED_MONEY": "You do not have enough Gamer Coins to buy this background. This background costs {{cost}} and you only have {{currency}}. You need {{needed}} more Gamer Coins.",
+	"BOUGHT": "You just bought the #{{name}} background pack. You can now use the background command to equip your backgrounds."
+}

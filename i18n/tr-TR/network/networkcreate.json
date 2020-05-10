@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "Creates your social network profile server.",
+  "EXTENDED": "**{{prefix}}networkcreate** ~ Automatically creates the entire social network setup for your server.",
+  "USAGE": "{{prefix}}networkcreate",
+  "ALIASES": "Networkcreate does not have any aliases.",
+  "ALREADY_NETWORKED": "Sorry, this server already has a setup for the social network. This command only works when the server is not setup. Please create a new server, invite the bot and try this command again.",
+  "ONLY_ONE": "Sorry, you can only have one profile server. You have set {{guild}} as your profile server.",
+  "PATIENCE": "Please hold on as I create the entire social network for you on this server... I will send another message letting you know once it is complete.",
+  "CATEGORY_NAME": "Social Network",
+  "WALL_NAME": "wall",
+  "FIRST_MESSAGE": "It's time to ditch Twitter and Facebook. All-in-one voice and text chat social network that's free, secure, and works on both your desktop and phone. Stop risking your private info with Facebook and hassling with Twitter. Simplify your life.",
+  "NOTIFICATION_NAME": "notifications",
+  "PHOTOS_NAME": "photos",
+	"FEED_NAME": "feed",
+	"CREATED": "{{mention}}, your social Network profile has now been created.",
+	"FAILED": "{{mention}}, something went wrong while your profile was being created. I have contacted my developers with the error report."
+}

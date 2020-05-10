@@ -1,0 +1,11 @@
+{
+  "DESCRIPTION": "Bot hakkında bilgi verir.",
+  "EXTENDED": "$t(basic/ping:EXTENDED_LINE_1)\n$t(basic/ping:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}ping** ~ Ping değerini gösterir (ping).",
+  "EXTENDED_LINE_2": "Genel Bot İstatistikleri : Shard | Discord Sunucularu | Kullanıcı Sayısı",
+  "USAGE": "{{prefix}}ping",
+  "ALIASES": "{{prefix}}pong",
+  "TIME": "Tepki süresi: {{time}} saniye",
+  "STATS": "**__Genel Bot İstatisikleri__**",
+  "STATS_VALUE": "🆔 {{id}} {{discord}} {{guilds}} 👥 {{users}}"
+}

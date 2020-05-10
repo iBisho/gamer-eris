@@ -1,0 +1,18 @@
+{
+  "DESCRIPTION": "Adds/removes a role from the self assignable list to yourself.",
+  "EXTENDED": "$t(roles/role:EXTENDED_LINE_1)\n$t(roles/role:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}role** ~ Display all possible selfassignable roles for users.",
+  "EXTENDED_LINE_2": "**{{prefix}}role [rolename]** ~ Adds the role to yourself.",
+  "USAGE": "{{prefix}}role *[@Role | Role ID | Role Name]*",
+  "ALIASES": "{{prefix}}r {{prefix}}rank",
+  "NO_PUBLIC_ROLES": "There are no roles available to self-assign. Please contact a moderator/admin of the server.",
+  "MISSING_MANAGE_ROLES": "I do not have the **Manage Role** permissions to give or remove a role. Please contact a moderator/admin of the server.",
+  "NEED_ROLE": "You did not provide any role to edit that role for you.",
+  "BOT_TOO_LOW": "My highest role is not high enough to edit that role for you.",
+  "SELF_REMOVE": "User used the role command to remove this role.",
+  "SELF_ASSIGN": "User used the role command to assign this role.",
+  "REMOVED": "The {{role}} role has been removed from you as per your wishes sire.",
+  "ADDED": "The {{role}} role has been given to you. It's time to boogie!",
+  "AVAILABLE": "Available Roles To Assign:",
+  "NOT_PUBLIC": "This role is not a public role so it can not be assigned to yourself."
+}

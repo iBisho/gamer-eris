@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Tickles the mentioned user/role and sends an image in chat.",
+	"EXTENDED": "Tickle someone on the server with a cute gif!",
+	"USAGE": "{{prefix}}tickle [user]",
+	"ALIASES": "Tickle does not have any aliases.",
+	"REPLY": "***{{mention}} was tickled by {{author}}!***",
+	"SELF": "Hehehehehehehehehehehehehehe stop it you. Why does you tickling yourself make me laugh."
+}
