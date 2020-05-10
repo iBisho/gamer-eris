@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "Botu sunucunuza eklemeniz için botun davet linkini ve ayrıca ekstra yardım almanız için destek sunucusunun linkini gönderir.",
+  "EXTENDED": "**{{prefix}}invite** ~ Botu sunucunuza eklemeniz için botun davet linkini ve ayrıca ekstra yardım almanız için destek sunucusunun linkini gönderir.",
+  "USAGE": "{{prefix}}invite",
+  "ALIASES": "{{prefix}}join",
+  "EMBED_DESCRIPTION": "Lütfen **https://gamer.netlify.com** Adresinden web sitemizi ziyaret edin!",
+  "LINKS": "$t(basic/invite:LINKS_LINE_1)\n$t(basic/invite:LINKS_LINE_2)",
+  "LINKS_LINE_1": "**»** <:g4m3rwhite:443416083874054145> **Botu davet et**: [Davet etmek için tıkla]({{invite}})",
+  "LINKS_LINE_2": "**»** <:g4m3rblue:443416157597466636> **Ekstra yardım?**: [Destek Sunucusu](https://discord.gg/J4NqJ72)"
+}
