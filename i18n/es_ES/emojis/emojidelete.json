@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Elimina un emoji global que hayas creado.",
+  "EXTENDED": "**{{prefix}}emojidelete [Nombre]** ~ Elimina uno de tus emojis globales.",
+  "USAGE": "{{prefix}}emojicreate [Nombre]",
+  "ALIASES": "{{prefix}}emd",
+  "NEED_NAME": "No proporcionaste ningún nombre. No puedo eliminar ningún emoji si no me dices el nombre del emoji que quieres que elimine.",
+  "DOESNT_EXIST": "El emoji **{{name}}** no existe en la base de datos de emojis globales ¿Estás seguro que tratas de eliminar un emoji global valido?",
+  "DELETED": "El emoji **{{name}}** ha sido eliminado."
+}
