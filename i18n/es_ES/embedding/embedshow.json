@@ -1,0 +1,10 @@
+{
+	"DESCRIPTION": "Te permite ver el código del incrustado para que puedas editarlo fácilmente usando un generador de incrustaciones.",
+	"EXTENDED": "$t(embedding/embedshow:EXTENDED_LINE_1)\n$t(embedding/embedshow:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "Para obtener el ID del mensaje, asegúrate que el Modo Desarrollador este activado en tu cliente y dar clic derecho sobre el mensaje que quieras copiar su ID y seleccionas **Copiar ID**.",
+	"EXTENDED_LINE_2": "**{{prefix}}embedshow [ID del mensaje]** ~ Te muestra el código del incrustado para el mensaje con ID.",
+	"USAGE": "{{prefix}}embedshow [ID del mensaje]",
+	"ALIASES": "Embedshow no tiene ningún alias.",
+	"NO_EMBED": "El mensaje que proveíste no contiene ningún incrustado que pueda mostrar.",
+	"SUCCESS": "Este es el código del incrustado para el mensaje con el ID {{id}}, puedes copiar este código y pegarlo en el [Generador de incrustaciones](https://embedbuilder.nadekobot.me) para editarlo."
+}
