@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "anuncia un evento de la base de datos.",
+	"EXTENDED": "**{{prefix}}eventadvertise [ID del evento]** ~ Crea una carta de anuncio de evento para el evento con el id correspondiente.",
+	"USAGE": "{{prefix}}eventadvertise [ID del evento]",
+	"ALIASES": "{{prefix}}ead",
+	"DELETE": "Has eliminado exitosamente el evento con el ID {{id}}."
+}
