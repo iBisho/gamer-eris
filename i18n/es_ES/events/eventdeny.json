@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Niega participación en un evento.",
+  "EXTENDED": "**{{prefix}}eventdeny [ID del evento]** ~ Has saber a los participantes del evento que no podrás asistir.",
+  "USAGE": "{{prefix}}eventdeny [ID del evento]",
+  "ALIASES": "{{prefix}}edeny",
+  "ALREADY_DENIED": "Ya estas marcado como no asistir a este evento.",
+  "DENIED": "Ahora estas marcado como no asistir a este evento."
+}
