@@ -1,0 +1,18 @@
+{
+  "DESCRIPTION": "Crea un nuevo evento en tu servidor para que las personas puedan RSVP.",
+  "EXTENDED": "$t(events/eventcreate:EXTENDED_LINE_1)\n$t(events/eventcreate:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}eventcreate** ~ Crea un nuevo evento usando la plantilla por defecto.",
+  "EXTENDED_LINE_2": "**{{prefix}}eventcreate [Nombre de plantilla]** ~ Crea un evento a partir de una plantilla existente.",
+  "USAGE": "{{prefix}}eventcreate *[Nombre de plantilla]*",
+  "ALIASES": "{{prefix}}ec",
+  "DEFAULT_TITLE": "¡Es hora de comenzar tu juego!",
+  "DEFAULT_DESCRIPTION": "Únete al evento para hacerles saber al resto que estarás disponible para jugar con ellos a la hora del evento.",
+  "DEFAULT_PLATFORM": "Multiplataforma",
+  "DEFAULT_GAME": "Juego de rol de Gamer jejeje",
+  "DEFAULT_ACTIVITY": "¡Jugando toda la noche!",
+  "CREATE_FAILED": "Lo siento, ha ocurrido un error y no he podido crear un evento para ti. Por favor contacta a los desarrolladores con **.fb dev tu mensaje va aquí.**.",
+  "CREATE_SUCCESS": "Has creado exitosamente un nuevo evento en este servidor con el ID de **[ {{number}} ]**.",
+  "SAVED": "{{mention}}, Has guardado exitosamente el evento.",
+  "INVALID_EDIT": "{{mention}}, El tipo que proporcionaste no es una opción valida, Por favor intente de nuevo. Para detener esta menú de interfaz, escriba `quit`.",
+  "INVALID_TIME": "{{mention}}, el tiempo que proporcionaste no es valido. Por favor inténtalo de nuevo. Para detener esta menú de interfaz, escriba `quit`."
+}
