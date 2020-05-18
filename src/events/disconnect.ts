@@ -4,7 +4,7 @@ import { MessageEmbed } from 'helperis'
 
 export default class extends Event {
   async execute() {
-    Gamer.helpers.logger.green(`[Shards DISCONNECTED] All shards are disconnected.`)
+    Gamer.helpers.logger.debug(`[Shards DISCONNECTED] All shards are disconnected.`)
     const embed = new MessageEmbed()
       .setColor(`#e67e22`)
       .setTitle(`All shards disconnected`)

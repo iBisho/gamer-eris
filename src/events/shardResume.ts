@@ -4,7 +4,7 @@ import { MessageEmbed } from 'helperis'
 
 export default class extends Event {
   async execute(id: number) {
-    Gamer.helpers.logger.green(`[Shard RESUMED] Shard ID ${id} has been resumed.`)
+    Gamer.helpers.logger.debug(`[Shard RESUMED] Shard ID ${id} has been resumed.`)
     const embed = new MessageEmbed()
       .setColor(`#3498db`)
       .setTitle(`Shard ${id} has been resumed`)
