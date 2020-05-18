@@ -38,7 +38,8 @@ export default class extends Event {
     const hasPermission = Gamer.helpers.discord.checkPermissions(channel, gamerID, [
       `manageRoles`,
       `manageChannels`,
-      `readMessages`
+      `readMessages`,
+      `connect`
     ])
     // Don't have permissions to edit this channels perms
     if (!hasPermission || !botMember?.permission?.has('manageRoles')) return
