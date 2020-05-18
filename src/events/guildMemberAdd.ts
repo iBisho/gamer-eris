@@ -93,8 +93,8 @@ export default class extends Event {
         if (guildSettings.hibye.welcome.channelID) {
           const welcomeChannel = guild.channels.get(guildSettings.hibye.welcome.channelID)
           if (welcomeChannel && welcomeChannel instanceof TextChannel) {
-            if (embed) welcomeChannel.createMessage({ embed })
-            else welcomeChannel.createMessage(transformed)
+            if (embed) await welcomeChannel.createMessage({ embed })
+            else await welcomeChannel.createMessage(transformed)
           }
         }
       } catch {}
