@@ -35,11 +35,10 @@ export default class extends Event {
   ) {
     const Gamer = channel.guild.shard.client as GamerClient
     const botMember = channel.guild.members.get(gamerID)
-    const hasPermission = Gamer.helpers.discord.checkPermissions(channel, gamerID, [
-      `manageRoles`,
-      `manageChannels`,
-      `readMessages`
-    ])
+    const hasPermission =
+      channel instanceof VoiceChannel
+        ? Gamer.helpers.discord.checkPermissions(channel, gamerID, [`manageRoles`, `manageChannels`, `connect`])
+        : Gamer.helpers.discord.checkPermissions(channel, gamerID, [`manageRoles`, `manageChannels`, `readMessages`])
     // Don't have permissions to edit this channels perms
     if (!hasPermission || !botMember?.permission?.has('manageRoles')) return
 
