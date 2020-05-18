@@ -87,14 +87,14 @@ export default class extends Event {
 
         if (guildSettings.hibye.welcome.dmEnabled) {
           const dmChannel = await member.user.getDMChannel()
-          if (embed) await dmChannel.createMessage({ embed })
-          else await dmChannel.createMessage(transformed)
+          if (embed) await dmChannel.createMessage({ embed }).catch(() => undefined)
+          else await dmChannel.createMessage(transformed).catch(() => undefined)
         }
         if (guildSettings.hibye.welcome.channelID) {
           const welcomeChannel = guild.channels.get(guildSettings.hibye.welcome.channelID)
           if (welcomeChannel && welcomeChannel instanceof TextChannel) {
-            if (embed) welcomeChannel.createMessage({ embed })
-            else welcomeChannel.createMessage(transformed)
+            if (embed) welcomeChannel.createMessage({ embed }).catch(() => undefined)
+            else welcomeChannel.createMessage(transformed).catch(() => undefined)
           }
         }
       } catch {}
@@ -129,7 +129,7 @@ export default class extends Event {
           `readMessages`,
           `sendMessages`
         ])
-        if (hasPermission) publicLogChannel.createMessage({ embed: embed.code })
+        if (hasPermission) publicLogChannel.createMessage({ embed: embed.code }).catch(() => undefined)
       }
     }
 
@@ -141,7 +141,7 @@ export default class extends Event {
         `readMessages`,
         `sendMessages`
       ])
-      if (hasPermission) logChannel.createMessage({ embed: embed.code })
+      if (hasPermission) logChannel.createMessage({ embed: embed.code }).catch(() => undefined)
     }
   }
 }
