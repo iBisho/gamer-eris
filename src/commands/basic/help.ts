@@ -227,7 +227,8 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   const name = command.names[0].toLowerCase()
   const category = categories.find(c => c.commands.includes(name)) || { name: `basic` }
 
-  const EXTENDED = language(`${category.name}/${name}:EXTENDED`, { prefix })
+  // The 1 and 2 vars are for shortcutcreate help
+  const EXTENDED = language(`${category.name}/${name}:EXTENDED`, { prefix, 1: `{{1}}`, 2: `{{2}}` })
   const USAGE = language(`${category.name}/${name}:USAGE`, { prefix })
   const ALIASES = language(`${category.name}/${name}:ALIASES`, { prefix })
   const NO_EXTENDED = language('basic/help:NO_EXTENDED')

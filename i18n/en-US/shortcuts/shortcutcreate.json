@@ -1,14 +1,15 @@
 {
   "DESCRIPTION": "Create a shortcut to run commands in custom ways.",
-  "EXTENDED": "$t(shortcuts/shortcutcreate:EXTENDED_LINE_1)\n$t(shortcuts/shortcutcreate:EXTENDED_LINE_2)\n$t(shortcuts/shortcutcreate:EXTENDED_LINE_3)\n$t(shortcuts/shortcutcreate:EXTENDED_LINE_4)\n$t(shortcuts/shortcutcreate:EXTENDED_LINE_5)",
+  "EXTENDED": "$t(shortcuts/shortcutcreate:EXTENDED_LINE_1)\n$t(shortcuts/shortcutcreate:EXTENDED_LINE_2)\n$t(shortcuts/shortcutcreate:EXTENDED_LINE_3)\n$t(shortcuts/shortcutcreate:EXTENDED_LINE_4)$t(shortcuts/shortcutcreate:EXTENDED_LINE_5)\n$t(shortcuts/shortcutcreate:EXTENDED_LINE_6)",
   "EXTENDED_LINE_1": "Shortcuts allow you to create different command names for specific commands or create macros for your own custom commands.",
   "EXTENDED_LINE_2": "**{{prefix}}shortcutcreate na role na** ~ Create a shortcut that allows users to give themself the na role by just typing *{{prefix}}na*.",
   "EXTENDED_LINE_3": "**{{prefix}}shortcutcreate eu role eu | send [Channel] Welcome %usermention% to the EU channel** ~ Creates a shortcut macro that when a user types *{{prefix}}eu* it will give them the eu role and then send an alert to a channel  with the send command.",
-  "EXTENDED_LINE_4": "**{{prefix}}shortcutcreate rank role {{1}}** ~ Creates a shortcut that accepts an argument from a user. Now the user can type ${{prefix}}rank na* or *{{prefix}}rank eu* and get the roles. The 1 correlates to the first argument the user provides. To use the second you would do {{2}} etc...",
-  "EXTENDED_LINE_5": "Note: **{{prefix}}shortcutcreate deletetrigger** ~ adding the word deletetrigger after shortcutcreate will cause your shortcut to delete its trigger message.",
+  "EXTENDED_LINE_4": "**{{prefix}}shortcutcreate rank role {{1}}**.",
+  "EXTENDED_LINE_5": " ~ Creates a shortcut that accepts an argument from a user. Now the user can type *{{prefix}}rank na* or *{{prefix}}rank eu* and get the roles. The 1 correlates to the first argument the user provides. To use the second you would do {{2}} etc..",
+  "EXTENDED_LINE_6": "Note: **{{prefix}}shortcutcreate deletetrigger** ~ adding the word deletetrigger after shortcutcreate will cause your shortcut to delete its trigger message.",
   "USAGE": "{{prefix}}shortcutcreate *[deletetrigger]* [Shortcut Name] [Command Name] [Command Arguments]",
-	"ALIASES": "{{prefix}}scc",
-	"NAME_TAKEN": "**{{name}}** is already being used by another shortcut.",
+  "ALIASES": "{{prefix}}scc",
+  "NAME_TAKEN": "**{{name}}** is already being used by another shortcut.",
   "DELETE_TRIGGER_REASON": "{{command}} shortcut trigger deleted as requested.",
   "CREATED": "The {{name}} shortcut was created."
 }
