@@ -23,6 +23,10 @@ export default class extends Event {
         `If you need help please review our [Wiki](https://gamer.netlify.com) as we have nice explanations with pictures and guides.\n\nIf you still need further help, please contact us on our [Support Server](${constants.general.gamerServerInvite})`
       )
       .addField(`My Features:`, `To view a list of the bot's features, please type **.help all** in ${guild.name}`)
+      .addField(
+        `Setting Up:`,
+        `To set up the bot, the server owner can type **.setup** to begin the setup walkthrough to setup the features 1 by 1.`
+      )
       .setTimestamp()
     if (guild.iconURL) embed.setThumbnail(guild.iconURL)
 
