@@ -80,16 +80,6 @@ export default new Command([`analyze`, `analytics`], async (message, _args, cont
       if (serverlogChannelIDs.includes(channel.id)) return false
 
       return true
-      // const everyoneRole = message.member.guild.roles.get(message.guildID)
-      // const everyoneSendPerm = everyoneRole?.permissions.has('sendMessages')
-      // const everyoneOverwrite = channel.permissionOverwrites.get(message.guildID)
-
-      // if (everyoneOverwrite && everyoneOverwrite.allow & Constants.Permissions.sendMessages) return true
-      // if (everyoneOverwrite && everyoneOverwrite.deny & Constants.Permissions.sendMessages) return false
-      // if (everyoneOverwrite && everyoneOverwrite.allow & Constants.Permissions.readMessages) return true
-      // if (everyoneOverwrite && everyoneOverwrite.deny & Constants.Permissions.readMessages) return false
-
-      // return everyoneSendPerm || false
     })
     .map(channel => channel.id)
 
@@ -134,6 +124,7 @@ export default new Command([`analyze`, `analytics`], async (message, _args, cont
       topUsers.map(id => `<@!${id}> ${userMessages.get(id)!}`).join('\n') || NONE,
       true
     )
+    .setTimestamp()
 
   return message.channel.createMessage({ content: message.author.mention, embed: embed.code })
 })

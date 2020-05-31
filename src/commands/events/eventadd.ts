@@ -11,10 +11,10 @@ export default new Command([`eventadd`, `eadd`], async (message, args, context) 
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [number, ...roleIDsOrNames] = args
-  const eventID = parseInt(number, 10)
+  const eventID = Number(number)
   const helpCommand = Gamer.commandForName(`help`)
-
   if (!eventID) return helpCommand?.process(message, [`eventadd`], context)
+
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
     id: eventID,

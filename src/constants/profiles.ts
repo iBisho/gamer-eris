@@ -81,9 +81,18 @@ export default {
     },
     {
       id: 7,
-      name: `ATS - Submitted By BeardCaliper
-      #1897`,
+      name: `ATS - Submitted By BeardCaliper#1897`,
       buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/ats.jpg`))
+    },
+    {
+      id: 8,
+      name: `Dicey Cafe - Submitted By Derk#0127`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/diceycafe.png`))
+    },
+    {
+      id: 9,
+      name: `Control`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/control.jpg`))
     }
   ],
   backgroundPackages: [],

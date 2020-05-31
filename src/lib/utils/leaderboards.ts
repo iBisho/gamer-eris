@@ -21,12 +21,12 @@ export default class {
       return
     }
 
-    const memberIDs = member.guild.members.map(m => m.id)
-
     if (!this.Gamer.allMembersFetchedGuildIDs.has(member.guild.id)) {
       await member.guild.fetchAllMembers()
       this.Gamer.allMembersFetchedGuildIDs.add(member.guild.id)
     }
+
+    const memberIDs = member.guild.members.map(m => m.id)
 
     const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
       this.Gamer.database.models.user

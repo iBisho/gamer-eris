@@ -11,8 +11,10 @@ export default new Command([`dice`, `diceroll`], async (message, args, context) 
   const [options, ...leftovers] = args
 
   const [first, second] = options?.split('d') || [1, 6]
-  const amount = Number(first) || 1
-  const maxValue = Number(second) || 6
+  let amount = Number(first) || 1
+  let maxValue = Number(second) || 6
+  if (amount > 50) amount = 50
+  if (maxValue > 100) maxValue = 100
 
   // Roll the dice
   const rolls = []

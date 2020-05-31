@@ -3,7 +3,10 @@ import { MessageEmbed } from 'helperis'
 import GamerClient from '../../lib/structures/GamerClient'
 import Constants from '../../constants/index'
 
-const gifs = [{ name: 'mirrorcreate', gif: 'https://i.imgur.com/ORLsc42.gif' }]
+const gifs = [
+  { name: 'mirrorcreate', gif: 'https://i.imgur.com/ORLsc42.gif' },
+  { name: 'setverify', gif: 'https://i.imgur.com/TZxyAwY.gif' }
+]
 
 const categories = [
   { name: `basic`, commands: [`help`, `ping`, `invite`, `server`, `upvote`, `upvotedonate`, `user`] },

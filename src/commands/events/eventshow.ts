@@ -7,7 +7,8 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
-  const [eventID] = args
+  const [number] = args
+  const eventID = Number(number)
   if (!eventID) return message.channel.createMessage(language(`events/events:NEED_EVENT_ID`))
 
   // Get the event from this server using the id provided
