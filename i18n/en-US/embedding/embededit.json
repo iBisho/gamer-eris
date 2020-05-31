@@ -1,11 +1,12 @@
 {
-	"DESCRIPTION": "Edit any existing embed that was originally sent by Gamer bot.",
-	"EXTENDED": "$t(embedding/embededit:EXTENDED_LINE_1)\n$t(embedding/embededit:EXTENDED_LINE_2)",
-	"EXTENDED_LINE_1": "To get the ID of a message, make sure that Developer Mode is on in your client and right click the message whose code you'd like to copy and select **Copy ID**.",
-	"EXTENDED_LINE_2": "**{{prefix}}embededit [Message ID] [Embed Code]** ~ Edits the embed with the new embed code you provided.",
-	"USAGE": "{{prefix}}embededit [Message ID] [Embed Code]",
-	"ALIASES": "Embededit does not have any aliases.",
-	"NO_EMBED": "The message you provided does not contain any embed that I can show.",
-	"SUCCESS": "Here is the embed code for the message with ID {{id}}, you can copy this code and paste it in the [Embed Builder](https://embedbuilder.nadekobot.me) to edit it.",
-	"NEED_JSON": "You did not provide any embed code to use for the new event. Best is to use the embed builder <https://embedbuilder.nadekobot.me/>!"
+  "DESCRIPTION": "Edit any existing embed that was originally sent by Gamer bot.",
+  "EXTENDED": "$t(embedding/embededit:EXTENDED_LINE_1)\n$t(embedding/embededit:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "To get the ID of a message, make sure that Developer Mode is on in your client and right click the message whose code you'd like to copy and select **Copy ID**.",
+  "EXTENDED_LINE_2": "**{{prefix}}embededit [Message ID] [Embed Code]** ~ Edits the embed with the new embed code you provided.",
+  "USAGE": "{{prefix}}embededit [Message ID] [Embed Code]",
+  "ALIASES": "Embededit does not have any aliases.",
+  "NO_EMBED": "The message you provided does not contain any embed that I can show.",
+  "SUCCESS": "Here is the embed code for the message with ID {{id}}, you can copy this code and paste it in the [Embed Builder](https://embedbuilder.nadekobot.me) to edit it.",
+  "NEED_JSON": "You did not provide any embed code to use for the new event. Best is to use the embed builder <https://embedbuilder.nadekobot.me/>!",
+  "EDITED": "The message has been edited. To jump to the message: {{link}}"
 }

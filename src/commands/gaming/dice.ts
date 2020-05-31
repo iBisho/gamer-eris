@@ -59,7 +59,10 @@ export default new Command([`dice`, `diceroll`], async (message, args, context) 
     .setDescription(language(`gaming/dice:REQUEST`, { value: args.join(' ') }))
     .addField(language(`gaming/dice:ROLLS`), rolls.join(', '))
   if (leftovers.length) embed.addField(language(`gaming/dice:FINAL_ROLLS`), modifiedRolls.join(', '))
-  embed.addField(language(`gaming/dice:TOTAL`), rolls.reduce((subtotal, num) => subtotal + num, 0).toString())
+  embed.addField(
+    language(`gaming/dice:TOTAL`),
+    (rolls.reduce((subtotal, num) => subtotal + num, 0) + Number(result)).toString()
+  )
 
   return message.channel.createMessage({ embed: embed.code })
 })

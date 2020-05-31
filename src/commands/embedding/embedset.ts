@@ -133,10 +133,6 @@ export default new Command(`embedset`, async (message, _args, context) => {
           }
           break
         case `color`:
-          if (!fullValue.join(' ').startsWith('#')) {
-            message.channel.createMessage(language(`embedding/embedset:INVALID_HEX`))
-            break
-          }
           embed.setColor(fullValue.join(' '))
           break
         case `timestamp`:

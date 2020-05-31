@@ -7,11 +7,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
 
   const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName('help')
-  if (!helpCommand) return
-
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 
   const language = Gamer.getLanguage(message.guildID)
 
@@ -19,7 +15,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [name, emoji] = args
-  if (!name || !emoji) return helpCommand.process(message, [`reactionroleremove`], context)
+  if (!name || !emoji) return helpCommand?.process(message, [`reactionroleremove`], context)
 
   const validEmoji = await Gamer.database.models.emoji.findOne({ name: emoji.toLowerCase() })
   if (!validEmoji) return message.channel.createMessage(language(`emojis/emojicreate:NEED_VALID_EMOJI`))
@@ -52,8 +48,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
       () => undefined
     )
     if (reactionRoleMessage) {
-      // TODO: when eris works
-      // reactionRoleMessage.removeMessageReactionEmoji(`${validEmoji.name}:${validEmoji.id}`)
+      reactionRoleMessage.removeMessageReactionEmoji(`${validEmoji.name}:${validEmoji.id}`)
     }
   }
 

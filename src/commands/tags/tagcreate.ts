@@ -46,6 +46,7 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
     if (typeof embedCode.image === 'string') embedCode.image = { url: embedCode.image }
     if (typeof embedCode.thumbnail === 'string') embedCode.thumbnail = { url: embedCode.thumbnail }
     if (embedCode.color === 'RANDOM') embedCode.color = Math.floor(Math.random() * (0xffffff + 1))
+    else if (embedCode.color?.startsWith('#')) embedCode.color = parseInt(embedCode.color.replace('#', ''), 16)
     if (embedCode.timestamp) embedCode.timestamp = new Date().toISOString()
 
     await message.channel.createMessage({ content: embedCode.plaintext, embed: embedCode })

@@ -30,10 +30,10 @@ export const vipExpiredCheck = async () => {
   if (!gamerGuild) return
 
   const nonBoostedGuildSettings = expiredGuildSettings.filter(async gs => {
-    if (!gs.vip.userID) return false
+    if (!gs.vip.userID) return true
 
     const member = await Gamer.helpers.discord.fetchMember(gamerGuild, gs.vip.userID)
-    if (!member) return false
+    if (!member) return true
 
     return !member.roles.includes(constants.general.nitroBoosterRoleID)
   })
