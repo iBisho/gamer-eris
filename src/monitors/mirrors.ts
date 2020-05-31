@@ -14,20 +14,13 @@ export default class extends Monitor {
     const mirror = Gamer.mirrors.get(message.channel.id)
     if (!mirror) return
 
-    const webhookExists = await Gamer.getWebhook(mirror.webhookID).catch(() => undefined)
-    if (!webhookExists) {
-      // Remove the webhook
-      Gamer.mirrors.delete(message.channel.id)
-      Gamer.database.models.mirror.deleteOne({ _id: mirror._id }).exec()
-      return
-    }
-
     let username = mirror.anonymous
       ? `${Gamer.helpers.utils.chooseRandom(funnyAnonymousNames)}#0000`
       : userTag(message.author)
     if (!username.endsWith(' - Gamer Mirror')) username += ' - Gamer Mirror'
 
     // This is a mirror channel so we need to execute a webhook for it
+
     Gamer.executeWebhook(mirror.webhookID, mirror.webhookToken, {
       content: message.content,
       embeds: message.embeds,
@@ -38,6 +31,11 @@ export default class extends Monitor {
         roles: false,
         users: false
       }
+    }).catch(() => {
+      // Remove the webhook
+      Gamer.mirrors.delete(message.channel.id)
+      Gamer.database.models.mirror.deleteOne({ _id: mirror._id }).exec()
+      return
     })
 
     if (mirror.deleteSourceMessages) message.delete().catch(() => undefined)
