@@ -62,5 +62,7 @@
   "NSFW_COMMAND": "This command is an NSFW command. It will only work inside an NSFW channel.",
   "GLOBAL_OPTIONS": ["g", "global"],
   "VOICE_OPTIONS": ["v", "voice"],
-  "CANCEL_OPTIONS": ["q", "quit"]
+  "CANCEL_OPTIONS": ["q", "quit"],
+  "YES_OPTIONS": ["y", "yes"],
+  "NO_OPTIONS": ["n", "no"]
 }

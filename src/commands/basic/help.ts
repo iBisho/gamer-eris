@@ -80,6 +80,7 @@ const categories = [
       `settenor`,
       `setverify`,
       `setwhitelisted`,
+      `setup`,
       `setxp`,
       `viewprofanity`
     ]

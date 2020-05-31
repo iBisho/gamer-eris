@@ -7,14 +7,13 @@ export default new Command(`setlogs`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
   const helpCommand = Gamer.commandForName(`help`)
-  if (!helpCommand) return
 
   let settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
   // If the user does not have a modrole or admin role quit out
-  if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
+  if (!Gamer.helpers.discord.isAdmin(message, settings?.staff.adminRoleID)) return
 
   const [type] = args
-  if (!type) return helpCommand.process(message, [`setlogs`], context)
+  if (!type) return helpCommand?.process(message, [`setlogs`], context)
 
   switch (type.toLowerCase()) {
     case `setup`:
@@ -23,5 +22,5 @@ export default new Command(`setlogs`, async (message, args, context) => {
       return message.channel.createMessage(language(`settings/setlogs:SETUP`, { mention: message.author.mention }))
   }
 
-  return helpCommand.process(message, [`setlogs`], context)
+  return helpCommand?.process(message, [`setlogs`], context)
 })

@@ -20,6 +20,10 @@ export interface FeedbackCollectorData {
   question: string
 }
 
+export interface SetupCollectorData {
+  step: number
+}
+
 export interface GamerLevel extends Document {
   authorID: string
   guildID: string
