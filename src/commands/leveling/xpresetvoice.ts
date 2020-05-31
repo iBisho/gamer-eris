@@ -55,12 +55,14 @@ export default new Command(`xpresetvoice`, async (message, args, context) => {
 
     // For every member reset his xp and level
     for (const settings of memberSettings) {
-      const member = await Gamer.helpers.discord
-        .fetchMember(message.member.guild, settings.memberID)
-        .catch(() => undefined)
-      if (!member) continue
-      // If user is a bot OR a role is provided and this member doesnt have it skip
-      if (member.user.bot || !member.roles.includes(role.id)) continue
+      if (role) {
+        const member = await Gamer.helpers.discord
+          .fetchMember(message.member.guild, settings.memberID)
+          .catch(() => undefined)
+        if (!member) continue
+        // If user is a bot OR a role is provided and this member doesnt have it skip
+        if (!member.roles.includes(role.id)) continue
+      }
       if (!settings.leveling.voicexp || settings.leveling.voicexp < 1) continue
 
       settings.leveling.voicexp = 0
