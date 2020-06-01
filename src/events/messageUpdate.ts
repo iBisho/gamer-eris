@@ -13,7 +13,7 @@ export interface OldMessage {
   channelMentions: string[]
   tts: boolean
 }
-export default new EventListener('messageUpdate', async (message, oldMessage) => {
+export default new EventListener('messageUpdate', async (message, oldMessage, context) => {
   // Most embeds will always trigger a messageUpdate
   if (!message.editedTimestamp) return
 
@@ -25,7 +25,7 @@ export default new EventListener('messageUpdate', async (message, oldMessage) =>
   // Valid message object so we can simply run the monitors
   if (!(message instanceof Message)) return
 
-  Gamer.runMonitors(message)
+  Gamer.emit('messageCreate', message, context)
 
   if (!message.member) return
 
