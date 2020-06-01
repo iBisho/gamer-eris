@@ -100,7 +100,7 @@ export default class {
     if (!overrideCooldown && this.checkCooldown(member, true)) return
     const userSettings =
       (await this.Gamer.database.models.user.findOne({ userID: member.id })) ||
-      (await this.Gamer.database.models.user.create({ userID: member.id }))
+      (await this.Gamer.database.models.user.create({ userID: member.id, guildIDs: [member.guild.id] }))
 
     let multiplier = 1
     if (userSettings)

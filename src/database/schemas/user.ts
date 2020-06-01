@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 export default new mongoose.Schema({
   id: String,
   userID: { type: String, required: true, index: true },
+  guildIDs: { type: [String], default: [], index: true },
   profile: {
     // The id number of the background that the user has equipped
     backgroundID: { type: Number, default: 1 },

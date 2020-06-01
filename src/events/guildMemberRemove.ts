@@ -21,6 +21,14 @@ export default new EventListener('guildMemberRemove', async (guild, member) => {
     type: 'MEMBER_REMOVED'
   })
 
+  const userSettings = await Gamer.database.models.user.findOne({ userID: member.id })
+  if (userSettings) {
+    if (userSettings.guildIDs.includes(guild.id)) {
+      userSettings.guildIDs = userSettings.guildIDs.filter(id => id !== guild.id)
+      userSettings.save()
+    }
+  }
+
   const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
   if (!botMember) return
 

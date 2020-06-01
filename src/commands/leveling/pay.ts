@@ -16,10 +16,10 @@ export default new Command([`pay`, `send`, `transfer`], async (message, args, co
 
   const userSettings =
     (await Gamer.database.models.user.findOne({ userID: user.id })) ||
-    (await Gamer.database.models.user.create({ userID: user.id }))
+    (await Gamer.database.models.user.create({ userID: user.id, guildIDs: [message.guildID] }))
   const authorSettings =
     (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
-    (await Gamer.database.models.user.create({ userID: message.author.id }))
+    (await Gamer.database.models.user.create({ userID: message.author.id, guildIDs: [message.guildID] }))
 
   // Check if author can afford
   if (amount > authorSettings.leveling.currency)

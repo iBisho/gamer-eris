@@ -8,15 +8,7 @@ export default new Command([`upvote`, `vote`], async (message, _args, context) =
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
-  const prefix = Gamer.guildPrefixes.get(message.guildID) || Gamer.prefix
-
-  const REMINDER = language('basic/upvote:REMINDER', { prefix, id: message.id })
-  const [upvote, reminder] = await Promise.all([
-    Gamer.database.models.upvote.findOne({ userID: message.author.id }),
-    Gamer.database.models.reminder.findOne({
-      userID: message.author.id
-    })
-  ])
+  const upvote = await Gamer.database.models.upvote.findOne({ userID: message.author.id })
 
   const millisecondsLeft = upvote
     ? Gamer.helpers.transform.humanizeMilliseconds(milliseconds.HOUR * 12 + upvote.timestamp - Date.now())
@@ -29,10 +21,5 @@ export default new Command([`upvote`, `vote`], async (message, _args, context) =
       language(millisecondsLeft ? `basic/upvote:TIME_LEFT` : `basic/upvote:VOTE_NOW`, { time: millisecondsLeft })
     )
 
-  message.channel.createMessage({ embed: embed.code })
-
-  if (reminder) return
-
-  const reminderCommand = Gamer.commandForName('remind')
-  reminderCommand?.execute(message, [`12h5m`, `12h`, REMINDER], context)
+  return message.channel.createMessage({ embed: embed.code })
 })

@@ -9,9 +9,7 @@ export default new Command(`embed`, async (message, args, context) => {
   const language = Gamer.getLanguage(message.guildID)
 
   const helpCommand = Gamer.commandForName(`help`)
-  if (!helpCommand) return
-
-  if (!args.length) return helpCommand.execute(message, [`embed`], context)
+  if (!args.length) return helpCommand?.execute(message, [`embed`], { ...context, commandName: 'help' })
 
   const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
 

@@ -11,7 +11,7 @@ export default new Command(`afk`, async (message, args, context) => {
   const userSettings =
     (await Gamer.database.models.user.findOne({
       userID: message.author.id
-    })) || (await Gamer.database.models.user.create({ userID: message.author.id }))
+    })) || (await Gamer.database.models.user.create({ userID: message.author.id, guildIDs: [message.guildID] }))
 
   // If no message is provided then toggle the afk status
   if (!args.length) {

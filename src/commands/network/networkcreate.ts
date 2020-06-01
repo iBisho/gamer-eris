@@ -120,7 +120,8 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
         network: {
           followerIDs: [],
           guildID: message.guildID
-        }
+        },
+        guildIDs: [message.guildID]
       })
     else {
       userSettings.network.guildID = message.guildID

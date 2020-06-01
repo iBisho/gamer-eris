@@ -74,9 +74,15 @@ Gamer.globalCommandRequirements = {
 
     // If the user is using commands within 2 seconds ignore it
     if (Gamer.slowmode.has(message.author.id)) {
-      // Cleans up spam command messages from users
-      if (botPerms.has('manageMessages')) message.delete().catch(() => undefined)
-      return false
+      const prefix = Gamer.guildPrefixes.get(message.guildID)
+      if (prefix) {
+        const [firstWord] = message.content
+        if (context.commandName === firstWord.substring(prefix.length)) {
+          // Cleans up spam command messages from users
+          if (botPerms.has('manageMessages')) message.delete().catch(() => undefined)
+          return false
+        }
+      }
     }
 
     const supportChannelID = Gamer.guildSupportChannelIDs.get(message.guildID)
@@ -84,7 +90,9 @@ Gamer.globalCommandRequirements = {
     // If it is the support channel and NOT a server admin do not allow command
     if (message.channel.id === supportChannelID && !isAdmin) return false
 
-    if (isAdmin || !context.commandName) return true
+    if (isAdmin) return true
+
+    if (!context.commandName) return false
 
     const command = Gamer.commandForName(context.commandName)
     if (!command) return true

@@ -10,7 +10,7 @@ export default new Command([`balance`, `bal`, `wallet`, `money`, `coins`], async
 
   const userSettings =
     (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
-    (await Gamer.database.models.user.create({ userID: message.author.id }))
+    (await Gamer.database.models.user.create({ userID: message.author.id, guildIDs: [message.guildID] }))
 
   // Respond telling the user how much they have
   return message.channel.createMessage(

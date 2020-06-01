@@ -91,9 +91,7 @@ export default new Command(`verify`, async (message, args, context) => {
             )
             // Run the command again for them to generate a new captcha code
             const verifyCommand = Gamer.commandForName(`verify`)
-            if (!verifyCommand) return
-            verifyCommand.execute(msg, [`end`], context)
-            return
+            return verifyCommand?.execute(msg, [`end`], { ...context, commandName: 'verify' })
           }
           // Success With Captcha
 
@@ -127,6 +125,7 @@ export default new Command(`verify`, async (message, args, context) => {
 
           // Delete the channel
           if (bot.permission.has('manageChannels')) msg.channel.delete()
+          return
         }
       })
     default:

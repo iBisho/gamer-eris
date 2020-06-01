@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 export interface UserSettings extends mongoose.Document {
   id: string
   userID: string
+  guildIDs: string[]
   profile: {
     backgroundID: number
     theme: string

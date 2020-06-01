@@ -34,7 +34,7 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
 
   const userSettings =
     (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
-    (await Gamer.database.models.user.create({ userID: message.author.id }))
+    (await Gamer.database.models.user.create({ userID: message.author.id, guildIDs: [message.guildID] }))
 
   const guildSettings =
     (await Gamer.database.models.guild.findOne({ id: message.guildID })) ||

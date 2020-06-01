@@ -21,33 +21,25 @@ export default class {
       return
     }
 
-    if (!this.Gamer.allMembersFetchedGuildIDs.has(member.guild.id)) {
-      await member.guild.fetchAllMembers()
-      this.Gamer.allMembersFetchedGuildIDs.add(member.guild.id)
-    }
-
-    const memberIDs = member.guild.members.map(m => m.id)
-
     const [rank, nextUsers, prevUsers, topUsers] = await Promise.all([
       this.Gamer.database.models.user
-        .find({ 'leveling.currency': { $gt: userSettings.leveling.currency }, userID: { $in: memberIDs } })
+        .find({ 'leveling.currency': { $gt: userSettings.leveling.currency }, guildIDs: member.guild.id })
         .countDocuments(),
       this.Gamer.database.models.user
         .find({
           'leveling.currency': { $gt: userSettings.leveling.currency },
-          userID: { $in: memberIDs }
+          guildIDs: member.guild.id
         })
         .sort('leveling.currency')
         .limit(1),
       this.Gamer.database.models.user
-        .find({ 'leveling.currency': { $lt: userSettings.leveling.currency }, userID: { $in: memberIDs } })
+        .find({ 'leveling.currency': { $lt: userSettings.leveling.currency }, guildIDs: member.guild.id })
         .sort('-leveling.currency')
         .limit(1),
-      this.Gamer.database.models.user
-        .find({ userID: { $in: memberIDs } })
-        .sort('-leveling.currency')
-        .limit(3)
+      this.Gamer.database.models.user.find({ guildIDs: member.guild.id }).sort('-leveling.currency').limit(3)
     ])
+
+    console.log(rank, nextUsers, prevUsers, topUsers)
 
     const [nextUser] = nextUsers
     const [prevUser] = prevUsers
