@@ -4,7 +4,7 @@
   "USAGE": "{{prefix}}leaderboard *[User | global]*",
   "ALIASES": "{{prefix}}lb",
   "NO_POINTS": "{{member}} has no XP at this time. The leaderboard command requires the member to have atleast 1 XP.",
-  "NO_COINS": "{{member}} has no Gamer Coins at this time. This command requires themember to have atleast 1 coin. Use the slots command to earn some coins.",
+  "NO_COINS": "{{member}} has no Gamer Coins at this time. This command requires the member to have atleast 1 coin. Use the slots command to earn some coins.",
   "NOT_ENOUGH": "There are not enough members on the leaderboard to gather enough data at this time. Please check again later.",
   "RANK": "Rank {{position}}",
   "BEHIND": "{{amount}} EXP Behind",
