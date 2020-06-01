@@ -414,13 +414,7 @@ export default new Command('setup', async (message, args, context) => {
               language('utility/setup:COLOR_WHEEL_PREPARING')
             )
 
-            const reactionrolecreateCommand = Gamer.commandForName('reactionrolecreate')
-
-            reactionrolecreateCommand?.execute(placeholderMessage, ['setup'], {
-              ...context,
-              commandName: 'reactionrolecreate'
-            })
-            await Gamer.helpers.utils.sleep(3)
+            await Gamer.helpers.scripts.createReactionRoleColors(placeholderMessage)
             placeholderMessage.delete().catch(() => undefined)
           }
 

@@ -291,8 +291,8 @@ export default class {
   }
 
   async createReactionRoleColors(message: Message) {
-    const language = this.Gamer.getLanguage(message.guildID)
     const member = message.member
+    const language = this.Gamer.getLanguage(member?.guild.id)
     if (!member || member.guild.roles.size + 20 > 250)
       return message.channel.createMessage(language(`roles/reactionrolecreate:MAX_ROLES`))
 
@@ -308,14 +308,14 @@ export default class {
 
     const reactionRole = await this.Gamer.database.models.reactionRole.findOne({
       name: 'colors',
-      guildID: message.guildID
+      guildID: member?.guild.id
     })
 
     if (reactionRole) return message.channel.createMessage(language(`roles/reactionrolecreate:NAME_EXISTS`, { name }))
 
     const exists = await this.Gamer.database.models.roleset.findOne({
       name: 'colors',
-      guildID: message.guildID
+      guildID: member?.guild.id
     })
     if (exists) return message.channel.createMessage(language(`roles/rolesetcreate:EXISTS`, { name }))
 
@@ -347,7 +347,7 @@ export default class {
       })),
       messageID: baseMessage.id,
       channelID: baseMessage.channel.id,
-      guildID: message.guildID,
+      guildID: member?.guild.id,
       authorID: message.author.id
     })
 
@@ -355,7 +355,7 @@ export default class {
     await this.Gamer.database.models.roleset.create({
       name: 'colors',
       roleIDs: roles.map(role => role.id),
-      guildID: message.guildID
+      guildID: member?.guild.id
     })
 
     // Create all 20 reactions

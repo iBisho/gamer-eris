@@ -8,7 +8,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const language = Gamer.getLanguage(message.guildID)
+  const language = Gamer.getLanguage(message.member.guild.id)
 
   const hasPermissions = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
     `addReactions`,
@@ -18,7 +18,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
 
   if (!hasPermissions) return message.channel.createMessage(language(`roles/reactionrolecreate:NEED_PERMS`))
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [messageID, name, emoji, ...roleIDsOrNames] = args
@@ -27,7 +27,8 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
     return Gamer.helpers.scripts.createReactionRoleColors(message)
   }
 
-  if (!messageID || !name || !emoji) return helpCommand.execute(message, [`reactionrolecreate`], { ...context, commandName: 'help' })
+  if (!messageID || !name || !emoji)
+    return helpCommand.execute(message, [`reactionrolecreate`], { ...context, commandName: 'help' })
 
   const messageToUse =
     message.channel.messages.get(messageID) || (await message.channel.getMessage(messageID).catch(() => undefined))
@@ -54,7 +55,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
   const reactionRole = await Gamer.database.models.reactionRole.findOne().or([
     {
       name: name.toLowerCase(),
-      guildID: message.guildID
+      guildID: message.member.guild.id
     },
     { messageID }
   ])
@@ -74,7 +75,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
     ],
     messageID: messageToUse.id,
     channelID: messageToUse.channel.id,
-    guildID: message.guildID,
+    guildID: message.member.guild.id,
     authorID: message.author.id
   })
 

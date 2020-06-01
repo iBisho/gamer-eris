@@ -9,9 +9,9 @@ export default new Command([`rolesetcreate`, `rsc`], async (message, args, conte
   if (!helpCommand) return
 
   const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
+    id: message.member.guild.id
   })
-  const language = Gamer.getLanguage(message.guildID)
+  const language = Gamer.getLanguage(message.member.guild.id)
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
@@ -31,7 +31,7 @@ export default new Command([`rolesetcreate`, `rsc`], async (message, args, conte
 
   const exists = await Gamer.database.models.roleset.findOne({
     name: name.toLowerCase(),
-    guildID: message.guildID
+    guildID: message.member.guild.id
   })
   if (exists) return message.channel.createMessage(language(`roles/rolesetcreate:EXISTS`, { name }))
 
@@ -39,7 +39,7 @@ export default new Command([`rolesetcreate`, `rsc`], async (message, args, conte
   await Gamer.database.models.roleset.create({
     name: name.toLowerCase(),
     roleIDs,
-    guildID: message.guildID
+    guildID: message.member.guild.id
   })
 
   return message.channel.createMessage(language(`roles/rolesetcreate:CREATED`))
