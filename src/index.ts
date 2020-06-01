@@ -36,8 +36,8 @@ const Gamer = new GamerClient({
   maxShards: `auto`,
   ignoreGlobalRequirements: false,
   restMode: true,
-  ignoreBots: true,
   caseSensitiveCommands: false,
+  disableDefaultMessageListener: true,
   // getAllUsers: true,
   intents: [
     'guilds',
