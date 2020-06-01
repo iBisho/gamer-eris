@@ -11,7 +11,7 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
 
   const helpCommand = Gamer.commandForName('help')
   const [name, firstID, secondID] = args
-  if (!name || !firstID) return helpCommand?.process(message, ['mirrorcreate'], context)
+  if (!name || !firstID) return helpCommand?.execute(message, ['mirrorcreate'], context)
 
   const firstIDGuild = Gamer.guilds.get(firstID)
 

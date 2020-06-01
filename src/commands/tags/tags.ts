@@ -11,7 +11,7 @@ export default new Command([`tags`, `tag`], async (message, _args, context) => {
   if (!tags.length) {
     message.channel.createMessage(language(`tags/tags:NONE`))
     const helpCommand = Gamer.commandForName('help')
-    return helpCommand?.process(message, ['tagcreate'], context)
+    return helpCommand?.execute(message, ['tagcreate'], context)
   }
 
   let response = ``

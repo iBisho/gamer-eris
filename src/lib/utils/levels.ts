@@ -1,4 +1,4 @@
-import { Member } from 'eris'
+import { Member, Message } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { milliseconds } from '../types/enums/time'
@@ -304,5 +304,16 @@ export default class {
         this.Gamer.helpers.levels.removeXP(member, Math.floor(memberSettings.leveling.xp * 0.01))
       })
     }
+  }
+
+  processXP(message: Message) {
+    // If a bot or in dm, no XP we want to encourage activity in servers not dms
+    if (message.author.bot || !message.member) return
+
+    const guildXP = this.Gamer.guildsXPPerMessage.get(message.member.guild.id)
+    // Update XP for the member locally
+    this.Gamer.helpers.levels.addLocalXP(message.member, guildXP || 1)
+    // Update XP for the user globally
+    this.Gamer.helpers.levels.addGlobalXP(message.member, 1)
   }
 }

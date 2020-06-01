@@ -27,11 +27,11 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
     return Gamer.helpers.scripts.createReactionRoleColors(message)
   }
 
-  if (!messageID || !name || !emoji) return helpCommand.process(message, [`reactionrolecreate`], context)
+  if (!messageID || !name || !emoji) return helpCommand.execute(message, [`reactionrolecreate`], context)
 
   const messageToUse =
     message.channel.messages.get(messageID) || (await message.channel.getMessage(messageID).catch(() => undefined))
-  if (!messageToUse) return helpCommand.process(message, [`reactionrolecreate`], context)
+  if (!messageToUse) return helpCommand.execute(message, [`reactionrolecreate`], context)
 
   const validEmoji = await Gamer.database.models.emoji.findOne({
     name: emoji.toLowerCase()
@@ -49,7 +49,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
     roleIDs.push(role.id)
   }
 
-  if (!roleIDs.length) return helpCommand.process(message, [`reactionrolecreate`], context)
+  if (!roleIDs.length) return helpCommand.execute(message, [`reactionrolecreate`], context)
 
   const reactionRole = await Gamer.database.models.reactionRole.findOne().or([
     {

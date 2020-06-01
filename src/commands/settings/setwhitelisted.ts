@@ -16,7 +16,7 @@ export default new Command(`setwhitelisted`, async (message, args, context) => {
   if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
 
   const [type] = args
-  if (!type) return helpCommand.process(message, [`setwhitelisted`], context)
+  if (!type) return helpCommand.execute(message, [`setwhitelisted`], context)
 
   switch (type.toLowerCase()) {
     case `enable`:

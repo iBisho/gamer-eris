@@ -336,7 +336,7 @@ export default new Command('setup', async (message, args, context) => {
               break
             }
 
-            networkcreateCommand.process(msg, [], context)
+            networkcreateCommand.execute(msg, [], context)
             await Gamer.helpers.utils.sleep(5)
             msg.channel.createMessage(language('utility/setup:NETWORK_COMPLETE'))
           }
@@ -416,7 +416,7 @@ export default new Command('setup', async (message, args, context) => {
 
             const reactionrolecreateCommand = Gamer.commandForName('reactionrolecreate')
 
-            reactionrolecreateCommand?.process(placeholderMessage, ['setup'], context)
+            reactionrolecreateCommand?.execute(placeholderMessage, ['setup'], context)
             await Gamer.helpers.utils.sleep(3)
             placeholderMessage.delete().catch(() => undefined)
           }
@@ -559,7 +559,7 @@ export default new Command('setup', async (message, args, context) => {
           settings.mails.enabled = true
           // Send a mail using the current user to showcase the test
           const mailCommand = Gamer.commandForName('mail')
-          mailCommand?.process(msg, [language('utility/setup:MAIL_FIRST')], context)
+          mailCommand?.execute(msg, [language('utility/setup:MAIL_FIRST')], context)
           // Set up the support channel
           const supportChannel = await msg.member.guild.createChannel(language('utility/setup:SUPPORT').toLowerCase())
           const supportEmbed = new MessageEmbed()

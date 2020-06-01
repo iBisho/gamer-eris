@@ -21,7 +21,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
   const profileCommand = Gamer.commandForName(`profile`)
   if (!profileCommand) return
 
-  if (!type || !id) return helpCommand.process(message, [`background`], context)
+  if (!type || !id) return helpCommand.execute(message, [`background`], context)
 
   const theme = color && color.toLowerCase() === `black` ? `black` : `white`
   // If the user try dark theme but are not vip cancel out
@@ -44,7 +44,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
         userSettings.profile.backgroundID = backgroundID
         message.channel.createMessage(language(`leveling/background:SAVED`))
         await userSettings.save()
-        profileCommand.process(message, [], context)
+        profileCommand.execute(message, [], context)
         return message.member
           ? Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
           : undefined
@@ -55,7 +55,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       message.channel.createMessage(language(`leveling/background:SAVED`))
       await userSettings.save()
 
-      profileCommand.process(message, [], context)
+      profileCommand.execute(message, [], context)
       return message.member
         ? Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
         : undefined
@@ -71,5 +71,5 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       return Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
   }
 
-  return helpCommand.process(message, [`background`], context)
+  return helpCommand.execute(message, [`background`], context)
 })

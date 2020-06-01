@@ -1,9 +1,6 @@
-import Event from '../lib/structures/Event'
-import { PossiblyUncachedMessage } from 'eris'
 import Gamer from '..'
+import { EventListener } from 'yuuko'
 
-export default class extends Event {
-  async execute(messages: PossiblyUncachedMessage[]) {
-    for (const message of messages) Gamer.emit('messageDelete', message)
-  }
-}
+export default new EventListener('messageDeleteBulk', messages => {
+  for (const message of messages) Gamer.emit('messageDelete', message)
+})

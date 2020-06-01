@@ -9,11 +9,11 @@ export default new Command([`analyzechannel`, `analyticschannel`], async (messag
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
   const helpCommand = Gamer.commandForName('help')
-  if (!args.length) return helpCommand?.process(message, [`analyzechannel`], context)
+  if (!args.length) return helpCommand?.execute(message, [`analyzechannel`], context)
 
   const [id, startNumber, endNumber] = args
   const channel = message.member.guild.channels.get(message.channelMentions.length ? message.channelMentions[0] : id)
-  if (!channel) return helpCommand?.process(message, [`analyzechannel`], context)
+  if (!channel) return helpCommand?.execute(message, [`analyzechannel`], context)
 
   const startDay = Number(startNumber) || 0
   const endDay = Number(endNumber) || 0

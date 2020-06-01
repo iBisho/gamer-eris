@@ -16,7 +16,7 @@ export default new Command(`setlanguage`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
 
   const [name] = args
-  if (!name) return helpCommand.process(message, [`setlanguage`], context)
+  if (!name) return helpCommand.execute(message, [`setlanguage`], context)
 
   const personality = constants.personalities.find(p => p.names.includes(name.toLowerCase()))
   if (!personality) return message.channel.createMessage(language(`settings/setlanguage:INVALID_NAME`, { name }))

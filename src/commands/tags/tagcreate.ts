@@ -17,7 +17,7 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [name, type, ...text] = args
-  if (!name || !type || !text.length) return helpCommand.process(message, [`tagcreate`], context)
+  if (!name || !type || !text.length) return helpCommand.execute(message, [`tagcreate`], context)
 
   const tagName = name.toLowerCase()
 
@@ -31,7 +31,7 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
   ]
 
   const validType = allowedTagTypes.find(types => types.allowed.includes(type.toLowerCase()))
-  if (!validType) return helpCommand.process(message, [`tagcreate`], context)
+  if (!validType) return helpCommand.execute(message, [`tagcreate`], context)
 
   try {
     const emojis = await Gamer.database.models.emoji.find()

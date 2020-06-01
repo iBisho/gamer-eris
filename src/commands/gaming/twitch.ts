@@ -13,7 +13,7 @@ export default new Command(`twitch`, async (message, args, context) => {
 
   const helpCommand = Gamer.commandForName('help')
   const [type, username, ...gameName] = args
-  if (!type) return helpCommand?.process(message, [`twitch`], context)
+  if (!type) return helpCommand?.execute(message, [`twitch`], context)
 
   const language = Gamer.getLanguage(message.guildID)
 
@@ -41,7 +41,7 @@ export default new Command(`twitch`, async (message, args, context) => {
     type: GamerSubscriptionType.TWITCH
   })
 
-  if (!username) return helpCommand?.process(message, [`twitch`], context)
+  if (!username) return helpCommand?.execute(message, [`twitch`], context)
 
   const game = gameName.join(' ')
   const subPayload = {
@@ -91,5 +91,5 @@ export default new Command(`twitch`, async (message, args, context) => {
 
       return message.channel.createMessage(language(`gaming/twitch:UNSUBBED`, { username }))
   }
-  return helpCommand?.process(message, [`twitch`], context)
+  return helpCommand?.execute(message, [`twitch`], context)
 })

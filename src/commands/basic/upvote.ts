@@ -34,5 +34,5 @@ export default new Command([`upvote`, `vote`], async (message, _args, context) =
   if (reminder) return
 
   const reminderCommand = Gamer.commandForName('remind')
-  reminderCommand?.process(message, [`12h5m`, `12h`, REMINDER], context)
+  reminderCommand?.execute(message, [`12h5m`, `12h`, REMINDER], context)
 })

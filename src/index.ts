@@ -125,10 +125,7 @@ Gamer.globalCommandRequirements = {
   }
 }
 
-Gamer.addCommandDir(`${__dirname}/commands`)
-  .addDirectory(`${__dirname}/monitors`)
-  .addDirectory(`${__dirname}/events`)
-  .connect()
+Gamer.addDir(`${__dirname}/commands`).addDir(`${__dirname}/events`).addDirectory(`${__dirname}/monitors`).connect()
 
 Gamer.prefixes((message: Message) => {
   // If in DM use the default prefix
@@ -139,9 +136,6 @@ Gamer.prefixes((message: Message) => {
   // If in a server with the custom prefix, use the custom prefix
   return prefix
 })
-
-// bind so the `this` is relevent to the event
-for (const [name, event] of Gamer.events) Gamer.on(name, event.execute.bind(event))
 
 process.on('unhandledRejection', error => {
   // Don't send errors for non production bots

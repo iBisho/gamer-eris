@@ -6,7 +6,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
 
   const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName('help')
-  if (!args.length) return helpCommand?.process(message, [`shortcutcreate`], context)
+  if (!args.length) return helpCommand?.execute(message, [`shortcutcreate`], context)
 
   const language = Gamer.getLanguage(message.guildID)
   const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
@@ -22,7 +22,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
   }
 
   const [name] = args
-  if (!name) return helpCommand?.process(message, [`shortcutcreate`], context)
+  if (!name) return helpCommand?.execute(message, [`shortcutcreate`], context)
   // Remove the shortcut name so first item is the command name
   args.shift()
 

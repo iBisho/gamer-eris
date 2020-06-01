@@ -14,7 +14,7 @@ export default new Command(`quote`, async (message, args, context) => {
   const language = Gamer.getLanguage(message.guildID)
 
   const [messageID] = args
-  if (!messageID) return helpCommand.process(message, [`quote`], context)
+  if (!messageID) return helpCommand.execute(message, [`quote`], context)
 
   const [channelID] = message.channelMentions
 
@@ -25,7 +25,7 @@ export default new Command(`quote`, async (message, args, context) => {
   if (!botPerms.has('readMessages') || !botPerms.has('readMessageHistory')) return
 
   const quotedMessage = channel.messages.get(messageID) || (await channel.getMessage(messageID).catch(() => undefined))
-  if (!quotedMessage) return helpCommand.process(message, [`quote`], context)
+  if (!quotedMessage) return helpCommand.execute(message, [`quote`], context)
 
   const quotedMessageEmbed = quotedMessage.embeds && quotedMessage.embeds.length && quotedMessage.embeds[0]
 

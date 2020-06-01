@@ -15,5 +15,5 @@ export default new Command([`feedback`, `fb`], async (message, args, context) =>
   if (!command) return
   args.shift()
 
-  command.process(message, args, context)
+  command.execute(message, args, context)
 })

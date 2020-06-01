@@ -17,7 +17,7 @@ export default new Command(`sethibye`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [type, subtype, ...text] = args
-  if (!type || !subtype) return helpCommand.process(message, [`sethibye`], context)
+  if (!type || !subtype) return helpCommand.execute(message, [`sethibye`], context)
 
   const welcome = type.toLowerCase() === 'welcome'
 
@@ -64,5 +64,7 @@ export default new Command(`sethibye`, async (message, args, context) => {
       return message.channel.createMessage(
         language(welcome ? `settings/sethibye:WELCOME_MESSAGE_SET` : `settings/sethibye:GOODBYE_MESSAGE_SET`)
       )
+    default:
+      return
   }
 })

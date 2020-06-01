@@ -16,6 +16,6 @@ export default class extends Monitor {
     })
 
     // Run the processXP event since a message was sent
-    if (!message.author.bot) Gamer.emit('processXP', message, Gamer)
+    if (!message.author.bot) Gamer.helpers.levels.processXP(message)
   }
 }

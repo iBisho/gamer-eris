@@ -19,7 +19,7 @@ export default new Command([`reactionroledelete`, `rrd`], async (message, args, 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [name] = args
-  if (!name) return helpCommand.process(message, [`reactionroledelete`], context)
+  if (!name) return helpCommand.execute(message, [`reactionroledelete`], context)
 
   const reactionRole = await Gamer.database.models.reactionRole.findOne({
     name: name.toLowerCase(),

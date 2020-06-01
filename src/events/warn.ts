@@ -1,8 +1,6 @@
-import Event from '../lib/structures/Event'
+import { EventListener } from 'yuuko'
 import Gamer from '..'
 
-export default class extends Event {
-  async execute(text: string) {
-    if (Gamer.debugModeEnabled) Gamer.helpers.logger.debug(`WARN EVENT: ${text}`)
-  }
-}
+export default new EventListener('warn', text => {
+  if (Gamer.debugModeEnabled) Gamer.helpers.logger.debug(`WARN EVENT: ${text}`)
+})

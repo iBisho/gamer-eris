@@ -22,7 +22,7 @@ export default new Command(`export`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
 
   const [messageID] = args
-  if (!messageID) return helpCommand.process(message, [`export`], context)
+  if (!messageID) return helpCommand.execute(message, [`export`], context)
 
   const channel = message.channelMentions.length
     ? message.member.guild.channels.get(message.channelMentions[0]) || message.channel

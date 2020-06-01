@@ -1,9 +1,9 @@
 import { Member, VoiceChannel, TextChannel } from 'eris'
-import Event from '../lib/structures/Event'
 import Gamer from '../index'
 import { MessageEmbed, userTag } from 'helperis'
+import { EventListener } from 'yuuko'
 
-export const voiceChannelJoinServerLog = async (member: Member, channel: VoiceChannel) => {
+export async function voiceChannelJoinServerLog(member: Member, channel: VoiceChannel) {
   const language = Gamer.getLanguage(member.guild.id)
 
   // Create the base embed that first can be sent to public logs
@@ -36,20 +36,18 @@ export const voiceChannelJoinServerLog = async (member: Member, channel: VoiceCh
   }
 }
 
-export default class extends Event {
-  async execute(member: Member, channel: VoiceChannel) {
-    voiceChannelJoinServerLog(member, channel)
-    if (member.bot) return
+export default new EventListener('voiceChannelJoin', async (member, channel) => {
+  voiceChannelJoinServerLog(member, channel)
+  if (member.bot) return
 
-    const memberSettings =
-      (await Gamer.database.models.member.findOne({ memberID: member.id, guildID: member.guild.id })) ||
-      (await Gamer.database.models.member.create({
-        memberID: member.id,
-        guildID: member.guild.id,
-        id: `${member.guild.id}.${member.id}`
-      }))
+  const memberSettings =
+    (await Gamer.database.models.member.findOne({ memberID: member.id, guildID: member.guild.id })) ||
+    (await Gamer.database.models.member.create({
+      memberID: member.id,
+      guildID: member.guild.id,
+      id: `${member.guild.id}.${member.id}`
+    }))
 
-    memberSettings.leveling.joinedVoiceAt = Date.now()
-    memberSettings.save()
-  }
-}
+  memberSettings.leveling.joinedVoiceAt = Date.now()
+  memberSettings.save()
+})

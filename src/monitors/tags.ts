@@ -58,7 +58,7 @@ export default class extends Monitor {
 
       // Valid tag to post
 
-      Gamer.emit(`processXP`, message, Gamer)
+      Gamer.helpers.levels.processXP(message)
 
       const transformed = await Gamer.helpers.transform.variables(
         tag.embedCode,

@@ -16,7 +16,7 @@ export default new Command(`setmail`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  if (!type) return helpCommand.process(message, [`setmail`], context)
+  if (!type) return helpCommand.execute(message, [`setmail`], context)
 
   const validRoleIDs = message.roleMentions
   for (const roleIDOrName of roleIDsOrNames) {
@@ -76,5 +76,5 @@ export default new Command(`setmail`, async (message, args, context) => {
       return message.channel.createMessage(language(`settings/setmail:CATEGORY_UPDATED`))
   }
 
-  return helpCommand.process(message, [`setmail`], context)
+  return helpCommand.execute(message, [`setmail`], context)
 })

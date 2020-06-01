@@ -15,7 +15,7 @@ export default new Command(`setcapital`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  if (!type) return helpCommand.process(message, [`setcapital`], context)
+  if (!type) return helpCommand.execute(message, [`setcapital`], context)
   if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
 
   switch (type.toLowerCase()) {

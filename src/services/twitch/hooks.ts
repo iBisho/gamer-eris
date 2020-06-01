@@ -2,7 +2,7 @@ import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 import database from '../../database/mongodb'
 import { TwitchStream } from './api'
-import Gamer from '../..'
+import { twitchAlert } from '../../lib/utils/twitch'
 
 type TwitchRouter = fastify.Plugin<Server, IncomingMessage, ServerResponse, {}>
 
@@ -74,7 +74,7 @@ const twitchRouter: TwitchRouter = (fastify, _opts, done) => {
     }
 
     console.debug(subscription.username, ' is ', stream ? 'online' : 'offline')
-    Gamer.emit('twitchAlert', subscription, stream)
+    twitchAlert(subscription, stream)
 
     res.status(200).send({ status: 'ok' })
   })
