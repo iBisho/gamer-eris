@@ -19,7 +19,7 @@ export default new Command(`setstaff`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
 
   const [type, ...text] = args
-  if (!type) return helpCommand.execute(message, [`setstaff`], context)
+  if (!type) return helpCommand.execute(message, [`setstaff`], { ...context, commandName: 'help' })
 
   // Role names can have spaces in them
   const roleIDOrName = text.join(' ')
@@ -54,5 +54,5 @@ export default new Command(`setstaff`, async (message, args, context) => {
       )
   }
 
-  return helpCommand.execute(message, [`setstaff`], context)
+  return helpCommand.execute(message, [`setstaff`], { ...context, commandName: 'help' })
 })

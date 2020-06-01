@@ -18,7 +18,7 @@ export default new Command([`rolesetcreate`, `rsc`], async (message, args, conte
 
   const [name, ...roleIDsOrNames] = args
   if (!name || (!message.roleMentions.length && !roleIDsOrNames.length))
-    return helpCommand.execute(message, [`rolesetcreate`], context)
+    return helpCommand.execute(message, [`rolesetcreate`], { ...context, commandName: 'help' })
 
   const roleIDs: string[] = [...message.roleMentions]
   for (const roleIDOrName of roleIDsOrNames) {

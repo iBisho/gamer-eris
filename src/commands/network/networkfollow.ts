@@ -11,7 +11,7 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
   if (!helpCommand) return
 
   const user = message.mentions.length ? message.mentions[0] : await Gamer.helpers.discord.fetchUser(Gamer, userID)
-  if (!user) return helpCommand.execute(message, [`networkfollow`], context)
+  if (!user) return helpCommand.execute(message, [`networkfollow`], { ...context, commandName: 'help' })
 
   // The command users settings
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })

@@ -28,7 +28,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
     // Run the show command for this event so they can see the event details
     const eventshowCommand = Gamer.commandForName(`eventshow`)
     if (!eventshowCommand) return
-    eventshowCommand.execute(message, [eventID.toString()], context)
+    eventshowCommand.execute(message, [eventID.toString()], { ...context, commandName: 'eventshow' })
   }
 
   const prefix = Gamer.guildPrefixes.get(message.guildID) || Gamer.prefix

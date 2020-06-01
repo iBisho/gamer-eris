@@ -18,7 +18,7 @@ export default new Command(`setmute`, async (message, args, context) => {
   if (!helpCommand) return
 
   const [action] = args
-  if (!action) return helpCommand.execute(message, [`setmute`], context)
+  if (!action) return helpCommand.execute(message, [`setmute`], { ...context, commandName: 'help' })
 
   switch (action.toLowerCase()) {
     case 'setup':
@@ -33,5 +33,5 @@ export default new Command(`setmute`, async (message, args, context) => {
       return message.channel.createMessage(language(`settings/setmute:DISABLED`))
   }
 
-  return helpCommand.execute(message, [`setmute`], context)
+  return helpCommand.execute(message, [`setmute`], { ...context, commandName: 'help' })
 })

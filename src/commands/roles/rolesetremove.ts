@@ -19,7 +19,7 @@ export default new Command([`rolesetremove`, `rsr`], async (message, args, conte
 
   const [name, ...roleIDsOrNames] = args
   if (!name || (!message.roleMentions.length && !roleIDsOrNames.length))
-    return helpCommand.execute(message, [`rolesetremove`], context)
+    return helpCommand.execute(message, [`rolesetremove`], { ...context, commandName: 'help' })
 
   const roleIDs: string[] = [...message.roleMentions]
   for (const roleIDOrName of roleIDsOrNames) {

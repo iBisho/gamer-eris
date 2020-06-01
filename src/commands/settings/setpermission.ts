@@ -14,7 +14,8 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [commandName, type, ...targets] = args
-  if (!commandName || !type) return helpCommand?.execute(message, [`setpermission`], context)
+  if (!commandName || !type)
+    return helpCommand?.execute(message, [`setpermission`], { ...context, commandName: 'help' })
 
   const ON = language(`common:ON`).toLowerCase()
   const OFF = language(`common:OFF`).toLowerCase()
@@ -22,7 +23,7 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
   const DISABLED = language(`common:DISABLED`).toLowerCase()
 
   if (![`on`, `off`, ON, OFF, ENABLED, DISABLED].includes(type.toLowerCase()))
-    return helpCommand?.execute(message, [`setpermission`], context)
+    return helpCommand?.execute(message, [`setpermission`], { ...context, commandName: 'help' })
 
   const enable = [`on`, ON, ENABLED].includes(type.toLowerCase())
   const roleID = targets.join(' ')
@@ -152,7 +153,7 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
 
   // A specific command was provided
   const command = Gamer.commandForName(commandName)
-  if (!command) return helpCommand?.execute(message, [`setpermission`], context)
+  if (!command) return helpCommand?.execute(message, [`setpermission`], { ...context, commandName: 'help' })
 
   const [name] = command.names
 

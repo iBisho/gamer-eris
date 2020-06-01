@@ -21,7 +21,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   const eventID = parseInt(number, 10)
   const helpCommand = Gamer.commandForName(`help`)
 
-  if (!eventID || !type) return helpCommand?.execute(message, [`eventedit`], context)
+  if (!eventID || !type) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
   // toggles dont need a value
   if (!fullValue.length && ![`repeat`, `remove`, `dm`, `dms`, `showattendees`].includes(type.toLowerCase())) return
@@ -100,7 +100,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `reminder`:
     case `4`:
       const reminder = Gamer.helpers.transform.stringToMilliseconds(value)
-      if (!reminder) return helpCommand?.execute(message, [`eventedit`], context)
+      if (!reminder) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       if (event.reminders.includes(reminder)) event.reminders = event.reminders.filter(r => r !== reminder)
       else event.reminders.push(reminder)
@@ -108,7 +108,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     case `frequency`:
       const frequency = Gamer.helpers.transform.stringToMilliseconds(value)
-      if (!frequency) return helpCommand?.execute(message, [`eventedit`], context)
+      if (!frequency) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       event.frequency = frequency
       response = `events/eventedit:FREQUENCY_UPDATED`
@@ -116,7 +116,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
     case `duration`:
     case `3`:
       const duration = Gamer.helpers.transform.stringToMilliseconds(value)
-      if (!duration) return helpCommand?.execute(message, [`eventedit`], context)
+      if (!duration) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       event.duration = duration
       event.end = event.start + event.duration
@@ -127,7 +127,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       const start = Gamer.helpers.transform.stringToMilliseconds(value)
       const startTime = new Date(fullValue.join(' ')).getTime()
 
-      if (!start && !startTime) return helpCommand?.execute(message, [`eventedit`], context)
+      if (!start && !startTime) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       event.start = start ? Date.now() + start : startTime
       event.end = event.start + event.duration
@@ -138,7 +138,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       const allowedRole =
         message.member.guild.roles.get(roleID) ||
         message.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
-      if (!allowedRole) return helpCommand?.execute(message, [`eventedit`], context)
+      if (!allowedRole) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       if (event.allowedRoleIDs.includes(allowedRole.id))
         event.allowedRoleIDs = event.allowedRoleIDs.filter(id => id !== allowedRole.id)
@@ -150,7 +150,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       const roleToAlert =
         message.member.guild.roles.get(roleID) ||
         message.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
-      if (!roleToAlert) return helpCommand?.execute(message, [`eventedit`], context)
+      if (!roleToAlert) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       if (event.alertRoleIDs.includes(roleToAlert.id))
         event.alertRoleIDs = event.alertRoleIDs.filter(id => id !== roleToAlert.id)
@@ -164,7 +164,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     default:
       // If they used the command wrong show them the help
-      return helpCommand?.execute(message, [`eventedit`], context)
+      return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
   }
 
   // Save any change to the events
@@ -175,5 +175,5 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   const eventshowCommand = Gamer.commandForName(`eventshow`)
   if (!eventshowCommand) return
 
-  return eventshowCommand.execute(message, [eventID.toString()], context)
+  return eventshowCommand.execute(message, [eventID.toString()], { ...context, commandName: 'eventshow' })
 })

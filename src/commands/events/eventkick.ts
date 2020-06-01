@@ -14,7 +14,7 @@ export default new Command([`eventkick`, `ek`], async (message, args, context) =
 
   const [number, id] = args
   const eventID = parseInt(number, 10)
-  if (!eventID) return helpCommand.execute(message, [`eventkick`], context)
+  if (!eventID) return helpCommand.execute(message, [`eventkick`], { ...context, commandName: 'help' })
 
   const language = Gamer.getLanguage(message.guildID)
   const [user] = message.mentions

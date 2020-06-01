@@ -13,7 +13,7 @@ export default new Command(`setlogs`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, settings?.staff.adminRoleID)) return
 
   const [type] = args
-  if (!type) return helpCommand?.execute(message, [`setlogs`], context)
+  if (!type) return helpCommand?.execute(message, [`setlogs`], { ...context, commandName: 'help' })
 
   switch (type.toLowerCase()) {
     case `setup`:
@@ -22,5 +22,5 @@ export default new Command(`setlogs`, async (message, args, context) => {
       return message.channel.createMessage(language(`settings/setlogs:SETUP`, { mention: message.author.mention }))
   }
 
-  return helpCommand?.execute(message, [`setlogs`], context)
+  return helpCommand?.execute(message, [`setlogs`], { ...context, commandName: 'help' })
 })

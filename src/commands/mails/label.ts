@@ -17,7 +17,7 @@ export default new Command(`label`, async (message, args, context) => {
 
   const helpCommand = Gamer.commandForName(`help`)
   const [type, name, categoryID] = args
-  if (!type) return helpCommand?.execute(message, [`label`], context)
+  if (!type) return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
 
   const language = Gamer.getLanguage(message.guildID)
 
@@ -28,7 +28,7 @@ export default new Command(`label`, async (message, args, context) => {
         labels.length ? labels.map(label => label.name).join('\n') : language(`mails/label:NO_LABELS`)
       )
     case `delete`:
-      if (!name) return helpCommand?.execute(message, [`label`], context)
+      if (!name) return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
       const labelToDelete = await Gamer.database.models.label.find({
         name,
         guildID: message.guildID
@@ -39,9 +39,9 @@ export default new Command(`label`, async (message, args, context) => {
       Gamer.database.models.label.deleteOne({ name, guildID: message.guildID }).exec()
       return Gamer.helpers.discord.embedResponse(message, language(`mails/label:DELETED`, { name }))
     case `create`:
-      if (!name || !categoryID) return helpCommand?.execute(message, [`label`], context)
+      if (!name || !categoryID) return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
       const category = message.member.guild.channels.get(categoryID)
-      if (!category || !(category instanceof CategoryChannel)) return helpCommand?.execute(message, [`label`], context)
+      if (!category || !(category instanceof CategoryChannel)) return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
 
       const labelExists = await Gamer.database.models.label.findOne({
         name,
@@ -60,7 +60,7 @@ export default new Command(`label`, async (message, args, context) => {
 
       return Gamer.helpers.discord.embedResponse(message, language(`mails/label:CREATED`, { name }))
     case `set`:
-      if (!name) return helpCommand?.execute(message, [`label`], context)
+      if (!name) return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
       const labelToSet = await Gamer.database.models.label.findOne({
         name,
         guildID: message.guildID
@@ -81,5 +81,5 @@ export default new Command(`label`, async (message, args, context) => {
       return message.channel.edit({ parentID: labelToSet.categoryID })
   }
 
-  return helpCommand?.execute(message, [`label`], context)
+  return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
 })

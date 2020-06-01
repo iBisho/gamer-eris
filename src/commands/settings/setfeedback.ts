@@ -18,7 +18,7 @@ export default new Command(`setfeedback`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [type, action] = args
-  if (!type) return helpCommand.execute(message, [`setfeedback`], context)
+  if (!type) return helpCommand.execute(message, [`setfeedback`], { ...context, commandName: 'help' })
 
   const isIdea = type.toLowerCase() === `idea`
 
@@ -92,7 +92,7 @@ export default new Command(`setfeedback`, async (message, args, context) => {
 
   const currentChannelID = isIdea ? guildSettings.feedback.idea.channelID : guildSettings.feedback.bugs.channelID
 
-  if (!action) return helpCommand.execute(message, [`setfeedback`], context)
+  if (!action) return helpCommand.execute(message, [`setfeedback`], { ...context, commandName: 'help' })
   // These menus require the user type .setfeedback `idea` or `bug`
   switch (action.toLowerCase()) {
     case 'channel':
@@ -162,5 +162,5 @@ export default new Command(`setfeedback`, async (message, args, context) => {
 
   await message.channel.createMessage(language(`settings/setfeedback:INVALID_USE`))
 
-  return helpCommand.execute(message, [`setfeedback`], context)
+  return helpCommand.execute(message, [`setfeedback`], { ...context, commandName: 'help' })
 })

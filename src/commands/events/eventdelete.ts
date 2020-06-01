@@ -11,7 +11,7 @@ export default new Command([`eventdelete`, `ed`], async (message, args, context)
 
   const [number] = args
   const eventID = parseInt(number, 10)
-  if (!eventID) return helpCommand?.execute(message, [`eventdelete`], context)
+  if (!eventID) return helpCommand?.execute(message, [`eventdelete`], { ...context, commandName: 'help' })
 
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({

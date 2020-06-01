@@ -16,7 +16,7 @@ export default new Command(`setmodlogs`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  if (!type) return helpCommand.execute(message, [`setmodlogs`], context)
+  if (!type) return helpCommand.execute(message, [`setmodlogs`], { ...context, commandName: 'help' })
 
   switch (type.toLowerCase()) {
     case `enable`:

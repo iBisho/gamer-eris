@@ -15,10 +15,10 @@ export default new Command([`rolemessagecreate`, `rmc`], async (message, args, c
 
   const [type, channelID, roleID, ...text] = args
   if (!type || !channelID || !roleID || !text.length)
-    return helpCommand.execute(message, [`rolemessagecreate`], context)
+    return helpCommand.execute(message, [`rolemessagecreate`], { ...context, commandName: 'help' })
 
   if (!['add', 'remove'].includes(type.toLowerCase()))
-    return helpCommand.execute(message, [`rolemessagecreate`], context)
+    return helpCommand.execute(message, [`rolemessagecreate`], { ...context, commandName: 'help' })
 
   const roleAdded = ['add'].includes(type.toLowerCase())
   const channel =

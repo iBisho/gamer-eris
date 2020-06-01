@@ -12,7 +12,7 @@ export default new Command([`eventadvertise`, `ead`], async (message, args, cont
   const [number] = args
   const eventID = parseInt(number, 10)
 
-  if (!eventID) return helpCommand?.execute(message, [`eventadvertise`], context)
+  if (!eventID) return helpCommand?.execute(message, [`eventadvertise`], { ...context, commandName: 'help' })
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
     id: eventID,

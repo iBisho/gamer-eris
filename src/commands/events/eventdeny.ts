@@ -11,7 +11,7 @@ export default new Command([`eventdeny`, `edeny`], async (message, args, context
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  if (!eventID) return helpCommand.execute(message, [`eventdeny`], context)
+  if (!eventID) return helpCommand.execute(message, [`eventdeny`], { ...context, commandName: 'help' })
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
     id: eventID,

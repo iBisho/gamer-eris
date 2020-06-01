@@ -17,7 +17,7 @@ export default new Command(`sethibye`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [type, subtype, ...text] = args
-  if (!type || !subtype) return helpCommand.execute(message, [`sethibye`], context)
+  if (!type || !subtype) return helpCommand.execute(message, [`sethibye`], { ...context, commandName: 'help' })
 
   const welcome = type.toLowerCase() === 'welcome'
 

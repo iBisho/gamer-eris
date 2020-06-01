@@ -14,7 +14,7 @@ export default new Command(`manga`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [type, ...fullTitle] = args
-  if (!type) return helpCommand?.execute(message, [`manga`], context)
+  if (!type) return helpCommand?.execute(message, [`manga`], { ...context, commandName: 'help' })
 
   const title = fullTitle.join(' ')
   if (type && type.toLowerCase() === `list`) {
@@ -95,5 +95,5 @@ export default new Command(`manga`, async (message, args, context) => {
 
       return message.channel.createMessage(language(`weeb/manga:UNSUBBED`, { title }))
   }
-  return helpCommand?.execute(message, [`manga`], context)
+  return helpCommand?.execute(message, [`manga`], { ...context, commandName: 'help' })
 })
