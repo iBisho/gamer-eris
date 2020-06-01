@@ -1,18 +1,8 @@
-import { PrivateChannel, Message, Attachment, Embed, User, TextChannel, GroupChannel } from 'eris'
+import { PrivateChannel, Message, TextChannel, GroupChannel } from 'eris'
 import Gamer from '..'
 import { MessageEmbed } from 'helperis'
 import { EventListener } from 'yuuko'
 
-export interface OldMessage {
-  attachments: Attachment[]
-  embeds: Embed[]
-  content: string
-  editedTimestamp: number
-  mentions: User[]
-  roleMentions: string[]
-  channelMentions: string[]
-  tts: boolean
-}
 export default new EventListener('messageUpdate', async (message, oldMessage, context) => {
   // Most embeds will always trigger a messageUpdate
   if (!message.editedTimestamp) return
