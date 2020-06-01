@@ -26,8 +26,6 @@ export default new Command(`embedshow`, async (message, args, context) => {
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isModOrAdmin(message, settings)) return
 
-  console.log(embed)
-
   const payload: string[] = []
   const fields =
     embed.fields && embed.fields.length

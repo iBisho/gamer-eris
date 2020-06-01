@@ -39,8 +39,6 @@ export default class {
       this.Gamer.database.models.user.find({ guildIDs: member.guild.id }).sort('-leveling.currency').limit(3)
     ])
 
-    console.log(rank, nextUsers, prevUsers, topUsers)
-
     const [nextUser] = nextUsers
     const [prevUser] = prevUsers
 
