@@ -71,6 +71,7 @@ export default new Command([`analyzechannel`, `analyticschannel`], async (messag
       topUsers.map(id => `<@!${id}> ${userMessages.get(id)!}`).join('\n') || NONE,
       true
     )
+    .setTimestamp()
 
   return message.channel.createMessage({ content: message.author.mention, embed: embed.code })
 })
