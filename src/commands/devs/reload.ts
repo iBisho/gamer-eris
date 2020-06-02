@@ -17,14 +17,14 @@ export default new Command('reload', async (message, args, context) => {
   // Remove skip from args
   if (args.includes('skip')) args = args.filter(a => a !== 'skip')
 
-  // Reloads commands
-  Gamer.reloadCommands()
   // Reloads all the monitors
   Gamer.reloadDirectory('monitors', Gamer.monitors)
-  // Reloads events
-  Gamer.reloadFiles()
+    // Remove listeners first
+    .removeAllListeners()
+    // Reloads events and commands
+    .reloadFiles()
   // Reloads i18n translations
-  if (!args.length || args.includes('languages')) i18next.reloadResources(constants.personalities.map(p => p.id))
+  i18next.reloadResources(constants.personalities.map(p => p.id))
 
   message.channel.createMessage(`Reloaded. ${args}`)
 })
