@@ -273,35 +273,29 @@ export default class {
     const allGuildSettings = await this.Gamer.database.models.guild.find({ 'xp.inactiveDaysAllowed': { $gt: 0 } })
 
     for (const guildSettings of allGuildSettings) {
-      // If the inactive days allowed has not been enabled then skip
-      if (!guildSettings.xp.inactiveDaysAllowed) continue
-
       const guild = this.Gamer.guilds.get(guildSettings.id)
       if (!guild) continue
 
       // Get all members from the database as anyone with default settings dont need to be checked
-      const allMemberSettings = await this.Gamer.database.models.member.find()
+      const allMemberSettings = await this.Gamer.database.models.member.find({ guildID: guild.id })
 
       allMemberSettings.forEach(async memberSettings => {
         // If they have never been updated skip. Or if their XP is below 100 the minimum threshold
-        if (!memberSettings.leveling.lastUpdatedAt || memberSettings.leveling.xp < 100) {
-          return
-        }
+        if (!memberSettings.leveling.lastUpdatedAt || memberSettings.leveling.xp < 100) return
 
         // Calculate how many days it has been since this user was last updated
-        const daysSinceLastUpdated = (Date.now() - memberSettings.leveling.lastUpdatedAt) / 1000 / 60 / 60 / 24
-        if (daysSinceLastUpdated < guildSettings.xp.inactiveDaysAllowed) {
-          return
-        }
+        const daysSinceLastUpdated = (Date.now() - memberSettings.leveling.lastUpdatedAt) / milliseconds.DAY
+        if (daysSinceLastUpdated < guildSettings.xp.inactiveDaysAllowed) return
 
         // Get the member object
         const member = await this.Gamer.helpers.discord.fetchMember(guild, memberSettings.memberID)
-        if (!member) {
-          return
-        }
+        if (!member) return
 
         // Remove 1% of XP from the user for being inactive today.
-        this.Gamer.helpers.levels.removeXP(member, Math.floor(memberSettings.leveling.xp * 0.01))
+        this.removeXP(
+          member,
+          Math.floor(memberSettings.leveling.xp * ((guildSettings.xp.inactivePercentage || 1) / 1000))
+        )
       })
     }
   }

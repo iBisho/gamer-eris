@@ -225,6 +225,8 @@ export default new mongoose.Schema({
   xp: {
     // The max amount of days u can be inactive on a server before losing XP
     inactiveDaysAllowed: { type: Number, default: 0 },
+    // The percentage of xp to be removed when user is marked inactive
+    inactivePercentage: { type: Number, default: 1 },
     // The amount of xp to grant per message
     perMessage: Number,
     // The amount of xp to grant per minute in voice

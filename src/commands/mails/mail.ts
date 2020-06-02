@@ -10,7 +10,7 @@ export default new Command([`mail`, `m`], async (message, args, context) => {
     return Gamer.helpers.mail.handleDM(message, content)
 
   const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
-  if (!guildSettings) return
+  if (!guildSettings?.mails.enabled) return
 
   // If the command was ran inside the support channel handle it as needed
   if (message.channel.id === guildSettings.mails.supportChannelID)
