@@ -60,7 +60,7 @@
   "WHITELISTED_TENOR": "Via Whitelisted Tenor",
   "TENOR": "Via Tenor",
   "NSFW_COMMAND": "This command is an NSFW command. It will only work inside an NSFW channel.",
-  "NEED_VIP": "⭐ This is a VIP feature. Currently, this server has not been registered as a VIP. To become a VIP, please join the Support Server at {{invite}} and boost the server. Once you or a friend are boosted, you can use the **vipregister** command on this server.",
+  "NEED_VIP": "⭐ This is a VIP feature. To become a VIP, you or a member of your server need to  join the Support Server: {{invite}} and boost it. When this is done you can use the __vipregister__ command on this server.",
   "GLOBAL_OPTIONS": ["g", "global"],
   "VOICE_OPTIONS": ["v", "voice"],
   "CANCEL_OPTIONS": ["q", "quit"],
