@@ -23,6 +23,8 @@ export default new EventListener('guildBanRemove', async (guild, user) => {
     .setThumbnail(user.avatarURL)
     .setTimestamp()
 
+  Gamer.database.models.member.deleteOne({ memberID: user.id }).exec()
+
   const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
   if (!botMember?.permission.has('viewAuditLogs')) return
 
