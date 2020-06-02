@@ -15,5 +15,7 @@
 	"SETTINGS_VALUES_LINE_1": "**AFK Status:** {{afk}}",
 	"SETTINGS_VALUES_LINE_2": "**AFK Message:** {{afkMessage}}",
 	"PERMISSIONS": "Permissions",
-	"ROLES": "Roles"
+	"ROLES": "Roles",
+	"LAST_ACTIVE": "Last Active: {{time}}",
+	"NOW": "Now"
 }

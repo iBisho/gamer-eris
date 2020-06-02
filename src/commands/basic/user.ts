@@ -21,6 +21,15 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   const buffer = await Gamer.helpers.profiles.makeCanvas(message, member || message.member, Gamer)
   if (!buffer) return
 
+  const activity = await Gamer.database.models.analytics
+    .find({
+      userID: user.id,
+      guildID: message.member.guild.id,
+      type: 'MESSAGE_CREATE'
+    })
+    .sort('-timestamp')
+    .limit(1)
+
   const fileName = `${member.id}.png`
 
   const memberPerms = member.permission.json
@@ -55,8 +64,20 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     .setDescription(`${nickname}${userID}`)
     .addField(language(`basic/user:JOINED`), JOINED_VALUE)
     .addField(language(`basic/user:SETTINGS`), SETTINGS_VALUE)
-    .addField(language(`basic/user:PERMISSIONS`), permOverview.sort().join(`, `))
+    .addField(
+      language(`basic/user:PERMISSIONS`),
+      permOverview.includes('Administrator') ? 'Administrator' : permOverview.sort().join(`, `)
+    )
     .attachFile(buffer, fileName)
+
+  if (activity.length) {
+    embed.setFooter(
+      language('basic/user:LAST_ACTIVE', {
+        time:
+          Gamer.helpers.transform.humanizeMilliseconds(Date.now() - activity[0].timestamp) || language('basic/user:NOW')
+      })
+    )
+  }
 
   if (roles) embed.addField(language(`basic/user:ROLES`), roles)
 
