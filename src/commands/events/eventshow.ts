@@ -55,7 +55,8 @@ export default new Command([`eventshow`, `es`], async (message, args, context) =
       language(`events/eventshow:BASIC`, {
         dm: event.dmReminders ? ENABLED : DISABLED,
         allowedRoles: event.allowedRoleIDs.length ? event.allowedRoleIDs.map(id => `<@&${id}>`).join(' ') : NONE,
-        alertRoles: event.alertRoleIDs.length ? event.alertRoleIDs.map(id => `<@&${id}>`).join(' ') : NONE
+        alertRoles: event.alertRoleIDs.length ? event.alertRoleIDs.map(id => `<@&${id}>`).join(' ') : NONE,
+        remove: language(event.removeRecurringAttendees ? 'common:ENABLED' : 'common:DISABLED')
       })
     )
     .setFooter(language(`events/eventshow:STARTS_AT`))
