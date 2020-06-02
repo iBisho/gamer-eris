@@ -69,6 +69,7 @@ export default new mongoose.Schema({
   modules: { type: [String], lowercase: true },
   disableTenor: Boolean,
   moderation: {
+    reassignRolesOnJoin: Boolean,
     roleIDs: {
       // The role to be automatically assigned once the user finished verifying.
       autorole: String,

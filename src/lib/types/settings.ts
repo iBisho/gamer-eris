@@ -99,6 +99,7 @@ export interface GuildSettings extends mongoose.Document {
   modules: string[]
   disableTenor: boolean
   moderation: {
+    reassignRolesOnJoin: boolean
     roleIDs: {
       autorole?: string
       public: string[]

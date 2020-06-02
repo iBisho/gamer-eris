@@ -16,12 +16,6 @@ export default new Command([`roleinfo`, `ri`], async (message, args, context) =>
 
   const language = Gamer.getLanguage(message.guildID)
 
-  if (!Gamer.allMembersFetchedGuildIDs.has(message.member.guild.id)) {
-    await message.member.guild.fetchAllMembers()
-    Gamer.allMembersFetchedGuildIDs.add(message.member.guild.id)
-  }
-
-  const members = message.member.guild.members.filter(member => member.roles.includes(role.id))
   const embed = new MessageEmbed()
     .setAuthor(role.name, message.author.avatarURL)
     .addField(language(`roles/roleinfo:ROLE_NAME`), role.mention, true)
@@ -30,7 +24,6 @@ export default new Command([`roleinfo`, `ri`], async (message, args, context) =>
     .addField(language(`roles/roleinfo:ROLE_SEPARATE`), Gamer.helpers.discord.booleanEmoji(role.hoist), true)
     .addField(language(`roles/roleinfo:ROLE_MENTIONABLE`), Gamer.helpers.discord.booleanEmoji(role.mentionable), true)
     .addField(language(`roles/roleinfo:ROLE_POSITION`), role.position.toString(), true)
-    .addField(language(`roles/roleinfo:ROLE_MEMBERS`), members.length.toString(), true)
     .setFooter(language(`roles/roleinfo:CREATED_AT`))
     .setTimestamp(role.createdAt)
 

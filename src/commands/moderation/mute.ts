@@ -2,6 +2,7 @@ import { Command } from 'yuuko'
 import { MessageEmbed } from 'helperis'
 import GamerClient from '../../lib/structures/GamerClient'
 import { highestRole } from 'helperis'
+import { addRoleToMember } from '../../lib/utils/eris'
 
 export default new Command(`mute`, async (message, args, context) => {
   if (!message.member) return
@@ -49,7 +50,7 @@ export default new Command(`mute`, async (message, args, context) => {
   const reason = args.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/mute:NEED_REASON`))
 
-  await member.addRole(guildSettings.moderation.roleIDs.mute)
+  addRoleToMember(member, guildSettings.moderation.roleIDs.mute)
   guildSettings.moderation.users.mutedUserIDs.push(member.id)
   guildSettings.save()
 

@@ -2,6 +2,7 @@ import { Command } from 'yuuko'
 import { PrivateChannel, Message, TextChannel, CategoryChannel, GroupChannel } from 'eris'
 import GamerClient from '../../lib/structures/GamerClient'
 import { Canvas } from 'canvas-constructor'
+import { addRoleToMember } from '../../lib/utils/eris'
 
 const createCaptcha = async (message: Message) => {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
@@ -111,7 +112,7 @@ export default new Command(`verify`, async (message, args, context) => {
           })
 
           if (!guildSettings.verify.discordVerificationStrictnessEnabled && guildSettings.moderation.roleIDs.autorole) {
-            msg.member.addRole(guildSettings.moderation.roleIDs.autorole)
+            addRoleToMember(msg.member, guildSettings.moderation.roleIDs.autorole)
             Gamer.amplitude.push({
               authorID: msg.author.id,
               channelID: msg.channel.id,

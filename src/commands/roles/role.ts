@@ -2,6 +2,7 @@ import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import { Role } from 'eris'
 import { MessageEmbed } from 'helperis'
+import { addRoleToMember } from '../../lib/utils/eris'
 
 export default new Command([`role`, `rank`], async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -53,7 +54,7 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
 
   // Give/tag the role to the user as all checks have passed
   if (hasRole) message.member.removeRole(role.id, language(`roles/role:SELF_REMOVE`, { user: tag }))
-  else message.member.addRole(role.id, language(`roles/role:SELF_ASSIGN`, { user: tag }))
+  else addRoleToMember(message.member, role.id, language(`roles/role:SELF_ASSIGN`, { user: tag }))
 
   Gamer.helpers.discord.embedResponse(
     message,

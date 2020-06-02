@@ -9,6 +9,7 @@ import HooksServices from './services/hooks'
 
 import TwitchService from './services/twitch/index'
 import TopGGAPI from 'dblapi.js'
+import { deleteMessage } from './lib/utils/eris'
 
 // Initiate hooks service
 HooksServices(config.hooks.port)
@@ -79,7 +80,7 @@ Gamer.globalCommandRequirements = {
         const [firstWord] = message.content
         if (context.commandName === firstWord.substring(prefix.length)) {
           // Cleans up spam command messages from users
-          if (botPerms.has('manageMessages')) message.delete().catch(() => undefined)
+          deleteMessage(message)
           return false
         }
       }

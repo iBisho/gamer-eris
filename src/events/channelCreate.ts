@@ -5,9 +5,14 @@ import { TFunction } from 'i18next'
 import { GuildSettings } from '../lib/types/settings'
 import { EventListener } from 'yuuko'
 
-function handleRolePerms(channel: AnyGuildChannel, gamerID: string, settings: GuildSettings, language: TFunction) {
+async function handleRolePerms(
+  channel: AnyGuildChannel,
+  gamerID: string,
+  settings: GuildSettings,
+  language: TFunction
+) {
   const Gamer = channel.guild.shard.client as GamerClient
-  const botMember = channel.guild.members.get(gamerID)
+  const botMember = await Gamer.helpers.discord.fetchMember(channel.guild, gamerID)
   const hasPermission =
     channel instanceof VoiceChannel
       ? Gamer.helpers.discord.checkPermissions(channel, gamerID, [

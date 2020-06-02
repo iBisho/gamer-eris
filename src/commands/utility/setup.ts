@@ -13,7 +13,7 @@ export default new Command('setup', async (message, args, context) => {
   const language = Gamer.getLanguage(message.guildID)
 
   // Check ADMIN perm
-  const botMember = message.member.guild.members.get(Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!botMember?.permission.has('administrator')) {
     return message.channel.createMessage(language('utility/setup:NEED_ADMIN_PERM'))
   }
@@ -174,9 +174,6 @@ export default new Command('setup', async (message, args, context) => {
             parentID: category.id
           })
           verifyChannel.editPermission(role.id, 3072, 0, `role`)
-
-          const botMember = msg.member.guild.members.get(Gamer.user.id)
-          if (!botMember) break
 
           const botsHighestRole = highestRole(botMember)
           if (botsHighestRole.position <= role.position) {

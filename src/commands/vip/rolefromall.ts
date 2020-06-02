@@ -45,6 +45,10 @@ export default new Command([`rolefromall`], async (message, args, context) => {
 
   const REASON = language(`vip/rolefromall:REASON`, { user: message.author.username })
 
+  if (!Gamer.allMembersFetchedGuildIDs.has(message.member.guild.id)) {
+    await message.member.guild.fetchAllMembers()
+    Gamer.allMembersFetchedGuildIDs.add(message.member.guild.id)
+  }
   message.channel.createMessage(
     language(`vip/rolefromall:PATIENCE`, { amount: message.member.guild.members.size, mention: message.author.mention })
   )

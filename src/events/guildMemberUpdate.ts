@@ -4,6 +4,8 @@ import { MessageEmbed } from 'helperis'
 import constants from '../constants'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
+import Gamer from '..'
+import { GuildSettings } from '../lib/types/settings'
 
 export interface OldMember {
   roles?: string[]
@@ -108,17 +110,85 @@ async function handleRoleMessages(
   return
 }
 
+async function handleRoleUpdates(guild: Guild, member: Member, guildSettings?: GuildSettings | null) {
+  const memberRoles = await Gamer.database.models.roles.findOne({ memberID: member.id, guildID: guild.id })
+  if (!memberRoles) {
+    Gamer.database.models.roles.create({ memberID: member.id, guildID: guild.id, roleIDs: member.roles })
+    return
+  }
+
+  const roleAdded = member.roles.length > memberRoles.roleIDs.length
+  // Find the role that was added/removed
+  const roleID = roleAdded
+    ? member.roles.find(id => !memberRoles.roleIDs.some(roleid => roleid === id))
+    : memberRoles.roleIDs.find(id => !member.roles.some(roleid => roleid === id))
+  if (!roleID) return
+
+  // Handle Unique Role Sets
+  if (roleAdded) handleRoleSets(Gamer, guild, member, roleID)
+  // If the role was the VIP nitro role then remove VIP status on all registered guilds
+  else if (roleID === constants.general.nitroBoosterRoleID) handleVIPRole(Gamer, member)
+
+  // Handle Role messages
+  handleRoleMessages(Gamer, guild, member, roleID, roleAdded)
+
+  // Server logs feature
+
+  // If there is no channel set for logging this cancel
+  if (!guildSettings?.moderation.logs.serverlogs.roles.channelID) return
+
+  const language = Gamer.getLanguage(guild.id)
+  const embed = new MessageEmbed()
+    .setTitle(language(`moderation/logs:MEMBER_UPDATED`))
+    .addField(language(`moderation/logs:NAME`), member.mention, true)
+    .addField(language(`moderation/logs:USER_ID`), member.id, true)
+    .setFooter(`${member.username}#${member.discriminator}`, guild.iconURL)
+    .setThumbnail(member.user.avatarURL)
+    .setTimestamp()
+    .addField(
+      language(`moderation/logs:ROLE_UPDATED`),
+      language(`moderation/logs:ROLE_UPDATED_DETAILS`, {
+        type: language(roleAdded ? `moderation/logs:GAINED` : `moderation/logs:LOST`),
+        role: `<@&${roleID}>`
+      }),
+      true
+    )
+
+  const logs = guildSettings.moderation.logs
+
+  // If public logs are enabled properly then send the embed there
+  if (logs.serverlogs.roles.memberPublicEnabled && logs.publiclogsChannelID) {
+    const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
+    if (publicLogChannel instanceof TextChannel) {
+      const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
+      if (
+        publicLogChannel &&
+        botPerms.has('embedLinks') &&
+        botPerms.has('readMessages') &&
+        botPerms.has('sendMessages')
+      )
+        publicLogChannel.createMessage({ embed: embed.code })
+    }
+  }
+
+  // Send the finalized embed to the log channel
+  const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.roles.channelID)
+  if (logChannel && logChannel instanceof TextChannel) {
+    const botPerms = logChannel.permissionsOf(Gamer.user.id)
+    if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
+      logChannel.createMessage({ embed: embed.code })
+  }
+}
+
 export default new EventListener('guildMemberUpdate', async (guild, member, oldMember) => {
   // Make sure that oldMember was always cached and exists to be able to compare it
-  if (!oldMember) return
+  if (!oldMember) return handleRoleUpdates(guild, member)
 
-  const Gamer = guild.shard.client as GamerClient
   const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
   if (!botMember) return
 
-  const language = Gamer.getLanguage(guild.id)
-
   const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const language = Gamer.getLanguage(guild.id)
 
   const embed = new MessageEmbed()
     .setTitle(language(`moderation/logs:MEMBER_UPDATED`))
@@ -155,57 +225,5 @@ export default new EventListener('guildMemberUpdate', async (guild, member, oldM
   // If no role changes cancel out
   if (!oldMember.roles || member.roles.length === oldMember.roles.length) return
 
-  const roleAdded = member.roles.length > oldMember.roles.length
-  // Find the role that was added/removed
-  const roleID = roleAdded
-    ? member.roles.find(id => !oldMember?.roles?.some(roleid => roleid === id))
-    : oldMember.roles.find(id => !member.roles.some(roleid => roleid === id))
-  if (!roleID) return
-
-  // Handle Unique Role Sets
-  if (roleAdded) handleRoleSets(Gamer, guild, member, roleID)
-  // If the role was the VIP nitro role then remove VIP status on all registered guilds
-  else if (roleID === constants.general.nitroBoosterRoleID) handleVIPRole(Gamer, member)
-
-  // Handle Role messages
-  handleRoleMessages(Gamer, guild, member, roleID, roleAdded)
-
-  // Server logs feature
-
-  // If there is no channel set for logging this cancel
-  if (!guildSettings?.moderation.logs.serverlogs.roles.channelID) return
-
-  embed.addField(
-    language(`moderation/logs:ROLE_UPDATED`),
-    language(`moderation/logs:ROLE_UPDATED_DETAILS`, {
-      type: language(roleAdded ? `moderation/logs:GAINED` : `moderation/logs:LOST`),
-      role: `<@&${roleID}>`
-    }),
-    true
-  )
-
-  const logs = guildSettings.moderation.logs
-
-  // If public logs are enabled properly then send the embed there
-  if (logs.serverlogs.roles.memberPublicEnabled && logs.publiclogsChannelID) {
-    const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
-    if (publicLogChannel instanceof TextChannel) {
-      const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
-      if (
-        publicLogChannel &&
-        botPerms.has('embedLinks') &&
-        botPerms.has('readMessages') &&
-        botPerms.has('sendMessages')
-      )
-        publicLogChannel.createMessage({ embed: embed.code })
-    }
-  }
-
-  // Send the finalized embed to the log channel
-  const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.roles.channelID)
-  if (logChannel && logChannel instanceof TextChannel) {
-    const botPerms = logChannel.permissionsOf(Gamer.user.id)
-    if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-      logChannel.createMessage({ embed: embed.code })
-  }
+  handleRoleUpdates(guild, member, guildSettings)
 })

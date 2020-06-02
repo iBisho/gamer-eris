@@ -18,6 +18,7 @@ import ModlogSchema from './schemas/modlog'
 import ReactionRoleSchema from './schemas/reactionrole'
 import ReminderSchema, { GamerReminder } from './schemas/reminder'
 import RolesetSchema from './schemas/roleset'
+import RolesSchema, { GamerRole } from './schemas/roles'
 import RoleMessageSchema, { GamerRoleMessage } from './schemas/rolemessage'
 import ShortcutSchema, { GamerShortcut } from './schemas/shortcut'
 import SubscriptionSchema, { GamerSubscription } from './schemas/subscription'
@@ -69,6 +70,7 @@ class Database {
     reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),
     reminder: mongoose.model<GamerReminder>('Reminder', ReminderSchema),
     roleMessages: mongoose.model<GamerRoleMessage>('RoleMessage', RoleMessageSchema),
+    roles: mongoose.model<GamerRole>('Roles', RolesSchema),
     roleset: mongoose.model<GamerRoleset>('Roleset', RolesetSchema),
     shortcut: mongoose.model<GamerShortcut>('Shortcut', ShortcutSchema),
     subscription: mongoose.model<GamerSubscription>('Subscription', SubscriptionSchema),

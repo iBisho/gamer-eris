@@ -41,6 +41,16 @@ export default new EventListener('guildCreate', async guild => {
   // Send dm to all users concurrently
   await Promise.all(
     guild.members.map(async member => {
+      if (member.roles.length) {
+        Gamer.database.models.roles
+          .findOneAndUpdate(
+            { memberID: member.id, guildID: member.guild.id },
+            { memberID: member.id, guildID: member.guild.id, roleIDs: member.roles },
+            { upsert: true }
+          )
+          .exec()
+      }
+
       if (!member.permission.has('manageGuild') && !member.permission.has('administrator')) return
 
       // Member has permissions to manage guild so send dm

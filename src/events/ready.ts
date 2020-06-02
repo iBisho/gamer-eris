@@ -203,33 +203,5 @@ export default new EventListener('ready', async () => {
     Gamer.mirrors.set(mirror.sourceChannelID, mirror)
   })
 
-  const guildIDsToFetchMembers = allGuildSettings.filter(gs => gs.moderation.logs.serverlogs.roles).map(gs => gs.id)
-  const [roleMessages, roleSets] = await Promise.all([
-    Gamer.database.models.roleMessages.find(),
-    Gamer.database.models.roleset.find()
-  ])
-
-  roleMessages.forEach(rm => {
-    if (guildIDsToFetchMembers.includes(rm.guildID)) return
-    guildIDsToFetchMembers.push(rm.guildID)
-  })
-  roleSets.forEach(rs => {
-    if (guildIDsToFetchMembers.includes(rs.guildID)) return
-    guildIDsToFetchMembers.push(rs.guildID)
-  })
-
-  // Always fetch gamer guild
-  guildIDsToFetchMembers.push(constants.general.gamerServerID)
-  Gamer.debugModeEnabled = true
-  for (const guildID of [...new Set(guildIDsToFetchMembers)]) {
-    const guild = Gamer.guilds.get(guildID)
-    if (!guild) continue
-
-    Gamer.helpers.logger.debug(`${guild.name} Count: ${guild.members.size} / ${guild.memberCount}`, 'yellow')
-    await guild.fetchAllMembers()
-    Gamer.helpers.logger.debug(`${guild.name} Count: ${guild.members.size} / ${guild.memberCount}`, 'green')
-  }
-
-  Gamer.debugModeEnabled = false
   Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
 })

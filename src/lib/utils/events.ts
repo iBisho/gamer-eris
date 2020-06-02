@@ -8,6 +8,7 @@ import constants from '../../constants'
 import { MessageEmbed } from 'helperis'
 import config from '../../../config'
 import { TFunction } from 'i18next'
+import { deleteMessageWithID } from './eris'
 
 const eventCardReactions: string[] = []
 
@@ -112,6 +113,10 @@ export default class {
       .setDescription(event.description)
       .setImage(result.attachments[0].proxy_url)
       .setTimestamp(event.start)
+
+    // If this is being sent to a new channel and an old card exists we need to delete the old one
+    if (event.adChannelID && event.adMessageID && event.adChannelID !== channelID)
+      deleteMessageWithID(event.adChannelID, event.adMessageID)
 
     const adChannel = channelID
       ? this.Gamer.getChannel(channelID)

@@ -21,6 +21,16 @@ export default new EventListener('guildMemberRemove', async (guild, member) => {
     type: 'MEMBER_REMOVED'
   })
 
+  // Deletes the member in db
+  Gamer.database.models.member.deleteOne({ memberID: member.id, guildID: guild.id }).exec()
+  if (member instanceof Member) {
+    Gamer.database.models.roles.findOneAndUpdate(
+      { memberID: member.id, guildID: guild.id },
+      { memberID: member.id, guildID: guild.id, roleIDs: member.roles },
+      { upsert: true }
+    )
+  }
+
   const userSettings = await Gamer.database.models.user.findOne({ userID: member.id })
   if (userSettings) {
     if (userSettings.guildIDs.includes(guild.id)) {

@@ -5,6 +5,7 @@ import Gamer from '..'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
 import { ReactionEmoji } from '../lib/types/discord'
+import { addRoleToMember } from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
 
@@ -52,7 +53,7 @@ async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID
     if (!role || role.position > botsHighestRole.position) continue
 
     if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
-    else member.addRole(roleID, `Added roles for clicking a reaction role message.`)
+    else addRoleToMember(member, roleID, `Added roles for clicking a reaction role message.`)
   }
 }
 
@@ -125,10 +126,10 @@ async function handleAutoRole(message: Message, guild: Guild, userID: string) {
     type: 'ROLE_REMOVED'
   })
 
-  return message.member.removeRole(
-    guildSettings.moderation.roleIDs.autorole,
-    language(`basic/verify:AUTOROLE_ASSIGNED`)
-  )
+  const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
+  if (!member) return
+
+  return addRoleToMember(member, guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
 }
 
 export default new EventListener('messageReactionRemove', async (rawMessage, emoji, userID) => {

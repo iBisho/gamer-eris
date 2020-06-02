@@ -14,5 +14,6 @@
   "REMOVED": "The {{role}} role has been removed from you as per your wishes sire.",
   "ADDED": "The {{role}} role has been given to you. It's time to boogie!",
   "AVAILABLE": "Available Roles To Assign:",
-  "NOT_PUBLIC": "This role is not a public role so it can not be assigned to yourself."
+  "NOT_PUBLIC": "This role is not a public role so it can not be assigned to yourself.",
+  "REASSIGN_ON_JOIN": "Re-assign roles when members join is enabled."
 }

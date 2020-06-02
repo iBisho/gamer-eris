@@ -3,6 +3,7 @@ import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { milliseconds } from '../types/enums/time'
 import { highestRole } from 'helperis'
+import { addRoleToMember } from './eris'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -85,7 +86,7 @@ export default class {
       const role = member.guild.roles.get(roleID)
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
-      member.addRole(roleID, REASON)
+      addRoleToMember(member, roleID, REASON)
       this.Gamer.amplitude.push({
         authorID: member.id,
         guildID: member.guild.id,

@@ -4,6 +4,7 @@ import Monitor from '../lib/structures/Monitor'
 import { Message, GuildChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { highestRole } from 'helperis'
+import { addRoleToMember } from '../lib/utils/eris'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -45,6 +46,10 @@ export default class extends Monitor {
       type: 'ROLE_ADDED'
     })
 
-    return message.member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
+    return addRoleToMember(
+      message.member,
+      guildSettings.moderation.roleIDs.autorole,
+      language(`basic/verify:AUTOROLE_ASSIGNED`)
+    )
   }
 }

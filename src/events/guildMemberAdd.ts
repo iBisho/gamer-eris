@@ -2,6 +2,7 @@ import { TextChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed, highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
+import { addRoleToMember } from '../lib/utils/eris'
 
 export default new EventListener('guildMemberAdd', async (guild, member) => {
   const Gamer = guild.shard.client as GamerClient
@@ -32,14 +33,24 @@ export default new EventListener('guildMemberAdd', async (guild, member) => {
   const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
   if (!botMember) return
 
+  const memberRoles = await Gamer.database.models.roles.findOne({ memberID: member.id, guildID: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
   const language = Gamer.getLanguage(guild.id)
+
+  if (guildSettings?.moderation.reassignRolesOnJoin) {
+    memberRoles?.roleIDs.forEach(id => {
+      addRoleToMember(member, id, language('roles/role:REASSIGN_ON_JOIN'))
+    })
+  }
+
+  if (!memberRoles && member.roles.length) {
+    Gamer.database.models.roles.create({ memberID: member.id, guildID: guild.id, roleIDs: member.roles })
+  }
+
+  if (!guildSettings) return
 
   const botsHighestRole = highestRole(botMember)
   const membersHighestRole = highestRole(member)
-
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
-  // If no custom guild settings cancel out
-  if (!guildSettings) return
 
   // Mute Role
 
@@ -48,7 +59,7 @@ export default new EventListener('guildMemberAdd', async (guild, member) => {
     if (guildSettings.moderation.roleIDs.mute && guildSettings.moderation.users.mutedUserIDs.includes(member.id)) {
       const muteRole = guild.roles.get(guildSettings.moderation.roleIDs.mute)
       if (muteRole && muteRole.position < botsHighestRole.position)
-        member.addRole(muteRole.id, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
+        addRoleToMember(member, muteRole.id, language(`moderation/mute:GUILDMEMBERADD_MUTED`))
     }
     // Verify Or AutoRole
 
@@ -56,7 +67,7 @@ export default new EventListener('guildMemberAdd', async (guild, member) => {
     if (guildSettings.verify.enabled && guildSettings.verify.roleID) {
       const verifyRole = guild.roles.get(guildSettings.verify.roleID)
       if (verifyRole && verifyRole.position < botsHighestRole.position)
-        member.addRole(guildSettings.verify.roleID, language(`basic/verify:VERIFY_ACTIVATE`))
+        addRoleToMember(member, guildSettings.verify.roleID, language(`basic/verify:VERIFY_ACTIVATE`))
     }
     // If discord verification is disabled and auto role is set give the member the auto role
     else if (
@@ -66,7 +77,7 @@ export default new EventListener('guildMemberAdd', async (guild, member) => {
     ) {
       const autoRole = guild.roles.get(guildSettings.moderation.roleIDs.autorole)
       if (autoRole && autoRole.position < botsHighestRole.position)
-        member.addRole(guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
+        addRoleToMember(member, guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
     }
   }
 
