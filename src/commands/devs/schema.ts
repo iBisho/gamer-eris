@@ -13,7 +13,11 @@ export default new Command('schema', async message => {
     await Gamer.helpers.utils.sleep(1)
     for (const member of guild.members.values()) {
       Gamer.emit('guildMemberUpdate', guild, member)
+      await Gamer.helpers.utils.sleep(1)
+      Gamer.helpers.logger.yellow(`Finished ${member.username}`)
     }
+
+    guild.members.clear()
   }
 
   return message.channel.createMessage('done updating schema')
