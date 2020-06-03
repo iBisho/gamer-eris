@@ -6,6 +6,7 @@ export default new Command('schema', async message => {
 
   const sortedGuilds = [...Gamer.guilds.values()].sort((a, b) => b.memberCount - a.memberCount)
 
+  let counter = 0
   for (const guild of sortedGuilds) {
     Gamer.helpers.logger.blue(`Starting ${guild.name} with ${guild.memberCount}`)
     if (guild.memberCount !== guild.members.size) await guild.fetchAllMembers()
@@ -13,8 +14,12 @@ export default new Command('schema', async message => {
     await Gamer.helpers.utils.sleep(1)
     for (const member of guild.members.values()) {
       Gamer.emit('guildMemberUpdate', guild, member)
-      await Gamer.helpers.utils.sleep(1)
+      if (counter >= 10000) {
+        await Gamer.helpers.utils.sleep(5)
+        counter = 0
+      }
       Gamer.helpers.logger.yellow(`Finished ${member.username}`)
+      counter++
     }
 
     guild.members.clear()
