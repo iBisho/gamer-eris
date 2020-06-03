@@ -18,10 +18,7 @@ export default class extends Monitor {
 
     const prefix = Gamer.guildPrefixes.get(message.guildID) || Gamer.prefix
 
-    const args = message.content.split(' ')
-    args.shift()
-
     // Run the mail command for this user
-    mailCommand.execute(message, args, { client: Gamer, commandName: `mail`, prefix })
+    mailCommand.execute(message, [message.content], { client: Gamer, commandName: `mail`, prefix })
   }
 }
