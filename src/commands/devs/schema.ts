@@ -32,7 +32,7 @@ export default new Command('schema', async message => {
         )
         .exec()
 
-      if (counter >= 1000) {
+      if (counter >= 2000) {
         console.log(`Finished ${guildCounter.toLocaleString()} of ${guild.memberCount.toLocaleString()}`)
         await Gamer.helpers.utils.sleep(2)
         counter = 0
@@ -42,8 +42,6 @@ export default new Command('schema', async message => {
       guildCounter++
       counter++
     }
-
-    guild.members.clear()
   }
 
   return message.channel.createMessage('done updating schema')
