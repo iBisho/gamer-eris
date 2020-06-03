@@ -7,6 +7,7 @@ export default new Command('schema', async message => {
   if (message.author.id !== '130136895395987456') return
 
   const sortedGuilds = [...Gamer.guilds.values()].sort((a, b) => b.memberCount - a.memberCount)
+  sortedGuilds.shift()
 
   let counter = 0
   for (const guild of sortedGuilds) {
