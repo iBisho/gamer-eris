@@ -11,6 +11,8 @@ export default new Command('schema', async message => {
 
   let counter = 0
   for (const guild of sortedGuilds) {
+    if (guild.memberCount > 7500) continue
+
     Gamer.helpers.logger.blue(`Starting ${guild.name} with ${guild.memberCount.toLocaleString()}`)
     if (guild.memberCount !== guild.members.size) await guild.fetchAllMembers()
     Gamer.helpers.logger.green(`Finished fetching ${guild.name}`)
