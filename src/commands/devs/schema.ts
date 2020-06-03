@@ -7,15 +7,12 @@ export default new Command('schema', async message => {
   const sortedGuilds = [...Gamer.guilds.values()].sort((a, b) => b.memberCount - a.memberCount)
 
   for (const guild of sortedGuilds) {
+    Gamer.helpers.logger.blue(`Starting ${guild.name} with ${guild.memberCount}`)
     if (guild.memberCount !== guild.members.size) await guild.fetchAllMembers()
-
+    Gamer.helpers.logger.green(`Finished fetching ${guild.name}`)
+    await Gamer.helpers.utils.sleep(1)
     for (const member of guild.members.values()) {
-      const settings = await Gamer.database.models.user.findOne({ userID: member.id })
-      if (!settings) continue
-
-      if (!settings.guildIDs) settings.guildIDs = [guild.id]
-      else if (!settings.guildIDs.includes(guild.id)) settings.guildIDs.push(guild.id)
-      await settings.save()
+      Gamer.emit('guildMemberUpdate', guild, member)
     }
   }
 
