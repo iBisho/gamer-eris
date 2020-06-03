@@ -112,9 +112,11 @@ async function handleRoleMessages(
 
 async function handleRoleUpdates(guild: Guild, member: Member, guildSettings?: GuildSettings | null) {
   const memberRoles = await Gamer.database.models.roles.findOne({ memberID: member.id, guildID: guild.id })
+
   if (!memberRoles) {
-    Gamer.database.models.roles.create({ memberID: member.id, guildID: guild.id, roleIDs: member.roles })
-    return
+    return Gamer.database.models.roles.create({ memberID: member.id, guildID: guild.id, roleIDs: member.roles })
+  } else {
+    Gamer.database.models.roles.updateOne({ memberID: member.id, guildID: guild.id }, { roleIDs: member.roles }).exec()
   }
 
   const roleAdded = member.roles.length > memberRoles.roleIDs.length
@@ -178,6 +180,7 @@ async function handleRoleUpdates(guild: Guild, member: Member, guildSettings?: G
     if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
       logChannel.createMessage({ embed: embed.code })
   }
+  return
 }
 
 export default new EventListener('guildMemberUpdate', async (guild, member, oldMember) => {
@@ -222,8 +225,5 @@ export default new EventListener('guildMemberUpdate', async (guild, member, oldM
     }
   }
 
-  // If no role changes cancel out
-  if (!oldMember.roles || member.roles.length === oldMember.roles.length) return
-
-  handleRoleUpdates(guild, member, guildSettings)
+  return handleRoleUpdates(guild, member, guildSettings)
 })
