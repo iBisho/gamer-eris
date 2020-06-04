@@ -12,14 +12,13 @@ export default new Command([`emojiinfo`, `emoji`], async (message, args, context
   if (!nameOrID) return message.channel.createMessage(language(`emojis/emojiinfo:NEED_NAME_OR_ID`))
 
   // Find the emoji in the guild
-  const emoji = message.member.guild.emojis.find(emoji =>
-    parseInt(nameOrID) ? emoji.id === nameOrID : emoji.name === nameOrID
-  )
+  const emoji = message.member.guild.emojis.find(emoji => emoji.id === nameOrID || emoji.name === nameOrID)
 
-  if (!emoji) return message.channel.createMessage(language(`emojis/emojiinfo:DOESNT_EXIST`, { nameOrID }))
+  if (!emoji)
+    return Gamer.helpers.discord.embedResponse(message, language(`emojis/emojiinfo:DOESNT_EXIST`, { nameOrID }))
 
   const embed = new MessageEmbed()
-    .setAuthor(message.member.guild.name, message.member.guild.dynamicIconURL(undefined, 2048))
+    .setAuthor(message.member.guild.name, message.member.guild.iconURL)
     .setThumbnail(`https://cdn.discord.com/emojis/${emoji.id}.${emoji.animated ? `gif` : `png`}`)
     .addField(language(`emojis/emojiinfo:NAME`), emoji.name, true)
     .addField(language(`emojis/emojiinfo:ID`), emoji.id, true)
