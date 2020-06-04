@@ -24,5 +24,5 @@ export default new Command([`emojiinfo`, `emoji`], async (message, args, context
     .addField(language(`emojis/emojiinfo:ID`), emoji.id, true)
     .addField(language(`emojis/emojiinfo:ANIMATED`), Gamer.helpers.discord.booleanEmoji(emoji.animated))
     .addField(language(`emojis/emojiinfo:MANAGED`), Gamer.helpers.discord.booleanEmoji(emoji.managed), true)
-  message.channel.createMessage({ embed: embed.code })
+  return message.channel.createMessage({ embed: embed.code })
 })
