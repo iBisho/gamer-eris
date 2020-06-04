@@ -27,20 +27,16 @@ async function handleEventReaction(message: Message, emoji: ReactionEmoji, userI
   setTimeout(() => response.delete(), 10000)
 }
 
-async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string) {
-  if (!message.member) return
-
-  const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)
+async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string, guild: Guild) {
+  const member = await Gamer.helpers.discord.fetchMember(guild, userID)
   if (!member) return
 
-  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
+  const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
   if (!botMember || !botMember.permission.has(`manageRoles`)) return
 
   const botsHighestRole = highestRole(botMember)
 
-  const reactionRole = await Gamer.database.models.reactionRole.findOne({
-    messageID: message.id
-  })
+  const reactionRole = await Gamer.database.models.reactionRole.findOne({ messageID: message.id })
   if (!reactionRole) return
 
   const emojiKey = `${emoji.name}:${emoji.id}`
@@ -49,7 +45,7 @@ async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID
   if (!relevantReaction || !relevantReaction.roleIDs.length) return
 
   for (const roleID of relevantReaction.roleIDs) {
-    const role = message.member.guild.roles.get(roleID)
+    const role = guild.roles.get(roleID)
     if (!role || role.position > botsHighestRole.position) continue
 
     if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
@@ -163,7 +159,7 @@ export default new EventListener('messageReactionRemove', async (rawMessage, emo
   if (!message) return
 
   if (eventEmojis.includes(emoji.id)) handleEventReaction(message, emoji, userID)
-  handleReactionRole(message, emoji, userID)
+  handleReactionRole(message, emoji, userID, guild)
   handleFeedbackReaction(message, emoji, userID)
   handleAutoRole(message, guild, userID)
 })
