@@ -500,7 +500,7 @@ async function handleAutoRole(message: Message, guild: Guild, userID: string) {
       `AUTOROLE ON REACTION ADD: MessageID: ${message.id} UserID: ${userID} Guild Name: ${guild.name} ID: ${guild.id}`
     )
 
-  const language = Gamer.getLanguage(message.guildID)
+  const language = Gamer.getLanguage(message.member.guild.id)
   const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
   if (!bot || !bot.permission.has('manageRoles')) return
 
@@ -547,9 +547,6 @@ export default new EventListener('messageReactionAdd', async (rawMessage, emoji,
       : await (rawMessage.channel as TextChannel).getMessage(rawMessage.id).catch(() => undefined)
   // Incase another bot deletes the message we catch it
   if (!message) return
-
-  // Some odd bug removing channel on getMessage
-  // if (!(rawMessage instanceof Message)) message.channel = rawMessage.channel
 
   // Message might be from other users
   handleReactionRole(message, emoji, userID, guild)
