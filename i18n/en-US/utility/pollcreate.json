@@ -25,5 +25,6 @@
   "VOTE_OPTION": "Option #{{number}}: {{emoji}}",
   "CREATED": "{{mention}}, your poll has been created. Check it out in {{channel}}.",
   "CANCELLED": "The pollcreate interface has been cancelled.",
-  "POLL_ID": "Poll ID: {{id}} | Vote secretly with pollvote command."
+  "POLL_ID": "Poll ID: {{id}} | Vote secretly with pollvote command.",
+  "POST_CHANNEL": "{{mention}}, please provide the #channel that you would like to post the poll message in."
 }

@@ -155,6 +155,27 @@ export default new Command(['pollcreate', 'pc'], async (message, args, context) 
           questionMessage.edit(language('utility/pollcreate:ROLE_ADDED', { mention: msg.author.mention }))
           break
         case 6:
+          const [resultsChannelID] = msg.channelMentions
+          if (!resultsChannelID) {
+            msg.channel
+              .createMessage(language('utility/pollcreate:INVALID_CHANNEL', { mention: msg.author.mention }))
+              .then(m => deleteMessage(m, 10))
+            break
+          }
+
+          const resultsChannel = msg.member.guild.channels.get(resultsChannelID)
+          if (!resultsChannel) {
+            msg.channel
+              .createMessage(language('utility/pollcreate:INVALID_CHANNEL', { mention: msg.author.mention }))
+              .then(m => deleteMessage(m, 10))
+            break
+          }
+
+          data.resultsChannelID = resultsChannelID
+          data.step = 7
+          questionMessage.edit(language('utility/pollcreate:POST_CHANNEL', { mention: msg.author.mention }))
+          break
+        case 7:
           const [channelID] = msg.channelMentions
           if (!channelID) {
             message.channel
@@ -187,7 +208,7 @@ export default new Command(['pollcreate', 'pc'], async (message, args, context) 
 
           // The id is useful for users voting anonymously
           const polls = await Gamer.database.models.poll.find({ guildID: msg.member.guild.id })
-          console.log(polls)
+
           let pollID = 1
           for (const poll of polls) {
             if (pollID <= poll.pollID) pollID = poll.pollID + 1
@@ -224,6 +245,7 @@ export default new Command(['pollcreate', 'pc'], async (message, args, context) 
           message.channel.createMessage(
             language('utility/pollcreate:CREATED', { mention: msg.author.mention, channel: channel.mention })
           )
+          deleteMessage(questionMessage)
           deleteMessage(msg)
           return
       }

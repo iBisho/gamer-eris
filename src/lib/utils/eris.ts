@@ -1,5 +1,5 @@
 import Gamer from '../..'
-import { Message, Member } from 'eris'
+import { Message, Member, User } from 'eris'
 import { highestRole } from 'helperis'
 
 export async function deleteMessageWithID(channelID: string, messageID: string) {
@@ -48,4 +48,25 @@ export async function addRoleToMember(member: Member, id: string, reason?: strin
   if (!botMember.permission.has('manageRoles') || botsHighestRole.position <= role.position) return
 
   member.addRole(id, reason)
+}
+
+async function fetchUsersFromReaction(message: Message, emoji: string, users: User[] = []): Promise<User[]> {
+  const latestUserID = users.length ? users[users.length - 1].id : undefined
+  const reactors = await message.getReaction(emoji, 100, undefined, latestUserID)
+  users.push(...reactors)
+  if (reactors.length === 100) return fetchUsersFromReaction(message, emoji, users)
+  return users
+}
+
+export async function fetchAllReactors(message: Message) {
+  const reactors = new Map<string, User[]>()
+
+  for (const key of Object.keys(message.reactions)) {
+    if (['count', 'me'].includes(key)) continue
+
+    const users = await fetchUsersFromReaction(message, key)
+    reactors.set(key, users)
+  }
+
+  return reactors
 }
