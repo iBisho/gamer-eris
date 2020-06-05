@@ -13,12 +13,14 @@ import { EventListener } from 'yuuko'
 
 export default new EventListener('ready', async () => {
   Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
-  const embed = new MessageEmbed()
-    .setColor(`#1abc9c`)
-    .setTitle(`Connected to the Gateway`)
-    .setDescription(`All shards are connected. The ready event has been emitted.`)
-    .setTimestamp()
-  Gamer.createMessage(`680852595061162014`, { embed: embed.code })
+  if (Gamer.user.id === constants.general.gamerID) {
+    const embed = new MessageEmbed()
+      .setColor(`#1abc9c`)
+      .setTitle(`Connected to the Gateway`)
+      .setDescription(`All shards are connected. The ready event has been emitted.`)
+      .setTimestamp()
+    Gamer.createMessage(`680852595061162014`, { embed: embed.code })
+  }
   setInterval(async () => {
     // Clean out message collectors after 2 minutes of no response
     Gamer.helpers.discord.processMessageCollectors()
