@@ -15,6 +15,7 @@ import MemberSchema from './schemas/member'
 import MirrorSchema, { GamerMirror } from './schemas/mirrors'
 import MissionSchema from './schemas/mission'
 import ModlogSchema from './schemas/modlog'
+import PollSchema, { GamerPoll } from './schemas/poll'
 import ReactionRoleSchema from './schemas/reactionrole'
 import ReminderSchema, { GamerReminder } from './schemas/reminder'
 import RolesetSchema from './schemas/roleset'
@@ -67,6 +68,7 @@ class Database {
     mirror: mongoose.model<GamerMirror>('Mirror', MirrorSchema),
     mission: mongoose.model<GamerMission>('Mission', MissionSchema),
     modlog: mongoose.model<GamerModlog>('Modlog', ModlogSchema),
+    poll: mongoose.model<GamerPoll>('Poll', PollSchema),
     reactionRole: mongoose.model<GamerReactionRole>('ReactionRole', ReactionRoleSchema),
     reminder: mongoose.model<GamerReminder>('Reminder', ReminderSchema),
     roleMessages: mongoose.model<GamerRoleMessage>('RoleMessage', RoleMessageSchema),

@@ -65,5 +65,6 @@
   "VOICE_OPTIONS": ["v", "voice"],
   "CANCEL_OPTIONS": ["q", "quit"],
   "YES_OPTIONS": ["y", "yes"],
-  "NO_OPTIONS": ["n", "no"]
+  "NO_OPTIONS": ["n", "no"],
+  "SKIP_OPTIONS": ["s", "skip"]
 }

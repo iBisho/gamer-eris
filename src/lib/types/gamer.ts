@@ -24,6 +24,16 @@ export interface SetupCollectorData {
   step: number
 }
 
+export interface PollcreateCollectorData {
+  step: number
+  question: string
+  options: string[]
+  duration: number
+  maxVotes: number
+  allowedRoleIDs: string[]
+  resultsChannelID: string
+}
+
 export interface GamerLevel extends Document {
   authorID: string
   guildID: string

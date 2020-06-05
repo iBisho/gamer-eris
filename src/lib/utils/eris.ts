@@ -23,7 +23,9 @@ export async function deleteMessageWithID(channelID: string, messageID: string) 
   }
 }
 
-export function deleteMessage(message: Message) {
+export async function deleteMessage(message: Message, delaySeconds = 0) {
+  if (delaySeconds) await Gamer.helpers.utils.sleep(delaySeconds)
+
   if (message.author.id === Gamer.user.id) {
     message.delete().catch(() => undefined)
     return
