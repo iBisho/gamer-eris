@@ -66,6 +66,9 @@ export async function processPolls() {
   if (!polls.length) return
 
   polls.forEach(poll => {
+    // If the endsAt is 0 the poll should not expire
+    if (!poll.endsAt) return
+
     const guild = Gamer.guilds.get(poll.guildID)
     if (!guild) return
 
