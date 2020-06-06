@@ -531,6 +531,16 @@ async function handlePollReaction(message: Message, emoji: ReactionEmoji, user: 
   const poll = await Gamer.database.models.poll.findOne({ messageID: message.id })
   if (!poll) return
 
+  const member = await Gamer.helpers.discord.fetchMember(guild, user.id)
+  if (!member) return
+
+  const language = Gamer.getLanguage(guild.id)
+  // If the user does not have atleast 1 role of the required roles cancel
+  if (!poll.allowedRoleIDs.some(roleID => member.roles.includes(roleID))) {
+    message.channel.createMessage(language('utility/pollvote:MISSING_ROLE', { mention: user.mention }))
+    return message.removeReaction(emoji.name, user.id)
+  }
+
   const voters = await fetchAllReactors(message)
   let votesByUser = 0
   for (const users of voters.values()) {
@@ -543,7 +553,6 @@ async function handlePollReaction(message: Message, emoji: ReactionEmoji, user: 
   if (votesByUser <= poll.maxVotes) return
 
   // User has already exceed max vote counts
-  const language = Gamer.getLanguage(guild.id)
   // Alert the user they reached max votes
   message.channel
     .createMessage(language('utility/pollvote:MAX_VOTES', { mention: user.mention, max: poll.maxVotes }))
