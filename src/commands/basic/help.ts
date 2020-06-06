@@ -85,7 +85,7 @@ const categories = [
       `viewprofanity`
     ]
   },
-  { name: `utility`, commands: [`bots`, `imgur`, `pollcreate`, `quote`, `setup`] },
+  { name: `utility`, commands: [`bots`, `imgur`, `pollcreate`, `pollend`, `pollvote`, `quote`, `setup`] },
   { name: `feedback`, commands: [`bugs`, `idea`] },
   {
     name: `roles`,

@@ -10,6 +10,7 @@ import { fetchLatestManga } from '../services/manga'
 import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
 import { dailyLifeTasksReset } from '../lib/utils/marriage'
 import { EventListener } from 'yuuko'
+import { processPolls } from '../lib/utils/poll'
 
 export default new EventListener('ready', async () => {
   Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
@@ -73,6 +74,7 @@ export default new EventListener('ready', async () => {
     Gamer.helpers.events.process()
     Gamer.helpers.events.processReminders()
     Gamer.helpers.moderation.processMutes()
+    processPolls()
   }, milliseconds.MINUTE)
 
   // All processes that need to be run every day
