@@ -537,7 +537,9 @@ async function handlePollReaction(message: Message, emoji: ReactionEmoji, user: 
   const language = Gamer.getLanguage(guild.id)
   // If the user does not have atleast 1 role of the required roles cancel
   if (poll.allowedRoleIDs.length && !poll.allowedRoleIDs.some(roleID => member.roles.includes(roleID))) {
-    message.channel.createMessage(language('utility/pollvote:MISSING_ROLE', { mention: user.mention }))
+    message.channel
+      .createMessage(language('utility/pollvote:MISSING_ROLE', { mention: user.mention }))
+      .then(m => deleteMessage(m, 10))
     return message.removeReaction(emoji.name, user.id)
   }
 
