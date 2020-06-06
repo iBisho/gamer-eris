@@ -1,6 +1,6 @@
 {
-	"DESCRIPTION": "Ends a poll and calculates the results for the poll",
-	"EXTENDED": "**{{prefix}}pollend [Poll ID]** ~ Ends the poll and calculates the results for the poll.",
-	"USAGE": "{{prefix}}pollend [Poll ID]",
-	"ALIASES": "{{prefix}}pe"
+  "DESCRIPTION": "Ends a poll and calculates the results for the poll",
+  "EXTENDED": "**{{prefix}}pollend [Poll ID]** ~ Ends the poll and calculates the results for the poll.",
+  "USAGE": "{{prefix}}pollend [Poll ID]",
+  "ALIASES": "{{prefix}}pe"
 }

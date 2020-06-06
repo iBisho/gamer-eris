@@ -24,7 +24,7 @@ export default new Command('reload', async (message, args, context) => {
     // Reloads events and commands
     .reloadFiles()
   // Reloads i18n translations
-  i18next.reloadResources(constants.personalities.map(p => p.id))
+  await i18next.reloadResources(constants.personalities.map(p => p.id))
 
   message.channel.createMessage(`Reloaded. ${args}`)
 })
