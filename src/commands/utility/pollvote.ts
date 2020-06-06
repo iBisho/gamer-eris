@@ -34,6 +34,11 @@ export default new Command(['pollvote', 'pv'], async (message, args, context) =>
     voted.options = voted.options.filter(opt => opt !== voteID)
     message.channel.createMessage(language('utility/pollvote:VOTE_REMOVED', { mention: message.author.mention }))
   } else {
+    if (poll.maxVotes <= voted.options.length)
+      return message.channel.createMessage(
+        language('utility/pollvote:MAX_VOTES', { max: poll.maxVotes, mention: message.author.mention })
+      )
+
     voted.options.push(voteID)
     message.channel.createMessage(language('utility/pollvote:VOTED', { mention: message.author.mention }))
   }

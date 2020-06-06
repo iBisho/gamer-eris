@@ -6,7 +6,7 @@ import { MessageEmbed } from 'helperis'
 import nodefetch from 'node-fetch'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { addRoleToMember } from '../lib/utils/eris'
+import { addRoleToMember, fetchAllReactors, deleteMessage } from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
@@ -56,8 +56,7 @@ async function handleEventReaction(message: Message, emoji: ReactionEmoji, userI
 
   switch (emoji.id) {
     case joinEmojiID:
-      const denyReactors = await message.getReaction(denyReaction).catch(() => [])
-      if (denyReactors.find(user => user.id === userID)) message.removeReaction(denyReaction, userID)
+      message.removeReaction(denyReaction, userID)
       if (event.attendees.includes(userID)) return
       if (event.allowedRoleIDs.length && !event.allowedRoleIDs.some(id => member.roles.includes(id))) return
 
@@ -66,8 +65,7 @@ async function handleEventReaction(message: Message, emoji: ReactionEmoji, userI
       message.channel.createMessage(response).then(msg => setTimeout(() => msg.delete().catch(() => undefined), 10000))
       break
     case denyEmojiID:
-      const joinReactors = await message.getReaction(joinReaction).catch(() => [])
-      if (joinReactors.find(user => user.id === userID)) message.removeReaction(joinReaction, userID)
+      message.removeReaction(joinReaction, userID)
       if (event.denials.includes(userID)) return
 
       Gamer.helpers.events.denyEvent(event, userID)
@@ -527,6 +525,33 @@ async function handleAutoRole(message: Message, guild: Guild, userID: string) {
   return addRoleToMember(member, guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
 }
 
+async function handlePollReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
+  if (!constants.emojis.letters.includes(emoji.name)) return
+
+  const poll = await Gamer.database.models.poll.findOne({ messageID: message.id })
+  if (!poll) return
+
+  const voters = await fetchAllReactors(message)
+  let votesByUser = 0
+  for (const users of voters.values()) {
+    for (const reactionUser of users) {
+      if (reactionUser.id !== user.id) continue
+      votesByUser++
+    }
+  }
+
+  if (votesByUser <= poll.maxVotes) return
+
+  // User has already exceed max vote counts
+  const language = Gamer.getLanguage(guild.id)
+  // Alert the user they reached max votes
+  message.channel
+    .createMessage(language('utility/pollvote:MAX_VOTES', { mention: user.mention, max: poll.maxVotes }))
+    .then(msg => deleteMessage(msg, 10))
+  // Remove their vote now.
+  message.removeReaction(emoji.name, user.id)
+}
+
 export default new EventListener('messageReactionAdd', async (rawMessage, emoji, userID) => {
   if (!(rawMessage.channel instanceof TextChannel) && !(rawMessage.channel instanceof NewsChannel)) return
 
@@ -559,4 +584,5 @@ export default new EventListener('messageReactionAdd', async (rawMessage, emoji,
   handleEventReaction(message, emoji, userID, guild)
   handleNetworkReaction(message, emoji, user, guild)
   handleFeedbackReaction(message, emoji, user, guild)
+  handlePollReaction(message, emoji, user, guild)
 })

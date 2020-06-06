@@ -8,5 +8,6 @@
   "NO_POLL_FOUND": "There was no poll found with the ID your provided.",
   "NO_VOTE_FOUND": "There was no option in this poll with the number you provided. Please try again.",
   "VOTED": "{{mention}}, you have completed the voting process. I have registered a vote on this option anonymously for you.",
-  "VOTE_REMOVED": "{{mention}}, I have removed the vote on this option for you."
+  "VOTE_REMOVED": "{{mention}}, I have removed the vote on this option for you.",
+  "MAX_VOTES": "{{mention}}, you have already reached the maximum allowed votes, {{max}}, on this poll. Please remove your other vote first before voting for this option."
 }
