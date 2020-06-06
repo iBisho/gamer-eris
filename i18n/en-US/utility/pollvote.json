@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Vote on a poll secretly.",
+  "EXTENDED": "**{{prefix}}pollvote [Poll ID] [Vote Option #]** ~ Vote on a poll with your selected option secretly. Reacting to a poll can reveal your votes so this command is meant to be a way to vote secretly. `Note`: If you already have a vote with the option your provide, it will be removed.",
+  "USAGE": "{{prefix}}pollvote [Poll ID] [Vote Option #]",
+  "ALIASES": "{{prefix}}pollvote [Poll ID] [Vote Option #]",
+  "INVALID_POLL_ID": "The poll ID you provided is not a valid number.",
+  "INVALID_VOTE_ID": "The option number you provided is not a valid number. Please try again.",
+  "NO_POLL_FOUND": "There was no poll found with the ID your provided.",
+  "NO_VOTE_FOUND": "There was no option in this poll with the number you provided. Please try again.",
+  "VOTED": "{{mention}}, you have completed the voting process. I have registered a vote on this option anonymously for you.",
+  "VOTE_REMOVED": "{{mention}}, I have removed the vote on this option for you."
+}

@@ -19,7 +19,7 @@ export default new Command(['pollvote', 'pv'], async (message, args, context) =>
   if (!voteID) return message.channel.createMessage(language('utility/pollvote:INVALID_VOTE_ID'))
 
   const poll = await Gamer.database.models.poll.findOne({ guildID: message.member.guild.id, pollID })
-  if (!poll) return message.channel.createMessage(language('uility/pollvote:NO_POLL_FOUND'))
+  if (!poll) return message.channel.createMessage(language('utility/pollvote:NO_POLL_FOUND'))
 
   if (voteID > poll.options.length) return message.channel.createMessage(language('utility/pollvote:NO_VOTE_FOUND'))
 
@@ -29,13 +29,13 @@ export default new Command(['pollvote', 'pv'], async (message, args, context) =>
       userID: message.author.id,
       options: [voteID]
     })
-    message.channel.createMessage(language('utility/pollvote:VOTED'))
+    message.channel.createMessage(language('utility/pollvote:VOTED', { mention: message.author.mention }))
   } else if (voted.options.includes(voteID)) {
     voted.options = voted.options.filter(opt => opt !== voteID)
-    message.channel.createMessage(language('utility/pollvote:VOTE_REMOVED'))
+    message.channel.createMessage(language('utility/pollvote:VOTE_REMOVED', { mention: message.author.mention }))
   } else {
     voted.options.push(voteID)
-    message.channel.createMessage(language('utility/pollvote:VOTED'))
+    message.channel.createMessage(language('utility/pollvote:VOTED', { mention: message.author.mention }))
   }
 
   poll.save()
