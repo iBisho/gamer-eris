@@ -8,6 +8,21 @@ import { highestRole } from 'helperis'
 import Gamer from '../..'
 import { milliseconds } from '../types/enums/time'
 
+export type DiscordPermission =
+  | 'readMessages'
+  | 'readMessageHistory'
+  | 'embedLinks'
+  | 'sendMessages'
+  | 'addReactions'
+  | 'externalEmojis'
+  | 'manageMessages'
+  | 'attachFiles'
+  | 'manageWebhooks'
+  | 'manageChannels'
+  | 'manageRoles'
+  | 'voiceConnect'
+  | 'voiceSpeak'
+
 const emojiRegex = /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/
 
 export default class {
@@ -75,7 +90,7 @@ export default class {
     }
   }
 
-  checkPermissions(channel: GuildChannel | PrivateChannel, userID: string, permissions: string[]) {
+  checkPermissions(channel: GuildChannel | PrivateChannel, userID: string, permissions: DiscordPermission[]) {
     if (channel instanceof PrivateChannel) return true
 
     const perms = channel.permissionsOf(userID)

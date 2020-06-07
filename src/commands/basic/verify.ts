@@ -2,7 +2,7 @@ import { Command } from 'yuuko'
 import { PrivateChannel, Message, TextChannel, CategoryChannel, GroupChannel } from 'eris'
 import GamerClient from '../../lib/structures/GamerClient'
 import { Canvas } from 'canvas-constructor'
-import { addRoleToMember } from '../../lib/utils/eris'
+import { addRoleToMember, removeRoleFromMember } from '../../lib/utils/eris'
 
 const createCaptcha = async (message: Message) => {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
@@ -100,7 +100,7 @@ export default new Command(`verify`, async (message, args, context) => {
           const bot = await Gamer.helpers.discord.fetchMember(msg.channel.guild, Gamer.user.id)
           if (!bot) return
           // Remove the verify role
-          msg.member.removeRole(role.id)
+          removeRoleFromMember(msg.member, role.id)
           Gamer.amplitude.push({
             authorID: msg.author.id,
             channelID: msg.channel.id,

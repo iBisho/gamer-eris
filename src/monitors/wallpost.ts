@@ -4,10 +4,10 @@ import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed } from 'helperis'
 import constants from '../constants'
 import nodefetch from 'node-fetch'
+import { DiscordPermission } from '../lib/utils/discord'
 
 const postReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
-const postPermissions = [
-  'readMessages',
+const postPermissions: DiscordPermission[] = [
   'addReactions',
   'embedLinks',
   'sendMessages',

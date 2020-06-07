@@ -104,12 +104,11 @@ export default class {
       (await this.Gamer.database.models.user.create({ userID: member.id, guildIDs: [member.guild.id] }))
 
     let multiplier = 1
-    if (userSettings)
-      for (const boost of userSettings.leveling.boosts) {
-        if (!boost.active || !boost.activatedAt) continue
-        if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
-        multiplier += boost.multiplier
-      }
+    for (const boost of userSettings.leveling.boosts) {
+      if (!boost.active || !boost.activatedAt) continue
+      if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
+      multiplier += boost.multiplier
+    }
 
     const totalXP = xpAmountToAdd * multiplier + userSettings.leveling.xp
     userSettings.leveling.xp = totalXP

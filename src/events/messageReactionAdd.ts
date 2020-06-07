@@ -6,7 +6,7 @@ import { MessageEmbed } from 'helperis'
 import nodefetch from 'node-fetch'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { addRoleToMember, fetchAllReactors, deleteMessage } from '../lib/utils/eris'
+import { addRoleToMember, fetchAllReactors, deleteMessage, removeReaction } from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
@@ -56,6 +56,7 @@ async function handleEventReaction(message: Message, emoji: ReactionEmoji, userI
 
   switch (emoji.id) {
     case joinEmojiID:
+      removeReaction(message, denyReaction, userID)
       message.removeReaction(denyReaction, userID)
       if (event.attendees.includes(userID)) return
       if (event.allowedRoleIDs.length && !event.allowedRoleIDs.some(id => member.roles.includes(id))) return

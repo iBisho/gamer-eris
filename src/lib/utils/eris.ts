@@ -23,7 +23,7 @@ export async function deleteMessageWithID(channelID: string, messageID: string) 
   }
 }
 
-export async function deleteMessage(message: Message, delaySeconds = 0) {
+export async function deleteMessage(message: Message, delaySeconds = 0, reason?: string) {
   if (delaySeconds) await Gamer.helpers.utils.sleep(delaySeconds)
 
   if (message.author.id === Gamer.user.id) {
@@ -33,7 +33,7 @@ export async function deleteMessage(message: Message, delaySeconds = 0) {
 
   if (!Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, ['manageMessages'])) return
 
-  message.delete().catch(() => undefined)
+  Gamer.deleteMessage(message.channel.id, message.id, reason).catch(() => undefined)
 }
 
 export async function addRoleToMember(member: Member, id: string, reason?: string) {
@@ -47,7 +47,21 @@ export async function addRoleToMember(member: Member, id: string, reason?: strin
 
   if (!botMember.permission.has('manageRoles') || botsHighestRole.position <= role.position) return
 
-  member.addRole(id, reason)
+  Gamer.addGuildMemberRole(member.guild.id, member.id, id, reason)
+}
+
+export async function removeRoleFromMember(member: Member, id: string, reason?: string) {
+  const role = member.guild.roles.get(id)
+  if (!role) return
+
+  const botMember = await Gamer.helpers.discord.fetchMember(member.guild, Gamer.user.id)
+  if (!botMember) return
+
+  const botsHighestRole = highestRole(botMember)
+
+  if (!botMember.permission.has('manageRoles') || botsHighestRole.position <= role.position) return
+
+  Gamer.removeGuildMemberRole(member.guild.id, member.id, id, reason)
 }
 
 async function fetchUsersFromReaction(message: Message, emoji: string, users: User[] = []): Promise<User[]> {
@@ -69,4 +83,20 @@ export async function fetchAllReactors(message: Message) {
   }
 
   return reactors
+}
+
+export async function removeReaction(message: Message, reaction: string, userID: string) {
+  if (!message.member) return
+
+  const botMember = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
+  if (!botMember) return
+
+  const hasPermissions = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
+    'readMessages',
+    'manageMessages',
+    'readMessageHistory'
+  ])
+  if (!hasPermissions) return
+
+  Gamer.removeMessageReaction(message.channel.id, message.id, reaction, userID)
 }

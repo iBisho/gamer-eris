@@ -311,13 +311,14 @@ export default class {
       guildID: member?.guild.id
     })
 
-    if (reactionRole) return message.channel.createMessage(language(`roles/reactionrolecreate:NAME_EXISTS`, { name }))
+    if (reactionRole)
+      return message.channel.createMessage(language(`roles/reactionrolecreate:NAME_EXISTS`, { name: 'colors' }))
 
     const exists = await this.Gamer.database.models.roleset.findOne({
       name: 'colors',
       guildID: member?.guild.id
     })
-    if (exists) return message.channel.createMessage(language(`roles/rolesetcreate:EXISTS`, { name }))
+    if (exists) return message.channel.createMessage(language(`roles/rolesetcreate:EXISTS`, { name: 'colors' }))
 
     // Create all 20 roles
 
