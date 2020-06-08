@@ -548,5 +548,23 @@ export default {
     'https://media.tenor.com/images/536ffd845bdf7c42f54a96a021e41162/tenor.gif',
     'https://media.tenor.com/images/15d0327e5d9c50ffbcb229d09650efe7/tenor.gif',
     'https://media.tenor.com/images/d9e1b3f8e9cc026676d7dc14c6b78713/tenor.gif'
+  ],
+  bite: [
+    'https://media.tenor.com/images/c91f7e6ca3f5c157c5e6f6e4ea2e364c/tenor.gif',
+    'https://media.tenor.com/images/f78e68053fcaf23a6ba7fbe6b0b6cff2/tenor.gif',
+    'https://media.tenor.com/images/06f88667b86a701b1613bbf5fb9205e9/tenor.gif',
+    'https://media.tenor.com/images/67e2e8f4fa6d0b79ef9a44f0e22cc083/tenor.gif',
+    'https://media.tenor.com/images/6ab39603ef0dd6dbfc78ba20885b991f/tenor.gif',
+    'https://media.tenor.com/images/ad6679f6358679c4a44a4f55b62e20b5/tenor.gif',
+    'https://media.tenor.com/images/412855e9bec935ae6b22ad3a152e88c1/tenor.gif',
+    'https://media.tenor.com/images/1169d1ab96669e13062c1b23ce5b9b01/tenor.gif',
+    'https://media.tenor.com/images/a74770936aa6f1a766f9879b8bf1ec6b/tenor.gif',
+    'https://media.tenor.com/images/7afe518504b71a3ca71770f8ac58b73a/tenor.gif',
+    'https://media.tenor.com/images/432a41a6beb3c05953c769686e8c4ce9/tenor.gif',
+    'https://media.tenor.com/images/2d2125d4f210f5288b2351d5abd4395c/tenor.gif',
+    'https://media.tenor.com/images/e1710f9e4d4d10ac55573018ea4925d7/tenor.gif',
+    'https://media.tenor.com/images/d436815693e1d5d8011f0485606a8991/tenor.gif',
+    'https://media.tenor.com/images/f4a52ebfaec15c4e8bace6cb141d72f9/tenor.gif',
+    'https://media.tenor.com/images/8409bd65be28e7bcc5a7630c4ebbdcca/tenor.gif',
   ]
 }

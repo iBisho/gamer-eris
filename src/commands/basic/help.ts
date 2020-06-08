@@ -38,7 +38,8 @@ const categories = [
       `tickle`,
       `advice`,
       `wisdom`,
-      `urban`
+      `urban`,
+      `bite`
     ]
   },
   {
