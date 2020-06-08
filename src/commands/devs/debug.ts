@@ -8,10 +8,7 @@ const inspectOptions = {
 export default new Command(['debug', `eval`], async function debug(message, args, context) {
   if (message.author.id !== '130136895395987456') return
 
-  const string = args
-    .join(' ')
-    .replace(/^\s+/, '')
-    .replace(/\s*$/, '')
+  const string = args.join(' ').replace(/^\s+/, '').replace(/\s*$/, '')
 
   // Allows use of Gamer in the evals
   const Gamer = context.client
@@ -36,18 +33,9 @@ export default new Command(['debug', `eval`], async function debug(message, args
     } catch (err) {
       value = err
     }
-    response.push(
-      util
-        .inspect(value, inspectOptions)
-        .replace(regex, 'YOU WISH!')
-        .substring(0, 1985)
-    )
+    response.push(util.inspect(value, inspectOptions).replace(regex, 'YOU WISH!').substring(0, 1985))
   } else {
-    response.push(
-      String(util.inspect(result))
-        .replace(regex, 'YOU WISH!')
-        .substring(0, 1985)
-    )
+    response.push(String(util.inspect(result)).replace(regex, 'YOU WISH!').substring(0, 1985))
   }
 
   response.push('```')

@@ -309,8 +309,9 @@ export default class {
       .setTextAlign(`left`)
       .setTextFont(`16px LatoBold`)
       .addText(
-        `${memberXP}/${serverLevelDetails.xpNeeded - previousServerLevelDetails?.xpNeeded ||
-          serverLevelDetails.xpNeeded}`,
+        `${memberXP}/${
+          serverLevelDetails.xpNeeded - previousServerLevelDetails?.xpNeeded || serverLevelDetails.xpNeeded
+        }`,
         190,
         260
       )

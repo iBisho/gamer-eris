@@ -41,7 +41,8 @@ export default new Command(`label`, async (message, args, context) => {
     case `create`:
       if (!name || !categoryID) return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
       const category = message.member.guild.channels.get(categoryID)
-      if (!category || !(category instanceof CategoryChannel)) return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
+      if (!category || !(category instanceof CategoryChannel))
+        return helpCommand?.execute(message, [`label`], { ...context, commandName: 'help' })
 
       const labelExists = await Gamer.database.models.label.findOne({
         name,

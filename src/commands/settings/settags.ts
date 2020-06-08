@@ -33,7 +33,8 @@ export default new Command([`settag`, `settags`], async (message, args, context)
       tagToEdit.save()
       return message.channel.createMessage(language(`settings/settags:TOGGLED_MAIL`, { name }))
     case `channel`:
-      if (!message.channelMentions.length) return helpCommand?.execute(message, [`settags`], { ...context, commandName: 'help' })
+      if (!message.channelMentions.length)
+        return helpCommand?.execute(message, [`settags`], { ...context, commandName: 'help' })
 
       for (const channelID of message.channelMentions) {
         if (guildSettings.tags.disabledChannels.includes(channelID))

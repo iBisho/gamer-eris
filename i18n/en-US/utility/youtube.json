@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "Setup youtube alerts for your server.",
+  "EXTENDED": "$t(utility/youtube:EXTENDED_LINE_1)\n$t(utility/youtube:EXTENDED_LINE_2)\n$t(utility/youtube:EXTENDED_LINE_3)\n$t(utility/youtube:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "**{{prefix}}youtube subscribe [YouTube Username]** ~ Subscribes to a youtube channel.",
+  "EXTENDED_LINE_2": "**{{prefix}}youtube unsubscribe [YouTube Username]** ~ Removes the subscription to a youtube channel.",
+  "EXTENDED_LINE_3": "**{{prefix}}youtube subscribe [YouTube Username] [YouTube Game]** ~ Subscribes to a youtube channel **ONLY** when the title of the video includes this game name.",
+  "EXTENDED_LINE_4": "**{{prefix}}youtube list** ~ Lists all youtube users the server has subscribed to.",
+  "USAGE": "{{prefix}}youtube [YouTube Username] *[Game Name]*",
+  "ALIASES": "YouTube does not have any aliases.",
+  "SUBSCRIBED": "Successfully subscribed to youtube alerts for {{username}} on {{channel}}.",
+  "UNSUBBED": "Successfully unsubscribed to youtube alerts for {{username}}.",
+  "NOT_SUBSCRIBED": "The {{username}} has no subscriptions set up for youtube at this time.",
+  "NOT_SUBBED": "The {{username}} has no subscriptions set up for this channel at this time.",
+  "ALREADY_SUBBED": "The {{username}} is already subscribed to send alerts in this channel.",
+  "NONE": "I was unable to find any youtube users that this server has subscribed to.",
+  "CUSTOM_MESSAGE": "{{mention}}, please provide the message you would like to send when a video is posted for this subscription."
+}

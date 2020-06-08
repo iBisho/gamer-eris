@@ -15,7 +15,9 @@ export default new mongoose.Schema(
         // The guild id where this should be sent
         guildID: { type: String, required: true },
         // The channel id where this should be sent
-        channelID: { type: String, required: true }
+        channelID: { type: String, required: true },
+        text: String,
+        latestLink: String
       }
     ],
 
@@ -47,7 +49,8 @@ export default new mongoose.Schema(
 ).index({ username: 1, type: 1 })
 
 export enum GamerSubscriptionType {
-  TWITCH = 'twitch'
+  TWITCH = 'twitch',
+  YOUTUBE = 'youtube'
 }
 
 export interface GamerSubscription extends mongoose.Document {
@@ -69,4 +72,6 @@ export interface SubscriptionListener {
   game?: string
   guildID: string
   channelID: string
+  text?: string
+  latestLink?: string
 }

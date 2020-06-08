@@ -3,7 +3,7 @@ import Gamer from '../index'
 import { MessageEmbed, userTag } from 'helperis'
 import { EventListener } from 'yuuko'
 
-export async function voiceChannelLeaveServerLog (member: Member, channel: VoiceChannel) {
+export async function voiceChannelLeaveServerLog(member: Member, channel: VoiceChannel) {
   const language = Gamer.getLanguage(member.guild.id)
 
   // Create the base embed that first can be sent to public logs

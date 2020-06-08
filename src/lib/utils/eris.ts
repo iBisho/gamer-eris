@@ -1,5 +1,5 @@
 import Gamer from '../..'
-import { Message, Member, User } from 'eris'
+import { Message, Member, User, MessageContent, TextChannel, NewsChannel, PrivateChannel } from 'eris'
 import { highestRole } from 'helperis'
 
 export async function deleteMessageWithID(channelID: string, messageID: string) {
@@ -99,4 +99,38 @@ export async function removeReaction(message: Message, reaction: string, userID:
   if (!hasPermissions) return
 
   Gamer.removeMessageReaction(message.channel.id, message.id, reaction, userID)
+}
+
+export function needMessage(message: Message): Promise<Message> {
+  return new Promise((resolve, reject) => {
+    if (!message.member) {
+      return reject('No message.member found.')
+    }
+
+    Gamer.collectors.set(message.author.id, {
+      authorID: message.author.id,
+      channelID: message.channel.id,
+      createdAt: Date.now(),
+      guildID: message.member.guild.id,
+      data: {},
+      callback: async msg => {
+        resolve(msg)
+      }
+    })
+  })
+}
+
+export function sendMessage(channelID: string, content: string | MessageContent) {
+  const channel = Gamer.getChannel(channelID)
+  if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel) && !(channel instanceof PrivateChannel))
+    return
+
+  const hasPermissions = Gamer.helpers.discord.checkPermissions(channel, Gamer.user.id, [
+    'readMessages',
+    'sendMessages',
+    'embedLinks'
+  ])
+  if (!hasPermissions) return
+
+  Gamer.createMessage(channelID, content)
 }
