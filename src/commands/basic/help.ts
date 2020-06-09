@@ -16,6 +16,7 @@ const categories = [
       `8ball`,
       `avatar`,
       `baka`,
+      `bite`,
       `coinflip`,
       `compliment`,
       `cuddle`,
@@ -38,8 +39,7 @@ const categories = [
       `tickle`,
       `advice`,
       `wisdom`,
-      `urban`,
-      `bite`
+      `urban`
     ]
   },
   {
