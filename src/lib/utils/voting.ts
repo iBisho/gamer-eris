@@ -59,7 +59,7 @@ export const vipExpiredCheck = async () => {
 
   usersIDsToReset.forEach(async userID => {
     const userSettings = await database.models.user.findOne({ userID })
-    if (!userSettings) return
+    if (!userSettings?.vip) return
 
     userSettings.vip.isVIP = false
     userSettings.vip.guildsRegistered = userSettings.vip.guildsRegistered.filter(

@@ -41,7 +41,7 @@ export async function fetchChannelIDWithName(name: string) {
 
 export async function processYoutubeSubscriptions() {
   const youtubeSubs = await Gamer.database.models.subscription.find({ type: GamerSubscriptionType.YOUTUBE })
-  console.log('subs', youtubeSubs, youtubeSubs[0])
+
   for (const youtubeSub of youtubeSubs) {
     const id = await fetchChannelIDWithName(youtubeSub.username)
     if (!id) continue
@@ -53,7 +53,7 @@ export async function processYoutubeSubscriptions() {
     youtubeSub.subs.forEach(sub => {
       const latestIndex = videos.findIndex(video => video.link && video.link === sub.latestLink)
       const latestVideos = latestIndex > 0 ? videos.slice(0, latestIndex) : latestIndex === 0 ? [] : videos
-      console.log(latestIndex, latestVideos)
+
       latestVideos.reverse().forEach((video, index) => {
         if (!video.link) return
         const text = sub.text || `**${youtubeSub.username}** uploaded a new YouTube video! @everyone`

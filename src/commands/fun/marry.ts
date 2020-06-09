@@ -72,12 +72,13 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
     language('fun/marry:PROPOSE', { mention: message.author.mention, coins: constants.emojis.coin })
   )
 
-  const marriage = await Gamer.database.models.marriage.create({
+  const marriage = new Gamer.database.models.marriage({
     authorID: message.author.id,
     spouseID: spouseUser.id,
     step: 0,
     accepted: false
   })
+  await marriage.save()
 
   return Gamer.collectors.set(message.author.id, {
     authorID: message.author.id,

@@ -4,7 +4,7 @@ export default new mongoose.Schema({
   channelID: { type: String, required: true },
   content: { type: String, required: true },
   guildID: { type: String, required: true },
-  id: { type: String, required: true },
+  reminderID: { type: String, required: true },
   interval: Number,
   recurring: Boolean,
   timestamp: { type: Number, required: true, index: true },
@@ -19,7 +19,7 @@ export interface GamerReminder extends mongoose.Document {
   /** The guild id where this was created. useful for getting the guild language */
   guildID: string
   /** The unique id(message id) of the reminder. Useful for users deleting reminders. */
-  id: string
+  reminderID: string
   /** If the reminder is recurring the time interval between reminders */
   interval?: number
   /** Whether or not this reminder is recurring */

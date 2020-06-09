@@ -50,7 +50,8 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
         exceptionRoleIDs: roleIDs
       }
 
-      const newPerms = await Gamer.database.models.command.create(payload)
+      const newPerms = new Gamer.database.models.command(payload)
+      await newPerms.save()
       return Gamer.guildCommandPermissions.set(`${message.guildID}.allcommands`, newPerms)
     }
 

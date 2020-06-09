@@ -67,7 +67,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
     userID: message.author.id
   })
 
-  const backgroundID = userSettings?.profile.backgroundID || 1
+  const backgroundID = userSettings?.profile?.backgroundID || 1
   const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === backgroundID)
   const isDefaultBackground = backgroundData && backgroundData.name === constants.profiles.defaultBackground
   const hasPermission = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [

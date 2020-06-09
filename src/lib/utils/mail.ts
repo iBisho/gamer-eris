@@ -144,7 +144,7 @@ export default class {
     const topic = finalContent.substring(0, finalContent.length > 50 ? 50 : finalContent.length)
 
     await this.Gamer.database.models.mail.create({
-      id: channel.id,
+      channelID: channel.id,
       userID: mailUser.id,
       guildID: message.member.guild.id,
       topic

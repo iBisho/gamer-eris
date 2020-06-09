@@ -55,7 +55,7 @@ export default new Command(`label`, async (message, args, context) => {
       await Gamer.database.models.label.create({
         authorID: message.author.id,
         categoryID: category.id,
-        guildID: message.guildID,
+        guildID: message.member.guild.id,
         name
       })
 

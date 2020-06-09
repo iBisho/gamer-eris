@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import constants from '../../constants'
+import { upsertUser, upsertGuild } from '../../database/mongoHandler'
 
 export default new Command([`vipregister`, `vipr`], async (message, _args, context) => {
   if (!message.guildID) return
@@ -32,13 +33,8 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
     upvote.save()
   }
 
-  const userSettings =
-    (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
-    (await Gamer.database.models.user.create({ userID: message.author.id, guildIDs: [message.guildID] }))
-
-  const guildSettings =
-    (await Gamer.database.models.guild.findOne({ id: message.guildID })) ||
-    (await Gamer.database.models.guild.create({ id: message.guildID }))
+  const userSettings = await upsertUser(message.author.id, [message.guildID])
+  const guildSettings = await upsertGuild(message.guildID)
 
   // They have already registered a VIP server.
   if (guildSettings.vip.isVIP) return message.channel.createMessage(language(`vip/vipregister:ALREADY_VIP`))

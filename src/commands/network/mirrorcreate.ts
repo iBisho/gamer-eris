@@ -68,8 +68,10 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
     mirrorChannelID: mirrorChannel.id,
     sourceGuildID: message.member.guild.id,
     mirrorGuildID: mirrorChannel.guild.id,
-    webhookToken: webhookExists?.webhookToken || webhook?.token,
-    webhookID: webhookExists?.webhookID || webhook?.id
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    webhookToken: webhookExists?.webhookToken || webhook!.token,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    webhookID: webhookExists?.webhookID || webhook!.id
   })
 
   // Add in cache

@@ -59,7 +59,7 @@ export interface MemberSettings extends mongoose.Document {
 }
 
 export interface GuildSettings extends mongoose.Document {
-  id: string
+  guildID: string
   language: string
   menutime: number
   prefix: string

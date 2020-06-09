@@ -3,7 +3,7 @@ import AnalyticSchema, { GamerAnalytic } from './schemas/analytics'
 import ClientSchema, { ClientSettings } from './schemas/client'
 import CommandSchema, { GamerCommandPermission } from './schemas/command'
 import EmojiSchema from './schemas/emoji'
-import EventSchema from './schemas/event'
+import EventSchema, { GamerEvent } from './schemas/event'
 import FeedbackSchema, { GamerFeedback } from './schemas/feedback'
 import GuildSchema from './schemas/guild'
 import LabelSchema from './schemas/label'
@@ -38,7 +38,6 @@ import {
   GamerTag,
   GamerTradingCard,
   GamerReactionRole,
-  GamerEvent,
   GamerRoleset,
   GamerModlog,
   GamerLevel,

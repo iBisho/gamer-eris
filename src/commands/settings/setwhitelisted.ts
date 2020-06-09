@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
+import { upsertGuild } from '../../database/mongoHandler'
 
 export default new Command(`setwhitelisted`, async (message, args, context) => {
   if (!message.guildID) return
@@ -9,11 +10,9 @@ export default new Command(`setwhitelisted`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  let settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
-
+  const settings = await upsertGuild(message.guildID)
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, settings?.staff.adminRoleID)) return
-  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
 
   const [type] = args
   if (!type) return helpCommand.execute(message, [`setwhitelisted`], { ...context, commandName: 'help' })

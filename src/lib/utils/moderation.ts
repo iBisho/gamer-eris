@@ -67,7 +67,8 @@ export default class {
       messageID: undefined,
       reason,
       timestamp: message.timestamp,
-      userID: user.id
+      userID: user.id,
+      needsUnmute: false
     })
 
     if (action === `mute` && duration) {

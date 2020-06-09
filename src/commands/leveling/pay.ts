@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import constants from '../../constants'
+import { upsertUser } from '../../database/mongoHandler'
 
 export default new Command([`pay`, `send`, `transfer`], async (message, args, context) => {
   if (!message.guildID) return
@@ -14,12 +15,8 @@ export default new Command([`pay`, `send`, `transfer`], async (message, args, co
   const amount = parseInt(amountStr)
   if (!amount) return message.channel.createMessage(language(`leveling/pay:NEED_AMOUNT`))
 
-  const userSettings =
-    (await Gamer.database.models.user.findOne({ userID: user.id })) ||
-    (await Gamer.database.models.user.create({ userID: user.id, guildIDs: [message.guildID] }))
-  const authorSettings =
-    (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
-    (await Gamer.database.models.user.create({ userID: message.author.id, guildIDs: [message.guildID] }))
+  const userSettings = await upsertUser(user.id, [message.guildID])
+  const authorSettings = await upsertUser(message.author.id, [message.guildID])
 
   // Check if author can afford
   if (amount > authorSettings.leveling.currency)

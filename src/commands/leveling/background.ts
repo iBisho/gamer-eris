@@ -2,6 +2,7 @@ import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import constants from '../../constants'
 import config from '../../../config'
+import { upsertUser } from '../../database/mongoHandler'
 
 export default new Command([`background`, `bg`], async (message, args, context) => {
   if (!message.guildID) return
@@ -9,9 +10,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
-  const userSettings =
-    (await Gamer.database.models.user.findOne({ userID: message.author.id })) ||
-    (await Gamer.database.models.user.create({ userID: message.author.id, guildIDs: [message.guildID] }))
+  const userSettings = await upsertUser(message.author.id, [message.guildID])
 
   const [type, id, color] = args
 

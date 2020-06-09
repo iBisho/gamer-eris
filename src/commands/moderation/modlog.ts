@@ -46,7 +46,8 @@ export default new Command([`modlog`, `ml`], async (message, args, context) => {
     mute: 0,
     unmute: 0,
     warn: 0,
-    kick: 0
+    kick: 0,
+    note: 0
   }
 
   for (const log of sortedModLogs) {

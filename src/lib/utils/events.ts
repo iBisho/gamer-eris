@@ -1,14 +1,14 @@
 import { Message, TextChannel } from 'eris'
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
-import { GamerEvent } from '../types/gamer'
 import fetch from 'node-fetch'
 import { Canvas } from 'canvas-constructor'
 import constants from '../../constants'
 import { MessageEmbed } from 'helperis'
 import config from '../../../config'
 import { TFunction } from 'i18next'
-import { deleteMessageWithID } from './eris'
+import { deleteMessageWithID, deleteMessage } from './eris'
+import { GamerEvent } from '../../database/schemas/event'
 
 const eventCardReactions: string[] = []
 
@@ -29,12 +29,17 @@ export default class {
       : undefined
 
     const language = this.Gamer.getLanguage(message.guildID)
+    const TITLE = language(`events/eventcreate:DEFAULT_TITLE`)
+    const DESCRIPTION = language(`events/eventcreate:DEFAULT_DESCRIPTION`)
+    const PLATFORM = language(`events/eventcreate:DEFAULT_PLATFORM`)
+    const GAME = language(`events/eventcreate:DEFAULT_GAME`)
+    const ACTIVITY = language(`events/eventcreate:DEFAULT_ACTIVIY`)
 
     // 1440 minutes in a day
     const startNow = (template?.minutesFromNow || 1440) * 60000 + Date.now()
 
     const newEvent = {
-      id: this.createNewID(events),
+      eventID: this.createNewID(events),
       authorID: message.author.id,
       guildID: message.guildID,
       // now + X minutes
@@ -46,9 +51,9 @@ export default class {
       waitingList: [],
       reminders: template?.reminders || [600000],
       executedReminders: [],
-      title: template?.title || language(`events/eventcreate:DEFAULT_TITLE`),
+      title: template?.title || TITLE,
       tags: template?.tags || [],
-      description: template?.description || language(`events/eventcreate:DEFAULT_DESCRIPTION`),
+      description: template?.description || DESCRIPTION,
       maxAttendees: template?.maxAttendees || 5,
       hasStarted: false,
       isRecurring: template?.isRecurring || false,
@@ -57,9 +62,9 @@ export default class {
       adChannelID: guildSettings?.eventsAdvertiseChannelID,
       adCardID: undefined,
       createdAt: Date.now(),
-      platform: template?.platform || language(`events/eventcreate:DEFAULT_PLATFORM`),
-      game: template?.game || language(`events/eventcreate:DEFAULT_GAME`),
-      activity: template?.activity || language(`events/eventcreate:DEFAULT_ACTIVITY`),
+      platform: template?.platform || PLATFORM,
+      game: template?.game || GAME,
+      activity: template?.activity || ACTIVITY,
       removeRecurringAttendees: template?.removeRecurringAttendees || false,
       allowedRoleIDs: template?.allowedRoleIDs || [],
       alertRoleIDs: template?.alertRoleIDs || [],
@@ -80,17 +85,17 @@ export default class {
       type: 'EVENT_CREATED'
     })
 
-    return newEvent.id
+    return newEvent.eventID
   }
 
   createNewID(events: GamerEvent[]) {
     if (events.length < 1) return 1
 
-    let id = 1
+    let eventID = 1
 
-    for (const event of events) if (event.id >= id) id = event.id + 1
+    for (const event of events) if (event.eventID >= eventID) eventID = event.eventID + 1
 
-    return id
+    return eventID
   }
 
   async advertiseEvent(event: GamerEvent, channelID?: string) {
@@ -457,7 +462,7 @@ export default class {
     })
   }
 
-  remindEvent(event: GamerEvent) {
+  async remindEvent(event: GamerEvent) {
     const guild = this.Gamer.guilds.get(event.guildID)
     if (!guild) return
 
@@ -488,10 +493,12 @@ export default class {
 
       if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
 
-      adChannel.createMessage({
+      const channelReminder = await adChannel.createMessage({
         content: event.alertRoleIDs.map((id: string) => `<@&${id}>`).join(` `),
         embed: embed.code
       })
+
+      deleteMessage(channelReminder, 60)
     }
 
     if (!event.dmReminders) return

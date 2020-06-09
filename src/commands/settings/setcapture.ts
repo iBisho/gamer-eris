@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
+import { upsertGuild } from '../../database/mongoHandler'
 
 export default new Command(`setcapture`, async (message, args, context) => {
   if (!message.guildID) return
@@ -7,9 +8,7 @@ export default new Command(`setcapture`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
-  const guildSettings =
-    (await Gamer.database.models.guild.findOne({ id: message.guildID })) ||
-    (await Gamer.database.models.guild.create({ id: message.guildID }))
+  const guildSettings = await upsertGuild(message.guildID)
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return

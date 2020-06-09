@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
+import { upsertGuild } from '../../database/mongoHandler'
 
 export default new Command(`setfeedback`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -9,10 +10,7 @@ export default new Command(`setfeedback`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const guildSettings =
-    (await Gamer.database.models.guild.findOne({
-      id: message.guildID
-    })) || (await Gamer.database.models.guild.create({ id: message.guildID }))
+  const guildSettings = await upsertGuild(message.member.guild.id)
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return

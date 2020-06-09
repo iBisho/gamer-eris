@@ -5,6 +5,7 @@ import { CategoryChannel, Overwrite, TextChannel, NewsChannel, Constants } from 
 import { highestRole, MessageEmbed } from 'helperis'
 import { milliseconds } from '../../lib/types/enums/time'
 import constants from '../../constants'
+import { upsertGuild } from '../../database/mongoHandler'
 
 export default new Command('setup', async (message, args, context) => {
   if (!message.member || !message.guildID) return
@@ -18,10 +19,7 @@ export default new Command('setup', async (message, args, context) => {
     return message.channel.createMessage(language('utility/setup:NEED_ADMIN_PERM'))
   }
 
-  const settings =
-    (await Gamer.database.models.guild.findOne({ id: message.guildID })) ||
-    (await Gamer.database.models.guild.create({ id: message.guildID }))
-
+  const settings = await upsertGuild(message.member.guild.id)
   if (message.author.id !== message.member.guild.ownerID)
     return message.channel.createMessage(language('utility/setup:NOT_OWNER'))
 

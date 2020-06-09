@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 export default new mongoose.Schema({
   // The ID number of the event that users will use to run commands with
   id: { type: Number, required: true, index: true },
+  eventID: { type: Number, required: true, index: true },
   // A custom spot for the user to write the activity of the event
   activity: String,
   // The channel id where the advertisement will be.
@@ -66,5 +67,41 @@ export default new mongoose.Schema({
   // The user ids of those who want to attend but applied when the event was already full
   waitingList: [String],
   // If the event is made into a template event then it will be given a name
-  templateName: String
-}).index({ id: 1, guildID: 1 })
+  templateName: String,
+  minutesFromNow: Number
+}).index({ eventID: 1, guildID: 1 })
+
+export interface GamerEvent extends mongoose.Document {
+  eventID: number
+  authorID: string
+  backgroundURL?: string
+  guildID: string
+  start: number
+  end: number
+  duration: number
+  attendees: string[]
+  denials: string[]
+  waitingList: string[]
+  reminders: number[]
+  executedReminders: number[]
+  title: string
+  tags: string[]
+  description: string
+  maxAttendees: number
+  hasStarted: boolean
+  isRecurring: boolean
+  frequency: number
+  adMessageID?: string
+  adChannelID?: string
+  createdAt: number
+  platform: string
+  game: string
+  activity: string
+  removeRecurringAttendees: boolean
+  allowedRoleIDs: string[]
+  alertRoleIDs: string[]
+  dmReminders: boolean
+  templateName?: string
+  minutesFromNow?: number
+  showAttendees?: boolean
+}

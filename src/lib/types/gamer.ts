@@ -57,43 +57,8 @@ export interface GamerMission extends Document {
   userID: string
 }
 
-export interface GamerEvent extends Document {
-  id: number
-  authorID: string
-  backgroundURL?: string
-  guildID: string
-  start: number
-  end: number
-  duration: number
-  attendees: string[]
-  denials: string[]
-  waitingList: string[]
-  reminders: number[]
-  executedReminders: number[]
-  title: string
-  tags: string[]
-  description: string
-  maxAttendees: number
-  hasStarted: boolean
-  isRecurring: boolean
-  frequency: number
-  adMessageID?: string
-  adChannelID?: string
-  createdAt: number
-  platform: string
-  game: string
-  activity: string
-  removeRecurringAttendees: boolean
-  allowedRoleIDs: string[]
-  alertRoleIDs: string[]
-  dmReminders: boolean
-  templateName?: string
-  minutesFromNow: number
-  showAttendees?: boolean
-}
-
 export interface GamerModlog extends Document {
-  action: `ban` | `unban` | `mute` | `unmute` | `warn` | `kick`
+  action: `ban` | `unban` | `mute` | `unmute` | `warn` | `kick` | `note`
   duration?: number
   guildID: string
   messageID?: string
@@ -134,7 +99,7 @@ export interface GamerTag extends Document {
 }
 
 export interface GamerMail extends Document {
-  id: string
+  channelID: string
   userID: string
   guildID: string
   topic: string

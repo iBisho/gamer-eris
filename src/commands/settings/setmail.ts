@@ -1,13 +1,14 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import { CategoryChannel } from 'eris'
+import { upsertGuild } from '../../database/mongoHandler'
 
 export default new Command(`setmail`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
-  let settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const settings = await upsertGuild(message.guildID)
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, settings?.staff.adminRoleID)) return
@@ -29,8 +30,6 @@ export default new Command(`setmail`, async (message, args, context) => {
 
   // Remove the type and the leftover should be all words
   args.shift()
-
-  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
 
   const channelID = message.channelMentions.length ? message.channelMentions[0] : message.channel.id
 

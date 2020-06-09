@@ -4,6 +4,7 @@ import constants from '../../constants'
 import { milliseconds } from '../types/enums/time'
 import { highestRole } from 'helperis'
 import { addRoleToMember } from './eris'
+import { upsertMember, upsertUser } from '../../database/mongoHandler'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -22,14 +23,7 @@ export default class {
     // If the member is in cooldown cancel out
     if (!overrideCooldown && this.checkCooldown(member)) return
 
-    const memberSettings =
-      (await this.Gamer.database.models.member.findOne({ memberID: member.id, guildID: member.guild.id })) ||
-      (await this.Gamer.database.models.member.create({
-        memberID: member.id,
-        guildID: member.guild.id,
-        id: `${member.guild.id}.${member.id}`
-      }))
-
+    const memberSettings = await upsertMember(member.id, member.guild.id)
     const userSettings = await this.Gamer.database.models.user.findOne({ userID: member.id })
 
     let multiplier = 1
@@ -99,11 +93,10 @@ export default class {
 
   async addGlobalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false) {
     if (!overrideCooldown && this.checkCooldown(member, true)) return
-    const userSettings =
-      (await this.Gamer.database.models.user.findOne({ userID: member.id })) ||
-      (await this.Gamer.database.models.user.create({ userID: member.id, guildIDs: [member.guild.id] }))
+    const userSettings = await upsertUser(member.guild.id, [member.guild.id])
 
     let multiplier = 1
+
     for (const boost of userSettings.leveling.boosts) {
       if (!boost.active || !boost.activatedAt) continue
       if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
@@ -114,7 +107,7 @@ export default class {
     userSettings.leveling.xp = totalXP
 
     // Get the details on the users next level
-    const nextLevelInfo = constants.levels.find(lvl => lvl.level === userSettings.leveling.level + 1)
+    const nextLevelInfo = constants.levels.find(lvl => lvl.level === (userSettings.leveling?.level || 0) + 1)
     // User did not level up
     if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) return userSettings.save()
 

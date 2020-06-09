@@ -60,12 +60,6 @@ export default new Command(`youtube`, async (message, args, context) => {
       const youtubeID = await fetchChannelIDWithName(username)
       // If it does not exist create a new subscription for the user
       if (!userSubscription) {
-        const payload = {
-          username,
-          type: GamerSubscriptionType.YOUTUBE,
-          subs: [subPayload]
-        }
-
         message.channel.createMessage(language('utility/youtube:CUSTOM_RESPONSE', { mention: message.author.mention }))
         const customMessage = await needMessage(message)
         subPayload.text = customMessage.content
@@ -81,7 +75,15 @@ export default new Command(`youtube`, async (message, args, context) => {
             }
           }
         }
-        await Gamer.database.models.subscription.create(payload)
+
+        const payload = {
+          username,
+          type: GamerSubscriptionType.YOUTUBE,
+          subs: [subPayload]
+        }
+        const subscription = new Gamer.database.models.subscription(payload)
+        subscription.save()
+
         return message.channel.createMessage(
           language(`utility/youtube:SUBSCRIBED`, { username, channel: message.channel.mention })
         )

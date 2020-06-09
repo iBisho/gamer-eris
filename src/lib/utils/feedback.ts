@@ -46,7 +46,7 @@ export default class {
 
     // Add the feedback to the database for use in the reaction system
     const payload = await this.Gamer.database.models.feedback.create({
-      id: feedback.id,
+      feedbackID: feedback.id,
       authorID: message.author.id,
       guildID: channel.guild.id,
       channelID: message.channel.id,
@@ -93,7 +93,7 @@ export default class {
 
     // Add the feedback to the database for use in the reaction system
     const payload = await this.Gamer.database.models.feedback.create({
-      id: feedback.id,
+      feedbackID: feedback.id,
       authorID: message.author.id,
       guildID: channel.guild.id,
       channelID: message.channel.id,

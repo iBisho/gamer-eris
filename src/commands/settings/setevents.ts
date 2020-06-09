@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
+import { upsertGuild } from '../../database/mongoHandler'
 
 export default new Command(`setevents`, async (message, args, context) => {
   if (!message.member) return
@@ -9,13 +10,10 @@ export default new Command(`setevents`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  let guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await upsertGuild(message.member.guild.id)
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
-  if (!guildSettings) guildSettings = await Gamer.database.models.guild.create({ id: message.guildID })
 
   const [action] = args
   if (!action) return helpCommand.execute(message, [`setevents`], { ...context, commandName: 'help' })

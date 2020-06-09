@@ -2,6 +2,7 @@ import { TextChannel, Member } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed, userTag } from 'helperis'
 import { EventListener } from 'yuuko'
+import { sendMessage } from '../lib/utils/eris'
 
 export default new EventListener('guildMemberRemove', async (guild, member) => {
   const Gamer = guild.shard.client as GamerClient
@@ -108,9 +109,6 @@ export default new EventListener('guildMemberRemove', async (guild, member) => {
 
   // Server logs feature
 
-  // If there is no channel set for logging this cancel
-  if (!guildSettings.moderation.logs.serverlogs.members.channelID) return
-
   const NONE = language(`common:NONE`)
   // Create the base embed that first can be sent to public logs
   const embed = new MessageEmbed()
@@ -127,28 +125,7 @@ export default new EventListener('guildMemberRemove', async (guild, member) => {
     .setTimestamp()
 
   const logs = guildSettings.moderation.logs
-
-  // If public logs are enabled properly then send the embed there
-  if (logs.serverlogs.members.removePublicEnabled && logs.publiclogsChannelID) {
-    const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
-    if (publicLogChannel instanceof TextChannel) {
-      const hasPermission = Gamer.helpers.discord.checkPermissions(publicLogChannel, Gamer.user.id, [
-        `embedLinks`,
-        `readMessages`,
-        `sendMessages`
-      ])
-      if (publicLogChannel && hasPermission) publicLogChannel.createMessage({ embed: embed.code })
-    }
-  }
-
+  if (logs.publiclogsChannelID) sendMessage(logs.publiclogsChannelID, { embed: embed.code })
   // Send the finalized embed to the log channel
-  const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)
-  if (logChannel instanceof TextChannel) {
-    const hasPermission = Gamer.helpers.discord.checkPermissions(logChannel, Gamer.user.id, [
-      `embedLinks`,
-      `readMessages`,
-      `sendMessages`
-    ])
-    if (hasPermission) logChannel.createMessage({ embed: embed.code })
-  }
+  if (logs.serverlogs.members.channelID) sendMessage(logs.serverlogs.members.channelID, { embed: embed.code })
 })

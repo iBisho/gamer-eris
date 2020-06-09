@@ -1,17 +1,13 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
+import { upsertUser } from '../../database/mongoHandler'
 
 export default new Command(`afk`, async (message, args, context) => {
   if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
-
   const language = Gamer.getLanguage(message.guildID)
-
-  const userSettings =
-    (await Gamer.database.models.user.findOne({
-      userID: message.author.id
-    })) || (await Gamer.database.models.user.create({ userID: message.author.id, guildIDs: [message.guildID] }))
+  const userSettings = await upsertUser(message.author.id, [message.guildID])
 
   // If no message is provided then toggle the afk status
   if (!args.length) {

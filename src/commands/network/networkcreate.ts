@@ -94,9 +94,9 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
     })
 
     // Update the settings with all the new channels created
-    if (!guildSettings)
-      await Gamer.database.models.guild.create({
-        id: message.guildID,
+    if (!guildSettings) {
+      const gs = new Gamer.database.models.guild({
+        guildID: message.guildID,
         network: {
           channelIDs: {
             followers: [],
@@ -107,23 +107,24 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
           }
         }
       })
-    else {
+      await gs.save()
+    } else {
       guildSettings.network.channelIDs.wall = wallChannel.id
       guildSettings.network.channelIDs.notifications = notificationsChannel.id
       guildSettings.network.channelIDs.feed = feedChannel.id
       guildSettings.network.channelIDs.photos = photosChannel.id
       guildSettings.save()
     }
-    if (!userSettings)
-      await Gamer.database.models.user.create({
+    if (!userSettings) {
+      const network = new Gamer.database.models.user({
         userID: message.author.id,
         network: {
-          followerIDs: [],
           guildID: message.guildID
         },
         guildIDs: [message.guildID]
       })
-    else {
+      await network.save()
+    } else {
       userSettings.network.guildID = message.guildID
       userSettings.save()
     }

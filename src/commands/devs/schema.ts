@@ -2,27 +2,29 @@ import { Command } from 'yuuko'
 import Gamer from '../..'
 
 export default new Command('schema', async message => {
-  if (message.author.id !== '130136895395987456') return
+  const events = await Gamer.database.models.event.find()
+  for (const event of events) {
+    if (typeof event.id === 'number') event.eventID = event.id
+    event.save()
+  }
+  message.channel.createMessage('events are updated')
 
-  const sortedGuilds = [...Gamer.guilds.values()].sort((a, b) => b.memberCount - a.memberCount)
-  sortedGuilds.shift()
+  const mails = await Gamer.database.models.mail.find()
+  for (const mail of mails) {
+    mail.channelID = mail.id
+  }
+  message.channel.createMessage('mails are updated')
 
-  sortedGuilds.forEach(async guild => {
-    if (guild.memberCount > 5) return
+  const feedbacks = await Gamer.database.models.feedback.find()
+  for (const fb of feedbacks) {
+    fb.feedbackID = fb.id
+  }
+  message.channel.createMessage('reminders are updated')
 
-    if (guild.memberCount !== guild.members.size) await guild.fetchAllMembers()
-    Gamer.helpers.logger.green(`Finished fetching ${guild.name}`)
-
-    guild.members.forEach(member => {
-      Gamer.database.models.roles
-        .findOneAndUpdate(
-          { memberID: member.id, guildID: guild.id },
-          { memberID: member.id, guildID: guild.id, roleIDs: member.roles },
-          { upsert: true }
-        )
-        .exec()
-    })
-  })
+  const reminders = await Gamer.database.models.reminder.find()
+  for (const rem of reminders) {
+    rem.reminderID = rem.id
+  }
 
   return message.channel.createMessage('done updating schema')
 })

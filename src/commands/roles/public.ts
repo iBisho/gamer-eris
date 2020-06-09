@@ -2,12 +2,13 @@ import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import { Role } from 'eris'
 import { highestRole } from 'helperis'
+import { upsertGuild } from '../../database/mongoHandler'
 
 export default new Command(`public`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  let settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const settings = await upsertGuild(message.member.guild.id)
   const language = Gamer.getLanguage(message.guildID)
 
   // If the user does not have a modrole or admin role quit out
@@ -38,7 +39,6 @@ export default new Command(`public`, async (message, args, context) => {
 
   if (!validRoles.size) return message.channel.createMessage(language(`roles/public:NO_VALID_ROLES`))
 
-  if (!settings) settings = await Gamer.database.models.guild.create({ id: message.guildID })
   const roleIDs = [...validRoles].map(role => role.id)
   const roleNames = [...validRoles].map(role => role.name)
 

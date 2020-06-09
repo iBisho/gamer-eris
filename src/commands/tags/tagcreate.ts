@@ -60,7 +60,9 @@ export default new Command([`tagcreate`, `tc`], async (message, args, context) =
       type: validType.name
     }
 
-    const tag = await Gamer.database.models.tag.create(payload)
+    const tag = new Gamer.database.models.tag(payload)
+    await tag.save()
+
     Gamer.tags.set(`${payload.guildID}.${tagName}`, tag)
     return message.channel.createMessage(language(`tags/tagcreate:SAVED`, { name }))
   } catch (error) {
