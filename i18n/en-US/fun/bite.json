@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Bite the mentioned user/role and sends an image in chat.",
+	"EXTENDED": "**{{prefix}}bite [user]** ~ Bite the user with a chai~ I mean sends a bite gif to the user.",
+	"USAGE": "{{prefix}}bite [user]",
+	"ALIASES": "Bite does not have any aliases.",
+	"REPLY": "***{{mention}} was bitten by {{author}}!***",
+	"SELF": "Biting yourself can hurt, but maybe you taste good."
+}
