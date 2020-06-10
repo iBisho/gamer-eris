@@ -565,6 +565,7 @@ export default {
     'https://media.tenor.com/images/e1710f9e4d4d10ac55573018ea4925d7/tenor.gif',
     'https://media.tenor.com/images/d436815693e1d5d8011f0485606a8991/tenor.gif',
     'https://media.tenor.com/images/f4a52ebfaec15c4e8bace6cb141d72f9/tenor.gif',
-    'https://media.tenor.com/images/8409bd65be28e7bcc5a7630c4ebbdcca/tenor.gif'
+    'https://media.tenor.com/images/8409bd65be28e7bcc5a7630c4ebbdcca/tenor.gif',
+    'https://media.tenor.com/images/6ab39603ef0dd6dbfc78ba20885b991f/tenor.gif'
   ]
 }

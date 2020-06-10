@@ -5,5 +5,6 @@
   "EXTENDED_LINE_2": "**{{prefix}}comp [Role]** ~ Compliment the role.",
   "USAGE": "{{prefix}}compliment [User or Role]",
   "ALIASES": "{{prefix}}comp",
-  "REPLY": "***{{author}} sent this just for you {{mention}} :heart:***"
+  "REPLY": "***{{author}} sent this just for you {{mention}} :heart:***",
+  "SELF": "Do you compliment yourself? Okay why not."
 }
