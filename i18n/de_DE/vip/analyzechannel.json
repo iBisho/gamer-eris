@@ -4,5 +4,6 @@
   "EXTENDED_LINE_1": "**{{prefix}}analyzechannel [#Channel]** ~ Zeigt deine Statistiken des Kanals.",
   "EXTENDED_LINE_2": "Um weitere Statistiken anzufordern, kontaktiere uns bitte auf dem Support-Server mit dem Befehl {{prefix}}invite .",
   "USAGE": "{{prefix}}analyzechannel [Channel]",
-  "ALIASES": "{{prefix}}analyticschannel"
+  "ALIASES": "{{prefix}}analyticschannel",
+  "CHANNEL_STATS": "Channel Statistiken für: #{{name}}"
 }
