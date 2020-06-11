@@ -28,7 +28,8 @@ export default class {
     const member = await this.Gamer.helpers.discord.fetchMember(message.member.guild, user.id)
     if (member) {
       const memberSettings = await this.Gamer.database.models.member.findOne({
-        memberID: user.id
+        memberID: user.id,
+        guildID: member.guild.id
       })
       if (memberSettings) {
         const currentXP = memberSettings.leveling.xp

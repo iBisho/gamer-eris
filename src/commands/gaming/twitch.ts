@@ -18,7 +18,7 @@ export default new Command(`twitch`, async (message, args, context) => {
   const language = Gamer.getLanguage(message.guildID)
 
   if (type && type.toLowerCase() === `list`) {
-    const twitchSubs = await Gamer.database.models.subscription.find()
+    const twitchSubs = await Gamer.database.models.subscription.find({ type: GamerSubscriptionType.TWITCH })
 
     let response = ``
     for (const sub of twitchSubs) {
@@ -56,7 +56,7 @@ export default new Command(`twitch`, async (message, args, context) => {
       if (!userSubscription) {
         const payload = {
           username,
-          type: `twitch`,
+          type: GamerSubscriptionType.TWITCH,
           subs: [subPayload]
         }
 

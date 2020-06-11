@@ -27,7 +27,8 @@ export default new Command(`xpreset`, async (message, args, context) => {
   // If a member was passed we want to reset this members XP only
   if (member) {
     const memberSettings = await Gamer.database.models.member.findOne({
-      id: `${message.guildID}.${message.author.id}`
+      memberID: member.id,
+      guildID: member.guild.id
     })
 
     if (!memberSettings) return
