@@ -47,7 +47,7 @@ export default class {
     const guild = this.Gamer.guilds.get(mail.guildID)
     if (!guild) return
 
-    const guildSettings = await this.Gamer.database.models.guild.findOne({ id: guild.id })
+    const guildSettings = await this.Gamer.database.models.guild.findOne({ guildID: guild.id })
 
     this.sendToMods(message, guild, guildSettings, content, mail)
     return message.channel.createMessage(language(`mails/mail:REPLY_SENT_TO_MODS`))

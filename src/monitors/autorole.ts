@@ -19,9 +19,7 @@ export default class extends Monitor {
     const role = highestRole(bot)
 
     // Get the verification category id so we dont assign the role while they are chatting in verification
-    const guildSettings = await Gamer.database.models.guild.findOne({
-      id: message.guildID
-    })
+    const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
     // If the guild has default settings then they dont have verification or autorole enabled
     if (!guildSettings) return
 

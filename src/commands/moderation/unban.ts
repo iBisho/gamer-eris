@@ -13,7 +13,7 @@ export default new Command(`unban`, async (message, args, context) => {
   if (!botMember?.permission.has('banMembers'))
     return message.channel.createMessage(language(`moderation/unban:NEED_BAN_PERMS`))
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 

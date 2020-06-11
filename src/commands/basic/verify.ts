@@ -52,9 +52,7 @@ export default new Command(`verify`, async (message, args, context) => {
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   // If no custom settings verification won't be enabled
   if (!guildSettings) return message.channel.createMessage(language(`basic/verify:DISABLED`))
 

@@ -9,9 +9,7 @@ export default new Command([`reactionroledelete`, `rrd`], async (message, args, 
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   const language = Gamer.getLanguage(message.guildID)
 

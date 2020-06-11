@@ -10,9 +10,7 @@ export default new Command(`label`, async (message, args, context) => {
   if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel)
     return Gamer.helpers.mail.handleDM(message, content)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!guildSettings || !Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const helpCommand = Gamer.commandForName(`help`)

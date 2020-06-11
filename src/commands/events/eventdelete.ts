@@ -6,7 +6,7 @@ export default new Command([`eventdelete`, `ed`], async (message, args, context)
 
   const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName(`help`)
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [number] = args

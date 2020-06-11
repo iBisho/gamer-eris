@@ -6,7 +6,7 @@ export default new Command(`twitch`, async (message, args, context) => {
   if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   // If the user is not an admin/mod cancel out
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return

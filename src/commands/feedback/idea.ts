@@ -9,7 +9,7 @@ export default new Command(`idea`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const settings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   const language = Gamer.getLanguage(message.guildID)
 

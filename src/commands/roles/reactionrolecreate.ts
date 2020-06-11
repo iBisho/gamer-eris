@@ -18,7 +18,7 @@ export default new Command([`reactionrolecreate`, `rrc`], async (message, args, 
 
   if (!hasPermissions) return message.channel.createMessage(language(`roles/reactionrolecreate:NEED_PERMS`))
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [messageID, name, emoji, ...roleIDsOrNames] = args

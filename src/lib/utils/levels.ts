@@ -208,7 +208,7 @@ export default class {
 
   async completeMission(member: Member, commandName: string, guildID: string) {
     // If this guild has disabled missions turn this off.
-    const guildSettings = await this.Gamer.database.models.guild.findOne({ id: member.guild.id })
+    const guildSettings = await this.Gamer.database.models.guild.findOne({ guildID: member.guild.id })
     if (guildSettings?.xp.disableMissions) return
 
     const upvoted = await this.Gamer.database.models.upvote.findOne({

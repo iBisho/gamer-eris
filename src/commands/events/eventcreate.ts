@@ -6,7 +6,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   if (
     !Gamer.helpers.discord.isModOrAdmin(message, guildSettings) &&

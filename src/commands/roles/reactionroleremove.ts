@@ -7,7 +7,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
 
   const Gamer = context.client as GamerClient
   const helpCommand = Gamer.commandForName('help')
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   const language = Gamer.getLanguage(message.guildID)
 

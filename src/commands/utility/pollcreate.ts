@@ -11,7 +11,7 @@ export default new Command(['pollcreate', 'pc'], async (message, args, context) 
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.member.guild.id)
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings))
     return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
 

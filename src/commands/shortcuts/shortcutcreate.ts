@@ -9,7 +9,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
   if (!args.length) return helpCommand?.execute(message, [`shortcutcreate`], { ...context, commandName: 'help' })
 
   const language = Gamer.getLanguage(message.guildID)
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return

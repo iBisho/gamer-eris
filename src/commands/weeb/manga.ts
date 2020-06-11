@@ -10,7 +10,7 @@ export default new Command(`manga`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName('help')
   const language = Gamer.getLanguage(message.guildID)
   // If the user is not an admin/mod cancel out
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [type, ...fullTitle] = args

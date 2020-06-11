@@ -149,7 +149,7 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   if (!message.guildID) return message.channel.createMessage(`Please use this command in a server. Thank you!`)
 
   const Gamer = context.client as GamerClient
-  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const settings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   const language = Gamer.getLanguage(message.guildID)
 

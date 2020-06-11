@@ -19,9 +19,7 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
   if (!userSettings || !userSettings.network.guildID)
     return message.channel.createMessage(language(`network/networkfollow:NEED_PROFILE_SERVER`))
 
-  const usersProfileGuildSettings = await Gamer.database.models.guild.findOne({
-    id: userSettings.network.guildID
-  })
+  const usersProfileGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.network.guildID })
 
   if (!usersProfileGuildSettings)
     return message.channel.createMessage(language(`network/networkfollow:NEED_PROFILE_SERVER`))
@@ -34,7 +32,7 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
     return message.channel.createMessage(language(`network/networkfollow:NEED_TARGET_PROFILE_SERVER`))
 
   const targetUsersProfileGuildSettings = await Gamer.database.models.guild.findOne({
-    id: targetUserSettings.network.guildID
+    guildID: targetUserSettings.network.guildID
   })
 
   if (!targetUsersProfileGuildSettings || !usersProfileGuildSettings.network.channelIDs.feed)

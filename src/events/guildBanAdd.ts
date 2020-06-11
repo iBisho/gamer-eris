@@ -8,7 +8,7 @@ export default new EventListener('guildBanAdd', async (guild, user) => {
   const Gamer = guild.shard.client as GamerClient
   const language = Gamer.getLanguage(guild.id)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   // If there is no channel set for logging this cancel
   if (!guildSettings?.moderation.logs.serverlogs.members.channelID) return
 

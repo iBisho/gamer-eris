@@ -25,7 +25,7 @@ export async function voiceChannelJoinServerLog(member: Member, channel: VoiceCh
     .setThumbnail(`https://i.imgur.com/Ya0SXdI.png`)
     .setTimestamp()
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: member.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: member.guild.id })
   if (!guildSettings?.moderation.logs.serverlogs.members.channelID) return
 
   const logChannel = member.guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)

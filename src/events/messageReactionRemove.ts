@@ -61,10 +61,10 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
   if (!message.embeds.length || message.author.id !== Gamer.user.id) return
 
   // Check if this message is a feedback message
-  const feedback = await Gamer.database.models.feedback.findOne({ id: message.id })
+  const feedback = await Gamer.database.models.feedback.findOne({ feedbackID: message.id })
   if (!feedback) return
   // Fetch the guild settings for this guild
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
   if (!guildSettings) return
 
   // Check if valid feedback channel
@@ -106,7 +106,7 @@ async function handleAutoRole(message: Message, guild: Guild, userID: string) {
   if (!bot || !bot.permission.has('manageRoles')) return
 
   const role = highestRole(bot)
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   if (!guildSettings?.moderation.roleIDs.autorole) return
 
   const autorole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.autorole)

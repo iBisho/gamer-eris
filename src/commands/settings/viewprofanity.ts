@@ -8,7 +8,7 @@ export default new Command([`viewprofanity`, `viewwords`], async (message, args,
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   // If no custom settings they wont have any words
   if (!guildSettings)
     return message.channel.createMessage(

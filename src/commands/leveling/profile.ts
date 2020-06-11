@@ -21,7 +21,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   })
 
   const [guildSettings, missionData, upvote] = await Promise.all([
-    await Gamer.database.models.guild.findOne({ id: member.guild.id }),
+    await Gamer.database.models.guild.findOne({ guildID: member.guild.id }),
     await Gamer.database.models.mission.find({ userID: member.id }),
     await Gamer.database.models.upvote.findOne({
       userID: member.id,

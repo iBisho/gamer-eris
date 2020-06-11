@@ -47,7 +47,7 @@ export default new EventListener('messageUpdate', async (message, oldMessage, co
       embed.addField(language(`moderation/logs:MESSAGE_CONTENT_CONTINUED`), message.content.substring(1024))
   }
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!guildSettings) return
 
   const logChannel = guildSettings.moderation.logs.serverlogs.messages.channelID

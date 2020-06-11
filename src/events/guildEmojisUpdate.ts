@@ -19,7 +19,7 @@ export default new EventListener('guildEmojisUpdate', async (guild, emojis, oldE
 
   const emojiURL = `https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? `gif` : `png`}`
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   // If there is no channel set for logging this cancel
   if (!guildSettings?.moderation.logs.serverlogs.emojis.channelID) return
 

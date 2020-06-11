@@ -5,7 +5,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   // When this boolean is true the user is not a mod/admin so we need to check if they are the event creator
   let checkCreator = false

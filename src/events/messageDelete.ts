@@ -10,7 +10,7 @@ export default new EventListener('messageDelete', async (message, context) => {
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.channel.guild.id)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.channel.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.channel.guild.id })
   // If there is no channel set for logging this cancel
   if (!guildSettings?.moderation.logs.serverlogs.messages.channelID) return
 

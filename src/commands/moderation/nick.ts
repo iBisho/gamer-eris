@@ -43,7 +43,7 @@ export default new Command([`nick`], async (message, args, context) => {
     return message.channel.createMessage(language(`moderation/nick:EDITED_SELF`))
   }
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   // A user must have been provided, so we need to add some extra checks
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 

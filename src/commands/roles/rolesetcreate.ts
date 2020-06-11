@@ -8,9 +8,7 @@ export default new Command([`rolesetcreate`, `rsc`], async (message, args, conte
   const helpCommand = Gamer.commandForName('help')
   if (!helpCommand) return
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.member.guild.id
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
   const language = Gamer.getLanguage(message.member.guild.id)
 
   // If the user is not an admin cancel out

@@ -12,7 +12,7 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   const language = Gamer.getLanguage(message.guildID)
   if (!args.length) return message.channel.createMessage(language(`moderation/warn:NEED_USER`))
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   let [userID] = args

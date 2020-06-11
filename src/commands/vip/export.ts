@@ -11,9 +11,7 @@ export default new Command(`export`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   // If they are using default settings, they won't be vip server
   if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`vip/export:NEED_VIP`))

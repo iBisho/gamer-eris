@@ -34,7 +34,7 @@ export default new EventListener('guildMemberAdd', async (guild, member) => {
   if (!botMember) return
 
   const memberRoles = await Gamer.database.models.roles.findOne({ memberID: member.id, guildID: guild.id })
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   const language = Gamer.getLanguage(guild.id)
 
   if (guildSettings?.moderation.reassignRolesOnJoin) {

@@ -6,9 +6,7 @@ export default new Command(`xpresetvoice`, async (message, args, context) => {
 
   const Gamer = context.client as GamerClient
 
-  const guildSettings = await Gamer.database.models.guild.findOne({
-    id: message.guildID
-  })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 

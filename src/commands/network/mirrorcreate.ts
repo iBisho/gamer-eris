@@ -39,13 +39,13 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
       language(`network/mirrorcreate:MISSING_WEBHOOK_PERMS`, { channel: mirrorChannel.mention })
     )
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   // Extra layer of security to prevent abuse
   if (firstIDGuild) {
-    const targetGuildSettings = await Gamer.database.models.guild.findOne({ id: firstID })
+    const targetGuildSettings = await Gamer.database.models.guild.findOne({ guildID: firstID })
     if (!Gamer.helpers.discord.isAdmin(message, targetGuildSettings?.staff.adminRoleID)) return
   }
 

@@ -15,7 +15,7 @@ export default new Command(`mute`, async (message, args, context) => {
   if (!botMember?.permission.has('manageRoles'))
     return message.channel.createMessage(language(`moderation/mute:NEED_MANAGE_ROLES`))
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   // If there is default settings the mute role won't exist
   if (!guildSettings || !guildSettings.moderation.roleIDs.mute)
     return message.channel.createMessage(language(`moderation/mute:NEED_MUTE_ROLE`))

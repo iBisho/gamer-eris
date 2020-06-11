@@ -124,7 +124,7 @@ export default new EventListener('channelCreate', async (channel, context) => {
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(channel.guild.id)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: channel.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: channel.guild.id })
   if (!guildSettings) return
 
   handleRolePerms(channel, Gamer.user.id, guildSettings, language)

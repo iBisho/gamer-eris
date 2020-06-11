@@ -10,7 +10,7 @@ export default new Command([`rolemessagecreate`, `rmc`], async (message, args, c
 
   const language = Gamer.getLanguage(message.guildID)
   // If the user is not an admin cancel out
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const [type, channelID, roleID, ...text] = args

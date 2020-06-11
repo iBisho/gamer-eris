@@ -17,7 +17,7 @@ export default new Command([`leaderboard`, `lb`], async (message, args, context)
 
   // Special needs for vip servers
   if (['334791529296035840'].includes(message.guildID)) {
-    const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+    const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
     if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
   }
 

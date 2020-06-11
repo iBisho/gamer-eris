@@ -30,7 +30,7 @@ export default new EventListener('channelDelete', async (channel, context) => {
   // Server logs feature
   const language = Gamer.getLanguage(channel.guild.id)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: channel.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: channel.guild.id })
 
   // If there is no channel set for logging this cancel
   if (!guildSettings?.moderation.logs.serverlogs.channels.channelID) return

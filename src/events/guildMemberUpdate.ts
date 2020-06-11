@@ -52,7 +52,7 @@ async function handleVIPRole(Gamer: GamerClient, member: Member) {
   if (!userSettings) return
   // Remove vip settings for all guilds this user registered
   for (const guildID of userSettings.vip.guildsRegistered) {
-    const vipGuildSettings = await Gamer.database.models.guild.findOne({ id: guildID })
+    const vipGuildSettings = await Gamer.database.models.guild.findOne({ guildID: guildID })
     if (!vipGuildSettings) continue
     vipGuildSettings.vip.isVIP = false
     // Reset VIP xp settings
@@ -190,7 +190,7 @@ export default new EventListener('guildMemberUpdate', async (guild, member, oldM
   const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
   if (!botMember) return
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   const language = Gamer.getLanguage(guild.id)
 
   const embed = new MessageEmbed()

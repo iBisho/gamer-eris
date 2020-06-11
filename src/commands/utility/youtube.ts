@@ -9,7 +9,7 @@ export default new Command(`youtube`, async (message, args, context) => {
   if (!message.member) return
 
   const Gamer = context.client as GamerClient
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
 
   // If the user is not an admin/mod cancel out
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return

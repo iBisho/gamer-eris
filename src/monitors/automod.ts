@@ -10,9 +10,7 @@ export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
     if (!message.guildID || !message.member) return
 
-    const settings = await Gamer.database.models.guild.findOne({
-      id: message.guildID
-    })
+    const settings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
     // If they have default settings, then no automoderation features will be enabled
     if (!settings) return
 

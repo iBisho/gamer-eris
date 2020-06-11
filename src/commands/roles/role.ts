@@ -8,7 +8,7 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient
-  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const settings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   const language = Gamer.getLanguage(message.guildID)
 
   // If there are no settings then there are no public roles

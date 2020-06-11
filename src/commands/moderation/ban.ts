@@ -12,7 +12,7 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
 
   const language = Gamer.getLanguage(message.guildID)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   // Check if the bot has the ban permissions
   if (!botMember.permission.has('banMembers'))

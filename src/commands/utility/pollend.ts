@@ -13,7 +13,7 @@ export default new Command(['pollend', 'pe'], async (message, args, context) => 
 
   if (!pollID) return message.channel.createMessage(language('utility/pollvote:INVALID_POLL_ID'))
 
-  const settings = await Gamer.database.models.guild.findOne({ id: message.member.guild.id })
+  const settings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
   if (!Gamer.helpers.discord.isModOrAdmin(message, settings))
     return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
 

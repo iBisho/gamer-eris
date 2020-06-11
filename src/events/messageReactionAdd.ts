@@ -155,9 +155,7 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
     const language = Gamer.getLanguage(originalServer.id)
 
     // Get the guild settings for that server id
-    const guildSettings = await Gamer.database.models.guild.findOne({
-      id: originalServer.id
-    })
+    const guildSettings = await Gamer.database.models.guild.findOne({ guildID: originalServer.id })
     if (!guildSettings || !guildSettings.network.channelIDs.notifications) return
 
     // Find the notifications channel from that server
@@ -190,9 +188,7 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
         const usersGuild = userSettings.network.guildID ? Gamer.guilds.get(userSettings.network.guildID) : undefined
         if (!usersGuild) return
 
-        const usersGuildSettings = await Gamer.database.models.guild.findOne({
-          id: userSettings.network.guildID
-        })
+        const usersGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.network.guildID })
         if (!usersGuildSettings || !usersGuildSettings.network.channelIDs.wall) return
 
         const wallChannel = Gamer.getChannel(usersGuildSettings.network.channelIDs.wall)
@@ -254,9 +250,7 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
         const usersGuild = userSettings.network.guildID ? Gamer.guilds.get(userSettings.network.guildID) : undefined
         if (!usersGuild) return
 
-        const usersGuildSettings = await Gamer.database.models.guild.findOne({
-          id: userSettings.network.guildID
-        })
+        const usersGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.network.guildID })
         if (!usersGuildSettings || !usersGuildSettings.network.channelIDs.feed) return
 
         // Check if the user is already following the original poster
@@ -306,11 +300,11 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
   if (!message.embeds.length || message.author.id !== Gamer.user.id) return
 
   // Check if this message is a feedback message
-  const feedback = await Gamer.database.models.feedback.findOne({ id: message.id })
+  const feedback = await Gamer.database.models.feedback.findOne({ feedbackID: message.id })
   if (!feedback) return
 
   // Fetch the guild settings for this guild
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   if (!guildSettings) return
 
   // Check if valid feedback channel
@@ -504,7 +498,7 @@ async function handleAutoRole(message: Message, guild: Guild, userID: string) {
   if (!bot || !bot.permission.has('manageRoles')) return
 
   const role = highestRole(bot)
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   if (!guildSettings?.moderation.roleIDs.autorole) return
 
   const autorole = message.member.guild.roles.get(guildSettings.moderation.roleIDs.autorole)

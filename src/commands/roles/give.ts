@@ -12,7 +12,7 @@ export default new Command(`give`, async (message, args, context) => {
 
   const language = Gamer.getLanguage(message.guildID)
 
-  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const settings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isModOrAdmin(message, settings)) return

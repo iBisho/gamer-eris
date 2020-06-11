@@ -8,7 +8,7 @@ export default new Command(`xp`, async (message, args, context) => {
   // if (message.channel instanceof PrivateChannel || message.channel instanceof GroupChannel || !message.member) return
   if (!args.length) return
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   const language = Gamer.getLanguage(message.guildID)

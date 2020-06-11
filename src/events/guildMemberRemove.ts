@@ -49,7 +49,7 @@ export default new EventListener('guildMemberRemove', async (guild, member) => {
 
   const language = Gamer.getLanguage(guild.id)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   // If no custom guild settings cancel out
   if (!guildSettings) return
 

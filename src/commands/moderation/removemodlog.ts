@@ -5,7 +5,7 @@ export default new Command([`removemodlog`, `rml`], async (message, args, contex
   if (!message.guildID) return
 
   const Gamer = context.client as GamerClient
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 

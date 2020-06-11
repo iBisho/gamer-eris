@@ -6,7 +6,7 @@ export default new Command(`rolesets`, async (message, _args, context) => {
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const rolesets = await Gamer.database.models.roleset.find({ guildID: message.guildID })

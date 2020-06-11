@@ -11,7 +11,7 @@ export default new Command(`embed`, async (message, args, context) => {
   const helpCommand = Gamer.commandForName(`help`)
   if (!args.length) return helpCommand?.execute(message, [`embed`], { ...context, commandName: 'help' })
 
-  const settings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const settings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isModOrAdmin(message, settings)) return

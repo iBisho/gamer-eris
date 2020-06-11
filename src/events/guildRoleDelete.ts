@@ -16,7 +16,7 @@ export default new EventListener('guildRoleDelete', async (guild, role) => {
     .setThumbnail(`https://i.imgur.com/iZPBVKB.png`)
     .setTimestamp()
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: guild.id })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
   if (!guildSettings?.moderation.logs.serverlogs.roles.channelID) return
 
   const logs = guildSettings.moderation.logs

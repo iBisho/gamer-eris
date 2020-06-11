@@ -177,7 +177,7 @@ export default class {
       const guild = this.Gamer.guilds.get(log.guildID)
       if (!guild) continue
       // Get the guild settings to get the mute role id
-      const guildSettings = await this.Gamer.database.models.guild.findOne({ id: log.guildID })
+      const guildSettings = await this.Gamer.database.models.guild.findOne({ guildID: log.guildID })
       // If there is no guildsettings or no role id skip
       if (!guildSettings?.moderation.roleIDs.mute) continue
       // If the mute role is not present in the guild, skip.

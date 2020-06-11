@@ -15,7 +15,7 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
 
   const language = Gamer.getLanguage(message.guildID)
 
-  const guildSettings = await Gamer.database.models.guild.findOne({ id: message.guildID })
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
