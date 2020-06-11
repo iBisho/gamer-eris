@@ -22,6 +22,8 @@ export default new EventListener('ready', async () => {
       .setDescription(`All shards are connected. The ready event has been emitted.`)
       .setTimestamp()
     Gamer.createMessage(`680852595061162014`, { embed: embed.code })
+
+    Gamer.createMessage(`578624588552994840`, 'The bot is now online and ready. Preparing the bot cache and tasks now.')
   }
   setInterval(async () => {
     // Clean out message collectors after 2 minutes of no response
