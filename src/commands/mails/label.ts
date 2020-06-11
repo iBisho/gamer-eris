@@ -70,7 +70,7 @@ export default new Command(`label`, async (message, args, context) => {
         return Gamer.helpers.discord.embedResponse(message, language(`mails/label:INVALID_NAME`, { name }))
 
       const mail = await Gamer.database.models.mail.findOne({
-        id: message.channel.id
+        channelID: message.channel.id
       })
 
       if (!mail) return message.channel.createMessage(language(`mails/label:NOT_MAIL_CHANNEL`))

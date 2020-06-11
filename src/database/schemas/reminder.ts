@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
-  id: String,
   channelID: { type: String, required: true },
   content: { type: String, required: true },
   guildID: { type: String, required: true },

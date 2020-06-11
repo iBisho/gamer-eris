@@ -37,7 +37,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
   const regex = new RegExp(`${prefix}ee # `, 'gi')
 
   const event = await Gamer.database.models.event.findOne({
-    id: eventID,
+    eventID,
     guildID: message.guildID
   })
   if (!event) return

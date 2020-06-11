@@ -223,7 +223,7 @@ export default class {
       .setTextFont(`18px SFTHeavy`)
       .setTextAlign(`center`)
       .setColor(event.backgroundURL ? `#FFFFFF` : `#4C4C4C`)
-      .addResponsiveText(`#${event.id}`, 572, 48, 75)
+      .addResponsiveText(`#${event.eventID}`, 572, 48, 75)
 
       .setTextAlign(`left`)
       .setColor(`#9B9B9B`)
@@ -270,7 +270,7 @@ export default class {
 
     return sortedEvents
       .map(event => {
-        let textString = `**[${event.id}] `
+        let textString = `**[${event.eventID}] `
 
         if (event.isRecurring)
           textString += ` 🔁 (${this.Gamer.helpers.transform.humanizeMilliseconds(event.frequency)}) `
@@ -425,7 +425,7 @@ export default class {
     const language = this.Gamer.getLanguage(event.guildID)
 
     const embed = new MessageEmbed()
-      .setAuthor(language(`events/events:STARTING_GUILD`, { eventID: event.id, guildName: guild.name }))
+      .setAuthor(language(`events/events:STARTING_GUILD`, { eventID: event.eventID, guildName: guild.name }))
       .setTitle(language(`events/events:STARTING_TITLE`, { title: event.title }))
       .addField(language(`events/eventshow:RSVP_EMOJI`), `${event.attendees.length} / ${event.maxAttendees}`)
       .addField(language(`events/eventshow:DESC_EMOJI`), event.description)
@@ -480,7 +480,7 @@ export default class {
     const startsIn = this.Gamer.helpers.transform.humanizeMilliseconds(event.start - now)
 
     const embed = new MessageEmbed()
-      .setAuthor(language(`events/events:REMIND`, { eventID: event.id }))
+      .setAuthor(language(`events/events:REMIND`, { eventID: event.eventID }))
       .setDescription(event.description)
       .addField(language(`events/events:TITLE`), event.title, true)
       .addField(language(`events/events:STARTS_IN`), startsIn, true)

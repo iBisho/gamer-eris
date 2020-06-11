@@ -23,7 +23,7 @@ export default new Command([`mail`, `m`], async (message, args, context) => {
   // Since the user is a mod/admin we have to do extra steps
   const mail = await Gamer.database.models.mail.findOne({
     guildID: message.guildID,
-    id: message.channel.id
+    channelID: message.channel.id
   })
 
   // If this is not a valid mail channel, treat it as if a mod is sending their own mail command

@@ -14,7 +14,7 @@ export default new Command([`eventdeny`, `edeny`], async (message, args, context
   if (!eventID) return helpCommand.execute(message, [`eventdeny`], { ...context, commandName: 'help' })
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
-    id: eventID,
+    eventID,
     guildID: message.guildID
   })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))

@@ -29,7 +29,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
 
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
-    id: eventID,
+    eventID,
     guildID: message.guildID
   })
   const language = Gamer.getLanguage(message.guildID)

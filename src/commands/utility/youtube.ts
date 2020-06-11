@@ -15,13 +15,14 @@ export default new Command(`youtube`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const helpCommand = Gamer.commandForName('help')
-  const [type, username, ...gameName] = args
+  const [type, ...fullUsername] = args
   if (!type) return helpCommand?.execute(message, [`youtube`], { ...context, commandName: 'help' })
+  const username = fullUsername.join(' ')
 
   const language = Gamer.getLanguage(message.guildID)
 
   if (type && type.toLowerCase() === `list`) {
-    const youtubeSubs = await Gamer.database.models.subscription.find()
+    const youtubeSubs = await Gamer.database.models.subscription.find({ type: GamerSubscriptionType.YOUTUBE })
 
     let response = ``
     for (const sub of youtubeSubs) {
@@ -46,9 +47,13 @@ export default new Command(`youtube`, async (message, args, context) => {
     type: GamerSubscriptionType.YOUTUBE
   })
 
-  const game = gameName.join(' ')
+  if (type.toLowerCase() === 'subscribe')
+    message.channel.createMessage(language('utility/youtube:WANT_GAME', { mention: message.author.mention }))
+
+  const gameMessage = type.toLowerCase() === 'subscribe' ? await needMessage(message) : undefined
+
   const subPayload = {
-    game: game?.toLowerCase() ?? null,
+    game: gameMessage && gameMessage.content.toLowerCase() !== 'skip' ? gameMessage.content.toLowerCase() : undefined,
     guildID: message.member.guild.id,
     channelID: message.channel.id,
     text: '',
@@ -70,6 +75,8 @@ export default new Command(`youtube`, async (message, args, context) => {
           message.channel.createMessage(`I have subscribed to this user, and now posting there most recent videos:`)
           for (const video of videos) {
             if (video.link) {
+              // If there is a filter and the title does not have the filter
+              if (subPayload.game && video.title && !video.title.toLowerCase().includes(subPayload.game)) continue
               message.channel.createMessage(video.link)
               subPayload.latestLink = video.link
             }
@@ -102,9 +109,11 @@ export default new Command(`youtube`, async (message, args, context) => {
       const feed = await fetchRSSFeed(`https://www.youtube.com/feeds/videos.xml?channel_id=${youtubeID}`)
       if (feed?.items) {
         const videos = feed.items.reverse()
-        message.channel.createMessage(`I have subscribed to this user, and now posting there most recent videos:`)
+        message.channel.createMessage(`I have subscribed to this user, and now posting their most recent videos:`)
         for (const video of videos) {
           if (video.link) {
+            // If there is a filter and the title does not have the filter
+            if (subPayload.game && video.title && !video.title.toLowerCase().includes(subPayload.game)) continue
             message.channel.createMessage(video.link)
             subPayload.latestLink = video.link
           }

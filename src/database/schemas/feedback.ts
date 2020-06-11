@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
-  id: String,
   // The message id also used as the unique identifier
   feedbackID: { type: String, required: true, index: true },
   // THe author id who sent the feedback

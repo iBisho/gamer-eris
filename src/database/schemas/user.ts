@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
-  id: String,
   userID: { type: String, required: true, index: true },
   guildIDs: { type: [String], default: [], index: true },
   profile: {

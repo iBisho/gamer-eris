@@ -23,7 +23,7 @@ export default new Command([`eventkick`, `ek`], async (message, args, context) =
   const userID = user ? user.id : id
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
-    id: eventID,
+    eventID,
     guildID: message.guildID
   })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))

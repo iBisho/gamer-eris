@@ -17,7 +17,7 @@ export default new Command([`eventleave`, `el`], async (message, args, context) 
 
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
-    id: eventID,
+    eventID,
     guildID: message.guildID
   })
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))

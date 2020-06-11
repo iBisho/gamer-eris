@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
-  id: String,
   // The guild id will help make each document be unique
   guildID: { type: String, required: true, index: true },
   // The language that should be used for the server
