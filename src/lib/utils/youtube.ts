@@ -61,8 +61,7 @@ async function fetchLatestVideos(id: string) {
 
     for (const attr of node.attrs) {
       if (attr.name === 'href' && attr.value.startsWith('/watch?v=')) link = attr.value
-      if (attr.name === 'title') title = attr.value
-      // videos.push({ link: `https://www.youtube.com${attr.value}`, title:  })
+      if (attr.name === 'title') title = `https://www.youtube.com${attr.value}`
     }
     if (link && title) videos.push({ link, title })
   }
