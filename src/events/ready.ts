@@ -15,6 +15,38 @@ import { processYoutubeSubscriptions } from '../lib/utils/youtube'
 
 export default new EventListener('ready', async () => {
   Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
+
+  const events = await Gamer.database.models.event.find()
+  for (const event of events) {
+    if (typeof event.id === 'number') event.eventID = event.id
+    event.save()
+  }
+  Gamer.helpers.logger.green('events are updated')
+
+  const mails = await Gamer.database.models.mail.find()
+  for (const mail of mails) {
+    mail.channelID = mail.id
+  }
+  Gamer.helpers.logger.green('mails are updated')
+
+  const feedbacks = await Gamer.database.models.feedback.find()
+  for (const fb of feedbacks) {
+    fb.feedbackID = fb.id
+  }
+  Gamer.helpers.logger.green('feedbacks are updated')
+
+  const guilds = await Gamer.database.models.event.find()
+  for (const guild of guilds) {
+    guild.guildID = guild.id
+    guild.save()
+  }
+  Gamer.helpers.logger.green('guild are updated')
+  const reminders = await Gamer.database.models.reminder.find()
+  for (const rem of reminders) {
+    rem.reminderID = rem.id
+  }
+  Gamer.helpers.logger.green('reminders are updated')
+
   if (Gamer.user.id === constants.general.gamerID) {
     const embed = new MessageEmbed()
       .setColor(`#1abc9c`)
