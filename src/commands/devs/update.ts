@@ -17,7 +17,8 @@ export default new Command('update', async (message, args, context) => {
       break
     default:
       await asyncExecute('git pull && npm run build && pm2 restart gamer')
+      message.channel.createMessage(
+        'Git pulled, recompiled and restarted the bot. Bot should be starting up as we speak.'
+      )
   }
-
-  message.channel.createMessage('Git pulled, recompiled and restarted the bot. Bot should be starting up as we speak.')
 })
