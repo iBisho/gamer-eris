@@ -199,6 +199,7 @@ export default new EventListener('ready', async () => {
     }
   }
   Gamer.helpers.logger.green(`Preparing all cached settings like prefix, languages etc into cache now...`)
+  Gamer.helpers.logger.green(`Preparing cached guild settings`)
   // Cache all the guilds prefixes so we dont need to fetch it every message to check if its a command
   const allGuildSettings = await Gamer.database.models.guild.find()
   allGuildSettings.forEach(settings => {
@@ -233,11 +234,13 @@ export default new EventListener('ready', async () => {
     })
   })
 
+  Gamer.helpers.logger.green(`Preparing all custom command cache settings`)
   const customCommands = await Gamer.database.models.command.find()
   customCommands.forEach(command => {
     Gamer.guildCommandPermissions.set(`${command.guildID}.${command.name}`, command)
   })
 
+  Gamer.helpers.logger.green(`Preparing all cached mirror settings.`)
   const mirrors = await Gamer.database.models.mirror.find()
   mirrors.forEach(mirror => {
     Gamer.mirrors.set(mirror.sourceChannelID, mirror)
