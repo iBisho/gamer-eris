@@ -9,7 +9,7 @@
 	"NICKNAME": "**Nickname:** {{nickname}}\n",
 	"ID": "**Benutzer-ID:** [{{id}}]({{url}})",
 	"JOINED": "Beitrittsdatum",
-	"JOINED_VALUE": "**Discord beigetreten: {{memberDate}}\n**Beigetreten {{guildName}}:** {{guildDate}}",
+	"JOINED_VALUE": "**Discord beigetreten**: {{memberDate}}\n**Beigetreten {{guildName}}**: {{guildDate}}",
 	"SETTINGS": "Benutzereinstellungen",
 	"SETTINGS_VALUES": "$t(basic/user:SETTINGS_VALUES_LINE_1)\n$t(basic/user:SETTINGS_VALUES_LINE_2)",
 	"SETTINGS_VALUES_LINE_1": "**AFK-Status:** {{afk}}",

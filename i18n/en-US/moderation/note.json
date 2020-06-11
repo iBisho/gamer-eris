@@ -1,0 +1,19 @@
+{
+  "DESCRIPTION": "Give a user a note on your server.",
+  "EXTENDED": "$t(moderation/note:EXTENDED_LINE_1)\n$t(moderation/note:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}note [@User] [Reason]** ~ Gives a user a note and adds the reason to the mod log.",
+  "EXTENDED_LINE_2": "Place the bots role as high as possible to avoid missing permissions. That role has to be above the users highest role. Moderation has to be enabled in the guild settings.",
+  "USAGE": "{{prefix}}note [User] [Reason]",
+  "ALIASES": "Note does not have any aliases",
+  "TOO_LOW": "Your highest role is not high enough to give this member a note.",
+  "USER": "User: {{username}}",
+  "MODERATOR": "Moderator: {{mod}}",
+  "MEMBER_INFO": "$t(moderation/note:MEMBER_INFO_1)\n$t(moderation/note:MEMBER_INFO_2)\n$t(moderation/note:MEMBER_INFO_3)",
+  "MEMBER_INFO_1": "**Mention:** {{member}}",
+  "MEMBER_INFO_2": "**Username:** {{user}}",
+  "MEMBER_INFO_3": "**ID:** {{id}}",
+  "NEED_USER": "You did not tell me which user to give a note to.",
+  "NEED_REASON": "I need a reason to give a user a note.",
+  "BOT_TOO_LOW": "I do not have enough permissions to give this user a note. My highest role is not high enough.",
+  "USER_TOO_LOW": "You do not have a high enough role to give this user a note."
+}
