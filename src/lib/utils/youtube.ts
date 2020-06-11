@@ -79,16 +79,16 @@ export async function processYoutubeSubscriptions() {
     const id = await fetchChannelIDWithName(youtubeSub.username)
     // if (!id) id = await searchByChannelName()
     const videos = await fetchLatestVideos(id || youtubeSub.username)
-    if (!videos) return
+    if (!videos.length) return
 
     youtubeSub.subs.forEach(sub => {
-      const latestIndex = videos.findIndex(video => video.link && video.link === sub.latestLink)
+      const latestIndex = videos.findIndex(video => video.link === sub.latestLink)
       const latestVideos = latestIndex > 0 ? videos.slice(0, latestIndex) : latestIndex === 0 ? [] : videos
 
       latestVideos.reverse().forEach((video, index) => {
         if (!video.link) return
         // If there is a filter and the title does not have the filter
-        if (sub.game && video.title && !video.title.toLowerCase().includes(sub.game)) return
+        if (sub.game && !video.title.toLowerCase().includes(sub.game)) return
 
         const text = sub.text || `**${youtubeSub.username}** uploaded a new YouTube video! @everyone`
 

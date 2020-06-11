@@ -33,7 +33,7 @@ export default class {
     const DESCRIPTION = language(`events/eventcreate:DEFAULT_DESCRIPTION`)
     const PLATFORM = language(`events/eventcreate:DEFAULT_PLATFORM`)
     const GAME = language(`events/eventcreate:DEFAULT_GAME`)
-    const ACTIVITY = language(`events/eventcreate:DEFAULT_ACTIVIY`)
+    const ACTIVITY = language(`events/eventcreate:DEFAULT_ACTIVITY`)
 
     // 1440 minutes in a day
     const startNow = (template?.minutesFromNow || 1440) * 60000 + Date.now()
