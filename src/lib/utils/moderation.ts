@@ -34,17 +34,11 @@ export default class {
       if (memberSettings) {
         const currentXP = memberSettings.leveling.xp
         switch (action) {
-          case `kick`: // Remove 50% when kicked
-            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, Math.floor(currentXP / 2))
-            break
           case `warn`:
             this.Gamer.helpers.levels.removeXP(member, currentXP > 25 ? 25 : currentXP)
             break
           case `mute`:
             this.Gamer.helpers.levels.removeXP(member, currentXP > 100 ? 100 : currentXP)
-            break
-          case `ban`:
-            if (currentXP > 0) this.Gamer.helpers.levels.removeXP(member, currentXP)
             break
           default:
         }
