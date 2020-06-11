@@ -35,7 +35,7 @@ export default new EventListener('ready', async () => {
   }
   Gamer.helpers.logger.green('feedbacks are updated')
 
-  const guilds = await Gamer.database.models.event.find()
+  const guilds = await Gamer.database.models.guild.find()
   for (const guild of guilds) {
     guild.guildID = guild.id
     guild.save()
