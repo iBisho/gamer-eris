@@ -59,8 +59,8 @@ export async function processYoutubeSubscriptions() {
         const text = sub.text || `**${youtubeSub.username}** uploaded a new YouTube video! @everyone`
 
         sendMessage(sub.channelID, {
-          content: `${text} ${video.link}`
-          // allowedMentions: { everyone: true, roles: true, users: true }
+          content: `${text} ${video.link}`,
+          allowedMentions: { everyone: true, roles: true, users: true }
         })
 
         if (latestVideos.length - 1 === index) sub.latestLink = video.link
@@ -70,5 +70,5 @@ export async function processYoutubeSubscriptions() {
     youtubeSub.save()
   }
 
-  setTimeout(() => processYoutubeSubscriptions(), milliseconds.MINUTE * 1)
+  setTimeout(() => processYoutubeSubscriptions(), milliseconds.MINUTE * 5)
 }
