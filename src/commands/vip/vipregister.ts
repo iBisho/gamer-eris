@@ -22,16 +22,7 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
     message.author.id === '130136895395987456'
 
   // User is not a server booster trying to use a vip only command
-  if (!isBooster) {
-    // Check if the user has enough votes to get FREE VIP
-    const upvote = await Gamer.database.models.upvote.findOne({ userID: message.author.id })
-    // The user does not have nitro boost role nor enough votes
-    if (!upvote || upvote.amount < 100)
-      return message.channel.createMessage(language(`vip/vipregister:MISSING_BOOST_ROLE`))
-
-    upvote.amount -= 100
-    upvote.save()
-  }
+  if (!isBooster) return message.channel.createMessage(language(`vip/vipregister:MISSING_BOOST_ROLE`))
 
   const userSettings = await upsertUser(message.author.id, [message.guildID])
   const guildSettings = await upsertGuild(message.guildID)
