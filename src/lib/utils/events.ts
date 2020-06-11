@@ -456,10 +456,11 @@ export default class {
 
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
 
-    adChannel.createMessage({
+    const startMessage = await adChannel.createMessage({
       content: event.alertRoleIDs.map((id: string) => `<@&${id}>`).join(` `),
       embed: embed.code
     })
+    deleteMessage(startMessage, 60)
   }
 
   async remindEvent(event: GamerEvent) {
