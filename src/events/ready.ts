@@ -16,36 +16,36 @@ import { processYoutubeSubscriptions } from '../lib/utils/youtube'
 export default new EventListener('ready', async () => {
   Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
 
-  const events = await Gamer.database.models.event.find()
-  for (const event of events) {
-    if (typeof event.id === 'number') event.eventID = event.id
-    event.save()
-  }
-  Gamer.helpers.logger.green('events are updated')
+  // const events = await Gamer.database.models.event.find()
+  // for (const event of events) {
+  //   if (typeof event.id === 'number') event.eventID = event.id
+  //   event.save()
+  // }
+  // Gamer.helpers.logger.green('events are updated')
 
-  const mails = await Gamer.database.models.mail.find()
-  for (const mail of mails) {
-    mail.channelID = mail.id
-  }
-  Gamer.helpers.logger.green('mails are updated')
+  // const mails = await Gamer.database.models.mail.find()
+  // for (const mail of mails) {
+  //   mail.channelID = mail.id
+  // }
+  // Gamer.helpers.logger.green('mails are updated')
 
-  const feedbacks = await Gamer.database.models.feedback.find()
-  for (const fb of feedbacks) {
-    fb.feedbackID = fb.id
-  }
-  Gamer.helpers.logger.green('feedbacks are updated')
+  // const feedbacks = await Gamer.database.models.feedback.find()
+  // for (const fb of feedbacks) {
+  //   fb.feedbackID = fb.id
+  // }
+  // Gamer.helpers.logger.green('feedbacks are updated')
 
-  const guilds = await Gamer.database.models.guild.find()
-  for (const guild of guilds) {
-    guild.guildID = guild.id
-    guild.save()
-  }
-  Gamer.helpers.logger.green('guild are updated')
-  const reminders = await Gamer.database.models.reminder.find()
-  for (const rem of reminders) {
-    rem.reminderID = rem.id
-  }
-  Gamer.helpers.logger.green('reminders are updated')
+  // const guilds = await Gamer.database.models.guild.find()
+  // for (const guild of guilds) {
+  //   guild.guildID = guild.id
+  //   guild.save()
+  // }
+  // Gamer.helpers.logger.green('guild are updated')
+  // const reminders = await Gamer.database.models.reminder.find()
+  // for (const rem of reminders) {
+  //   rem.reminderID = rem.id
+  // }
+  // Gamer.helpers.logger.green('reminders are updated')
 
   if (Gamer.user.id === constants.general.gamerID) {
     const embed = new MessageEmbed()
@@ -204,25 +204,25 @@ export default new EventListener('ready', async () => {
   const allGuildSettings = await Gamer.database.models.guild.find()
   allGuildSettings.forEach(settings => {
     if (settings.prefix !== Gamer.prefix) {
-      Gamer.guildPrefixes.set(settings.id, settings.prefix)
+      Gamer.guildPrefixes.set(settings.guildID, settings.prefix)
     }
     if (settings.language !== `en-US`) {
-      Gamer.guildLanguages.set(settings.id, settings.language)
+      Gamer.guildLanguages.set(settings.guildID, settings.language)
     }
     if (settings.mails.supportChannelID) {
-      Gamer.guildSupportChannelIDs.set(settings.id, settings.mails.supportChannelID)
+      Gamer.guildSupportChannelIDs.set(settings.guildID, settings.mails.supportChannelID)
     }
     if (settings.disableTenor) {
-      Gamer.guildsDisableTenor.set(settings.id, settings.disableTenor)
+      Gamer.guildsDisableTenor.set(settings.guildID, settings.disableTenor)
     }
-    if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.id, settings.xp.perMessage)
-    if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.id, settings.xp.perMinuteVoice)
-    if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.id)
+    if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.guildID, settings.xp.perMessage)
+    if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.guildID, settings.xp.perMinuteVoice)
+    if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.guildID)
   })
 
   // Stop caching messages where we don't need server logs
   Gamer.guilds.forEach(guild => {
-    const guildSettings = allGuildSettings.find(gs => gs.id === guild.id)
+    const guildSettings = allGuildSettings.find(gs => gs.guildID === guild.id)
     if (
       guildSettings?.moderation.logs.serverlogs.messages.channelID &&
       guild.channels.has(guildSettings.moderation.logs.serverlogs.messages.channelID)
