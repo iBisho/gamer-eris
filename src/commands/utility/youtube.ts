@@ -36,7 +36,7 @@ export default new Command(`youtube`, async (message, args, context) => {
     }
 
     if (!response.length) return message.channel.createMessage(language(`utility/youtube:NONE`))
-    return message.channel.createMessage(response)
+    return Gamer.helpers.discord.embedResponse(message, response)
   }
 
   if (!username) return helpCommand?.execute(message, [`youtube`], { ...context, commandName: 'help' })

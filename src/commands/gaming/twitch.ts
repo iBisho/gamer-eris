@@ -32,7 +32,7 @@ export default new Command(`twitch`, async (message, args, context) => {
     }
 
     if (!response.length) return message.channel.createMessage(language(`gaming/twitch:NONE`))
-    return message.channel.createMessage(response)
+    return Gamer.helpers.discord.embedResponse(message, response)
   }
 
   // Fetch this username from subscriptions specifically for twitch
