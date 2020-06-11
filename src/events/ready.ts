@@ -7,7 +7,7 @@ import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
 import { MessageEmbed } from 'helperis'
 import { fetchLatestManga } from '../services/manga'
-import { weeklyVoteReset, vipExpiredCheck } from '../lib/utils/voting'
+import { weeklyVoteReset } from '../lib/utils/voting'
 import { dailyLifeTasksReset } from '../lib/utils/marriage'
 import { EventListener } from 'yuuko'
 import { processPolls } from '../lib/utils/poll'
@@ -84,7 +84,6 @@ export default new EventListener('ready', async () => {
   // All processes that need to be run every day
   setInterval(() => {
     weeklyVoteReset()
-    vipExpiredCheck()
     Gamer.helpers.levels.processInactiveXPRemoval()
     dailyLifeTasksReset()
   }, milliseconds.DAY)
