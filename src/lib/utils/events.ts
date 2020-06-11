@@ -120,7 +120,7 @@ export default class {
       .setTimestamp(event.start)
 
     // If this is being sent to a new channel and an old card exists we need to delete the old one
-    if (event.adChannelID && event.adMessageID && event.adChannelID !== channelID) {
+    if (channelID && event.adChannelID && event.adMessageID && event.adChannelID !== channelID) {
       deleteMessageWithID(event.adChannelID, event.adMessageID)
       event.adMessageID = undefined
       event.adChannelID = undefined
