@@ -402,7 +402,7 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
         const reactions = feedbackEmojis.map((emoji: string) => Gamer.helpers.discord.convertEmoji(emoji, `reaction`))
         for (const reaction of reactions) if (reaction) await approvedFeedback.addReaction(reaction)
 
-        feedback.id = approvedFeedback.id
+        feedback.feedbackID = approvedFeedback.id
         feedback.save()
         return message.delete().catch(() => undefined)
       }
