@@ -255,7 +255,7 @@ export default class {
       }
     }
 
-    const channel = guild.channels.get(mail.id)
+    const channel = guild.channels.get(mail.channelID)
     if (!channel) return
     const botPerms = channel.permissionsOf(this.Gamer.user.id)
     if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
@@ -275,7 +275,7 @@ export default class {
     }
 
     // Await so the message sends before we make roles unmentionable again
-    await this.Gamer.createMessage(mail.id, {
+    await this.Gamer.createMessage(mail.channelID, {
       content: alertRoleIDs
         .filter(id => guild.roles.has(id))
         .map(roleID => `<@&${roleID}>`)

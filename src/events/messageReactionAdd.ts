@@ -357,7 +357,7 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
         )
       }
       // They have an open mail so we can just send it there
-      const mailChannel = guild.channels.get(openMail.id)
+      const mailChannel = guild.channels.get(openMail.channelID)
       if (!mailChannel || !(mailChannel instanceof TextChannel)) return
       return mailChannel.createMessage({ content: user.mention, embed: message.embeds[0] })
     // This case will run if the reaction was the solved green check mark
