@@ -60,5 +60,9 @@
 	"LEFT_VOICE": "Left Voice Channel",
 	"MAX_MEMBERS": "Max Users",
 	"ACCOUNT_AGE": "Account Age",
-	"ROLES": "Roles"
+	"ROLES": "Roles",
+	"CAP_SPAM": "Capital Spam Detected",
+	"PROFANITY": "Profanity Detected: {{words}}",
+	"LINK_POSTED": "URL Detected: {{links}}",
+	"XP_LOST": "User has lost {{amount}} XP."
 }
