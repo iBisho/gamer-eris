@@ -3,7 +3,7 @@ import GamerClient from '../structures/GamerClient'
 import constants from '../../constants'
 import { milliseconds } from '../types/enums/time'
 import { highestRole } from 'helperis'
-import { addRoleToMember } from './eris'
+import { addRoleToMember, removeRoleFromMember } from './eris'
 import { upsertMember, upsertUser } from '../../database/mongoHandler'
 
 export default class {
@@ -171,7 +171,7 @@ export default class {
       // If the role is too high for the bot to manage skip
       if (!role || botsHighestRole.position <= role.position) continue
 
-      member.removeRole(roleID, REASON)
+      removeRoleFromMember(member, roleID, REASON)
       this.Gamer.amplitude.push({
         authorID: member.id,
         guildID: member.guild.id,

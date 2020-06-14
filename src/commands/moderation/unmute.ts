@@ -2,6 +2,7 @@ import { Command } from 'yuuko'
 import { MessageEmbed } from 'helperis'
 import GamerClient from '../../lib/structures/GamerClient'
 import { highestRole } from 'helperis'
+import { removeRoleFromMember } from '../../lib/utils/eris'
 
 export default new Command(`unmute`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -54,7 +55,7 @@ export default new Command(`unmute`, async (message, args, context) => {
   if (!Gamer.helpers.discord.compareMemberPosition(message.member, member))
     return message.channel.createMessage(language(`moderation/unmute:USER_TOO_LOW`))
 
-  await member.removeRole(guildSettings.moderation.roleIDs.mute)
+  removeRoleFromMember(member, guildSettings.moderation.roleIDs.mute)
   guildSettings.moderation.users.mutedUserIDs = guildSettings.moderation.users.mutedUserIDs.filter(
     id => id !== member.id
   )

@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import { highestRole, userTag } from 'helperis'
+import { removeRoleFromMember } from '../../lib/utils/eris'
 
 export default new Command(`take`, async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -43,7 +44,7 @@ export default new Command(`take`, async (message, args, context) => {
     return message.channel.createMessage(language(`roles/take:USER_TOO_LOW`))
 
   // Give the role to the user as all checks have passed
-  member.removeRole(role.id, language(`roles/take:GIVEN_BY`, { user: encodeURIComponent(userTag(member)) }))
+  removeRoleFromMember(member, role.id, language(`roles/take:GIVEN_BY`, { user: encodeURIComponent(userTag(member)) }))
 
   Gamer.amplitude.push({
     authorID: message.author.id,

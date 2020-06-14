@@ -6,7 +6,7 @@ import { MessageEmbed } from 'helperis'
 import nodefetch from 'node-fetch'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { addRoleToMember, fetchAllReactors, deleteMessage, removeReaction } from '../lib/utils/eris'
+import { addRoleToMember, fetchAllReactors, deleteMessage, removeReaction, removeRoleFromMember } from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
@@ -98,7 +98,7 @@ async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID
     const role = guild.roles.get(roleID)
     if (!role || role.position > botsHighestRole.position) continue
 
-    if (member.roles.includes(roleID)) member.removeRole(roleID, `Removed role for clicking reaction role.`)
+    if (member.roles.includes(roleID)) removeRoleFromMember(member, roleID, `Removed role for clicking reaction role.`)
     else addRoleToMember(member, roleID, `Added roles for clicking a reaction role message.`)
   }
 }
