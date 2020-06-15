@@ -12,6 +12,7 @@ import { dailyLifeTasksReset } from '../lib/utils/marriage'
 import { EventListener } from 'yuuko'
 import { processPolls } from '../lib/utils/poll'
 import { processYoutubeSubscriptions } from '../lib/utils/youtube'
+import { processRedditSubscriptions } from '../lib/utils/reddit'
 
 export default new EventListener('ready', async () => {
   Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
@@ -149,6 +150,8 @@ export default new EventListener('ready', async () => {
 
   weeklyVoteReset()
   processYoutubeSubscriptions()
+  processRedditSubscriptions()
+
   Gamer.helpers.logger.green(`Loading all tags into cache now...`)
   // Set the tags in cache
   const tags = await Gamer.database.models.tag.find()

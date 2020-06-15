@@ -15,6 +15,9 @@ export default new Command('update', async (message, args, context) => {
       const reloadCommand = Gamer.commandForName('reload')
       reloadCommand?.execute(message, [], context)
       break
+    case 'npm':
+      await asyncExecute('git pull && npm i && npm run build && pm2 restart gamer')
+      message.channel.createMessage('Full update completed.')
     default:
       await asyncExecute('git pull && npm run build && pm2 restart gamer')
       message.channel.createMessage(

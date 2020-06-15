@@ -1,0 +1,19 @@
+{
+	"DESCRIPTION": "Setup reddit alerts for your server.",
+	"EXTENDED": "$t(utility/reddit:EXTENDED_LINE_1)\n$t(utility/reddit:EXTENDED_LINE_2)\n$t(utility/reddit:EXTENDED_LINE_3)",
+	"EXTENDED_LINE_1": "**{{prefix}}reddit subscribe [Subreddit Name]** ~ Subscribes to a subreddit.",
+	"EXTENDED_LINE_2": "**{{prefix}}reddit unsubscribe [Subreddit Name]** ~ Removes the subscription to a subreddit.",
+	"EXTENDED_LINE_3": "**{{prefix}}reddit list** ~ Lists all reddit subreddits the server has subscribed to.",
+	"USAGE": "{{prefix}}reddit [subscribe | unsubscribe | list] [Subreddit Name]",
+	"ALIASES": "Reddit does not have any aliases.",
+	"SUBSCRIBED": "Successfully subcribed to reddit alerts for {{username}} on {{channel}}.",
+	"UNSUBBED": "Successfully unsubscribed to reddit alerts for {{username}}.",
+	"NOT_SUBSCRIBED": "The {{username}} has no subscriptions set up for reddit at this time.",
+	"NOT_SUBBED": "The {{username}} has no subscriptions set up for this channel at this time.",
+	"ALREADY_SUBBED": "The {{username}} is already subscribed to send alerts in this channel.",
+	"NONE": "I was unable to find any youtube users that this server has subscribed to.",
+	"CUSTOM_MESSAGE": "{{mention}}, please provide the message you would like to send when a post is posted for this subscription.",
+	"WANT_GAME": "{{mention}}, would you like to filter the uploaded posts? Filter your results based on the keyphrase you enter. For example, want results based around fortnight? Only posts whose title's include the word `fortnight` would be posted. `Note:` If you do not want to filter anything type `skip`.",
+	"POST_AUTHOR": "Post Author",
+	"NEW_POST": "New Post On /r/{{name}}"
+}

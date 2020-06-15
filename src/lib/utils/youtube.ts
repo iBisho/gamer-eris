@@ -79,7 +79,7 @@ export async function processYoutubeSubscriptions() {
     const id = await fetchChannelIDWithName(youtubeSub.username)
     // if (!id) id = await searchByChannelName()
     const videos = await fetchLatestVideos(id || youtubeSub.username)
-    if (!videos.length) return
+    if (!videos.length) continue
 
     youtubeSub.subs.forEach(sub => {
       const latestIndex = videos.findIndex(video => video.link === sub.latestLink)

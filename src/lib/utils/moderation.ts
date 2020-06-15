@@ -207,7 +207,7 @@ export default class {
     allGuildSettings.forEach(async guildSettings => {
       if (!guildSettings.verify.channelIDs.length) return
 
-      const guild = this.Gamer.guilds.get(guildSettings.id)
+      const guild = this.Gamer.guilds.get(guildSettings.guildID)
       if (!guild) return
 
       guildSettings.verify.channelIDs.forEach(async channelID => {

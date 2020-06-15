@@ -266,7 +266,7 @@ export default class {
     const allGuildSettings = await this.Gamer.database.models.guild.find({ 'xp.inactiveDaysAllowed': { $gt: 0 } })
 
     for (const guildSettings of allGuildSettings) {
-      const guild = this.Gamer.guilds.get(guildSettings.id)
+      const guild = this.Gamer.guilds.get(guildSettings.guildID)
       if (!guild) continue
 
       // Get all members from the database as anyone with default settings dont need to be checked

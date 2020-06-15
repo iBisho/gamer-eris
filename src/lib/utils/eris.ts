@@ -120,7 +120,7 @@ export function needMessage(message: Message): Promise<Message> {
   })
 }
 
-export function sendMessage(channelID: string, content: string | MessageContent) {
+export async function sendMessage(channelID: string, content: string | MessageContent) {
   const channel = Gamer.getChannel(channelID)
   if (!(channel instanceof TextChannel) && !(channel instanceof NewsChannel) && !(channel instanceof PrivateChannel))
     return
@@ -132,5 +132,5 @@ export function sendMessage(channelID: string, content: string | MessageContent)
   ])
   if (!hasPermissions) return
 
-  Gamer.createMessage(channelID, content)
+  return Gamer.createMessage(channelID, content)
 }

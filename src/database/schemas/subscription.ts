@@ -50,7 +50,8 @@ export default new mongoose.Schema(
 
 export enum GamerSubscriptionType {
   TWITCH = 'twitch',
-  YOUTUBE = 'youtube'
+  YOUTUBE = 'youtube',
+  REDDIT = 'reddit'
 }
 
 export interface GamerSubscription extends mongoose.Document {
