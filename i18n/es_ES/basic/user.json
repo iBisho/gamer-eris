@@ -2,8 +2,8 @@
 	"DESCRIPTION": "Visualiza información de otros miembros.",
 	"EXTENDED": "$t(basic/user:EXTENDED_LINE_1)\n$t(basic/user:EXTENDED_LINE_2)",
 	"EXTENDED_LINE_1": "**{{prefix}}user** ~ Muestra tu información propia.",
-	"EXTENDED_LINE_2": "**{{prefix}}user @user** ~ Muestra información de otros miembros.",
-	"USAGE": "{{prefix}}user *[@user]*",
+	"EXTENDED_LINE_2": "**{{prefix}}user @usuario** ~ Muestra información de otros miembros.",
+	"USAGE": "{{prefix}}user *[@usuario]*",
 	"ALIASES": "{{prefix}}ui {{prefix}}userinfo",
 	"LOADING": "Cargando información del usuario...",
 	"NICKNAME": "**Apodo** {{nickname}}\n",
@@ -15,5 +15,7 @@
 	"SETTINGS_VALUES_LINE_1": "**Estado AFK:** {{afk}}",
 	"SETTINGS_VALUES_LINE_2": "**Mensaje AFK:** {{afkMessage}}",
 	"PERMISSIONS": "Permisos",
-	"ROLES": "Roles"
+	"ROLES": "Roles",
+	"LAST_ACTIVE": "Última vez activo: {{time}}",
+	"NOW": "Ahora"
 }
