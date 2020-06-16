@@ -90,5 +90,5 @@ export async function processRedditSubscriptions() {
     await redditSub.save()
   }
 
-  setTimeout(() => processRedditSubscriptions(), milliseconds.MINUTE)
+  setTimeout(() => processRedditSubscriptions(), milliseconds.MINUTE * 3)
 }
