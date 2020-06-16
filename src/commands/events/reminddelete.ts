@@ -6,7 +6,7 @@ export default new Command([`reminddelete`, `rd`, `reminderdelete`, `remindmedel
   const language = Gamer.getLanguage(message.guildID)
   const [id] = args
 
-  Gamer.database.models.reminder.deleteOne({ userID: message.author.id, id }).exec()
+  Gamer.database.models.reminder.deleteOne({ userID: message.author.id, reminderID: id }).exec()
 
   return message.channel.createMessage(language('events/reminddelete:DELETED', { mention: message.author.mention }))
 })

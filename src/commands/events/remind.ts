@@ -21,7 +21,7 @@ export default new Command(
         reminders
           .map(
             reminder =>
-              `**${reminder.id}: ${Gamer.helpers.transform.humanizeMilliseconds(
+              `**${reminder.reminderID}: ${Gamer.helpers.transform.humanizeMilliseconds(
                 reminder.timestamp - Date.now()
               )}** => ${reminder.content}`
           )
