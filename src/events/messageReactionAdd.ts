@@ -6,7 +6,13 @@ import { MessageEmbed } from 'helperis'
 import nodefetch from 'node-fetch'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { addRoleToMember, fetchAllReactors, deleteMessage, removeReaction, removeRoleFromMember } from '../lib/utils/eris'
+import {
+  addRoleToMember,
+  fetchAllReactors,
+  deleteMessage,
+  removeReaction,
+  removeRoleFromMember
+} from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
 const networkReactions = [constants.emojis.heart, constants.emojis.repeat, constants.emojis.plus]
