@@ -13,7 +13,7 @@
 	"EXTENDED_LINE_10": "**%guild%** ~ Muestra el nombre del servidor.",
 	"EXTENDED_LINE_11": "**%guildimage%** ~ Muestra la imagen del servidor en un campo de imagen.",
 	"EXTENDED_LINE_12": "**»** Las variables de usuario solamente funcionan cuando se menciona a un usuario junto con el comando.",
-	"EXTENDED_LINE_13": "**CREE SU OBJETO INCRUSTADO EN ESTE SITIO WEB: <https://embedbuilder.nadekobot.me/>**.",
+	"EXTENDED_LINE_13": "**CREA TU OBJETO INCRUSTADO EN ESTE SITIO WEB: <https://embedbuilder.nadekobot.me/>**. Nota: Puedes también crear un incrustado con el comando **{{prefix}}embedset**.",
 	"USAGE": "{{prefix}}embed [@Usuario] {objeto}",
 	"ALIASES": "El incrustado no tiene ningún alias.",
 	"BAD_EMBED": "Este no era un **objeto incrustado válido**. ¡Lo mejor es usar el generador de incrustaciones <https://embedbuilder.nadekobot.me/>!"
