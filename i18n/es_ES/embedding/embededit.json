@@ -1,11 +1,12 @@
 {
-	"DESCRIPTION": "Edita un incrustado existente que Gamer bot envió originalmente.",
-	"EXTENDED": "$t(embedding/embededit:EXTENDED_LINE_1)\n$t(embedding/embededit:EXTENDED_LINE_2)",
-	"EXTENDED_LINE_1": "Para obtener el ID del mensaje, asegúrate que el Modo Desarrollador este activado en tu cliente y dar clic derecho sobre el mensaje que quieras copiar su ID y seleccionas **Copiar ID**.",
-	"EXTENDED_LINE_2": "**{{prefix}}embededit [ID del mensaje] [Código del incrustado]** ~ Edita el incrustado con el nuevo código que proveíste.",
-	"USAGE": "{{prefix}}embededit [ID del mensaje] [Código del incrustado]",
-	"ALIASES": "Embededit no tiene ningún alias.",
-	"NO_EMBED": "El mensaje que proveíste no contiene ningún incrustado que pueda mostrar.",
-	"SUCCESS": "Este es el código del incrustado para el mensaje con el ID {{id}}, puedes copiar este código y pegarlo en el [Generador de incrustaciones](https://embedbuilder.nadekobot.me) para editarlo.",
-	"NEED_JSON": "No proveíste ningún código de incrustado para usar para el nuevo evento. Lo mejor es usar el generador de incrustaciones <https://embedbuilder.nadekobot.me/>!"
+  "DESCRIPTION": "Edita un incrustado existente que Gamer bot envió originalmente.",
+  "EXTENDED": "$t(embedding/embededit:EXTENDED_LINE_1)\n$t(embedding/embededit:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "Para obtener el ID del mensaje, asegúrate que el Modo Desarrollador este activado en tu cliente y dar clic derecho sobre el mensaje que quieras copiar su ID y seleccionas **Copiar ID**.",
+  "EXTENDED_LINE_2": "**{{prefix}}embededit [ID del mensaje] [Código del incrustado]** ~ Edita el incrustado con el nuevo código que proporcionaste.",
+  "USAGE": "{{prefix}}embededit [ID del mensaje] [Código del incrustado]",
+  "ALIASES": "Embededit no tiene ningún alias.",
+  "NO_EMBED": "El mensaje que proporcionaste no contiene ningún incrustado que pueda mostrar.",
+  "SUCCESS": "Este es el código del incrustado para el mensaje con el ID {{id}}, puedes copiar este código y pegarlo en el [Generador de incrustaciones](https://embedbuilder.nadekobot.me) para editarlo.",
+  "NEED_JSON": "No proporcionaste ningún código de incrustado para usar para el nuevo evento. ¡Lo mejor es usar el generador de incrustaciones <https://embedbuilder.nadekobot.me/>!",
+  "EDITED": "El mensaje ha sido eliminado. Para ir al mensaje: {{link}}"
 }
