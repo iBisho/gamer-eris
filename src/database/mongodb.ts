@@ -22,6 +22,7 @@ import RolesetSchema from './schemas/roleset'
 import RolesSchema, { GamerRole } from './schemas/roles'
 import RoleMessageSchema, { GamerRoleMessage } from './schemas/rolemessage'
 import ShortcutSchema, { GamerShortcut } from './schemas/shortcut'
+import SpySchema, { GamerSpy } from './schemas/spy'
 import SubscriptionSchema, { GamerSubscription } from './schemas/subscription'
 import SurveySchema from './schemas/survey'
 import TagSchema from './schemas/tag'
@@ -74,6 +75,7 @@ class Database {
     roles: mongoose.model<GamerRole>('Roles', RolesSchema),
     roleset: mongoose.model<GamerRoleset>('Roleset', RolesetSchema),
     shortcut: mongoose.model<GamerShortcut>('Shortcut', ShortcutSchema),
+    spy: mongoose.model<GamerSpy>('Spy', SpySchema),
     subscription: mongoose.model<GamerSubscription>('Subscription', SubscriptionSchema),
     survey: mongoose.model('Survey', SurveySchema),
     tag: mongoose.model<GamerTag>('Tag', TagSchema),

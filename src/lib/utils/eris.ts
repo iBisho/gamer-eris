@@ -134,3 +134,10 @@ export async function sendMessage(channelID: string, content: string | MessageCo
 
   return Gamer.createMessage(channelID, content)
 }
+
+export async function sendDirectMessage(userID: string, content: string | MessageContent) {
+  try {
+    const dmChannel = await Gamer.getDMChannel(userID)
+    await dmChannel.createMessage(content)
+  } catch {}
+}

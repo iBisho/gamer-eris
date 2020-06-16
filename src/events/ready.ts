@@ -217,5 +217,18 @@ export default new EventListener('ready', async () => {
     Gamer.mirrors.set(mirror.sourceChannelID, mirror)
   })
 
+  Gamer.helpers.logger.green(`Preparing all spy records.`)
+  const spyRecords = await Gamer.database.models.spy.find()
+  spyRecords.forEach(record => {
+    record.words.forEach(word => {
+      const details = Gamer.spyRecords.get(word.toLowerCase())
+      if (details) {
+        details.push(record.memberID)
+      } else {
+        Gamer.spyRecords.set(word, [record.memberID])
+      }
+    })
+  })
+
   Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)
 })

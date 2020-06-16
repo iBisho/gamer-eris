@@ -1,0 +1,15 @@
+{
+  "DESCRIPTION": "Manages the words you want to spy on, on your servers.",
+  "EXTENDED": "$t(vip/spy:EXTENDED_LINE_1)\n$t(vip/spy:EXTENDED_LINE_2)\n$t(vip/spy:EXTENDED_LINE_3)\n$t(vip/spy:EXTENDED_LINE_4)",
+  "EXTENDED_LINE_1": "VIP ONLY COMMAND!",
+  "EXTENDED_LINE_2": "**{{prefix}}spy add [Word]** ~ Adds this word to your list of words to be notified about when someone types it.",
+  "EXTENDED_LINE_3": "**{{prefix}}spy remove [Word]** ~ Removes this word from your list of words.",
+  "EXTENDED_LINE_4": "**{{prefix}}spy list** ~ Lists all the words available for you.",
+  "USAGE": "{{prefix}}spy [add | remove | list] *[Word]*",
+  "ALIASES": "Spy does not have any aliases.",
+  "NONE": "You do not have any words that you are spying on.",
+  "WORD_ADDED": "**{{word}}** has been added to the spy records.",
+  "DONT_EXIST": "**{{word}}** does not exist in your spy records.",
+  "ALREADY_SPYING": "You already have **{{word}}** in your spy records.",
+  "WORD_REMOVED": "**{{word}}** has been removed from your spy records."
+}
