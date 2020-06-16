@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "¡Expulsa a un miembro del evento!",
+  "EXTENDED": "**{{prefix}}eventkick [ID del evento]** ~ Expulsa a un miembro del evento.",
+  "USAGE": "{{prefix}}eventkick [ID del evento] [@Usuario]",
+  "ALIASES": "{{prefix}}ek",
+  "NEED_USER": "No brindaste un usuario para expulsar del evento.",
+  "NOT_JOINED": "El usuario no puede ser expulsado del evento, porque no esta atendiendo al evento.",
+  "KICKED": "El usuario ha sido expulsado del evento."
+}
