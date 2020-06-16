@@ -1,0 +1,17 @@
+{
+  "DESCRIPTION": "Mira, crea, únete y administra eventos.",
+  "EXTENDED": "**{{prefix}}events** ~ Enlista todos los eventos actuales en el servidor. [Clic aquí para saber más](https://gamer.netlify.com/lfg-events-feature)",
+  "USAGE": "{{prefix}}events",
+  "ALIASES": "{{prefix}}e {{prefix}}event",
+  "INVALID_EVENT": "No se pudo encontrar el evento con el número de ID proporcionado.",
+  "STARTING_GUILD": "¡El evento [ {{eventID}} ] al que te uniste en el servidor {{guildName}} ha empezado!",
+  "STARTING_TITLE": "Título del evento: {{title}}",
+  "REMIND": "Recordatorio para el evento con el ID: [ {{eventID}} ]",
+  "TITLE": "Título del evento:",
+  "STARTS_IN": "El evento empieza en:",
+  "REMIND_FOOTER": "Servidor: {{guildName}}",
+  "SHOW_NONE": "Lo sentimos, no hay miembros para mostrar.",
+  "NEED_EVENT_ID": "Necesito un ID del evento para buscar.",
+  "NONE": "No hay eventos encontrados en este servidor. Por favor usa el comando **eventcreate** para crear un nuevo evento.",
+  "GO_TO": "¡Ve al canal del evento!"
+}
