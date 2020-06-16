@@ -548,7 +548,7 @@ export default class {
       const embed = new MessageEmbed()
         .setAuthor(member.username, member.avatarURL)
         .setDescription(reminder.content)
-        .setFooter(language(`events/remind:REMINDING`, { id: reminder.id }))
+        .setFooter(language(`events/remind:REMINDING`, { id: reminder.reminderID }))
 
       channel.createMessage({ content: this.Gamer.helpers.discord.idsToUserTag([reminder.userID]), embed: embed.code })
 
