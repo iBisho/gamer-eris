@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "¡Deja un evento si ya no puedes atender a el!",
+  "EXTENDED": "**{{prefix}}eventleave [ID del evento]** ~ Te remueve del evento.",
+  "USAGE": "{{prefix}}eventleave [ID del evento]",
+  "ALIASES": "{{prefix}}el",
+  "NOT_JOINED": "No puedes retirarte del evento porque nunca marcaste tu asistencia al mismo.",
+  "LEFT": "Te has retirado exitosamente del evento."
+}
