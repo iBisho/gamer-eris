@@ -1,0 +1,12 @@
+{
+	"DESCRIPTION": "Crea un recordatorio para ti.",
+	"EXTENDED": "$t(events/remind:EXTENDED_LINE_1)\n$t(events/remind:EXTENDED_LINE_2)\n$t(events/remind:EXTENDED_LINE_3)\n$t(events/remind:EXTENDED_LINE_4)",
+	"EXTENDED_LINE_1": "**{{prefix}}remind 1d12h [Mensaje de recordatorio]** ~ Crea un recordatorio para enviarlo a ti mismo.",
+	"EXTENDED_LINE_2": "**{{prefix}}remind 5m 1d [Mensaje de recordatorio]** ~ Crea un recordatorio recurrente cada día empezando en 5 minutos.",
+	"EXTENDED_LINE_3": "**{{prefix}}remind list** ~ Enlista todos los recordatorios que has creado y cuanto tiempo falta para esos recordatorios.",
+	"EXTENDED_LINE_4": "Si el segundo argumento esta con formato de tiempo, el recordatorio será recurrente con dicho intervalo.",
+	"USAGE": "{{prefix}}remind [Tiempo a partir de ahora] *[Intervalo de frecuencia de tiempo]* [Mensaje]",
+	"ALIASES": "{{prefix}}remindme",
+	"CREATED": "{{mention}}, ¡Te recordare esto cuando sea el momento!",
+	"REMINDING": "ID del recordatorio: {{id}}"
+}
