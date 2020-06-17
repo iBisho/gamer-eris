@@ -7,7 +7,7 @@ import fetch from 'node-fetch'
 import { milliseconds } from '../lib/types/enums/time'
 import { MessageEmbed } from 'helperis'
 import { fetchLatestManga } from '../services/manga'
-import { weeklyVoteReset } from '../lib/utils/voting'
+import { weeklyVoteReset, processBotLists } from '../lib/utils/botlists'
 import { dailyLifeTasksReset } from '../lib/utils/marriage'
 import { EventListener } from 'yuuko'
 import { processPolls } from '../lib/utils/poll'
@@ -151,6 +151,7 @@ export default new EventListener('ready', async () => {
   weeklyVoteReset()
   processYoutubeSubscriptions()
   processRedditSubscriptions()
+  processBotLists()
 
   Gamer.helpers.logger.green(`Loading all tags into cache now...`)
   // Set the tags in cache
