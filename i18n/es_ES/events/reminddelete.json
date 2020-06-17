@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Elimina uno de tus recordatorios.",
+	"EXTENDED": "**{{prefix}}reminddelete [ID del recordatorio]** ° Elimina el recordatorio con este id. No serás recordado de nuevo una vez eliminado.",
+	"USAGE": "{{prefix}}reminddelete [ID del recordatorio]",
+	"ALIASES": "{{prefix}}rd {{prefix}}remindmedelete {{prefix}}reminderdelete",
+	"DELETED": "{{mention}}, El recordatorio con el id que proporcionaste ha sido eliminado."
+}
