@@ -3,9 +3,9 @@ import { Command } from 'yuuko'
 import { SetupCollectorData } from '../../lib/types/gamer'
 import { CategoryChannel, Overwrite, TextChannel, NewsChannel, Constants } from 'eris'
 import { highestRole, MessageEmbed } from 'helperis'
-import { milliseconds } from '../../lib/types/enums/time'
 import constants from '../../constants'
 import { upsertGuild } from '../../database/mongoHandler'
+import { deleteMessage } from '../../lib/utils/eris'
 
 export default new Command('setup', async (message, args, context) => {
   if (!message.member || !message.guildID) return
@@ -59,7 +59,7 @@ export default new Command('setup', async (message, args, context) => {
       const CANCEL_OPTIONS = language(`common:CANCEL_OPTIONS`, { returnObjects: true })
       if ([...CANCEL_OPTIONS, 'q', 'quit'].includes(msg.content.toLowerCase())) {
         msg.channel.createMessage(language(`embedding/embedset:CANCELLED`, { mention: msg.author.mention }))
-        return helperMessage.delete().catch(() => undefined)
+        return deleteMessage(helperMessage)
       }
 
       const args = msg.content.split(' ')
@@ -75,7 +75,7 @@ export default new Command('setup', async (message, args, context) => {
       ) {
         msg.channel
           .createMessage(language(`embedding/embedset:INVALID_EDIT`, { mention: msg.author.mention }))
-          .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+          .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
         return Gamer.collectors.set(msg.author.id, collector)
       }
 
@@ -118,7 +118,7 @@ export default new Command('setup', async (message, args, context) => {
           // Send message about step 2
           msg.channel
             .createMessage(language('utility/setup:VERIFY_COMPLETE'))
-            .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+            .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
           questionEmbed
             .setTitle(language('utility/setup:NETWORK_TITLE'))
             .setDescription(language('utility/setup:NETWORK_DESC'))
@@ -162,7 +162,7 @@ export default new Command('setup', async (message, args, context) => {
           if (!role) {
             msg.channel
               .createMessage(language('utility/setup:INVALID_ROLE'))
-              .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+              .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
             break
           }
 
@@ -177,7 +177,7 @@ export default new Command('setup', async (message, args, context) => {
           if (botsHighestRole.position <= role.position) {
             msg.channel
               .createMessage(language('utility/setup:ROLE_TOO_HIGH'))
-              .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+              .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
             break
           }
 
@@ -258,7 +258,7 @@ export default new Command('setup', async (message, args, context) => {
           if (!json) {
             msg.channel
               .createMessage(language(`settings/setverify:INVALID_JSON_MESSAGE`))
-              .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+              .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
             break
           }
 
@@ -276,7 +276,7 @@ export default new Command('setup', async (message, args, context) => {
             data.step = 2
             msg.channel
               .createMessage(language('utility/setup:VERIFY_COMPLETE'))
-              .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+              .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
 
             questionEmbed
               .setTitle(language('utility/setup:NETWORK_TITLE'))
@@ -292,13 +292,13 @@ export default new Command('setup', async (message, args, context) => {
           if (!autorole) {
             msg.channel
               .createMessage(language('utility/setup:INVALID_ROLE'))
-              .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+              .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
             break
           }
 
           msg.channel
             .createMessage(language('utility/setup:VERIFY_COMPLETE'))
-            .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+            .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
           questionEmbed
             .setTitle(language('utility/setup:NETWORK_TITLE'))
             .setDescription(language('utility/setup:NETWORK_DESC'))
@@ -385,7 +385,7 @@ export default new Command('setup', async (message, args, context) => {
             if (msg.member.guild.roles.size + 20 > 250) {
               msg.channel
                 .createMessage(language(`roles/reactionrolecreate:MAX_ROLES`))
-                .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+                .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
               break
             }
 
@@ -401,7 +401,7 @@ export default new Command('setup', async (message, args, context) => {
             ) {
               msg.channel
                 .createMessage(language(`roles/reactionrolecreate:MISSING_PERMISSION`))
-                .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+                .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
               break
             }
 
@@ -410,13 +410,13 @@ export default new Command('setup', async (message, args, context) => {
             )
 
             await Gamer.helpers.scripts.createReactionRoleColors(placeholderMessage)
-            placeholderMessage.delete().catch(() => undefined)
+            deleteMessage(placeholderMessage)
           }
 
           data.step = 4
           msg.channel
             .createMessage(language('utility/setup:COLOR_WHEEL_COMPLETE'))
-            .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+            .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
           questionEmbed
             .setTitle(language('utility/setup:MUTE_TITLE'))
             .setDescription(language('utility/setup:MUTE_DESC'))
@@ -442,7 +442,7 @@ export default new Command('setup', async (message, args, context) => {
             await Gamer.helpers.scripts.createMuteSystem(msg.member.guild, settings)
             msg.channel
               .createMessage(language('utility/setup:MUTE_COMPLETE'))
-              .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+              .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
           }
 
           data.step = 5
@@ -482,7 +482,7 @@ export default new Command('setup', async (message, args, context) => {
             settings.save()
             msg.channel
               .createMessage(language('utility/setup:PROFANITY_COMPLETE'))
-              .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+              .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
           }
 
           data.step = 6
@@ -512,7 +512,7 @@ export default new Command('setup', async (message, args, context) => {
             await Gamer.helpers.scripts.createLogSystem(msg.member.guild, settings)
             msg.channel
               .createMessage(language('utility/setup:LOGS_COMPLETE'))
-              .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+              .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
           }
 
           data.step = 7
@@ -605,12 +605,12 @@ export default new Command('setup', async (message, args, context) => {
           settings.save()
           msg.channel
             .createMessage(language('utility/setup:MAIL_LOG_COMPLETE'))
-            .then(m => setTimeout(() => m.delete().catch(() => undefined), milliseconds.SECOND * 10))
+            .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
 
           // TODO: Remove this when other steps are completed.
-          msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined)
-          questionMessage.delete().catch(() => undefined)
-          helperMessage.delete().catch(() => undefined)
+          deleteMessage(msg, 0, language(`common:CLEAR_SPAM`))
+          deleteMessage(questionMessage, 0, language(`common:CLEAR_SPAM`))
+          deleteMessage(helperMessage, 0, language(`common:CLEAR_SPAM`))
           return
           // questionEmbed
           //   .setTitle(language('utility/setup:WELCOME_TITLE'))
@@ -639,7 +639,7 @@ export default new Command('setup', async (message, args, context) => {
         case 13:
       }
 
-      msg.delete(language(`common:CLEAR_SPAM`)).catch(() => undefined)
+      deleteMessage(msg, 0, language(`common:CLEAR_SPAM`))
       return Gamer.collectors.set(msg.author.id, collector)
     }
   })
