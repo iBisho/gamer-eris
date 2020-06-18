@@ -4,6 +4,7 @@ import GamerClient from '../structures/GamerClient'
 import { GamerMail } from '../types/gamer'
 import { MessageEmbed, highestRole } from 'helperis'
 import nodefetch from 'node-fetch'
+import { deleteMessage } from './eris'
 
 const channelNameRegex = /^-+|[^\w-]|-+$/g
 
@@ -212,12 +213,12 @@ export default class {
       role.edit({ mentionable: false })
     }
 
-    if (!user) message.delete().catch(() => undefined)
+    if (!user) deleteMessage(message)
 
     this.logMail(guildSettings, embed)
 
     const response = await message.channel.createMessage(language(`mails/mail:CREATED`))
-    return setTimeout(() => response.delete().catch(() => undefined), 10000)
+    return deleteMessage(response, 10)
   }
 
   async sendToMods(

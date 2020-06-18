@@ -9,7 +9,7 @@ import HooksServices from './services/hooks'
 
 import TwitchService from './services/twitch/index'
 import TopGGAPI from 'dblapi.js'
-import { deleteMessage } from './lib/utils/eris'
+import { deleteMessage, sendMessage } from './lib/utils/eris'
 
 // Initiate hooks service
 HooksServices(config.hooks.port)
@@ -69,7 +69,7 @@ Gamer.globalCommandRequirements = {
 
     // Check if bot has embed links perms
     if (!botPerms.has('embedLinks')) {
-      message.channel.createMessage(language(`common:NEED_EMBED_PERMS`))
+      sendMessage(message.channel.id, language(`common:NEED_EMBED_PERMS`))
       return false
     }
 
