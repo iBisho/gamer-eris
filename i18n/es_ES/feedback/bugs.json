@@ -1,0 +1,21 @@
+{
+  "DESCRIPTION": "Envía un informe de error a tú personal del servidor.",
+  "EXTENDED": "$t(feedback/bugs:EXTENDED_LINE_1)\n$t(feedback/bugs:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}bugs Tú informe de error** ~ Empieza una serie de preguntas para obtener toda la información necesaria para completar el informe de error.",
+  "EXTENDED_LINE_2": "**AVANZADO:** Si sabes de antemano todas las preguntas del informe de error para ese servidor. Divide tus respuestas con | y funcionará igual.",
+  "USAGE": "{{prefix}}bugs [Tú informe de error]",
+  "ALIASES": "{{prefix}}bug",
+  "NOT_ACTIVATED": "El servidor no ha habilitado la opción para enviar informes de error. Por favor contacta a un moderador o un administrador del servidor para habilitar esta característica en tú servidor.",
+  "NO_QUESTIONS": "El servidor no ha agregado ninguna pregunta para el informe de errores. Por favor contacta a un moderador o un administrador del servidor para habilitar esta característica en tú servidor.",
+  "NO_CONTENT": "No proporcionaste ningún comentario para enviar. Por favor vuelve a intentarlo e incluye el mensaje que quieras enviar.",
+  "FROM": "Informe de error de parte de {{user}}",
+  "INVALID_CHANNEL": "El canal que esta establecido para recibir los informes de error no es valido. Por favor contacta a un moderador o administrador del servidor para establecer un canal valido antes de que los informes de error puedan ser mandados.",
+  "MISSING_SEND": "No tengo premiso para **Enviar mensajes** en el canal de informe de errores.",
+  "MISSING_EMBED": "No tengo permiso para **Insertar enlaces** en el canal de informe de errores.",
+  "MISSING_REACT": "No tengo permiso para **Añadir reacciones** en el canal de informe de errores.",
+  "MISSING_EXTERNAL": "No tengo permiso para **Usar emojis externos** en el canal de informe de errores.",
+  "MISSING_HISTORY": "No tengo permiso para **Leer historial de mensajes** en el canal de informe de errores. Este permiso es necesario para añadir reacciones.",
+  "SENT": "Tú informe de error ha sido enviado ¡Gracias!",
+  "CANCELLED": "Has cancelado el envío de informe de error.",
+  "NEED_APPROVAL": "Tú informe de error ha sido añadido a la lista de espera de aprobación, gracias. Una vez aprobado por un administrador o moderador será enviado al canal de informe de errores."
+}
