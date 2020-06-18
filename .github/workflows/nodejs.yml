@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Setup project
-        run: cp config.ts.example config.ts
+        run: cp config.example.ts config.ts
       - name: Run tests
         run: npm run test
       - name: Run Lint
