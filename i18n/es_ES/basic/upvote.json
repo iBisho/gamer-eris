@@ -6,12 +6,11 @@
 	"USAGE": "{{prefix}}upvote",
 	"ALIASES": "{{prefix}}vote",
 	"CLICK_HERE": "Clic aquí para votar",
-	"REWARDS": "$t(basic/upvote:REWARDS_1)\n\n$t(basic/upvote:REWARDS_2)\n$t(basic/upvote:REWARDS_3)\n$t(basic/upvote:REWARDS_4)\n\n$t(basic/upvote:EXTENDED_LINE_2)",
+	"REWARDS": "$t(basic/upvote:REWARDS_1)\n\n$t(basic/upvote:REWARDS_2)\n$t(basic/upvote:REWARDS_3)\n\n$t(basic/upvote:EXTENDED_LINE_2)",
 	"REWARDS_1": "Votos de la semana actual: {{amount}}",
 	"REWARDS_2": "1 Voto / 12h - 5 misiones en vez de 3.",
 	"REWARDS_3": "1 Voto / 12h - 50 .slots de la suerte.",
-	"REWARDS_4": "100 Votos - **1 Semana VIP GRATIS**",
-	"REMINDER": "¡Recuerda votar por el bot y desbloquear recompensas increíbles! ¡Usa `{{prefix}}upvote`! Para deshabilitar este tipo de alerta escribe **{{prefix}}reminddelete {{id}}**",
+	"REMINDER": "¡Recuerda votar por el bot y desbloquea recompensas increíbles! ¡Usa `{{prefix}}upvote`! Para deshabilitar esta alerta escribe **{{prefix}}reminddelete {{id}}**",
 	"TIME_LEFT": "Siguiente voto en: {{time}}",
 	"VOTE_NOW": "¡Puedes votar ahora mismo!"
 }
