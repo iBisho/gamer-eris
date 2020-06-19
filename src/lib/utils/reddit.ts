@@ -60,6 +60,7 @@ export async function processRedditSubscriptions() {
     redditSub.subs.forEach(sub => {
       const latestIndex = posts.findIndex(post => post.link === sub.latestLink)
       const latestPosts = latestIndex > 0 ? posts.slice(0, latestIndex) : latestIndex === 0 ? [] : posts
+      console.log(sub.latestLink, latestIndex, latestPosts.length, posts.length)
       Gamer.helpers.logger.green(`[Reddit]: ${redditSub.username} ${latestPosts.length} latest posts found.`)
 
       for (const post of latestPosts.reverse()) {

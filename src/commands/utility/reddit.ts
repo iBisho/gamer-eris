@@ -78,30 +78,30 @@ export default new Command(`reddit`, async (message, args, context) => {
         if (posts.length) {
           message.channel.createMessage(`I have subscribed to this user, and now posting there most recent videos:`)
           for (const post of posts.reverse()) {
-            if (post.link) {
-              // If there is a filter and the title does not have the filter
-              if (
-                subPayload.game &&
-                post.title &&
-                !post.title.toLowerCase().includes(subPayload.game) &&
-                !post.content.toLowerCase().includes(subPayload.game)
-              )
-                continue
+            if (!post.link) continue
 
-              const embed = new MessageEmbed()
-                .setTitle(post.title || 'Unknown Title', post.link)
-                .addField(language('utility/reddit:POST_AUTHOR'), post.author)
-                .setAuthor(language('utility/reddit:NEW_POST', { name: username }), 'https://i.imgur.com/6UiQy32.jpg')
-              if (post.imageURL) embed.setImage(post.imageURL)
-              else embed.setDescription(post.content)
+            subPayload.latestLink = post.link
+            // If there is a filter and the title does not have the filter
+            if (
+              subPayload.game &&
+              post.title &&
+              !post.title.toLowerCase().includes(subPayload.game) &&
+              !post.content.toLowerCase().includes(subPayload.game)
+            )
+              continue
 
-              if (post.date) embed.setTimestamp(Date.parse(post.date))
+            const embed = new MessageEmbed()
+              .setTitle(post.title || 'Unknown Title', post.link)
+              .addField(language('utility/reddit:POST_AUTHOR'), post.author)
+              .setAuthor(language('utility/reddit:NEW_POST', { name: username }), 'https://i.imgur.com/6UiQy32.jpg')
+            if (post.imageURL) embed.setImage(post.imageURL)
+            else embed.setDescription(post.content)
 
-              sendMessage(message.channel.id, { embed: embed.code }).then(
-                message => message && validReactions.forEach(reaction => message.addReaction(reaction))
-              )
-              subPayload.latestLink = post.link
-            }
+            if (post.date) embed.setTimestamp(Date.parse(post.date))
+
+            sendMessage(message.channel.id, { embed: embed.code }).then(
+              message => message && validReactions.forEach(reaction => message.addReaction(reaction))
+            )
           }
         }
 
@@ -125,15 +125,13 @@ export default new Command(`reddit`, async (message, args, context) => {
       const customMessage = await needMessage(message)
       subPayload.text = customMessage.content
 
-      userSubscription.subs.push(subPayload)
-      userSubscription.save()
-
       const posts = await fetchLatestRedditPosts(username)
 
       if (posts.length) {
         message.channel.createMessage(`I have subscribed to this user, and now posting their most recent videos:`)
         for (const post of posts.reverse()) {
           if (!post.link) continue
+          subPayload.latestLink = post.link
 
           // If there is a filter and the title does not have the filter
           if (
@@ -156,10 +154,11 @@ export default new Command(`reddit`, async (message, args, context) => {
           sendMessage(message.channel.id, { embed: embed.code }).then(
             message => message && validReactions.forEach(reaction => message.addReaction(reaction))
           )
-
-          subPayload.latestLink = post.link
         }
       }
+
+      userSubscription.subs.push(subPayload)
+      userSubscription.save()
       return message.channel.createMessage(
         language(`utility/reddit:SUBSCRIBED`, { username, channel: message.channel.mention })
       )
