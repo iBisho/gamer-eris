@@ -20,13 +20,14 @@ export async function fetchLatestRedditPosts(name: string) {
     if (hasImage) {
       const reddIndex = content.indexOf('https://i.redd.it')
       const previewIndex = content.indexOf('https://preview.')
-      const startIndex = reddIndex >= 0 ? reddIndex : previewIndex
+      const httpIndex = content.indexOf('http')
+      const startIndex = reddIndex >= 0 ? reddIndex : previewIndex >= 0 ? previewIndex : httpIndex
       const start = content.substring(startIndex)
       const pngIndex = start.indexOf('.png')
       const jpgIndex = start.indexOf('.jpg')
       const endIndex = (pngIndex >= 0 ? pngIndex : jpgIndex) + 4
 
-      imageURL = start.substring(0, endIndex)
+      imageURL = start.substring(0, endIndex).replace('preview.redd.it', 'i.redd.it')
     }
 
     return {
@@ -41,6 +42,7 @@ export async function fetchLatestRedditPosts(name: string) {
 }
 
 export async function processRedditSubscriptions() {
+  Gamer.helpers.logger.green('Processing Reddit Subscriptions')
   const redditSubs = await Gamer.database.models.subscription.find({ type: GamerSubscriptionType.REDDIT })
   const validReactions = [constants.emojis.voteup, constants.emojis.votedown]
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -48,18 +50,27 @@ export async function processRedditSubscriptions() {
     .filter(reaction => reaction)
 
   for (const redditSub of redditSubs) {
+    Gamer.helpers.logger.green(`Reddit Subs: ${redditSub.username}`)
+    if (!redditSub.subs.length) continue
+
     const posts = await fetchLatestRedditPosts(redditSub.username)
+    Gamer.helpers.logger.green(`[Reddit]: ${redditSub.username} ${posts.length} posts fetched.`)
     if (!posts.length) continue
 
     redditSub.subs.forEach(sub => {
       const latestIndex = posts.findIndex(post => post.link === sub.latestLink)
       const latestPosts = latestIndex > 0 ? posts.slice(0, latestIndex) : latestIndex === 0 ? [] : posts
 
-      latestPosts.reverse().forEach((post, index) => {
-        if (!post.link || !post.title) return
+      Gamer.helpers.logger.green(`[Reddit]: ${redditSub.username} ${latestPosts.length} latest posts found.`)
+
+      for (const post of latestPosts.reverse()) {
+        if (!post.link || !post.title) continue
+
+        sub.latestLink = post.link
+
         // If there is a filter and the title does not have the filter
         if (sub.game && !post.title.toLowerCase().includes(sub.game) && !post.content.toLowerCase().includes(sub.game))
-          return
+          continue
 
         const text = sub.text || `**${redditSub.username}** has a new post! @everyone`
 
@@ -82,9 +93,7 @@ export async function processRedditSubscriptions() {
           allowedMentions: { everyone: true, roles: true, users: true },
           embed: embed.code
         }).then(message => message && validReactions.forEach(reaction => message.addReaction(reaction)))
-
-        if (latestPosts.length - 1 === index) sub.latestLink = post.link
-      })
+      }
     })
 
     await redditSub.save()

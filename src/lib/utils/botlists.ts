@@ -35,6 +35,9 @@ export const weeklyVoteReset = async () => {
 export function updateBotLists() {
   const guildCount = Gamer.guilds.size
   botlistData.forEach(data => {
+    // Non production bots dont need to update stats
+    if (!data.token) return
+
     nodefetch(data.url, {
       method: 'POST',
       headers: {
