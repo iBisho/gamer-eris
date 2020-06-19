@@ -1,0 +1,23 @@
+{
+  "DESCRIPTION": "Envía una idea como comentario al personal de tu servidor.",
+  "EXTENDED": "$t(feedback/idea:EXTENDED_LINE_1)\n$t(feedback/idea:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}idea Tu idea** ~ Empieza una serie de preguntas para obtener toda la información necesaria para completar la idea.",
+  "EXTENDED_LINE_2": "**AVANZADO:** Si sabes de antemano todas las preguntas de la idea para ese servidor. Divide tus respuestas con | y funcionará igual.",
+  "USAGE": "{{prefix}}idea [Tu idea]",
+  "ALIASES": "Idea no tiene ningún alias.",
+  "NOT_ACTIVATED": "El servidor no ha habilitado la opción para enviar ideas. Por favor contacta a un moderador o un administrador del servidor para habilitar esta característica en tu servidor.",
+  "NO_QUESTIONS": "El servidor no ha agregado ninguna pregunta para las ideas. Por  favor contacta a un moderador o un administrador del servidor para habilitar esta característica en tu servidor.",
+  "NO_CONTENT": "No proporcionaste ningún comentario para enviar. Por favor vuelve a intentarlo e incluye el mensaje que quieras enviar.",
+  "FROM": "Idea de parte de {{user}}",
+  "INVALID_CHANNEL": "El canal que esta establecido para recibir ideas no es valido. Por favor contacta a un moderador o administrador del servidor para establecer un canal valido antes de que las ideas puedan ser enviadas.",
+  "MISSING_SEND": "No tengo permiso para **Enviar mensajes** en el canal de ideas.",
+  "MISSING_EMBED": "No tengo permiso para **Insertar enlaces** en el canal de ideas.",
+  "MISSING_REACT": "No tengo permiso para **Añadir reacciones** en el canal de ideas.",
+  "MISSING_EXTERNAL": "No tengo permiso para **Usar emojis externos** en el canal de ideas.",
+  "MISSING_HISTORY": "No tengo permiso para **Leer historial de mensajes** en el canal de ideas. Este permiso es necesario para añadir reacciones.",
+  "SENT": "Tu idea ha sido enviada ¡Gracias!",
+  "CANCELLED": "Has cancelado el envío de la idea.",
+	"SOLVED_DEFAULT": "Gracias por subir tu comentario. Tu comentario ha sido resuelto exitosamente.",
+  "REJECTED_DEFAULT": "Gracias por subir tu comentario. El comentario que has subido ha sido eliminado. Para mas información, contáctanos en el servidor.",
+  "NEED_APPROVAL": "Tu idea ha sido añadida a la lista de espera de aprobación, gracias. Una veza aprobada por un administrador o moderador será enviada al canal de ideas."
+}
