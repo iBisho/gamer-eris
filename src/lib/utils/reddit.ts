@@ -20,13 +20,14 @@ export async function fetchLatestRedditPosts(name: string) {
     if (hasImage) {
       const reddIndex = content.indexOf('https://i.redd.it')
       const previewIndex = content.indexOf('https://preview.')
-      const startIndex = reddIndex >= 0 ? reddIndex : previewIndex
+      const httpIndex = content.indexOf('http')
+      const startIndex = reddIndex >= 0 ? reddIndex : previewIndex >= 0 ? previewIndex : httpIndex
       const start = content.substring(startIndex)
       const pngIndex = start.indexOf('.png')
       const jpgIndex = start.indexOf('.jpg')
       const endIndex = (pngIndex >= 0 ? pngIndex : jpgIndex) + 4
 
-      imageURL = start.substring(0, endIndex)
+      imageURL = start.substring(0, endIndex).replace('preview.redd.it', 'i.redd.it')
     }
 
     return {
