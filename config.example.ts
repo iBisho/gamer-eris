@@ -5,7 +5,7 @@ export default {
     port: 3000,
     token: 'TOP_GG_TOKEN'
   },
-  botists: {
+  botlists: {
     discordBotsGG: '',
     botsOnDiscord: ''
   },
