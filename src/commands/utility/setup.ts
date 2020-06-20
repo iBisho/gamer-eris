@@ -36,6 +36,7 @@ export default new Command('setup', async (message, args, context) => {
     .addField(language('utility/setup:PROFANITY'), language('utility/setup:UPCOMING'))
     .addField(language('utility/setup:SERVER_LOGS'), language('utility/setup:UPCOMING'))
     .addField(language('utility/setup:MAIL'), language('utility/setup:UPCOMING'))
+    .addField(language('utility/setup:CROSSPOST'), language('utility/setup:UPCOMING'))
 
   const questionEmbed = new MessageEmbed()
     .setTitle(language('utility/setup:VERIFY_TITLE'))
@@ -70,7 +71,7 @@ export default new Command('setup', async (message, args, context) => {
       const NO_OPTIONS = language('common:NO_OPTIONS', { returnObjects: true })
 
       if (
-        ![1.2, 1.3, 1.4, 3.1, 6.1].includes(data.step) &&
+        ![1.2, 1.3, 1.4, 3.1, 6.1, 8.1].includes(data.step) &&
         ![...YES_OPTIONS, ...NO_OPTIONS].includes(type.toLowerCase())
       ) {
         msg.channel
@@ -541,8 +542,8 @@ export default new Command('setup', async (message, args, context) => {
           if (NO_OPTIONS.includes(msg.content.toLowerCase())) {
             data.step = 8
             questionEmbed
-              .setTitle(language('utility/setup:WELCOME_TITLE'))
-              .setDescription(language('utility/setup:WELCOME_DESC'))
+              .setTitle(language('utility/setup:CROSSPOST_TITLE'))
+              .setDescription(language('utility/setup:CROSSPOST_DESC'))
               .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
             questionMessage.edit({ embed: questionEmbed.code })
             break
@@ -559,6 +560,7 @@ export default new Command('setup', async (message, args, context) => {
             .setDescription(language('utility/setup:ASK_HELP'))
           supportChannel.createMessage({ embed: supportEmbed.code })
           settings.mails.supportChannelID = supportChannel.id
+          settings.save()
 
           data.step = 7.1
           questionEmbed
@@ -607,25 +609,72 @@ export default new Command('setup', async (message, args, context) => {
             .createMessage(language('utility/setup:MAIL_LOG_COMPLETE'))
             .then(m => deleteMessage(m, 10, language(`common:CLEAR_SPAM`)))
 
+          questionEmbed
+            .setTitle(language('utility/setup:CROSSPOST_TITLE'))
+            .setDescription(language('utility/setup:CROSSPOST_DESC'))
+            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
+          questionMessage.edit({ embed: questionEmbed.code })
+          data.step = 8
+          break
+        // Follow Gamer announcemnts
+        case 8:
+          await helperMessage.edit({
+            embed: {
+              ...helperMessage.embeds[0],
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              fields: helperMessage.embeds[0].fields!.map((field, index) => {
+                if (index < 7) return { name: field.name, value: language('utility/setup:DONE') }
+                return {
+                  name: field.name,
+                  value: index === 7 ? language('utility/setup:CURRENT') : language('utility/setup:UPCOMING')
+                }
+              })
+            }
+          })
+
+          if (NO_OPTIONS.includes(msg.content.toLowerCase())) {
+            questionEmbed
+              .setTitle(language('utility/setup:WELCOME_TITLE'))
+              .setDescription(language('utility/setup:WELCOME_DESC'))
+            questionMessage.edit({ embed: questionEmbed.code })
+            data.step = 9
+            break
+          }
+
+          questionEmbed
+            .setTitle(language('utility/setup:CROSSPOST_CHANNEL_TITLE'))
+            .setDescription(language('utility/setup:CROSSPOST_CHANNEL_DESC'))
+            .setFooter(language('utility/setup:CROSSPOST_CHANNEL_FOOTER'))
+          questionMessage.edit({ embed: questionEmbed.code })
+          data.step = 8.1
+          break
+        case 8.1:
+          const [crosspostChannelID] = msg.channelMentions
+          if (!crosspostChannelID) {
+            break
+          }
+
+          const crosspostChannel = msg.member.guild.channels.get(crosspostChannelID)
+          if (crosspostChannel instanceof TextChannel || crosspostChannel instanceof NewsChannel) {
+            // Follows the gamer #wall channel for updates
+            await Gamer.followChannel('650349614104576021', crosspostChannelID)
+            data.step = 9
+            // TODO: Remove this when other steps are completed.
+            deleteMessage(msg, 0, language(`common:CLEAR_SPAM`))
+            deleteMessage(questionMessage, 0, language(`common:CLEAR_SPAM`))
+            deleteMessage(helperMessage, 0, language(`common:CLEAR_SPAM`))
+            return
+          }
+
+          break
+        // Welcome system
+        case 9:
           // TODO: Remove this when other steps are completed.
           deleteMessage(msg, 0, language(`common:CLEAR_SPAM`))
           deleteMessage(questionMessage, 0, language(`common:CLEAR_SPAM`))
           deleteMessage(helperMessage, 0, language(`common:CLEAR_SPAM`))
-          return
-          // questionEmbed
-          //   .setTitle(language('utility/setup:WELCOME_TITLE'))
-          //   .setDescription(language('utility/setup:WELCOME_DESC'))
-          //   .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
-          // questionMessage.edit({ embed: questionEmbed.code })
-          // data.step = 8
-
-          break
-        // Welcome system
-        case 8:
           break
         // Goodbye System
-        case 9:
-          break
         // Events Card Channel
         case 10:
           break
