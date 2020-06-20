@@ -16,12 +16,16 @@ export default class extends Monitor {
       const [guildID, channelID, messageID] = word.substring(word.indexOf('channels/') + 9).split('/')
 
       // If link is from another server, do nothing
-      if (!message.member || guildID !== message.member.guild.id) return
+      if (!channelID || !message.member || guildID !== message.member.guild.id) return
 
       // If different channel do nothing cause it might be a private guild only channel
-      if (message.channel.id !== channelID) return
+      // if (message.channel.id !== channelID) return
 
-      quoteCommand.execute(message, [messageID], { prefix: Gamer.prefix, client: Gamer, commandName: 'quote' })
+      quoteCommand.execute(message, [messageID, channelID], {
+        prefix: Gamer.prefix,
+        client: Gamer,
+        commandName: 'quote'
+      })
     })
   }
 }
