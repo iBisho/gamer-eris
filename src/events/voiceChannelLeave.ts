@@ -42,6 +42,9 @@ export default new EventListener('voiceChannelLeave', async (member, channel) =>
   voiceChannelLeaveServerLog(member, channel)
   if (member.bot) return
 
+  // Make sure the member is still part of the server
+  if (!member.guild.members.has(member.id)) return
+
   const memberSettings = await Gamer.database.models.member.findOne({
     memberID: member.id,
     guildID: member.guild.id
@@ -52,7 +55,7 @@ export default new EventListener('voiceChannelLeave', async (member, channel) =>
   // If the joined channel is the afk channel ignore.
   if (channel.id === channel.guild.afkChannelID) {
     memberSettings.leveling.joinedVoiceAt = 0
-    memberSettings.save()
+    memberSettings.save().catch(error => console.log(error))
     return
   }
 

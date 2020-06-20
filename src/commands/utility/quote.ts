@@ -13,12 +13,13 @@ export default new Command(`quote`, async (message, args, context) => {
 
   const language = Gamer.getLanguage(message.guildID)
 
-  const [messageID] = args
+  const [messageID, channelID] = args
   if (!messageID) return helpCommand.execute(message, [`quote`], { ...context, commandName: 'help' })
 
-  const [channelID] = message.channelMentions
-
-  const channel = channelID ? message.member.guild.channels.get(channelID) : message.channel
+  const channel =
+    channelID || message.channelMentions.length
+      ? message.member.guild.channels.get(channelID || message.channelMentions[0])
+      : message.channel
   if (!channel || !(channel instanceof TextChannel)) return
 
   const botPerms = channel.permissionsOf(Gamer.user.id)
@@ -41,7 +42,7 @@ export default new Command(`quote`, async (message, args, context) => {
         quotedMessageEmbed ? language(`utility/quote:EMBED`) : quotedMessage.content
       ].join('\n')
     )
-    .setFooter(channel ? channel.name : ``)
+    .setFooter(channel ? `#${channel.name}` : ``)
   if (quotedMessage.attachments.length) embed.setImage(quotedMessage.attachments[0].url)
 
   return message.channel.createMessage({ embed: embed.code })
