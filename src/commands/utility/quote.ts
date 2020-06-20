@@ -41,7 +41,7 @@ export default new Command(`quote`, async (message, args, context) => {
         quotedMessageEmbed ? language(`utility/quote:EMBED`) : quotedMessage.content
       ].join('\n')
     )
-    .setFooter(channel ? channel.name : ``)
+    .setFooter(channel ? `#${channel.name}` : ``)
   if (quotedMessage.attachments.length) embed.setImage(quotedMessage.attachments[0].url)
 
   return message.channel.createMessage({ embed: embed.code })
