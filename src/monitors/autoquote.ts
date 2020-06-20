@@ -4,7 +4,7 @@ import GamerClient from '../lib/structures/GamerClient'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (!message.content.length) return console.log(Gamer.prefix)
+    if (!message.content.length) return
 
     const quoteCommand = Gamer.commandForName('quote')
     if (!quoteCommand) return
