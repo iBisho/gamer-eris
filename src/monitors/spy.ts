@@ -6,7 +6,7 @@ import { sendDirectMessage } from '../lib/utils/eris'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    if (!message.member || !Gamer.vipGuildIDs.has(message.member.guild.id)) return
+    if (!message.member) return
     const guild = message.member.guild
     const language = Gamer.getLanguage(guild.id)
 
