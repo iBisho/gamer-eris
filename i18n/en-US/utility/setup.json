@@ -6,7 +6,7 @@
   "USAGE": "{{prefix}}setup",
   "ALIASES": "Setup has no aliases.",
   "NEED_ADMIN_PERM": "I am missing the **ADMINISTRATOR** permission on this server. To run the setup command, I require this permissions. Once you are done using the command you can remove the permission again.",
-  "NOT_ADMIN": "You do not have the necessary permissions to use this command. To begin the setup process, you need to be the **SERVER OWNER** as this is a very powerful command.",
+  "NOT_OWNER": "You do not have the necessary permissions to use this command. To begin the setup process, you need to be the **SERVER OWNER** as this is a very powerful command.",
   "VERIFICATION": "Verification System",
   "SOCIAL_NETWORK": "Social Network Feature",
   "REACTION_ROLE_COLOR_WHEEL": "Color Wheel Reaction Role",
