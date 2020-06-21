@@ -3,6 +3,7 @@ import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed } from 'helperis'
 import nodefetch from 'node-fetch'
 import { EventListener } from 'yuuko'
+import { sendMessage } from '../lib/utils/eris'
 
 export default new EventListener('messageDelete', async (message, context) => {
   if (!(message.channel instanceof TextChannel) && !(message.channel instanceof NewsChannel)) return
@@ -23,10 +24,6 @@ export default new EventListener('messageDelete', async (message, context) => {
 
   const logs = guildSettings.moderation.logs
 
-  const publicChannel = logs.publiclogsChannelID
-    ? message.channel.guild.channels.get(logs.publiclogsChannelID)
-    : undefined
-
   const botMember = await Gamer.helpers.discord.fetchMember(message.channel.guild, Gamer.user.id)
   if (!botMember?.permission.has('viewAuditLogs')) return
 
@@ -36,12 +33,8 @@ export default new EventListener('messageDelete', async (message, context) => {
     Constants.AuditLogActions.MESSAGE_DELETE
   )
 
-  const logChannel = logs.serverlogs.messages.channelID
-    ? message.channel.guild.channels.get(logs.serverlogs.messages.channelID)
-    : undefined
-
-  if (logs.serverlogs.messages.deletedPublicEnabled && publicChannel && publicChannel instanceof TextChannel)
-    publicChannel.createMessage({ embed: embed.code })
+  if (logs.serverlogs.messages.editedPublicEnabled && logs.publiclogsChannelID)
+    sendMessage(logs.publiclogsChannelID, { embed: embed.code })
 
   if (message instanceof Message && message.channel instanceof TextChannel) {
     embed.setThumbnail(message.author.avatarURL)
@@ -67,9 +60,5 @@ export default new EventListener('messageDelete', async (message, context) => {
   }
 
   // Send the finalized embed to the log channel
-  if (logChannel && logChannel instanceof TextChannel) {
-    const botPerms = logChannel.permissionsOf(Gamer.user.id)
-    if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-      logChannel.createMessage({ embed: embed.code })
-  }
+  if (logs.serverlogs.messages.channelID) sendMessage(logs.serverlogs.messages.channelID, { embed: embed.code })
 })

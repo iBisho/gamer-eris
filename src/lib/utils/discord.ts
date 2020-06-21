@@ -147,6 +147,7 @@ export default class {
       if (Date.now() - collector.createdAt < milliseconds.MINUTE * menutime) return
 
       Gamer.collectors.delete(collector.authorID)
+      collector.reject?.()
     })
   }
 }
