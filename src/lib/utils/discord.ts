@@ -120,6 +120,7 @@ export default class {
     if (cachedMember) return cachedMember
 
     const member = await guild.shard.client.getRESTGuildMember(guild.id, userID).catch(() => undefined)
+    if (member) guild.members.add(member)
     return member
   }
 
