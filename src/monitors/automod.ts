@@ -20,7 +20,7 @@ export default class extends Monitor {
 
     // This if check allows admins to override and test their filter is working
     if (!message.content.startsWith(`modbypass`)) {
-      // if (Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)) return
+      if (Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID)) return
     }
 
     const embed = new MessageEmbed().setAuthor(
@@ -155,17 +155,18 @@ export default class extends Monitor {
       for (const language of [constants.alphabet.english, constants.alphabet.russian]) {
         if (language.lowercase.includes(letter)) lowercaseCount++
         else if (language.uppercase.includes(letter)) uppercaseCount++
-
-        if (letter !== ' ') characterCount++
       }
+
+      if (letter !== ' ') characterCount++
     }
 
     const letterCount = lowercaseCount + uppercaseCount
     if (characterCount === 1 || (message.content.split(' ').length < 2 && letterCount <= 10)) return
 
     const percentageOfCapitals = (uppercaseCount / characterCount) * 100
-    if (isNaN(percentageOfCapitals) || percentageOfCapitals < settings.moderation.filters.capital) return
-
+    console.log(1, uppercaseCount, characterCount, percentageOfCapitals, settings.moderation.filters.capital)
+    if (percentageOfCapitals < settings.moderation.filters.capital) return
+    console.log(2)
     // If there was too many capitals then lower it
     return message.content.toLowerCase()
   }
