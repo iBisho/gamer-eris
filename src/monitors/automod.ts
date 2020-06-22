@@ -164,9 +164,8 @@ export default class extends Monitor {
     if (characterCount === 1 || (message.content.split(' ').length < 2 && letterCount <= 10)) return
 
     const percentageOfCapitals = (uppercaseCount / characterCount) * 100
-    console.log(1, uppercaseCount, characterCount, percentageOfCapitals, settings.moderation.filters.capital)
     if (percentageOfCapitals < settings.moderation.filters.capital) return
-    console.log(2)
+
     // If there was too many capitals then lower it
     return message.content.toLowerCase()
   }
