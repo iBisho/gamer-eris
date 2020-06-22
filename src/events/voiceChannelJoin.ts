@@ -1,8 +1,9 @@
-import { Member, VoiceChannel, TextChannel } from 'eris'
+import { Member, VoiceChannel } from 'eris'
 import Gamer from '../index'
 import { MessageEmbed, userTag } from 'helperis'
 import { EventListener } from 'yuuko'
 import { upsertMember } from '../database/mongoHandler'
+import { sendMessage } from '../lib/utils/eris'
 
 export async function voiceChannelJoinServerLog(member: Member, channel: VoiceChannel) {
   const language = Gamer.getLanguage(member.guild.id)
@@ -28,13 +29,7 @@ export async function voiceChannelJoinServerLog(member: Member, channel: VoiceCh
   const guildSettings = await Gamer.database.models.guild.findOne({ guildID: member.guild.id })
   if (!guildSettings?.moderation.logs.serverlogs.members.channelID) return
 
-  const logChannel = member.guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)
-  // Send the finalized embed to the log channel
-  if (logChannel instanceof TextChannel) {
-    const botPerms = logChannel.permissionsOf(Gamer.user.id)
-    if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-      logChannel.createMessage({ embed: { ...embed.code } })
-  }
+  sendMessage(guildSettings.moderation.logs.serverlogs.members.channelID, { embed: { ...embed.code } })
 }
 
 export default new EventListener('voiceChannelJoin', async (member, channel) => {

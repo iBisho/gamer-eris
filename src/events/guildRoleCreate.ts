@@ -1,7 +1,8 @@
-import { TextChannel, Constants } from 'eris'
+import { Constants } from 'eris'
 import Gamer from '..'
 import { MessageEmbed } from 'helperis'
 import { EventListener } from 'yuuko'
+import { sendMessage } from '../lib/utils/eris'
 
 export default new EventListener('guildRoleCreate', async (guild, role) => {
   const language = Gamer.getLanguage(guild.id)
@@ -23,15 +24,8 @@ export default new EventListener('guildRoleCreate', async (guild, role) => {
   if (!guildSettings?.moderation.logs.serverlogs.roles.channelID) return
 
   const logs = guildSettings.moderation.logs
-  if (logs.publiclogsChannelID && logs.serverlogs.roles.createPublicEnabled) {
-    const publicChannel = logs.publiclogsChannelID ? guild.channels.get(logs.publiclogsChannelID) : undefined
-
-    if (publicChannel && publicChannel instanceof TextChannel) {
-      const botPerms = publicChannel.permissionsOf(Gamer.user.id)
-      if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-        publicChannel.createMessage({ embed: { ...embed.code, color: role.color } })
-    }
-  }
+  if (logs.publiclogsChannelID && logs.serverlogs.roles.createPublicEnabled)
+    sendMessage(logs.publiclogsChannelID, { embed: { ...embed.code, color: role.color } })
 
   const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
   if (!botMember?.permission.has('viewAuditLogs')) return
@@ -47,11 +41,6 @@ export default new EventListener('guildRoleCreate', async (guild, role) => {
     }
   }
 
-  const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.roles.channelID)
   // Send the finalized embed to the log channel
-  if (logChannel instanceof TextChannel) {
-    const botPerms = logChannel.permissionsOf(Gamer.user.id)
-    if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-      logChannel.createMessage({ embed: { ...embed.code, color: role.color } })
-  }
+  sendMessage(guildSettings.moderation.logs.serverlogs.roles.channelID, { embed: { ...embed.code, color: role.color } })
 })

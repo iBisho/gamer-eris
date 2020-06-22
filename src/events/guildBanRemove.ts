@@ -1,8 +1,9 @@
-import { TextChannel, Constants } from 'eris'
+import { Constants } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed } from 'helperis'
 import { modlogTypes } from '../lib/types/enums/moderation'
 import { EventListener } from 'yuuko'
+import { sendMessage } from '../lib/utils/eris'
 
 export default new EventListener('guildBanRemove', async (guild, user) => {
   const Gamer = guild.shard.client as GamerClient
@@ -36,10 +37,5 @@ export default new EventListener('guildBanRemove', async (guild, user) => {
   }
 
   // Send the finalized embed to the log channel
-  const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)
-  if (logChannel instanceof TextChannel) {
-    const botPerms = logChannel.permissionsOf(Gamer.user.id)
-    if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-      logChannel.createMessage({ embed: embed.code })
-  }
+  sendMessage(guildSettings.moderation.logs.serverlogs.members.channelID, { embed: embed.code })
 })

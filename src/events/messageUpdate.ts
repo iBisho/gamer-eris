@@ -1,7 +1,8 @@
-import { PrivateChannel, Message, TextChannel, GroupChannel } from 'eris'
+import { PrivateChannel, Message, GroupChannel } from 'eris'
 import Gamer from '..'
 import { MessageEmbed } from 'helperis'
 import { EventListener } from 'yuuko'
+import { sendMessage } from '../lib/utils/eris'
 
 export default new EventListener('messageUpdate', async (message, oldMessage, context) => {
   // Most embeds will always trigger a messageUpdate
@@ -15,11 +16,16 @@ export default new EventListener('messageUpdate', async (message, oldMessage, co
   // Valid message object so we can simply run the monitors
   if (!(message instanceof Message)) return
 
-  Gamer.emit('messageCreate', message, context)
-
   if (!message.member) return
 
+  // Check if the text is different to trigger commands and such
   if (message.content === oldMessage?.content) return
+
+  // Just in case an actual edited message had urls in it
+  if (oldMessage?.editedTimestamp !== message.editedTimestamp) return
+
+  Gamer.emit('messageCreate', message, context)
+
   const language = Gamer.getLanguage(message.guildID)
 
   const urlToMessage = `https://discordapp.com/channels/${message.guildID}/${message.channel.id}/${message.id}`
@@ -48,15 +54,7 @@ export default new EventListener('messageUpdate', async (message, oldMessage, co
   }
 
   const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
-  if (!guildSettings) return
 
-  const logChannel = guildSettings.moderation.logs.serverlogs.messages.channelID
-    ? message.member.guild.channels.get(guildSettings.moderation.logs.serverlogs.messages.channelID)
-    : undefined
-
-  if (logChannel instanceof TextChannel) {
-    const botPerms = logChannel.permissionsOf(Gamer.user.id)
-    if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-      logChannel.createMessage({ embed: embed.code })
-  }
+  if (guildSettings?.moderation.logs.serverlogs.messages.channelID)
+    sendMessage(guildSettings.moderation.logs.serverlogs.messages.channelID, { embed: embed.code })
 })

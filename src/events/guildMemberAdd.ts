@@ -2,7 +2,7 @@ import { TextChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed, highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { addRoleToMember } from '../lib/utils/eris'
+import { addRoleToMember, sendMessage } from '../lib/utils/eris'
 
 export default new EventListener('guildMemberAdd', async (guild, member) => {
   const Gamer = guild.shard.client as GamerClient
@@ -120,7 +120,8 @@ export default new EventListener('guildMemberAdd', async (guild, member) => {
 
   // Server logs feature
   // If there is no channel set for logging this cancel
-  if (!guildSettings.moderation.logs.serverlogs.members.channelID) return
+  const logs = guildSettings.moderation.logs
+  if (!logs.serverlogs.members.channelID) return
 
   // Create the base embed that first can be sent to public logs
   const embed = new MessageEmbed()
@@ -136,29 +137,10 @@ export default new EventListener('guildMemberAdd', async (guild, member) => {
     .setThumbnail(member.avatarURL)
     .setTimestamp()
 
-  const logs = guildSettings.moderation.logs
-
   // If public logs are enabled properly then send the embed there
-  if (logs.serverlogs.members.addPublicEnabled && logs.publiclogsChannelID) {
-    const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
-    if (publicLogChannel instanceof TextChannel) {
-      const hasPermission = Gamer.helpers.discord.checkPermissions(publicLogChannel, Gamer.user.id, [
-        `embedLinks`,
-        `readMessages`,
-        `sendMessages`
-      ])
-      if (hasPermission) publicLogChannel.createMessage({ embed: embed.code })
-    }
-  }
+  if (logs.serverlogs.members.addPublicEnabled && logs.publiclogsChannelID)
+    sendMessage(logs.publiclogsChannelID, { embed: embed.code })
 
   // Send the finalized embed to the log channel
-  const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)
-  if (logChannel instanceof TextChannel) {
-    const hasPermission = Gamer.helpers.discord.checkPermissions(logChannel, Gamer.user.id, [
-      `embedLinks`,
-      `readMessages`,
-      `sendMessages`
-    ])
-    if (hasPermission) logChannel.createMessage({ embed: embed.code })
-  }
+  sendMessage(logs.serverlogs.members.channelID, { embed: embed.code })
 })
