@@ -72,7 +72,7 @@ export default class {
       }),
       Gamer.database.models.user.findOne({ userID: member.id }),
       Gamer.database.models.marriage.findOne({ authorID: member.id }),
-      Gamer.database.models.marriage.findOne({ spouseID: member.id })
+      Gamer.database.models.marriage.findOne({ spouseID: member.id, accepted: true })
     ])
 
     // Select the background theme & id from their settings if no override options were provided
