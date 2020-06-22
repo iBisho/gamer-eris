@@ -69,7 +69,11 @@ export async function processRedditSubscriptions() {
         sub.latestLink = post.link
 
         // If there is a filter and the title does not have the filter
-        if (sub.game && !post.title.toLowerCase().includes(sub.game) && !post.content.toLowerCase().includes(sub.game))
+        if (
+          sub.game &&
+          !post.title.toLowerCase().split(' ').includes(sub.game) &&
+          !post.content.toLowerCase().split(' ').includes(sub.game)
+        )
           continue
 
         const text = sub.text || `**${redditSub.username}** has a new post! @everyone`
