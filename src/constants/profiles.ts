@@ -93,6 +93,46 @@ export default {
       id: 9,
       name: `Control`,
       buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/control.jpg`))
+    },
+    {
+      id: 10,
+      name: `Ark Survival Evolved - Submitted By Aikage#4444`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/ark.jpg`))
+    },
+    {
+      id: 11,
+      name: `PlayerUnknown's Battlegrounds - Submitted By GeheimerWolf#8008`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/pubg.png`))
+    },
+    {
+      id: 12,
+      name: `SadAnimeGirly - Submitted By GeheimerWolf#8008`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/SadAnimeGirly.png`))
+    },
+    {
+      id: 13,
+      name: `Minecraft - Submitted By Aikage#4444`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/minecraft.png`))
+    },
+    {
+      id: 14,
+      name: `CodeVein - Submitted By Aikage#4444`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/CodeVein.jpg`))
+    },
+    {
+      id: 15,
+      name: `Final-Fantasy-VII - Submitted By Aikage#4444`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/Final-Fantasy-VII.jpg`))
+    },
+    {
+      id: 16,
+      name: `Something - Submitted By Aikage#4444`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/something.png`))
+    },
+    {
+      id: 17,
+      name: `Overwatch - Submitted By Aikage#4444`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/Overwatch.png`))
     }
   ],
   backgroundPackages: [],

@@ -2,5 +2,5 @@
   "DESCRIPTION": "When you want to laugh out loud!",
   "EXTENDED": "**{{prefix}}lmao** ~ Sends a LMAO gif in the channel.",
   "USAGE": "{{prefix}}lmao",
-  "ALIASES": "{{prefix}}lol"
+  "ALIASES": "{{prefix}}lol {{prefix}}laugh"
 }
