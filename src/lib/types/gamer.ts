@@ -10,6 +10,7 @@ export interface Collector {
   channelID: string
   guildID: string
   data: unknown
+  reject?: (reason?: unknown) => void
   callback(message: Message, collector: Collector): Promise<unknown>
 }
 

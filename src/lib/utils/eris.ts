@@ -112,6 +112,7 @@ export function needMessage(message: Message): Promise<Message> {
       channelID: message.channel.id,
       createdAt: Date.now(),
       guildID: message.member.guild.id,
+      reject,
       data: {},
       callback: async msg => {
         resolve(msg)

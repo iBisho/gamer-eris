@@ -6,6 +6,7 @@ import { MessageEmbed, userTag } from 'helperis'
 import * as confusables from 'confusables'
 import getURLs from 'get-urls'
 import { sendMessage, deleteMessage } from '../lib/utils/eris'
+import constants from '../constants'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -146,15 +147,24 @@ export default class extends Monitor {
   capitalSpamFilter(message: Message, settings: GuildSettings) {
     if (settings.moderation.filters.capital === 100) return
 
-    const messageWithoutSpaces = message.content.replace(/[^A-Za-z]/g, ``)
-    const finalLength = messageWithoutSpaces.length
-    if (finalLength === 1 || (message.content.split(` `).length < 2 && finalLength <= 10)) return
+    let lowercaseCount = 0
+    let uppercaseCount = 0
+    let characterCount = 0
 
-    // Removes all non-capitals and checks how many left
-    const count = message.content.replace(/[^A-Z]/g, '').length
-    const percentageOfCapitals = (count / finalLength) * 100
-    // If image is sent it isNaN
-    if (isNaN(percentageOfCapitals) || percentageOfCapitals < settings.moderation.filters.capital) return
+    for (const letter of message.content) {
+      for (const language of [constants.alphabet.english, constants.alphabet.russian]) {
+        if (language.lowercase.includes(letter)) lowercaseCount++
+        else if (language.uppercase.includes(letter)) uppercaseCount++
+      }
+
+      if (letter !== ' ') characterCount++
+    }
+
+    const letterCount = lowercaseCount + uppercaseCount
+    if (characterCount === 1 || (message.content.split(' ').length < 2 && letterCount <= 10)) return
+
+    const percentageOfCapitals = (uppercaseCount / characterCount) * 100
+    if (percentageOfCapitals < settings.moderation.filters.capital) return
 
     // If there was too many capitals then lower it
     return message.content.toLowerCase()

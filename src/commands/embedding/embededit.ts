@@ -53,7 +53,7 @@ export default new Command(`embededit`, async (message, args, context) => {
     return Gamer.helpers.discord.embedResponse(
       message,
       language('embedding/embededit:EDITED', {
-        link: `https://discord.com/channels/${messageToUse.guildID}/${messageToUse.channel.id}/${messageToUse.id}`
+        link: `https://discord.com/channels/${message.guildID}/${messageToUse.channel.id}/${messageToUse.id}`
       })
     )
   } catch (error) {

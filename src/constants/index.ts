@@ -11,8 +11,14 @@ import rulesofsurvival from './cards/rulesofsurvival'
 import baseball from './cards/mlb'
 import servers from './modules/servers'
 import gifs from './gifs'
+import english from './alphabet/english'
+import russian from './alphabet/russian'
 
 export default {
+  alphabet: {
+    english,
+    russian
+  },
   emojis,
   general,
   gifs,

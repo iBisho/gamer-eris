@@ -1,9 +1,10 @@
-import { PrivateChannel, TextChannel, VoiceChannel, CategoryChannel, AnyGuildChannel } from 'eris'
+import { PrivateChannel, VoiceChannel, CategoryChannel, AnyGuildChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed, highestRole } from 'helperis'
 import { TFunction } from 'i18next'
 import { GuildSettings } from '../lib/types/settings'
 import { EventListener } from 'yuuko'
+import { sendMessage } from '../lib/utils/eris'
 
 async function handleRolePerms(
   channel: AnyGuildChannel,
@@ -97,13 +98,7 @@ async function handleServerlog(
     .setTimestamp()
 
   // If public logs are enabled properly then send the embed there
-  if (createPublicEnabled && publiclogsChannelID) {
-    const publicLogChannel = channel.guild.channels.get(publiclogsChannelID)
-    if (publicLogChannel instanceof TextChannel) {
-      const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
-      if (publicLogChannel && botPerms.has('embedLinks')) publicLogChannel.createMessage({ embed: embed.code })
-    }
-  }
+  if (createPublicEnabled && publiclogsChannelID) sendMessage(publiclogsChannelID, { embed: embed.code })
 
   const botMember = await Gamer.helpers.discord.fetchMember(channel.guild, Gamer.user.id)
   if (!botMember?.permission.has('viewAuditLogs')) return
@@ -120,11 +115,7 @@ async function handleServerlog(
   }
 
   // Send the finalized embed to the log channel
-  const logChannel = channel.guild.channels.get(channelID)
-  if (logChannel instanceof TextChannel) {
-    const botPerms = logChannel.permissionsOf(Gamer.user.id)
-    if (botPerms.has(`embedLinks`)) logChannel.createMessage({ embed: embed.code })
-  }
+  sendMessage(channelID, { embed: embed.code })
 }
 
 export default new EventListener('channelCreate', async (channel, context) => {
