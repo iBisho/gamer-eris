@@ -1,0 +1,19 @@
+{
+  "DESCRIPTION": "Получает ответы на ваши вопросы!",
+  "EXTENDED": "**{{prefix}}8ball** ~ Спрашивает ваш вопрос и получает ответ от магического шара.",
+  "USAGE": "{{prefix}}8ball [Ваш вопрос здесь]",
+  "ALIASES": "{{prefix}}8ball {{prefix}}8b {{prefix}}fortune",
+  "NO_ARGS": "Ты забыл сказать мне свой вопрос, глупый!",
+  "REPLY_NUMBER0": "Абсолютно!",
+  "REPLY_NUMBER1": "Да!",
+  "REPLY_NUMBER2": "Определенно!",
+  "REPLY_NUMBER3": "Наверное.",
+  "REPLY_NUMBER4": "Скорее всего.",
+  "REPLY_NUMBER5": "Вероятно.",
+  "REPLY_NUMBER6": "Вряд ли.",
+  "REPLY_NUMBER7": "Я бы на это не рассчитывал.",
+  "REPLY_NUMBER8": "Нет!",
+  "REPLY_NUMBER9": "Определенно нет!",
+  "REPLY_NUMBER10": "Не-а!",
+  "REPLY_NUMBER11": "Ни за что!"
+}
