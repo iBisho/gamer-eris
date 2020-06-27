@@ -138,7 +138,7 @@ const categories = [
     commands: [`purge`, `nick`, `ban`, `unban`, `kick`, `mute`, `move`, `note`, `unmute`, `warn`, `modlog`, `reason`]
   },
   { name: `mails`, commands: [`mail`, `label`] },
-  { name: `vip`, commands: [`analyze`, `analyzechannel`, `vipregister`, `roletoall`, `rolefromall`, `spy`, `export`] },
+  { name: `vip`, commands: [`analyze`, `analyzechannel`, `memberrole`, `vipregister`, `roletoall`, `rolefromall`, `spy`, `export`] },
   { name: `network`, commands: [`networkcreate`, `networkfollow`, `mirrorcreate`, `mirroredit`] },
   { name: `gaming`, commands: [`twitch`, `capture`, `dice`] },
   { name: `embedding`, commands: [`embed`, `embedshow`, `embededit`, `embedset`] },

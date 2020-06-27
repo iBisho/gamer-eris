@@ -1,6 +1,8 @@
 {
   "DESCRIPTION": "Begin an embed interface to create a custom embed live step by step.",
-  "EXTENDED": "$t(embedding/embedset:HELPER_MESSAGE_15)\n**{{prefix}}embedset** ~ Begins an embed interface to create a custom embed live step by step.",
+  "EXTENDED": "$t(embedding/embedset:EXTENDED_LINE_1)\n$t(embedding/embedset:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "VIP ONLY COMMAND!",
+  "EXTENDED_LINE_2": "**{{prefix}}embedset** ~ Begins an embed interface to create a custom embed live step by step.",
   "USAGE": "{{prefix}}embedset",
   "ALIASES": "Embedset does not have any aliases.",
   "INVALID_EDIT": "{{mention}}, the type you provided was not a valid option. Please try again. To stop this interface menu, type `quit`.",
@@ -20,7 +22,6 @@
   "HELPER_MESSAGE_12": "**footericon** ~ Adds an image to the bottom left corner of the embed. NOTE: footertext is required for this to show.",
   "HELPER_MESSAGE_13": "**field Header text here %% Text goes here** ~ Adds a header/text section. The Header and text should be separated by `%%`.",
   "HELPER_MESSAGE_14": "NOTE: To have an inline field add `%% true` at the end.",
-  "HELPER_MESSAGE_15": "VIP ONLY COMMAND!",
   "UNKNOWN_AUTHOR": "Unknown Author",
   "UNKNOWN_FOOTER": "Unknown Footer",
   "INVALID_HEX": "Please provide a valid HEX color.",

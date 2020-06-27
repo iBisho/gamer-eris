@@ -131,7 +131,7 @@ export default {
     },
     {
       id: 17,
-      name: `Overwatch - Submitted By Aikage#4444`,
+      name: `Overwatch - Submitted By GeheimerWolf#8008`,
       buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/Overwatch.png`))
     }
   ],
