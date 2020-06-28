@@ -1,0 +1,7 @@
+{
+	"DESCRIPTION": "Ve el avatar de un usuario en el servidor.",
+	"EXTENDED": "Este comando solo muestra la imagen en bruto. Para ver una versión personalizada del avatar, utilice el comando {{prefix}}logo.",
+	"USAGE": "{{prefix}}avatar",
+	"ALIASES": "{{prefix}}userimage {{prefix}}pfp",
+	"DOWNLOAD": "[Clic aquí para descargar]({{url}})"
+}

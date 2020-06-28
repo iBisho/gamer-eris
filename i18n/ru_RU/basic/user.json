@@ -1,0 +1,21 @@
+{
+	"DESCRIPTION": "Посмотреть информацию других участников.",
+	"EXTENDED": "$t(basic/user:EXTENDED_LINE_1)\n$t(basic/user:EXTENDED_LINE_2)",
+	"EXTENDED_LINE_1": "**{{prefix}}user** ~ Показывает вашу собственную информацию.",
+	"EXTENDED_LINE_2": "**{{prefix}}user @пользователь** ~ Показывает информацию другого участника",
+	"USAGE": "{{prefix}}user *[@пользователь]*",
+	"ALIASES": "{{prefix}}ui {{prefix}}userinfo",
+	"LOADING": "Загружаю информацию о участнике..",
+	"NICKNAME": "**Никнейм:** {{nickname}}\n",
+	"ID": "**ID Пользователя:** [{{id}}]({{url}})",
+	"JOINED": "Даты присоединения",
+	"JOINED_VALUE": "**Присоединился к Discord:** {{memberDate}}\n**Присоединился к {{guildName}}:** {{guildDate}}",
+	"SETTINGS": "Настройки пользователя",
+	"SETTINGS_VALUES": "$t(basic/user:SETTINGS_VALUES_LINE_1)\n$t(basic/user:SETTINGS_VALUES_LINE_2)",
+	"SETTINGS_VALUES_LINE_1": "**Статус AFK:** {{afk}}",
+	"SETTINGS_VALUES_LINE_2": "**Сообщение AFK:** {{afkMessage}}",
+	"PERMISSIONS": "Права доступа",
+	"ROLES": "Роли",
+	"LAST_ACTIVE": "Последняя активность: {{time}}",
+	"NOW": "Сейчас"
+}

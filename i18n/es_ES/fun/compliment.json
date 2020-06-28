@@ -1,0 +1,10 @@
+{
+  "DESCRIPTION": "¡Mejora el día de cualquiera con un gif positivo al azar!",
+  "EXTENDED": "$t(fun/compliment:EXTENDED_LINE_1)\n$t(fun/compliment:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}comp [Usuario]** ~ Felicita al usuario.",
+  "EXTENDED_LINE_2": "**{{prefix}}comp [Rol]** ~ Felicita el rol.",
+  "USAGE": "{{prefix}}compliment [Usuario o Rol]",
+  "ALIASES": "{{prefix}}comp",
+  "REPLY": "***{{author}} envió esto para ti {{mention}} :heart:***",
+  "SELF": "¿Te felicitas? Ok, porque no."
+}
