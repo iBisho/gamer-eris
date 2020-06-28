@@ -568,7 +568,7 @@ export default {
     'https://media.tenor.com/images/8409bd65be28e7bcc5a7630c4ebbdcca/tenor.gif',
     'https://media.tenor.com/images/6ab39603ef0dd6dbfc78ba20885b991f/tenor.gif'
   ],
-  dance: [  
+  dance: [
     'https://media.tenor.com/images/d89ffc48fde038c3083ab8c2280af2ca/tenor.gif',
     'https://media.tenor.com/images/948749192b21921aa14ff0d00b8399af/tenor.gif',
     'https://media.tenor.com/images/35ee5467f061e9dc72ce059c7ce49fe0/tenor.gif',

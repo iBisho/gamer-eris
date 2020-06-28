@@ -32,6 +32,6 @@ export default new Command(['memberrole', 'mr'], async (message, args, context) 
     .addField(language(`vip/memberrole:ROLE_MEMBERS`), members.length.toString(), false)
     .setFooter(language(`vip/memberrole:CREATED_AT`))
     .setTimestamp(role.createdAt)
-    
+
   message.channel.createMessage({ embed: { ...embed.code, color: role.color } })
 })
