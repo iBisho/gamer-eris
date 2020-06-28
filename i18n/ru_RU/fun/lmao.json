@@ -1,0 +1,6 @@
+{
+  "DESCRIPTION": "Когда вы хотите громко посмеяться!",
+  "EXTENDED": "**{{prefix}}lmao** ~ Отправляет гифку LMAO в чат.",
+  "USAGE": "{{prefix}}lmao",
+  "ALIASES": "{{prefix}}lol"
+}
