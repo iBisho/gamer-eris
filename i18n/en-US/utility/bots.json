@@ -1,0 +1,6 @@
+{
+    "DESCRIPTION": "List all bots on you Server",
+    "EXTENDED": "**{{prefix}}bots** ~ List all bots on your server.",
+    "USAGE": "{{prefix}}bots",
+    "ALIASES": "Bots does not have any aliases."
+}

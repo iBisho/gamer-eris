@@ -1,6 +1,8 @@
 {
   "DESCRIPTION": "Begin an embed interface to create a custom embed live step by step.",
-  "EXTENDED": "**{{prefix}}embedset** ~ Begins an embed interface to create a custom embed live step by step.",
+  "EXTENDED": "$t(embedding/embedset:EXTENDED_LINE_1)\n$t(embedding/embedset:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "VIP ONLY COMMAND!",
+  "EXTENDED_LINE_2": "**{{prefix}}embedset** ~ Begins an embed interface to create a custom embed live step by step.",
   "USAGE": "{{prefix}}embedset",
   "ALIASES": "Embedset does not have any aliases.",
   "INVALID_EDIT": "{{mention}}, the type you provided was not a valid option. Please try again. To stop this interface menu, type `quit`.",

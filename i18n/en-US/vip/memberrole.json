@@ -1,0 +1,16 @@
+{
+  "DESCRIPTION": "Count all members with the role.",
+  "EXTENDED": "$t(vip/memberrole:EXTENDED_LINE_1)\n$t(vip/memberrole:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "VIP ONLY COMMAND!",
+  "EXTENDED_LINE_2": "**{{prefix}}memberrole [role]** ~ Count the members with the role.",
+  "USAGE": "{{prefix}}memberrole [Role]",
+  "ALIASES": "{{prefix}}mr",
+  "ROLE_NAME": "Role Name:",
+  "ROLE_ID": "Role ID:",
+  "ROLE_COLOR": "Role Color:",
+  "ROLE_SEPARATE": "Show Separately:",
+  "ROLE_MENTIONABLE": "Mentionable:",
+  "ROLE_POSITION": "Position:",
+  "ROLE_MEMBERS": "Members With Role:",
+  "CREATED_AT": "Created At:"
+}

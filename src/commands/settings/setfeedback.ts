@@ -2,7 +2,7 @@ import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import { upsertGuild } from '../../database/mongoHandler'
 
-export default new Command(`setfeedback`, async (message, args, context) => {
+export default new Command([`setfeedback`, `sfb`], async (message, args, context) => {
   if (!message.guildID || !message.member) return
 
   const Gamer = context.client as GamerClient

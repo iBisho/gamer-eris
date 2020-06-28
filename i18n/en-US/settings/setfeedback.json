@@ -17,7 +17,7 @@
   "EXTENDED_LINE_14": "**{{prefix}}setfeedback rejectedmessage [Message You Wish To Send]** ~ Sets the message that is sent to the user when their feedback is rejected.",
   "EXTENDED_LINE_15": "**{{prefix}}setfeedback setup** ~ ALWAYS USE THIS FIRST TO AUTOMATICALLY SETUP THE SYSTEM BEFORE ALTERING ANY SETTINGS.",
   "USAGE": "{{prefix}}setfeedback [setup | idea | bugs] *[#Channel]*",
-  "ALIASES": "Setfeedback does not have any aliases",
+  "ALIASES": "{{prefix}}sfb",
   "IDEA_QUESTION_1": "What is the suggestion you would like to send?",
   "IDEA_QUESTION_2": "What priority level do you believe this should be given? Low, Medium, or High?",
   "IDEA_QUESTION_3": "Please upload an image to express an example of your idea or type None.",
