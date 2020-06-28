@@ -2,6 +2,7 @@ import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import constants from '../../constants'
 import { upsertGuild } from '../../database/mongoHandler'
+import { sendMessage } from '../../lib/utils/eris'
 
 export default new Command(`setlanguage`, async (message, args, context) => {
   if (!message.guildID) return
@@ -28,5 +29,11 @@ export default new Command(`setlanguage`, async (message, args, context) => {
   settings.save()
   Gamer.guildLanguages.set(message.guildID, personality.id)
 
-  return message.channel.createMessage(language(`settings/setlanguage:SET`, { name: personality.name }))
+  const newLanguage = Gamer.getLanguage(message.guildID)
+
+  const RESPONSE = language(`settings/setlanguage:SET`, { name: personality.name })
+  const NEWRESPONSE = newLanguage(`settings/setlanguage:SET`, { name: personality.name })
+
+  if (RESPONSE !== NEWRESPONSE) sendMessage(message.channel.id, RESPONSE)
+  return sendMessage(message.channel.id, NEWRESPONSE)
 })

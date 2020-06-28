@@ -1,8 +1,9 @@
 {
   "DESCRIPTION": "Set a language/personality for your server.",
-  "EXTENDED": "$t(settings/setlanguage:EXTENDED_LINE_1)\n$t(settings/setlanguage:EXTENDED_LINE_2)",
+  "EXTENDED": "$t(settings/setlanguage:EXTENDED_LINE_1)\n$t(settings/setlanguage:EXTENDED_LINE_2)\n$t(settings/setlanguage:EXTENDED_LINE_3)",
   "EXTENDED_LINE_1": "**{{prefix}}setlanguage french** ~ Sets the french language.",
   "EXTENDED_LINE_2": "**{{prefix}}setlanguage german** ~ Sets the german language.",
+  "EXTENDED_LINE_3": "Supported Languages: `english`, `french`, `german`, `portuguese`, `espanol`, `russian`",
   "USAGE": "{{prefix}}setlanguage [Language Name]",
   "ALIASES": "Setlanguage does not have any aliases.",
   "INVALID_NAME": "There was no language/personality found for **{{name}}**. If you are looking to create this language please contact us on our support server using the invite command.",
