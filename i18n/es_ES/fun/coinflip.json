@@ -1,0 +1,15 @@
+{
+    "DESCRIPTION": "Apuesta en un lanzamiento de moneda.",
+    "EXTENDED": "**{{prefix}}coinflip Heads 10** ~ Apuesta 10 monedas Gamer a Heads.",
+    "USAGE": "{{prefix}}coinflip [Heads/Tails] [Cantidad]",
+    "ALIASES": "{{prefix}}cf",
+    "NEED_CHOICE": "No proporcionaste una opción valida. Por favor selecciona Heads o Tails.",
+    "NEED_AMOUNT": "No proporcionaste una cantidad valida. Por favor selecciona que tanto vas a apostar.",
+    "OPTION_NUMBER0": "Heads",
+    "OPTION_NUMBER1": "Tails",
+    "CANT_AFFORD": "No tienes suficientes monedas Gamer.",
+    "RESULT": "{{mention}}, La moneda cayó {{coinflip}} y tú {{result}} {{amount}} monedas Gamer {{emoji}}.",
+    "WIN": "Ganaste",
+    "LOSS": "Perdiste"
+  }
+  

@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Recibe consejo aleatoriamente en el chat.",
+  "EXTENDED": "$t(fun/advice:EXTENDED_LINE_1)\n$t(fun/advice:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "**{{prefix}}advice** ~ Gamer publica consejos en el chat.",
+  "EXTENDED_LINE_2": "**{{prefix}}advice @miembro** ~ Envía algún consejo a un amigo.",
+  "USAGE": "{{prefix}}advice *[@Usuario | ID de usuario]*",
+  "ALIASES": "{{prefix}}ad",
+  "ERROR": "Se produjo un error con los datos que se obtuvieron de la API."
+}

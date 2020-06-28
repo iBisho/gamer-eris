@@ -1,0 +1,19 @@
+{
+  "DESCRIPTION": "¡Obtén respuestas a tus preguntas!",
+  "EXTENDED": "**{{prefix}}8ball** ~ Haz tu pregunta y obtén una respuesta de la bola 8 mágica.",
+  "USAGE": "{{prefix}}8ball [Tu pregunta aquí]",
+  "ALIASES": "{{prefix}}8ball {{prefix}}8b {{prefix}}fortune",
+  "NO_ARGS": "¡olvidaste decirme tu pregunta, tontito!",
+  "REPLY_NUMBER0": "¡Totalmente!",
+  "REPLY_NUMBER1": "¡Sí!",
+  "REPLY_NUMBER2": "¡Definitivamente!",
+  "REPLY_NUMBER3": "Probablemente.",
+  "REPLY_NUMBER4": "Muy probable.",
+  "REPLY_NUMBER5": "Probable.",
+  "REPLY_NUMBER6": "Improbable.",
+  "REPLY_NUMBER7": "No contaría con eso.",
+  "REPLY_NUMBER8": "¡No!",
+  "REPLY_NUMBER9": "¡Definitivamente no!",
+  "REPLY_NUMBER10": "¡Nope!",
+  "REPLY_NUMBER11": "¡De ninguna manera!"
+}
