@@ -8,6 +8,10 @@ export function upsertMember(memberID: string, guildID: string) {
       { upsert: true, new: true, setDefaultsOnInsert: true }
     )
     .exec()
+    .catch(error => {
+      console.log('upsert member errored')
+      throw error
+    })
 }
 
 export function upsertUser(userID: string, guildIDs: string[]) {

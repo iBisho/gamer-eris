@@ -26,6 +26,8 @@ export default new Command(`reset`, async (message, _args, context) => {
   if (message.member.guild.ownerID !== message.author.id)
     return message.channel.createMessage(language(`settings/reset:OWNER_ONLY`))
 
+  // Let other things like xp and monitors complete before actually removing everything.
+  await Gamer.helpers.utils.sleep(2)
   Gamer.database.models.guild.deleteOne({ id: guildID }).exec()
   Gamer.database.models.analytics.deleteMany({ guildID }).exec()
   Gamer.database.models.command.deleteMany({ guildID }).exec()
