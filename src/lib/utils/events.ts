@@ -129,8 +129,8 @@ export default class {
     const adChannel = channelID
       ? this.Gamer.getChannel(channelID)
       : event.adChannelID
-      ? this.Gamer.getChannel(event.adChannelID)
-      : undefined
+        ? this.Gamer.getChannel(event.adChannelID)
+        : undefined
 
     if (!adChannel || !(adChannel instanceof TextChannel)) return
 
@@ -149,7 +149,7 @@ export default class {
 
     const adCardMessage = event.adMessageID
       ? adChannel.messages.get(event.adMessageID) ||
-        (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
+      (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
       : undefined
 
     if (adCardMessage) adCardMessage.edit({ embed: embed.code })
@@ -181,6 +181,8 @@ export default class {
 
       attendees.push(`${member.nick || member.username}#${member.user.discriminator}`)
     }
+
+    const startDate = new Date(event.start)
 
     const canvas = new Canvas(652, 367)
     if (customBackgroundBuffer) {
@@ -233,6 +235,7 @@ export default class {
       .addText(event.denials.length.toString(), 220, 192)
       .setColor(`#4A4A4A`)
       .addText(this.Gamer.helpers.transform.humanizeMilliseconds(event.duration), 290, 192)
+      .addText(startDate.toString(), 35, 350)
       .setTextFont(`24px SFTHeavy`)
       .addText(event.game, 35, 241)
       .setColor(`#7ED321`)
