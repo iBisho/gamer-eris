@@ -79,5 +79,5 @@ export default new Command(`spy`, async (message, args, context) => {
     details.save()
   }
 
-  return sendMessage(message.channel.id, language('vip/spy:WORD_REMOVED'))
+  return sendMessage(message.channel.id, language('vip/spy:WORD_REMOVED', { word }))
 })
