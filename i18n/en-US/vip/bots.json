@@ -1,0 +1,8 @@
+{
+    "DESCRIPTION": "List all bots on you Server",
+    "EXTENDED": "$t(vip/bots:EXTENDED_LINE_1)\n$t(vip/bots:EXTENDED_LINE_2)",
+    "EXTENDED_LINE_1": "VIP ONLY COMMAND!",
+    "EXTENDED_LINE_2": "**{{prefix}}bots** ~ List all bots on your server.",
+    "USAGE": "{{prefix}}bots",
+    "ALIASES": "Bots does not have any aliases."
+}

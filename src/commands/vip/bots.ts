@@ -5,6 +5,11 @@ export default new Command(`bots`, async (message, _args, context) => {
   if (!message.member) return
 
   const Gamer = context.client as GamerClient
+ 
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
+
+  if (!guildSettings?.vip.isVIP) return
+
   if (!Gamer.allMembersFetchedGuildIDs.has(message.member.guild.id)) {
     await message.member.guild.fetchAllMembers()
     Gamer.allMembersFetchedGuildIDs.add(message.member.guild.id)
