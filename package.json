@@ -34,7 +34,7 @@
     "eris": "github:abalabahaha/eris#dev",
     "fastify": "^2.14.1",
     "fastify-helmet": "^3.0.2",
-    "get-urls": "^9.2.0",
+    "get-urls": "^9.2.1",
     "helperis": "^1.2.4",
     "i18next": "^19.4.5",
     "i18next-node-fs-backend": "^2.1.3",
