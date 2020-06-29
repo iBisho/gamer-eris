@@ -75,7 +75,7 @@ export default new Command(`spy`, async (message, args, context) => {
     records.filter(id => id !== message.author.id)
   )
   if (details) {
-    details.words = details.words.filter(w => w !== word.toLowerCase())
+    details.words = details.words.filter(w => w.toLowerCase() !== word.toLowerCase())
     details.save()
   }
 

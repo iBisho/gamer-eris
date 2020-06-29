@@ -21,12 +21,19 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings?.staff.adminRoleID)) return
 
   // If this server is already setup as a networked server cancel
-  if (guildSettings?.network.channelIDs.wall)
+  if (
+    guildSettings?.network.channelIDs.wall &&
+    message.member.guild.channels.has(guildSettings.network.channelIDs.wall)
+  )
     return message.channel.createMessage(language(`network/networkcreate:ALREADY_NETWORKED`))
   // If this user has already created his own networked server cancel
   if (userSettings?.network.guildID) {
     const guild = Gamer.guilds.get(userSettings.network.guildID)
-    if (guild) return message.channel.createMessage(language(`network/networkcreate:ONLY_ONE`, { guild: guild.name }))
+    if (guild) {
+      const usersGuildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
+      if (usersGuildSettings?.network.channelIDs.wall && guild.channels.has(usersGuildSettings.network.channelIDs.wall))
+        return message.channel.createMessage(language(`network/networkcreate:ONLY_ONE`, { guild: guild.name }))
+    }
   }
 
   message.channel.createMessage(language(`network/networkcreate:PATIENCE`))
