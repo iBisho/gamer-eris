@@ -35,6 +35,11 @@ const assetsFolder = join(rootFolder, `assets`)
 const assetsPaths = {
   whiteRectangle: join(assetsFolder, `profile/left_rectangle_white.png`),
   blackRectangle: join(assetsFolder, `profile/left_rectangle_black.png`),
+  orangeRectangle: join(assetsFolder, `profile/left_rectangle_orange.png`),
+  redRectangle: join(assetsFolder, `profile/left_rectangle_red.png`),
+  greenRectangle: join(assetsFolder, `profile/left_rectangle_green.png`),
+  purpleRectangle: join(assetsFolder, `profile/left_rectangle_purple.png`),
+  blueRectangle: join(assetsFolder, `profile/left_rectangle_blue.png`),
   blueCircle: join(assetsFolder, `profile/blue_circle.png`),
   xpbar: join(assetsFolder, `profile/xp_bar_empty.png`),
   badges: {
@@ -75,6 +80,11 @@ export default class GamerClient extends Client {
     profiles: {
       blackRectangle: fs.readFileSync(assetsPaths.blackRectangle),
       whiteRectangle: fs.readFileSync(assetsPaths.whiteRectangle),
+      orangeRectangle: fs.readFileSync(assetsPaths.orangeRectangle),
+      redRectangle: fs.readFileSync(assetsPaths.redRectangle),
+      greenRectangle: fs.readFileSync(assetsPaths.greenRectangle),
+      purpleRectangle: fs.readFileSync(assetsPaths.purpleRectangle),
+      blueRectangle: fs.readFileSync(assetsPaths.blueRectangle),
       blueCircle: fs.readFileSync(assetsPaths.blueCircle),
       xpbar: fs.readFileSync(assetsPaths.xpbar),
       badges: {
