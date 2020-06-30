@@ -7,9 +7,7 @@ export default new Command(`bots`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
  
-  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
-
-  if (!guildSettings?.vip.isVIP) return message.channel.createMessage((language`vip/analyze:NEED_VIP`))
+  if (!Gamer.vipGuildIDs.has(message.member.guild.id)) return message.channel.createMessage((language`vip/analyze:NEED_VIP`))
 
   if (!Gamer.allMembersFetchedGuildIDs.has(message.member.guild.id)) {
     await message.member.guild.fetchAllMembers()
