@@ -8,10 +8,10 @@ import { addRoleToMember } from '../lib/utils/eris'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
-    // If has roles then this monitor is useless. Every user has everyone role so must be more than 1.
+    // If has roles then this monitor is useless.
     // This will also end up checking if they have the auto role already
     // The message type helps ignore other messages like discord default welcome messages
-    if (!message.guildID || message.type !== 0 || !message.member || message.member.roles.length > 1) return
+    if (!message.guildID || message.type !== 0 || !message.member || message.member.roles.length) return
 
     const bot = await Gamer.helpers.discord.fetchMember(message.member.guild, Gamer.user.id)
     if (!bot || !bot.permission.has('manageRoles')) return
