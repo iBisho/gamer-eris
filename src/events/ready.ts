@@ -189,7 +189,12 @@ export default new EventListener('ready', async () => {
     }
     if (settings.xp.perMessage) Gamer.guildsXPPerMessage.set(settings.guildID, settings.xp.perMessage)
     if (settings.xp.perMinuteVoice) Gamer.guildsXPPerMinuteVoice.set(settings.guildID, settings.xp.perMinuteVoice)
-    if (settings.vip.isVIP) Gamer.vipGuildIDs.add(settings.guildID)
+    if (settings.vip.isVIP) {
+      Gamer.vipGuildIDs.add(settings.guildID)
+      // Since this is a vip guild lets fetch all members
+      const guild = Gamer.guilds.get(settings.guildID)
+      if (guild) guild.fetchAllMembers()
+    }
   })
 
   // Stop caching messages where we don't need server logs
