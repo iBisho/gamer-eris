@@ -6,6 +6,16 @@ import { EventListener } from 'yuuko'
 export default new EventListener('guildCreate', async guild => {
   const Gamer = guild.shard.client as GamerClient
 
+  Gamer.amplitude.push({
+    authorID: guild.ownerID,
+    guildID: guild.id,
+    timestamp: Date.now(),
+    type: 'GUILD_ADDED'
+  })
+
+  // Cancel out on topgg server
+  if (['264445053596991498'].includes(guild.id)) return
+
   // Contact all Server Managers
 
   // DONT NEED TRANSLATING BECAUSE BY DEFAULT ALL GUILDS START IN ENGLISH LANGUAGE
@@ -27,13 +37,6 @@ export default new EventListener('guildCreate', async guild => {
     )
     .setTimestamp()
   if (guild.iconURL) embed.setThumbnail(guild.iconURL)
-
-  Gamer.amplitude.push({
-    authorID: guild.ownerID,
-    guildID: guild.id,
-    timestamp: Date.now(),
-    type: 'GUILD_ADDED'
-  })
 
   await guild.fetchAllMembers()
   if (!Gamer.allMembersFetchedGuildIDs.has(guild.id)) Gamer.allMembersFetchedGuildIDs.add(guild.id)
