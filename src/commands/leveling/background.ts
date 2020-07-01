@@ -22,7 +22,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
 
   if (!type || !id) return helpCommand.execute(message, [`background`], { ...context, commandName: 'help' })
 
-  const lowerColor = color.toLowerCase()
+  const lowerColor = color?.toLowerCase()
   const theme =
     lowerColor === 'black'
       ? 'black'
