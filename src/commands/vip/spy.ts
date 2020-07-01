@@ -61,8 +61,16 @@ export default new Command(`spy`, async (message, args, context) => {
 
     records.push(message.author.id)
 
-    details?.words.push(word.toLowerCase())
-    details?.save()
+    if (details) {
+      details.words.push(word.toLowerCase())
+      details.save()
+    } else {
+      Gamer.database.models.spy.create({
+        memberID: message.member.id,
+        guildID: message.member.guild.id,
+        words: [word.toLowerCase()]
+      })
+    }
 
     return sendMessage(message.channel.id, language('vip/spy:WORD_ADDED', { word }))
   }
