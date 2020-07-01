@@ -89,7 +89,7 @@ const categories = [
   },
   {
     name: `utility`,
-    commands: [`bots`, `imgur`, `pollcreate`, `pollend`, `pollvote`, `quote`, `reddit`, `setup`, `youtube`]
+    commands: [`imgur`, `pollcreate`, `pollend`, `pollvote`, `quote`, `reddit`, `setup`, `youtube`]
   },
   { name: `feedback`, commands: [`bugs`, `idea`] },
   {
@@ -140,7 +140,7 @@ const categories = [
   { name: `mails`, commands: [`mail`, `label`] },
   {
     name: `vip`,
-    commands: [`analyze`, `analyzechannel`, `memberrole`, `vipregister`, `roletoall`, `rolefromall`, `spy`, `export`]
+    commands: [`bots`, `analyze`, `analyzechannel`, `memberrole`, `vipregister`, `roletoall`, `rolefromall`, `spy`, `export`]
   },
   { name: `network`, commands: [`networkcreate`, `networkfollow`, `mirrorcreate`, `mirroredit`] },
   { name: `gaming`, commands: [`twitch`, `capture`, `dice`] },

@@ -22,9 +22,17 @@ export default new Command([`background`, `bg`], async (message, args, context) 
 
   if (!type || !id) return helpCommand.execute(message, [`background`], { ...context, commandName: 'help' })
 
-  const theme = color && color.toLowerCase() === `black` ? `black` : `white`
+  const lowerColor = color.toLowerCase()
+  const theme = 
+  lowerColor === 'black' ? 'black' : 
+  lowerColor === 'orange' ? 'orange' : 
+  lowerColor === 'red' ? 'red' :
+  lowerColor === 'green' ? 'green' :
+  lowerColor === 'purple' ? 'purple' :
+  lowerColor === 'blue' ? 'blue' : 'white'
+
   // If the user try dark theme but are not vip cancel out
-  if (theme === `black` && !userSettings.vip.isVIP && !config.staff.developers.includes(message.author.id))
+  if (['black', 'orange', 'red', 'green', 'purple', 'blue'].includes(theme) && !userSettings.vip.isVIP && !config.staff.developers.includes(message.author.id))
     return message.channel.createMessage(language(`leveling/background:VIP_THEME`))
   // Convert the string id into a number
   const backgroundID = parseInt(id, 10)

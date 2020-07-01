@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Envoie un gif Baka! dans le salon actuel.",
+	"EXTENDED": "**{{prefix}}baka [Utilisateur ou Rôle]** ~ Envoie un gif Baka! dans le salon.",
+	"USAGE": "{{prefix}}baka [Utilisateur ou Rôle]",
+	"ALIASES": "La commande Baka n'a pas d'alias.",
+	"REPLY": "***{{mention}} baka baka baka! par {{author}}!***",
+	"SELF": "J'approuve. Tu es un baka de t'appeler toi même un baka."
+}
