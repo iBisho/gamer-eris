@@ -140,7 +140,17 @@ const categories = [
   { name: `mails`, commands: [`mail`, `label`] },
   {
     name: `vip`,
-    commands: [`bots`, `analyze`, `analyzechannel`, `memberrole`, `vipregister`, `roletoall`, `rolefromall`, `spy`, `export`]
+    commands: [
+      `bots`,
+      `analyze`,
+      `analyzechannel`,
+      `memberrole`,
+      `vipregister`,
+      `roletoall`,
+      `rolefromall`,
+      `spy`,
+      `export`
+    ]
   },
   { name: `network`, commands: [`networkcreate`, `networkfollow`, `mirrorcreate`, `mirroredit`] },
   { name: `gaming`, commands: [`twitch`, `capture`, `dice`] },

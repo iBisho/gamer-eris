@@ -101,12 +101,12 @@ export default new EventListener('ready', async () => {
         gameName === `arenaofvalor`
           ? constants.cards.arenaofvalor
           : gameName === `mobilelegends`
-            ? constants.cards.mobilelegends
-            : gameName === `rulesofsurvival`
-              ? constants.cards.rulesofsurvival
-              : gameName === `baseball`
-                ? constants.cards.baseball
-                : []
+          ? constants.cards.mobilelegends
+          : gameName === `rulesofsurvival`
+          ? constants.cards.rulesofsurvival
+          : gameName === `baseball`
+          ? constants.cards.baseball
+          : []
       const guild = Gamer.guilds.get(setting.guildID)
       if (!guild) continue
       const channel = guild.channels.get(setting.channelID)

@@ -129,8 +129,8 @@ export default class {
     const adChannel = channelID
       ? this.Gamer.getChannel(channelID)
       : event.adChannelID
-        ? this.Gamer.getChannel(event.adChannelID)
-        : undefined
+      ? this.Gamer.getChannel(event.adChannelID)
+      : undefined
 
     if (!adChannel || !(adChannel instanceof TextChannel)) return
 
@@ -149,7 +149,7 @@ export default class {
 
     const adCardMessage = event.adMessageID
       ? adChannel.messages.get(event.adMessageID) ||
-      (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
+        (await adChannel.getMessage(event.adMessageID).catch(() => undefined))
       : undefined
 
     if (adCardMessage) adCardMessage.edit({ embed: embed.code })

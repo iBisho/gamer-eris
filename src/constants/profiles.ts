@@ -84,7 +84,7 @@ export default {
     clanRectFilling: `rgba(54,54,54,.7)`,
     clanName: `#8bccef`,
     clanText: `#fff`,
-    clanURL: `#fff` 
+    clanURL: `#fff`
   },
   purpleMode: {
     username: `#fff`,
@@ -99,7 +99,7 @@ export default {
     clanRectFilling: `rgba(54,54,54,.7)`,
     clanName: `#8bccef`,
     clanText: `#fff`,
-    clanURL: `#fff` 
+    clanURL: `#fff`
   },
   blueMode: {
     username: `#fff`,
@@ -114,7 +114,7 @@ export default {
     clanRectFilling: `rgba(54,54,54,.7)`,
     clanName: `#8bccef`,
     clanText: `#fff`,
-    clanURL: `#fff` 
+    clanURL: `#fff`
   },
   defaultBackground: `Shop Titans`,
   backgrounds: [
