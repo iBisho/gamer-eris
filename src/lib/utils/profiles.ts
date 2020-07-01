@@ -13,6 +13,11 @@ interface ProfileCanvasOptions {
 const rectangleStartHeight = 50
 const whiteMode = Constants.profiles.whiteMode
 const darkMode = Constants.profiles.darkMode
+const orangeMode = Constants.profiles.orangeMode
+const redMode = Constants.profiles.redMode
+const greenMode = Constants.profiles.greenMode
+const purpleMode = Constants.profiles.purpleMode
+const blueMode = Constants.profiles.blueMode
 
 export default class {
   Gamer: GamerClient
@@ -132,9 +137,26 @@ export default class {
 
     // STYLES EVALUATION AND DATA
 
-    const mode = style === `black` ? darkMode : whiteMode
+    const mode = 
+      style === 'black' ? darkMode :
+      style === 'orange' ? orangeMode :
+      style === 'red' ? redMode :
+      style === 'green' ? greenMode :
+      style === 'purple' ? purpleMode :
+      style === 'blue' ? blueMode :
+
+      whiteMode
+
     const leftBackground =
-      style === `black` ? Gamer.buffers.profiles.blackRectangle : Gamer.buffers.profiles.whiteRectangle
+      style === `black` ? Gamer.buffers.profiles.blackRectangle : 
+      style === `orange` ? Gamer.buffers.profiles.orangeRectangle : 
+      style === `red` ? Gamer.buffers.profiles.redRectangle : 
+      style === `green` ? Gamer.buffers.profiles.greenRectangle :
+      style === `purple` ? Gamer.buffers.profiles.purpleRectangle :
+      style === `blue` ? Gamer.buffers.profiles.blueRectangle :
+
+               
+      Gamer.buffers.profiles.whiteRectangle
 
     const canvasWidth = backgroundData.vipNeeded ? 952 : 852
 
