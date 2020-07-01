@@ -61,25 +61,7 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
       language(`leveling/profile:NEED_ATTACH_FILE`, { mention: message.author.mention })
     )
 
-  const response = await message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
-
-  const userSettings = await Gamer.database.models.user.findOne({
-    userID: message.author.id
-  })
-
-  const backgroundID = userSettings?.profile?.backgroundID || 1
-  const backgroundData = constants.profiles.backgrounds.find(bg => bg.id === backgroundID)
-  const isDefaultBackground = backgroundData && backgroundData.name === constants.profiles.defaultBackground
-  const hasPermission = Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, [
-    `addReactions`,
-    `externalEmojis`,
-    `readMessageHistory`
-  ])
-
-  if (hasPermission) {
-    const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.discord, `reaction`)
-    if (isDefaultBackground && reaction) response.addReaction(reaction).catch(() => undefined)
-  }
+  message.channel.createMessage({ embed: embed.code }, { file: buffer, name: `profile.jpg` })
 
   return Gamer.helpers.levels.completeMission(message.member, `profile`, message.guildID)
 })

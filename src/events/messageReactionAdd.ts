@@ -109,29 +109,6 @@ async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID
   }
 }
 
-async function handleProfileReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
-  const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
-  if (constants.emojis.discord !== fullEmojiName || !message.embeds.length) return
-
-  const language = Gamer.getLanguage(guild.id)
-
-  const [embed] = message.embeds
-  if (embed.title !== language(`leveling/profile:CURRENT_MISSIONS`)) return
-  Gamer.amplitude.push({
-    authorID: message.author.id,
-    channelID: message.channel.id,
-    guildID: guild.id,
-    messageID: message.id,
-    timestamp: message.timestamp,
-    type: 'PROFILE_INVITE'
-  })
-
-  try {
-    const dmChannel = await user.getDMChannel()
-    await dmChannel.createMessage(`Interested in Shop Titans? Check out https://discord.gg/shoptitans`)
-  } catch {}
-}
-
 async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
   const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
@@ -592,7 +569,6 @@ export default new EventListener('messageReactionAdd', async (rawMessage, emoji,
   // Messages must be from Gamer
   if (message.author.id !== Gamer.user.id) return
 
-  handleProfileReaction(message, emoji, user, guild)
   handleEventReaction(message, emoji, userID, guild)
   handleNetworkReaction(message, emoji, user, guild)
   handleFeedbackReaction(message, emoji, user, guild)

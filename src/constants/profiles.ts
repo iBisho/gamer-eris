@@ -120,39 +120,33 @@ export default {
   backgrounds: [
     {
       id: 1,
-      name: `Shop Titans`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/shoptitans.jpg`)),
-      vipNeeded: false
+      name: `SadAnimeGirly - Submitted By GeheimerWolf#8008`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/SadAnimeGirly.png`))
     },
     {
       id: 2,
       name: `BF1 Assault`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/bf1pilot.jpg`)),
-      vipNeeded: false
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/bf1pilot.jpg`))
     },
     {
       id: 3,
       name: `unOrdinary`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/unordinary.jpg`)),
-      vipNeeded: false
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/unordinary.jpg`))
     },
     {
       id: 4,
       name: `Free Fire 1`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire1.png`)),
-      vipNeeded: false
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire1.png`))
     },
     {
       id: 5,
       name: `Free Fire 2`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire2.png`)),
-      vipNeeded: false
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire2.png`))
     },
     {
       id: 6,
       name: `Free Fire 3`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire3.png`)),
-      vipNeeded: false
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/freefire3.png`))
     },
     {
       id: 7,
@@ -181,8 +175,8 @@ export default {
     },
     {
       id: 12,
-      name: `SadAnimeGirly - Submitted By GeheimerWolf#8008`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/SadAnimeGirly.png`))
+      name: `Shop Titans`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/shoptitans.jpg`))
     },
     {
       id: 13,
