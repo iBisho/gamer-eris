@@ -1,8 +1,8 @@
 {
 	"DESCRIPTION": "Select a custom background picture for your profile.",
 	"EXTENDED": "$t(leveling/background:EXTENDED_LINE_1)\n$t(leveling/background:EXTENDED_LINE_2)\n$t(leveling/background:EXTENDED_LINE_3)\n\n$t(leveling/background:EXTENDED_LINE_4)",
-	"EXTENDED_LINE_1": "**{{prefix}}background set [Background ID] [black, blue, green, orange, red, white]** ~ Sets a background and theme.",
-	"EXTENDED_LINE_2": "**{{prefix}}background view [Background ID] [black, blue, green, orange, red, white]** ~ View how a background and theme will look before setting it.",
+	"EXTENDED_LINE_1": "**{{prefix}}background set [Background ID] [black, blue, green, orange, purple, red, white]** ~ Sets a background and theme.",
+	"EXTENDED_LINE_2": "**{{prefix}}background view [Background ID] [black, blue, green, orange, pruple, red, white]** ~ View how a background and theme will look before setting it.",
 	"EXTENDED_LINE_3": "» To request a custom background, you must be a Nitro Booster of the Gamer support server. Use the invite command to join the server for more details.",
 	"EXTENDED_LINE_4": "» To see all the available backgrounds please check out our wiki page.",
 	"USAGE": "{{prefix}}background *[Category Name Or Background ID]*",
