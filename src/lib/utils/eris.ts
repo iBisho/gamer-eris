@@ -45,7 +45,10 @@ export async function addRoleToMember(member: Member, id: string, reason?: strin
 
   const botsHighestRole = highestRole(botMember)
 
-  if (!botMember.permission.has('manageRoles') || botsHighestRole.position <= role.position) return
+  if (!botMember.permission.has('manageRoles')) return
+
+  if (botsHighestRole.position < role.position) return
+  else if (botsHighestRole.position === role.position && botsHighestRole.id > role.id) return
 
   Gamer.addGuildMemberRole(member.guild.id, member.id, id, reason)
 }
@@ -59,7 +62,9 @@ export async function removeRoleFromMember(member: Member, id: string, reason?: 
 
   const botsHighestRole = highestRole(botMember)
 
-  if (!botMember.permission.has('manageRoles') || botsHighestRole.position <= role.position) return
+  if (!botMember.permission.has('manageRoles')) return
+  if (botsHighestRole.position < role.position) return
+  else if (botsHighestRole.position === role.position && botsHighestRole.id > role.id) return
 
   Gamer.removeGuildMemberRole(member.guild.id, member.id, id, reason)
 }
