@@ -22,7 +22,7 @@ export default new EventListener('messageUpdate', async (message, oldMessage, co
   if (message.content === oldMessage?.content) return
 
   // Just in case an actual edited message had urls in it
-  if (oldMessage?.editedTimestamp !== message.editedTimestamp) return
+  if (oldMessage?.editedTimestamp && oldMessage.editedTimestamp === message.editedTimestamp) return
 
   Gamer.emit('messageCreate', message, context)
 
