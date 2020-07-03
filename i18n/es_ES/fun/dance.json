@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Baila con el usuario/rol mencionado y envía una imagen al chat.",
+	"EXTENDED": "**{{prefix}}dance [usuario]** ~ ¡Baila con el usuario si te apetece y sientes el ritmo!",
+	"USAGE": "{{prefix}}dance [usuario]",
+	"ALIASES": "Dance no tiene ningún alias.",
+	"REPLY": "***{{mention}} baila con {{author}}***",
+	"SELF": "Baila solo porque a nadie le apetece."
+}
