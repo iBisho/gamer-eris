@@ -12,9 +12,9 @@ import {
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerMail } from '../types/gamer'
-import { MessageEmbed, highestRole } from 'helperis'
+import { MessageEmbed } from 'helperis'
 import nodefetch from 'node-fetch'
-import { deleteMessage } from './eris'
+import { deleteMessage, sendMessage } from './eris'
 
 const channelNameRegex = /^-+|[^\w-]|-+$/g
 
@@ -154,79 +154,15 @@ export default class {
     const finalContent = content.substring(label ? content.indexOf(' ') + 1 : 0)
     const topic = finalContent.substring(0, finalContent.length > 50 ? 50 : finalContent.length)
 
-    await this.Gamer.database.models.mail.create({
+    const mail = await this.Gamer.database.models.mail.create({
       channelID: channel.id,
       userID: mailUser.id,
       guildID: message.member.guild.id,
       topic
     })
 
-    const prefix = guildSettings.prefix
-
-    const embed = new MessageEmbed()
-      .setAuthor(
-        language(`mails/mail:SENT_BY`, {
-          user: message.member?.nick || mailUser.username,
-          channel: (message.channel as GuildChannel).name
-        }),
-        mailUser.avatarURL
-      )
-      .setDescription(finalContent)
-      .addField(language(`mails/mail:SEND_REPLY`), language(`mails/mail:SEND_REPLY_INFO`, { prefix }), true)
-      .addField(language(`mails/mail:CLOSE`), language(`mails/mail:CLOSE_INFO`, { prefix }), true)
-      .setFooter(language(`mails/mail:USERID`, { id: mailUser.id }))
-      .setTimestamp()
-
-    if (message.attachments.length) {
-      // Since this mail has an image we need to store that image cause this message will be deleted
-      const imageStorageChannel = guildSettings.moderation.logs.serverlogs.emojis.channelID
-        ? message.member.guild.channels.get(guildSettings.moderation.logs.serverlogs.emojis.channelID)
-        : undefined
-      if (imageStorageChannel && imageStorageChannel instanceof TextChannel) {
-        try {
-          const buffer = await nodefetch(message.attachments[0].url).then(res => res.buffer())
-          const result = await imageStorageChannel.createMessage('', { file: buffer, name: `mail-image` })
-          embed.setImage(result.attachments[0].proxy_url)
-        } catch {}
-      }
-    }
-
-    const alertRoleIDs = guildSettings?.mails.alertRoleIDs || []
-    const modifiedRoleIDs: string[] = []
-    const botPosition = highestRole(bot).position
-    for (const roleID of alertRoleIDs) {
-      const role = message.member.guild.roles.get(roleID)
-      // If role is already mentionable or cant find role skip
-      if (!role || role.mentionable) continue
-      // Make the role mentionable. Need to await so it can be mentionable when sending the message
-      if (botPosition > role.position && bot.permission.has('manageRoles')) {
-        await role.edit({ mentionable: true })
-        modifiedRoleIDs.push(roleID)
-      }
-    }
-
-    await channel.createMessage({
-      content: alertRoleIDs
-        .filter(id => message.member?.guild.roles.has(id))
-        .map(roleID => `<@&${roleID}>`)
-        .join(' '),
-      embed: embed.code,
-      allowedMentions: {
-        roles: alertRoleIDs
-      }
-    })
-
-    // Disable the mentionable roles again after message is sent
-    for (const roleID of modifiedRoleIDs) {
-      const role = message.member.guild.roles.get(roleID)
-      if (!role) continue
-      role.edit({ mentionable: false })
-    }
-
+    await this.sendToMods(message, message.member.guild, guildSettings, content, mail)
     if (!user) deleteMessage(message)
-
-    this.logMail(guildSettings, embed)
-
     const response = await message.channel.createMessage(language(`mails/mail:CREATED`))
     return deleteMessage(response, 10)
   }
@@ -242,39 +178,30 @@ export default class {
     const language = this.Gamer.getLanguage(guild.id)
 
     const embed = new MessageEmbed()
+      // .setAuthor(language(`mails/mail:FROM`, { user: userTag(message.author) }), message.author.avatarURL)
       .setAuthor(
-        language(`mails/mail:FROM`, { user: `${message.author.username}#${message.author.discriminator}` }),
+        language(`mails/mail:SENT_BY`, {
+          user: message.member?.nick || message.author.username,
+          channel: message.channel instanceof GuildChannel ? message.channel.name : 'DM'
+        }),
         message.author.avatarURL
       )
       .setDescription(content)
-      .setFooter(language(`mails/mail:USERID`, { user: message.author.id }))
+      .setFooter(language(`mails/mail:USERID`, { id: message.author.id }))
       .addField(language(`mails/mail:SEND_REPLY`), language(`mails/mail:SEND_REPLY_INFO`, { prefix }), true)
       .addField(language(`mails/mail:CLOSE`), language(`mails/mail:CLOSE_INFO`, { prefix }), true)
       .setTimestamp()
 
-    if (message.attachments.length) {
-      if (message.channel instanceof PrivateChannel) {
-        embed.setImage(message.attachments[0].url)
-      } else {
-        // Since this mail has an image we need to store that image cause this message will be deleted
-        const imageStorageChannel = guildSettings?.moderation.logs.serverlogs.emojis.channelID
-          ? guild.channels.get(guildSettings.moderation.logs.serverlogs.emojis.channelID)
-          : undefined
-        if (imageStorageChannel && imageStorageChannel instanceof TextChannel) {
-          try {
-            const buffer = await nodefetch(message.attachments[0].url).then(res => res.buffer())
-            const result = await imageStorageChannel.createMessage('', { file: buffer, name: `mail-image` })
-            embed.setImage(result.attachments[0].proxy_url)
-          } catch {}
-        }
-      }
-    }
-
     const channel = guild.channels.get(mail.channelID)
-    if (!channel) return
+    if (!channel || !(channel instanceof TextChannel)) return
 
-    const botPerms = channel.permissionsOf(this.Gamer.user.id)
-    if (!botPerms.has('readMessages') || !botPerms.has('sendMessages') || !botPerms.has('embedLinks')) return
+    const hasPermission = this.Gamer.helpers.discord.checkPermissions(channel, this.Gamer.user.id, [
+      'readMessages',
+      'sendMessages',
+      'embedLinks',
+      'attachFiles'
+    ])
+    if (!hasPermission) return
 
     const botMember = await this.Gamer.helpers.discord.fetchMember(guild, this.Gamer.user.id)
     if (!botMember?.permission.has('manageRoles')) return
@@ -298,6 +225,25 @@ export default class {
         .join(' '),
       embed: embed.code
     })
+
+    if (message.attachments.length) {
+      if (message.channel instanceof PrivateChannel) {
+        embed.setImage(message.attachments[0].proxy_url)
+      } else {
+        try {
+          const [attachment] = message.attachments
+          const buffer = await nodefetch(attachment.proxy_url).then(res => {
+            return res.buffer()
+          })
+          await channel.createMessage('', {
+            file: buffer,
+            name: attachment.filename
+          })
+        } catch (error) {
+          console.log('mail ', error)
+        }
+      }
+    }
 
     // Disable the mentionable roles again after message is sent
     for (const roleID of modifiedRoleIDs) {
@@ -397,7 +343,7 @@ export default class {
     // Reset the embeds fields
     embed.code.fields = []
 
-    message.delete().catch(() => undefined)
+    deleteMessage(message)
 
     return message.channel.createMessage({ embed: embed.code })
   }
@@ -465,35 +411,13 @@ export default class {
 
     const channel = message.channel as GuildChannel
     channel.delete(language(`mails/mail:CHANNEL_DELETE_REASON`, { user: encodeURIComponent(message.author.username) }))
-    const logEmbed = new MessageEmbed()
-      .setDescription(content)
-      .setTitle(
-        language(`mails/mail:LOG_CLOSE`, {
-          user: message.author.username,
-          channel: (message.channel as TextChannel).name
-        })
-      )
-      .setThumbnail(message.author.avatarURL)
-      .setFooter(message.author.username)
-      .setTimestamp()
 
-    this.logMail(guildSettings, dmEmbed)
-    return this.logMail(guildSettings, logEmbed)
+    return this.logMail(guildSettings, dmEmbed)
   }
 
   logMail(guildSettings: GuildSettings | null, embed: MessageEmbed) {
     if (!guildSettings?.mails.logChannelID) return
 
-    const channel = this.Gamer.getChannel(guildSettings.mails.logChannelID)
-    if (!channel || !(channel instanceof TextChannel)) return
-
-    const hasPerms = this.Gamer.helpers.discord.checkPermissions(channel, this.Gamer.user.id, [
-      'readMessages',
-      'sendMessages',
-      'embedLinks'
-    ])
-    if (!hasPerms) return
-
-    channel.createMessage({ embed: embed.code })
+    sendMessage(guildSettings.mails.logChannelID, { embed: embed.code })
   }
 }
