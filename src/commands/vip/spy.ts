@@ -18,10 +18,7 @@ export default new Command(`spy`, async (message, args, context) => {
     return helpCommand?.execute(message, ['spy'], { ...context, commandName: 'help' })
 
   if (type.toLowerCase() === 'list') {
-    const spyRecords = await Gamer.database.models.spy.findOne({
-      memberID: message.member.id,
-      guildID: message.member.guild.id
-    })
+    const spyRecords = await Gamer.database.models.spy.findOne({ memberID: message.member.id })
     if (!spyRecords) return sendMessage(message.channel.id, language('vip/spy:NONE'))
 
     const embed = new MessageEmbed()
@@ -50,10 +47,7 @@ export default new Command(`spy`, async (message, args, context) => {
     return sendMessage(message.channel.id, language(isAdd ? 'vip/spy:WORD_ADDED' : 'vip/spy:DONT_EXIST', { word }))
   }
 
-  const details = await Gamer.database.models.spy.findOne({
-    memberID: message.member.id,
-    guildID: message.member.guild.id
-  })
+  const details = await Gamer.database.models.spy.findOne({ memberID: message.member.id })
 
   if (isAdd) {
     if (records.includes(message.author.id))
