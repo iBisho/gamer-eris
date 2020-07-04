@@ -41,9 +41,7 @@ export default new Command(`xpreset`, async (message, args, context) => {
   }
 
   // Find all members from this guild so we can loop those with edited settings only
-  const memberSettings = await Gamer.database.models.member.find({
-    guildID: message.guildID
-  })
+  const memberSettings = await Gamer.database.models.member.find({ guildID: message.guildID })
   // For every member reset his xp and level
   for (const settings of memberSettings) {
     if (role) {
