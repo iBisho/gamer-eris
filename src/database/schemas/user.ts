@@ -85,6 +85,27 @@ export interface UserSettings extends mongoose.Document {
   xp: number
   currency: number
   networkGuildID?: string
+  profile: {
+    backgroundID: number
+    theme: string
+  }
+  afk: {
+    enabled: boolean
+    message: string
+  }
+  vip: {
+    isVIP: boolean
+    guildsRegistered: string[]
+  }
+  leveling: {
+    boosts: Boost[]
+    xp: number
+    level: number
+    currency: number
+  }
+  network: {
+    guildID: string
+  }
 }
 
 export interface Boost {
