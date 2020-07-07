@@ -54,6 +54,7 @@ export default new Command('schema', async message => {
       }
 
       await Gamer.database.models.user.deleteOne({ _id: setting._id })
+      // @ts-ignore
       await Gamer.database.models.user.create(payload)
 
       counter++
