@@ -17,7 +17,7 @@
     "sourceMap": true,
     "strict": true,
     "types": ["node"],
-    "target": "es2019",
+    "target": "es2020",
     "esModuleInterop": true
   },
   "compileOnSave": true,

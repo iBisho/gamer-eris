@@ -5,6 +5,7 @@ import { milliseconds } from '../types/enums/time'
 import { highestRole } from 'helperis'
 import { addRoleToMember, removeRoleFromMember } from './eris'
 import { upsertMember, upsertUser } from '../../database/mongoHandler'
+import Gamer from '../..'
 
 export default class {
   // Holds the guildID.memberID for those that are in cooldown per server
@@ -93,8 +94,8 @@ export default class {
 
   async addGlobalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false) {
     if (!overrideCooldown && this.checkCooldown(member, true)) return
-    const userSettings = await upsertUser(member.guild.id, [member.guild.id])
 
+    const userSettings = await upsertUser(member.guild.id, [member.guild.id])
     let multiplier = 1
 
     for (const boost of userSettings.leveling.boosts) {
@@ -104,21 +105,27 @@ export default class {
     }
 
     const totalXP = xpAmountToAdd * multiplier + userSettings.leveling.xp
-    userSettings.leveling.xp = totalXP
 
     // Get the details on the users next level
     const nextLevelInfo = constants.levels.find(lvl => lvl.level === (userSettings.leveling?.level || 0) + 1)
     // User did not level up
-    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) return userSettings.save()
+    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) {
+      Gamer.database.models.user
+        .updateOne({ userID: member.id }, { leveling: { ...userSettings.leveling, xp: totalXP } })
+        .exec()
+      return
+    }
 
     // User did level up
-
     const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
-    // Past max xp for highest level so just no more levelups needed
-    if (!newLevel) return userSettings.save()
     // Add one level
-    userSettings.leveling.level = newLevel.level
-    return userSettings.save()
+    Gamer.database.models.user
+      .updateOne(
+        { userID: member.id },
+        { leveling: { ...userSettings.leveling, xp: totalXP, level: newLevel?.level || userSettings.leveling.level } }
+      )
+      .exec()
+    return
   }
 
   async removeXP(member: Member, xpAmountToRemove = 1) {

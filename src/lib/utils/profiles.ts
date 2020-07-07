@@ -4,6 +4,7 @@ import { Message, Member } from 'eris'
 import GamerClient from '../structures/GamerClient'
 import Constants from '../../constants/index'
 import constants from '../../constants/index'
+import { upsertUser } from '../../database/mongoHandler'
 
 interface ProfileCanvasOptions {
   style?: string
@@ -75,7 +76,7 @@ export default class {
         memberID: member.id,
         guildID: member.guild.id
       }),
-      Gamer.database.models.user.findOne({ userID: member.id }),
+      upsertUser(member.id, [member.guild.id]),
       Gamer.database.models.marriage.findOne({ authorID: member.id }),
       Gamer.database.models.marriage.findOne({ spouseID: member.id, accepted: true })
     ])
