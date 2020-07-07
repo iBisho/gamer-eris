@@ -1,29 +1,36 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { Command } from 'yuuko'
 import Gamer from '../..'
 
 export default new Command('schema', async message => {
-  const mails = await Gamer.database.models.mail.find()
-  mails.forEach(async mail => {
-    if (!Gamer.guilds.has(mail.guildID) && mail.guildID)
-      return Gamer.database.models.mail.deleteOne({ _id: mail._id }).exec()
-    if (mail.channelID && !Gamer.getChannel(mail.channelID))
-      return Gamer.database.models.mail.deleteMany({ _id: mail._id }).exec()
+  const settings = await Gamer.database.models.user.find()
+  for (const setting of settings) {
+    const payload = {
+      userID: setting.userID,
+      guildIDs: setting.guildIDs,
+      // @ts-ignore
+      backgroundID: setting.profile.backgroundID,
+      // @ts-ignore
+      theme: setting.profile.theme,
+      // @ts-ignore
+      afkEnabled: setting.afk.enabled,
+      // @ts-ignore
+      afkMessage: setting.afk.message,
+      // @ts-ignore
+      isVIP: setting.vip.isVIP,
+      // @ts-ignore
+      vipGuildsRegistered: setting.vip.guildsRegistered,
+      // @ts-ignore
+      boosts: setting.leveling.boosts,
+      // @ts-ignore
+      xp: setting.leveling.xp,
+      // @ts-ignore
+      currency: setting.leveling.currency,
+      // @ts-ignore
+      networkGuildID: setting.network.guildID
+    }
 
-    if (!mail.id) return Gamer.database.models.mail.deleteOne({ _id: mail._id }).exec()
-
-    mail.channelID = mail.id
-    await mail.save()
-    return
-  })
-  // const feedbacks = await Gamer.database.models.feedback.find()
-  // feedbacks.forEach(feedback => {
-  //   if (feedback.guildID && !Gamer.guilds.has(feedback.guildID)) {
-  //     Gamer.database.models.feedback.deleteOne({ _id: feedback._id }).exec()
-  //     return
-  //   }
-  //   // feedback.feedbackID = feedback.id
-  //   // feedback.save()
-  // })
-
+    Gamer.database.models.user.replaceOne({ userID: payload.userID }, payload).exec()
+  }
   return message.channel.createMessage('done updating schema')
 })
