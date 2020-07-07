@@ -1,5 +1,13 @@
 import mongoose from 'mongoose'
 
+export interface Boost {
+  name: string
+  timestamp?: number
+  multiplier: number
+  active: boolean
+  activatedAt?: number
+}
+
 export interface MemberSettings extends mongoose.Document {
   id: string
   guildID: string
