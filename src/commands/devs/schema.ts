@@ -3,6 +3,7 @@ import { Command } from 'yuuko'
 import Gamer from '../..'
 
 export default new Command('schema', async message => {
+  let counter = 0
   const settings = await Gamer.database.models.user.find()
   for (const setting of settings) {
     const payload = {
@@ -30,7 +31,10 @@ export default new Command('schema', async message => {
       networkGuildID: setting.network.guildID
     }
 
-    Gamer.database.models.user.replaceOne({ userID: payload.userID }, payload).exec()
+    await Gamer.database.models.user.replaceOne({ userID: payload.userID }, payload).exec()
+    counter++
+    console.log(`Completed ${counter} / ${settings.length}`)
   }
+
   return message.channel.createMessage('done updating schema')
 })
