@@ -5,7 +5,7 @@ import Gamer from '../..'
 export default new Command('schema', async message => {
   let mainCounter = 0
 
-  let xpLimit = 10000
+  let xpLimit = 1000
 
   let searching = true
   while (searching) {
@@ -18,7 +18,7 @@ export default new Command('schema', async message => {
         break
       }
 
-      xpLimit -= 1000
+      xpLimit -= 50
       console.log('lowering xplimit to:', xpLimit)
       continue
     }
