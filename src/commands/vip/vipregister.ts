@@ -35,8 +35,8 @@ export default new Command([`vipregister`, `vipr`], async (message, _args, conte
   guildSettings.vip.userID = message.author.id
   guildSettings.save()
 
-  userSettings.vip.guildsRegistered.push(message.guildID)
-  userSettings.vip.isVIP = true
+  userSettings.vipGuildsRegistered.push(message.guildID)
+  userSettings.isVIP = true
   userSettings.save()
 
   Gamer.vipGuildIDs.add(message.guildID)

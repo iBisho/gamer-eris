@@ -27,8 +27,8 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
   )
     return message.channel.createMessage(language(`network/networkcreate:ALREADY_NETWORKED`))
   // If this user has already created his own networked server cancel
-  if (userSettings?.network.guildID) {
-    const guild = Gamer.guilds.get(userSettings.network.guildID)
+  if (userSettings?.networkGuildID) {
+    const guild = Gamer.guilds.get(userSettings.networkGuildID)
     if (guild) {
       const usersGuildSettings = await Gamer.database.models.guild.findOne({ guildID: guild.id })
       if (usersGuildSettings?.network.channelIDs.wall && guild.channels.has(usersGuildSettings.network.channelIDs.wall))
@@ -132,7 +132,7 @@ export default new Command(`networkcreate`, async (message, _args, context) => {
       })
       await network.save()
     } else {
-      userSettings.network.guildID = message.guildID
+      userSettings.networkGuildID = message.guildID
       userSettings.save()
     }
 

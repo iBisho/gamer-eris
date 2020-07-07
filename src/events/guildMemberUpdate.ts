@@ -51,7 +51,7 @@ async function handleVIPRole(Gamer: GamerClient, member: Member) {
   const userSettings = await Gamer.database.models.user.findOne({ userID: member.id })
   if (!userSettings) return
   // Remove vip settings for all guilds this user registered
-  for (const guildID of userSettings.vip.guildsRegistered) {
+  for (const guildID of userSettings.vipGuildsRegistered) {
     const vipGuildSettings = await Gamer.database.models.guild.findOne({ guildID: guildID })
     if (!vipGuildSettings) continue
     vipGuildSettings.vip.isVIP = false

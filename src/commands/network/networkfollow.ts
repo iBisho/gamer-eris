@@ -16,10 +16,10 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
   // The command users settings
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
 
-  if (!userSettings || !userSettings.network.guildID)
+  if (!userSettings || !userSettings.networkGuildID)
     return message.channel.createMessage(language(`network/networkfollow:NEED_PROFILE_SERVER`))
 
-  const usersProfileGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.network.guildID })
+  const usersProfileGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.networkGuildID })
 
   if (!usersProfileGuildSettings)
     return message.channel.createMessage(language(`network/networkfollow:NEED_PROFILE_SERVER`))
@@ -28,11 +28,11 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
   const targetUserSettings = await Gamer.database.models.user.findOne({
     userID: message.author.id
   })
-  if (!targetUserSettings || !targetUserSettings.network.guildID)
+  if (!targetUserSettings || !targetUserSettings.networkGuildID)
     return message.channel.createMessage(language(`network/networkfollow:NEED_TARGET_PROFILE_SERVER`))
 
   const targetUsersProfileGuildSettings = await Gamer.database.models.guild.findOne({
-    guildID: targetUserSettings.network.guildID
+    guildID: targetUserSettings.networkGuildID
   })
 
   if (!targetUsersProfileGuildSettings || !usersProfileGuildSettings.network.channelIDs.feed)

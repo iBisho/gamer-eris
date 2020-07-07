@@ -70,25 +70,25 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
       })
     )
 
-  if (userSettings.leveling.currency < item.cost) {
+  if (userSettings.currency < item.cost) {
     // If not enough check if the marriage is accepted and combined the two users coins
     if (marriage.accepted) {
       const spouseSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
       if (!spouseSettings) return
 
-      if (userSettings.leveling.currency + spouseSettings.leveling.currency < item.cost)
+      if (userSettings.currency + spouseSettings.currency < item.cost)
         return message.channel.createMessage(
           language(`fun/shopwedding:NEED_COINS`, {
             emoji: constants.emojis.coin,
             cost: item.cost,
-            needed: item.cost - (userSettings.leveling.currency + spouseSettings.leveling.currency)
+            needed: item.cost - (userSettings.currency + spouseSettings.currency)
           })
         )
 
       // Update the users currency
-      const leftover = item.cost - userSettings.leveling.currency
-      userSettings.leveling.currency = 0
-      spouseSettings.leveling.currency -= leftover
+      const leftover = item.cost - userSettings.currency
+      userSettings.currency = 0
+      spouseSettings.currency -= leftover
       userSettings.save()
       spouseSettings.save()
     }
@@ -98,12 +98,12 @@ export default new Command(`shopwedding`, async (message, _args, context) => {
         language(`fun/shopwedding:NEED_COINS`, {
           emoji: constants.emojis.coin,
           cost: item.cost,
-          needed: item.cost - userSettings.leveling.currency
+          needed: item.cost - userSettings.currency
         })
       )
   } else {
     // The user has enough coins to buy this so just simply take the cost off
-    userSettings.leveling.currency -= item.cost
+    userSettings.currency -= item.cost
     userSettings.save()
   }
 

@@ -30,8 +30,7 @@ export default new Command([`coinflip`, `cf`], async (message, args, context) =>
   const authorSettings = await upsertUser(message.author.id, [message.guildID])
 
   // Check if author can afford
-  if (amount > authorSettings.leveling.currency)
-    return message.channel.createMessage(language(`fun/coinflip:CANT_AFFORD`))
+  if (amount > authorSettings.currency) return message.channel.createMessage(language(`fun/coinflip:CANT_AFFORD`))
 
   // Coinflip
   const randomNumber = Math.floor(Math.random() * 2)
@@ -40,10 +39,10 @@ export default new Command([`coinflip`, `cf`], async (message, args, context) =>
 
   // Add/Deduct Coins
   if (win) {
-    authorSettings.leveling.currency += amount
+    authorSettings.currency += amount
     authorSettings.save()
   } else {
-    authorSettings.leveling.currency -= amount
+    authorSettings.currency -= amount
     authorSettings.save()
   }
 

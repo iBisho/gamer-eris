@@ -1,6 +1,6 @@
 import { Command } from 'yuuko'
-import { Boost } from '../../lib/types/settings'
 import GamerClient from '../../lib/structures/GamerClient'
+import { Boost } from '../../database/schemas/user'
 
 export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (message, _args, context) => {
   if (!message.guildID) return
@@ -15,7 +15,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
 
   let availableBoost: Boost | undefined = undefined
 
-  for (const boost of userSettings.leveling.boosts) {
+  for (const boost of userSettings.boosts) {
     // If the user is already boosted then cancel out because we dont allow multiple boosts at the same time
     if (boost.active && boost.activatedAt && boost.timestamp) {
       // Check if this active boost has expired
@@ -23,7 +23,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
         return message.channel.createMessage(language(`leveling/boostme:ALREADY_BOOSTED`, { name: boost.name }))
 
       // Since the boost expired we need to remove it
-      userSettings.leveling.boosts = userSettings.leveling.boosts.filter(b => !b.active)
+      userSettings.boosts = userSettings.boosts.filter(b => !b.active)
       await userSettings.save()
       continue
     }
@@ -36,8 +36,7 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
   // Buy a boost for the user using coins
   else {
     // If the user does not have enough coins to buy a boost cancel out
-    if (userSettings.leveling.currency < 500)
-      return message.channel.createMessage(language(`leveling/boostme:NEED_COINS`))
+    if (userSettings.currency < 500) return message.channel.createMessage(language(`leveling/boostme:NEED_COINS`))
 
     const newBoost = {
       name: language(`leveling/boostme:SMALL_BOOSTER`),
@@ -48,13 +47,11 @@ export default new Command([`boostme`, `amiboosted`, `iamboosted`], async (messa
     }
 
     // Add an activated default booster to the user
-    userSettings.leveling.boosts = userSettings.leveling.boosts.filter(
-      boost => boost.timestamp && Date.now() < boost.timestamp
-    )
-    userSettings.leveling.boosts.push(newBoost)
+    userSettings.boosts = userSettings.boosts.filter(boost => boost.timestamp && Date.now() < boost.timestamp)
+    userSettings.boosts.push(newBoost)
 
     // Remove 500 coins for the cost
-    userSettings.leveling.currency -= 500
+    userSettings.currency -= 500
 
     availableBoost = newBoost
   }

@@ -2,7 +2,6 @@ import { Canvas } from 'canvas-constructor'
 import fetch from 'node-fetch'
 import { Message, Member } from 'eris'
 import GamerClient from '../structures/GamerClient'
-import Constants from '../../constants/index'
 import constants from '../../constants/index'
 
 interface ProfileCanvasOptions {
@@ -11,13 +10,13 @@ interface ProfileCanvasOptions {
 }
 
 const rectangleStartHeight = 50
-const whiteMode = Constants.profiles.whiteMode
-const darkMode = Constants.profiles.darkMode
-const orangeMode = Constants.profiles.orangeMode
-const redMode = Constants.profiles.redMode
-const greenMode = Constants.profiles.greenMode
-const purpleMode = Constants.profiles.purpleMode
-const blueMode = Constants.profiles.blueMode
+const whiteMode = constants.profiles.whiteMode
+const darkMode = constants.profiles.darkMode
+const orangeMode = constants.profiles.orangeMode
+const redMode = constants.profiles.redMode
+const greenMode = constants.profiles.greenMode
+const purpleMode = constants.profiles.purpleMode
+const blueMode = constants.profiles.blueMode
 
 export default class {
   Gamer: GamerClient
@@ -29,7 +28,7 @@ export default class {
 
     this.defaultProfile = new Canvas(852, 581)
       .setAntialiasing(`subpixel`)
-      .addBeveledImage(Constants.profiles.backgrounds[0].buffer, 345, 50, 457, 481, 25, true)
+      .addBeveledImage(constants.profiles.backgrounds[0].buffer, 345, 50, 457, 481, 25, true)
       .setAntialiasing(`subpixel`)
       .addImage(this.Gamer.buffers.profiles.whiteRectangle, 2, rectangleStartHeight)
       .addImage(this.Gamer.buffers.profiles.blueCircle, 40, 80)
@@ -81,34 +80,34 @@ export default class {
     ])
 
     // Select the background theme & id from their settings if no override options were provided
-    const style = (options && options.style) || userSettings?.profile?.theme || 'white'
-    const backgroundID = (options && options.backgroundID) || userSettings?.profile?.backgroundID || 1
+    const style = (options && options.style) || userSettings?.theme || 'white'
+    const backgroundID = (options && options.backgroundID) || userSettings?.backgroundID || 1
 
     const useDefaultProfile = style === 'white' && backgroundID === 1
     // Get background data OR If the background is invalid then set it to default values
     const backgroundData =
-      Constants.profiles.backgrounds.find(b => b.id === backgroundID) ||
-      Constants.profiles.backgrounds.find(b => b.id === 1)
+      constants.profiles.backgrounds.find(b => b.id === backgroundID) ||
+      constants.profiles.backgrounds.find(b => b.id === 1)
     if (!backgroundData) return
 
     // SERVER XP DATA
-    const serverLevelDetails = Constants.levels.find(lev => lev.xpNeeded > (memberSettings?.leveling.xp || 0))
-    const globalLevelDetails = Constants.levels.find(lev => lev.xpNeeded > (userSettings?.leveling?.xp || 0))
+    const serverLevelDetails = constants.levels.find(lev => lev.xpNeeded > (memberSettings?.leveling.xp || 0))
+    const globalLevelDetails = constants.levels.find(lev => lev.xpNeeded > (userSettings?.xp || 0))
     const previousServerLevelDetails =
-      Constants.levels.find(lev => lev.level === (serverLevelDetails?.level || 0) - 1) || constants.levels[0]
+      constants.levels.find(lev => lev.level === (serverLevelDetails?.level || 0) - 1) || constants.levels[0]
     const previousGlobalLevelDetails =
-      Constants.levels.find(lev => lev.level === (globalLevelDetails?.level || 0) - 1) || constants.levels[0]
+      constants.levels.find(lev => lev.level === (globalLevelDetails?.level || 0) - 1) || constants.levels[0]
     if (!serverLevelDetails || !globalLevelDetails || !previousServerLevelDetails || !previousGlobalLevelDetails) return
 
     const memberLevel = serverLevelDetails.level
     const totalMemberXP = memberSettings?.leveling.xp || 0
     const globalLevel = globalLevelDetails.level
-    const totalGlobalXP = userSettings?.leveling?.xp || 0
+    const totalGlobalXP = userSettings?.xp || 0
     // Since XP is stored as TOTAL and is not reset per level we need to make a cleaner version
     // Create the cleaner xp based on the level of the member
     let memberXP = totalMemberXP
     if (memberLevel >= 1) {
-      const previousLevel = Constants.levels.find(lev => lev.level === memberLevel - 1)
+      const previousLevel = constants.levels.find(lev => lev.level === memberLevel - 1)
       if (!previousLevel) return
 
       memberXP = totalMemberXP - previousLevel.xpNeeded
@@ -116,7 +115,7 @@ export default class {
     // Create the cleaner xp based on the level of the user
     let globalXP = totalGlobalXP
     if (globalLevel >= 1) {
-      const previousLevel = Constants.levels.find(lev => lev.level === globalLevel - 1)
+      const previousLevel = constants.levels.find(lev => lev.level === globalLevel - 1)
       if (!previousLevel) return
       globalXP = totalGlobalXP - previousLevel.xpNeeded
     }
@@ -215,7 +214,7 @@ export default class {
         .addRoundImage(Gamer.buffers.profiles.badges.loud, 120, 455, 50, 50, 25, true)
 
       // user badges
-      if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings?.vip?.isVIP) {
+      if (Gamer.helpers.discord.isBotOwnerOrMod(message) || userSettings?.isVIP) {
         canvas.addRoundImage(Gamer.buffers.profiles.badges.vip, 195, 455, 50, 50, 25, true)
         // Spots to add user custom badges
         // canvas.addRoundImage(Gamer.buffers.profiles.badges.shoptitans, 120, 455, 50, 50, 25, true)
@@ -254,7 +253,7 @@ export default class {
     canvas
       .setColor(mode.clanName)
       .setTextFont(`16px LatoBold`)
-      .addText(language('leveling/profile:COINS', { amount: userSettings?.leveling?.currency || 0 }), 600, 463)
+      .addText(language('leveling/profile:COINS', { amount: userSettings?.currency || 0 }), 600, 463)
       .setColor(mode.userdivider)
       .addRect(158, 135, 240, 2)
       .setColor(mode.username)

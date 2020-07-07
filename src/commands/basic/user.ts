@@ -44,9 +44,9 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     guildDate: new Date(member.joinedAt).toISOString().substr(0, 10)
   })
   const SETTINGS_VALUE = language(`basic/user:SETTINGS_VALUES`, {
-    afk: userSettings ? userSettings.afk.enabled : false,
+    afk: userSettings ? userSettings.afkEnabled : false,
     afkMessage: userSettings
-      ? userSettings.afk.message
+      ? userSettings.afkMessage
       : `Hi 👋, I am AFK at the moment. I will get back to you as soon as possible. 😄`
   })
 

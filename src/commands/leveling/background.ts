@@ -41,7 +41,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
   // If the user try dark theme but are not vip cancel out
   if (
     ['black', 'orange', 'red', 'green', 'purple', 'blue'].includes(theme) &&
-    !userSettings.vip.isVIP &&
+    !userSettings.isVIP &&
     !config.staff.developers.includes(message.author.id)
   )
     return message.channel.createMessage(language(`leveling/background:VIP_THEME`))
@@ -58,8 +58,8 @@ export default new Command([`background`, `bg`], async (message, args, context) 
         return Gamer.helpers.discord.embedResponse(message, language(`leveling/background:INVALID`, { id }))
 
       // If there was no theme or differnet theme but a valid id was provided just save the id
-      if (!theme || theme === userSettings.profile.theme) {
-        userSettings.profile.backgroundID = backgroundID
+      if (!theme || theme === userSettings.theme) {
+        userSettings.backgroundID = backgroundID
         message.channel.createMessage(language(`leveling/background:SAVED`))
         await userSettings.save()
         profileCommand.execute(message, [], { ...context, commandName: 'profile' })
@@ -68,8 +68,8 @@ export default new Command([`background`, `bg`], async (message, args, context) 
           : undefined
       }
       // Update the theme and id
-      userSettings.profile.backgroundID = backgroundID
-      userSettings.profile.theme = theme
+      userSettings.backgroundID = backgroundID
+      userSettings.theme = theme
       message.channel.createMessage(language(`leveling/background:SAVED`))
       await userSettings.save()
 

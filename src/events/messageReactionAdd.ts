@@ -130,8 +130,8 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
     if (!targetUserSettings) return
 
     // If that server id isnt valid cancel
-    const originalServer = targetUserSettings.network.guildID
-      ? Gamer.guilds.get(targetUserSettings.network.guildID)
+    const originalServer = targetUserSettings.networkGuildID
+      ? Gamer.guilds.get(targetUserSettings.networkGuildID)
       : undefined
     if (!originalServer) return
 
@@ -168,10 +168,10 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
         })
         if (!userSettings) return
 
-        const usersGuild = userSettings.network.guildID ? Gamer.guilds.get(userSettings.network.guildID) : undefined
+        const usersGuild = userSettings.networkGuildID ? Gamer.guilds.get(userSettings.networkGuildID) : undefined
         if (!usersGuild) return
 
-        const usersGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.network.guildID })
+        const usersGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.networkGuildID })
         if (!usersGuildSettings || !usersGuildSettings.network.channelIDs.wall) return
 
         const wallChannel = Gamer.getChannel(usersGuildSettings.network.channelIDs.wall)
@@ -230,10 +230,10 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
         })
         if (!userSettings) return
 
-        const usersGuild = userSettings.network.guildID ? Gamer.guilds.get(userSettings.network.guildID) : undefined
+        const usersGuild = userSettings.networkGuildID ? Gamer.guilds.get(userSettings.networkGuildID) : undefined
         if (!usersGuild) return
 
-        const usersGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.network.guildID })
+        const usersGuildSettings = await Gamer.database.models.guild.findOne({ guildID: userSettings.networkGuildID })
         if (!usersGuildSettings || !usersGuildSettings.network.channelIDs.feed) return
 
         // Check if the user is already following the original poster

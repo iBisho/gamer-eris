@@ -23,8 +23,6 @@ export default new Command('schema', async message => {
       continue
     }
 
-    console.log(settings)
-
     let counter = 0
 
     for (const setting of settings) {

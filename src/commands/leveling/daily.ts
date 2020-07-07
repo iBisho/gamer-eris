@@ -28,7 +28,7 @@ export default new Command(`daily`, async (message, _args, context) => {
 
   const userSettings = await upsertUser(message.author.id, [message.member.guild.id])
 
-  userSettings.leveling.currency = userSettings.leveling.currency + dailyCoinsAmount
+  userSettings.currency = userSettings.currency + dailyCoinsAmount
   userSettings.save()
 
   // Add XP to the member for the daily amount

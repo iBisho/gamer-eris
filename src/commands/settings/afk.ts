@@ -11,10 +11,10 @@ export default new Command(`afk`, async (message, args, context) => {
 
   // If no message is provided then toggle the afk status
   if (!args.length) {
-    userSettings.afk.enabled = !userSettings.afk.enabled
+    userSettings.afkEnabled = !userSettings.afkEnabled
     userSettings.save()
     message.channel.createMessage(
-      language(userSettings.afk.enabled ? `settings/afk:STATUS_ISENABLED` : `settings/afk:STATUS_ISDISABLED`)
+      language(userSettings.afkEnabled ? `settings/afk:STATUS_ISENABLED` : `settings/afk:STATUS_ISDISABLED`)
     )
     return message.member ? Gamer.helpers.levels.completeMission(message.member, `afk`, message.guildID) : undefined
   }
@@ -33,7 +33,7 @@ export default new Command(`afk`, async (message, args, context) => {
   }
 
   // Update the message
-  userSettings.afk.message = content
+  userSettings.afkMessage = content
   userSettings.save()
   return message.channel.createMessage(language(`settings/afk:MESSAGE_UPDATED`))
 })

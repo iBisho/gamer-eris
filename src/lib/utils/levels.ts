@@ -29,7 +29,7 @@ export default class {
 
     let multiplier = 1
     if (userSettings) {
-      for (const boost of userSettings.leveling.boosts) {
+      for (const boost of userSettings.boosts) {
         if (!boost.active || !boost.activatedAt) continue
         if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
         multiplier += boost.multiplier
@@ -98,33 +98,21 @@ export default class {
     const userSettings = await upsertUser(member.guild.id, [member.guild.id])
     let multiplier = 1
 
-    for (const boost of userSettings.leveling.boosts) {
+    for (const boost of userSettings.boosts) {
       if (!boost.active || !boost.activatedAt) continue
       if (boost.timestamp && boost.activatedAt + boost.timestamp < Date.now()) continue
       multiplier += boost.multiplier
     }
 
-    const totalXP = xpAmountToAdd * multiplier + userSettings.leveling.xp
+    const totalXP = xpAmountToAdd * multiplier + userSettings.xp
 
+    const globalLevelDetails = constants.levels.find(lev => lev.xpNeeded > (userSettings?.xp || 0))
     // Get the details on the users next level
-    const nextLevelInfo = constants.levels.find(lvl => lvl.level === (userSettings.leveling?.level || 0) + 1)
+    const nextLevelInfo = constants.levels.find(lvl => lvl.level === (globalLevelDetails?.level || 0) + 1)
     // User did not level up
-    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP) {
-      Gamer.database.models.user
-        .updateOne({ userID: member.id }, { leveling: { ...userSettings.leveling, xp: totalXP } })
-        .exec()
-      return
-    }
+    if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP)
+      Gamer.database.models.user.updateOne({ userID: member.id }, { xp: totalXP }).exec()
 
-    // User did level up
-    const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
-    // Add one level
-    Gamer.database.models.user
-      .updateOne(
-        { userID: member.id },
-        { leveling: { ...userSettings.leveling, xp: totalXP, level: newLevel?.level || userSettings.leveling.level } }
-      )
-      .exec()
     return
   }
 

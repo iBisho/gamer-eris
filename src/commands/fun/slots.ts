@@ -63,14 +63,14 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
 
   // If they lost all three are unique emojis
   if (winningSet.size === 3) {
-    if (userSettings.leveling.currency > 0) {
-      if (userSettings.leveling.currency < 2) userSettings.leveling.currency -= 1
+    if (userSettings.currency > 0) {
+      if (userSettings.currency < 2) userSettings.currency -= 1
       else {
-        userSettings.leveling.currency -= 2
+        userSettings.currency -= 2
         response = 'fun/slots:LOSER_MULTI'
       }
     } else {
-      userSettings.leveling.currency += 1
+      userSettings.currency += 1
       response = 'fun/slots:FREEBIE'
     }
   }
@@ -78,7 +78,7 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
   else if (winningSet.size === 2) {
     response = 'fun/slots:WINNER_PARTIAL'
     finalAmount = multiplier * 10
-    userSettings.leveling.currency += finalAmount
+    userSettings.currency += finalAmount
     if (upvote && isLucky) upvote.luckySlots -= 1
   }
   // If all three emojis are the same. WINNER!
@@ -90,26 +90,26 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
       if (winningEmoji === [...topSet][0] && winningEmoji === [...bottomSet][0]) {
         response = 'fun/slots:WINNER_COMPLETE'
         finalAmount = multiplier * 5000
-        userSettings.leveling.currency += finalAmount
+        userSettings.currency += finalAmount
       }
       // The rows are different
       else {
         response = 'fun/slots:WINNER_LUCKY'
         finalAmount = multiplier * 1000
-        userSettings.leveling.currency += finalAmount
+        userSettings.currency += finalAmount
       }
     }
     // 2 rows were all the same emoji
     else if (bottomSet.size === 1 || topSet.size === 1) {
       response = 'fun/slots:WINNER_MULTIPLE'
       finalAmount = multiplier * 500
-      userSettings.leveling.currency += finalAmount
+      userSettings.currency += finalAmount
     }
     // Only one row was the same
     else {
       response = 'fun/slots:WINNER_FULL'
       finalAmount = multiplier * 100
-      userSettings.leveling.currency += finalAmount
+      userSettings.currency += finalAmount
     }
   }
 

@@ -19,13 +19,12 @@ export default new Command([`pay`, `send`, `transfer`], async (message, args, co
   const authorSettings = await upsertUser(message.author.id, [message.guildID])
 
   // Check if author can afford
-  if (amount > authorSettings.leveling.currency)
-    return message.channel.createMessage(language(`leveling/pay:CANT_AFFORD`))
+  if (amount > authorSettings.currency) return message.channel.createMessage(language(`leveling/pay:CANT_AFFORD`))
 
   // Deduct amount from author and add it to user
-  userSettings.leveling.currency += amount
+  userSettings.currency += amount
   userSettings.save()
-  authorSettings.leveling.currency -= amount
+  authorSettings.currency -= amount
   authorSettings.save()
 
   // Create response telling how much was sent to whom
