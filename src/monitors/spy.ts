@@ -10,12 +10,18 @@ export default class extends Monitor {
     const guild = message.member.guild
     const language = Gamer.getLanguage(guild.id)
 
+    const handledWords: string[] = []
+
     message.content
       .toLowerCase()
       .split(' ')
       .forEach(word => {
         const records = Gamer.spyRecords.get(word)
         if (!records) return
+
+        // Prevents a single message from sending 11 dms for the same word trigger
+        if (handledWords.includes(word)) return
+        else handledWords.push(word)
 
         const embed = new MessageEmbed()
           .setAuthor(word, message.author.avatarURL)
