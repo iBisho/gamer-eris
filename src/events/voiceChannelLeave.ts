@@ -49,8 +49,12 @@ export default new EventListener('voiceChannelLeave', async (member, channel) =>
   if (!memberSettings?.leveling.joinedVoiceAt) return
   // If the joined channel is the afk channel ignore.
   if (channel.id === channel.guild.afkChannelID) {
-    memberSettings.leveling.joinedVoiceAt = 0
-    memberSettings.save().catch(error => console.log(error))
+    Gamer.database.models.member
+      .findOneAndUpdate(
+        { memberID: member.id, guildID: member.guild.id },
+        { leveling: { ...memberSettings.leveling, joinedVoiceAt: 0 } }
+      )
+      .exec()
     return
   }
 
@@ -59,9 +63,18 @@ export default new EventListener('voiceChannelLeave', async (member, channel) =>
   const guildXPMultiplier = Gamer.guildsXPPerMinuteVoice.get(member.guild.id)
 
   // Update voice xp to the guild
-  memberSettings.leveling.joinedVoiceAt = 0
-  memberSettings.leveling.voicexp += totalMinutesInVoice * (guildXPMultiplier || 1)
-  memberSettings.save()
+  Gamer.database.models.member
+    .findOneAndUpdate(
+      { memberID: member.id, guildID: member.guild.id },
+      {
+        leveling: {
+          ...memberSettings.leveling,
+          joinedVoiceAt: 0,
+          voicexp: totalMinutesInVoice * (guildXPMultiplier || 1)
+        }
+      }
+    )
+    .exec()
 
   // If more than 10 minutes they have fulfilled the mission
   if (totalMinutesInVoice >= 10) Gamer.helpers.levels.completeMission(member, `voice10min`, member.guild.id)

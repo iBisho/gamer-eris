@@ -34,9 +34,12 @@ export default new Command(`xpresetvoice`, async (message, args, context) => {
 
     if (!memberSettings) return
 
-    memberSettings.leveling.voicexp = 0
-    memberSettings.leveling.voicelevel = 0
-    memberSettings.save()
+    Gamer.database.models.member
+      .findOneAndUpdate(
+        { memberID: member.id, guildID: member.guild.id },
+        { leveling: { ...memberSettings.leveling, voicexp: 0, voicelevel: 0 } }
+      )
+      .exec()
 
     return message.channel.createMessage(language(`leveling/xpresetvoice:MEMBER`, { member: member.mention }))
   }
@@ -64,9 +67,12 @@ export default new Command(`xpresetvoice`, async (message, args, context) => {
       }
       if (!settings.leveling.voicexp || settings.leveling.voicexp < 1) continue
 
-      settings.leveling.voicexp = 0
-      settings.leveling.voicelevel = 0
-      settings.save()
+      Gamer.database.models.member
+        .findOneAndUpdate(
+          { memberID: settings.memberID, guildID: settings.guildID },
+          { leveling: { ...settings.leveling, voicexp: 0, voicelevel: 0 } }
+        )
+        .exec()
     }
   }
 

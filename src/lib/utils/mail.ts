@@ -264,7 +264,7 @@ export default class {
       name: content.toLowerCase()
     })
 
-    const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, mail.userID)
+    const user = await this.Gamer.helpers.discord.fetchUser(mail.userID)
     if (!user) return
 
     const language = this.Gamer.getLanguage(message.guildID)
@@ -366,7 +366,7 @@ export default class {
       name: content.toLowerCase()
     })
 
-    const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, mail.userID)
+    const user = await this.Gamer.helpers.discord.fetchUser(mail.userID)
     if (!user) return
 
     // Delete the mail from the database

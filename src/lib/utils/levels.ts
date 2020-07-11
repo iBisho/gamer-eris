@@ -40,27 +40,35 @@ export default class {
       constants.levels.find(lvl => lvl.xpNeeded > (memberSettings.leveling.xp || 0)) || constants.levels[0]
 
     const totalXP = xpAmountToAdd * multiplier + memberSettings.leveling.xp
-    memberSettings.leveling.xp = totalXP
-    memberSettings.leveling.lastUpdatedAt = Date.now()
+    const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
 
     // User did not level up
-    if (memberLevel.xpNeeded > totalXP) {
-      memberSettings.save()
-      return
-    }
-
-    // User did level up
-
-    const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)
-    // Past max xp for highest level so just no more levelups needed
-    if (!newLevel) {
-      memberSettings.save()
+    if (memberLevel.xpNeeded > totalXP || !newLevel) {
+      Gamer.database.models.member
+        .findOneAndUpdate(
+          { memberID: member.id, guildID: member.guild.id },
+          {
+            leveling: { ...memberSettings.leveling, xp: totalXP > 0 ? totalXP : 0, lastUpdatedAt: Date.now() }
+          }
+        )
+        .exec()
       return
     }
 
     // Add one level and set the XP to whatever is left
-    memberSettings.leveling.level = newLevel.level
-    memberSettings.save()
+    Gamer.database.models.member
+      .findOneAndUpdate(
+        { memberID: member.id, guildID: member.guild.id },
+        {
+          leveling: {
+            ...memberSettings.leveling,
+            xp: totalXP > 0 ? totalXP : 0,
+            lastUpdatedAt: Date.now(),
+            level: newLevel.level
+          }
+        }
+      )
+      .exec()
     // Fetch all custom guild levels data
     const levelData = await this.Gamer.database.models.level.findOne({
       guildID: member.guild.id,
@@ -124,21 +132,28 @@ export default class {
 
     // If the XP is less than 0 after removing then set it to 0
     const difference = settings.leveling.xp - xpAmountToRemove
-    settings.leveling.xp = difference > 0 ? difference : 0
     // Find the new level based on the remaining XP
     const newLevel = constants.levels.find(level => level.xpNeeded > settings.leveling.xp)
-    if (!newLevel) {
-      settings.save()
+    if (!newLevel || newLevel.level === settings.leveling.level) {
+      Gamer.database.models.member
+        .findOneAndUpdate(
+          { memberID: member.id, guildID: member.guild.id },
+          {
+            leveling: { ...settings.leveling, xp: difference > 0 ? difference : 0 }
+          }
+        )
+        .exec()
       return
     }
-    // If the level has not dropped
-    if (settings.leveling.level === newLevel.level) {
-      settings.save()
-      return
-    }
-    // The level changed so first update settings
-    settings.leveling.level = newLevel.level
-    settings.save()
+
+    Gamer.database.models.member
+      .findOneAndUpdate(
+        { memberID: member.id, guildID: member.guild.id },
+        {
+          leveling: { ...settings.leveling, xp: difference > 0 ? difference : 0, level: newLevel.level }
+        }
+      )
+      .exec()
 
     // Need to check if roles need to be updated now for level rewards
     const oldLevel = constants.levels.find(level => level.level === settings.leveling.level)

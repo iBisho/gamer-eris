@@ -2,7 +2,6 @@ import { Message, Member, PrivateChannel, Guild, GuildChannel } from 'eris'
 import config from '../../../config'
 import constants from '../../constants'
 import { MessageEmbed } from 'helperis'
-import GamerClient from '../structures/GamerClient'
 import { GuildSettings } from '../types/settings'
 import { highestRole } from 'helperis'
 import Gamer from '../..'
@@ -112,7 +111,7 @@ export default class {
   }
 
   async fetchMember(guild: Guild, id: string) {
-    // Dumb ts shit on array destructuring
+    // Dumb ts shit on array destructuring https://github.com/microsoft/TypeScript/issues/13778
     if (!id) return
 
     const userID = id.startsWith('<@') ? id.substring(id.startsWith('<@!') ? 3 : 2, id.length - 1) : id
@@ -124,8 +123,8 @@ export default class {
     return member
   }
 
-  async fetchUser(Gamer: GamerClient, id: string) {
-    // dumb ts shit
+  async fetchUser(id: string) {
+    // Silly TS bug on array destructuring https://github.com/microsoft/TypeScript/issues/13778
     if (!id) return
 
     const userID = id.startsWith('<@') ? id.substring(id.startsWith('<@!') ? 3 : 2, id.length - 1) : id

@@ -34,7 +34,7 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
 
       if (relevantVoters.some(user => user.id === vote.userID)) return
 
-      const user = await Gamer.helpers.discord.fetchUser(Gamer, vote.userID)
+      const user = await Gamer.helpers.discord.fetchUser(vote.userID)
       if (!user) return
 
       relevantVoters.push(user)

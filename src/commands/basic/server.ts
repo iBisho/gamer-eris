@@ -14,7 +14,7 @@ export default new Command(
 
     const language = Gamer.getLanguage(message.guildID)
 
-    const owner = await Gamer.helpers.discord.fetchUser(Gamer, guild.ownerID)
+    const owner = await Gamer.helpers.discord.fetchUser(guild.ownerID)
     const relevantPersonality = Constants.personalities.find(
       personality => personality.id === (settings?.language || 'en-US')
     )

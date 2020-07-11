@@ -12,7 +12,7 @@ export default new Command([`avatar`, `pfp`, `userimage`], async (message, args,
   const user = message.mentions.length
     ? message.mentions[0]
     : userID
-    ? (await Gamer.helpers.discord.fetchUser(Gamer, userID)) || message.author
+    ? (await Gamer.helpers.discord.fetchUser(userID)) || message.author
     : message.author
 
   const imageURL = user.dynamicAvatarURL(undefined, 2048)

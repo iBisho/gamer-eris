@@ -32,7 +32,7 @@ export default new Command(`unmute`, async (message, args, context) => {
   const [userID] = args
   args.shift()
 
-  const user = (await Gamer.helpers.discord.fetchUser(Gamer, userID)) || message.mentions[0]
+  const user = (await Gamer.helpers.discord.fetchUser(userID)) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`moderation/unmute:NEED_USER`))
 
   // If it was a valid duration then remove it from the rest of the text

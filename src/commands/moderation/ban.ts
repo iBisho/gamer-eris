@@ -25,7 +25,7 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
   const reason = text.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/ban:NEED_REASON`))
 
-  const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
+  const user = await Gamer.helpers.discord.fetchUser(userID)
   if (!user) return message.channel.createMessage(language(`moderation/ban:NEED_USER`))
 
   const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user.id)

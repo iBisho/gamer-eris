@@ -10,7 +10,7 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 
-  const user = message.mentions.length ? message.mentions[0] : await Gamer.helpers.discord.fetchUser(Gamer, userID)
+  const user = message.mentions.length ? message.mentions[0] : await Gamer.helpers.discord.fetchUser(userID)
   if (!user) return helpCommand.execute(message, [`networkfollow`], { ...context, commandName: 'help' })
 
   // The command users settings

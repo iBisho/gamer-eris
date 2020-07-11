@@ -143,7 +143,7 @@ export default new EventListener('messageReactionRemove', async (rawMessage, emo
   const guild = rawMessage.channel.guild
   if (!guild) return
 
-  const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
+  const user = await Gamer.helpers.discord.fetchUser(userID)
   if (!user || user.bot) return
 
   // Need read message history perms to get the messages

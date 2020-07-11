@@ -163,7 +163,7 @@ export default class {
   }
 
   async makeCanvas(event: GamerEvent) {
-    const eventAuthor = await this.Gamer.helpers.discord.fetchUser(this.Gamer, event.authorID)
+    const eventAuthor = await this.Gamer.helpers.discord.fetchUser(event.authorID)
 
     const customBackgroundBuffer = event.backgroundURL
       ? await fetch(event.backgroundURL).then(res => res.buffer())
@@ -438,7 +438,7 @@ export default class {
     if (guild.iconURL) embed.setThumbnail(guild.iconURL)
 
     for (const userID of event.attendees) {
-      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userID)
+      const user = await this.Gamer.helpers.discord.fetchUser(userID)
       if (!user) continue
 
       user
@@ -510,7 +510,7 @@ export default class {
     if (event.adChannelID) embed.addField(language(`events/events:GO_TO`), `<#${event.adChannelID}>`)
 
     event.attendees.forEach(async userID => {
-      const user = await this.Gamer.helpers.discord.fetchUser(this.Gamer, userID)
+      const user = await this.Gamer.helpers.discord.fetchUser(userID)
       if (!user) return
 
       user

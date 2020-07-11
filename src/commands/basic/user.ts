@@ -10,7 +10,7 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   const [id] = args
   const user = message.mentions.length
     ? message.mentions[0]
-    : (await Gamer.helpers.discord.fetchUser(Gamer, id)) || message.author
+    : (await Gamer.helpers.discord.fetchUser(id)) || message.author
 
   const userSettings = await Gamer.database.models.user.findOne({ userID: user.id })
   const language = Gamer.getLanguage(message.guildID)

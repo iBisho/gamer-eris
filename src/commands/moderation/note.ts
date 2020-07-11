@@ -20,7 +20,7 @@ export default new Command([`note`], async (message, args, context) => {
   if (userID.startsWith('<@!')) userID = userID.substring(3, userID.length - 1)
   else if (userID.startsWith('<@')) userID = userID.substring(2, userID.length - 1)
 
-  const user = (await Gamer.helpers.discord.fetchUser(Gamer, userID)) || message.mentions[0]
+  const user = (await Gamer.helpers.discord.fetchUser(userID)) || message.mentions[0]
   if (!user) return message.channel.createMessage(language(`moderation/note:NEED_USER`))
 
   const reason = args.join(` `)

@@ -119,7 +119,7 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
   const originalAuthorID = postEmbed?.footer?.text
   if (!originalAuthorID) return
 
-  const originalAuthor = await Gamer.helpers.discord.fetchUser(Gamer, originalAuthorID)
+  const originalAuthor = await Gamer.helpers.discord.fetchUser(originalAuthorID)
   if (!originalAuthor) return
 
   try {
@@ -547,7 +547,7 @@ export default new EventListener('messageReactionAdd', async (rawMessage, emoji,
   const guild = rawMessage.channel.guild
   if (!guild) return
 
-  const user = await Gamer.helpers.discord.fetchUser(Gamer, userID)
+  const user = await Gamer.helpers.discord.fetchUser(userID)
   if (!user || user.bot) return
 
   // Need read message history perms to get the messages
