@@ -6,6 +6,7 @@ import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
 import Gamer from '..'
 import { GuildSettings } from '../lib/types/settings'
+import { sendMessage } from '../lib/utils/eris'
 
 export interface OldMember {
   roles?: string[]
@@ -104,7 +105,7 @@ async function handleRoleMessages(
       if (embed.timestamp) embed.timestamp = new Date().toISOString()
     }
 
-    channel.createMessage({ content: member.mention, embed })
+    await sendMessage(roleMessage.channelID, { content: member.mention, embed })
   } catch {}
 
   return
@@ -114,7 +115,8 @@ async function handleRoleUpdates(guild: Guild, member: Member, guildSettings?: G
   const memberRoles = await Gamer.database.models.roles.findOne({ memberID: member.id, guildID: guild.id })
 
   if (!memberRoles) {
-    return Gamer.database.models.roles.create({ memberID: member.id, guildID: guild.id, roleIDs: member.roles })
+    Gamer.database.models.roles.create({ memberID: member.id, guildID: guild.id, roleIDs: member.roles })
+    return
   } else {
     Gamer.database.models.roles.updateOne({ memberID: member.id, guildID: guild.id }, { roleIDs: member.roles }).exec()
   }
@@ -159,33 +161,18 @@ async function handleRoleUpdates(guild: Guild, member: Member, guildSettings?: G
   const logs = guildSettings.moderation.logs
 
   // If public logs are enabled properly then send the embed there
-  if (logs.serverlogs.roles.memberPublicEnabled && logs.publiclogsChannelID) {
-    const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
-    if (publicLogChannel instanceof TextChannel) {
-      const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
-      if (
-        publicLogChannel &&
-        botPerms.has('embedLinks') &&
-        botPerms.has('readMessages') &&
-        botPerms.has('sendMessages')
-      )
-        publicLogChannel.createMessage({ embed: embed.code })
-    }
-  }
+  if (logs.serverlogs.roles.memberPublicEnabled && logs.publiclogsChannelID)
+    sendMessage(logs.publiclogsChannelID, { embed: embed.code })
 
-  // Send the finalized embed to the log channel
-  const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.roles.channelID)
-  if (logChannel && logChannel instanceof TextChannel) {
-    const botPerms = logChannel.permissionsOf(Gamer.user.id)
-    if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-      logChannel.createMessage({ embed: embed.code })
-  }
-  return
+  sendMessage(guildSettings.moderation.logs.serverlogs.roles.channelID, { embed: embed.code })
 }
 
 export default new EventListener('guildMemberUpdate', async (guild, member, oldMember) => {
   // Make sure that oldMember was always cached and exists to be able to compare it
-  if (!oldMember) return handleRoleUpdates(guild, member)
+  if (!oldMember) {
+    handleRoleUpdates(guild, member)
+    return
+  }
 
   const botMember = await Gamer.helpers.discord.fetchMember(guild, Gamer.user.id)
   if (!botMember) return
@@ -208,22 +195,11 @@ export default new EventListener('guildMemberUpdate', async (guild, member, oldM
 
     const logs = guildSettings.moderation.logs
     // If public logs are enabled properly then send the embed there
-    if (logs.serverlogs.members.nicknamePublicEnabled && logs.publiclogsChannelID) {
-      const publicLogChannel = guild.channels.get(logs.publiclogsChannelID)
-      if (publicLogChannel && publicLogChannel instanceof TextChannel) {
-        const botPerms = publicLogChannel.permissionsOf(Gamer.user.id)
-        if (botPerms.has('embedLinks') && botPerms.has('readMessages') && botPerms.has('sendMessages'))
-          publicLogChannel.createMessage({ embed: embed.code })
-      }
-    }
+    if (logs.serverlogs.members.nicknamePublicEnabled && logs.publiclogsChannelID)
+      sendMessage(logs.publiclogsChannelID, { embed: embed.code })
 
-    const logChannel = guild.channels.get(guildSettings.moderation.logs.serverlogs.members.channelID)
-    if (logChannel && logChannel instanceof TextChannel) {
-      const botPerms = logChannel.permissionsOf(Gamer.user.id)
-      if (botPerms.has(`embedLinks`) && botPerms.has(`readMessages`) && botPerms.has(`sendMessages`))
-        logChannel.createMessage({ embed: embed.code })
-    }
+    sendMessage(guildSettings.moderation.logs.serverlogs.members.channelID, { embed: embed.code })
   }
 
-  return handleRoleUpdates(guild, member, guildSettings)
+  handleRoleUpdates(guild, member, guildSettings)
 })
