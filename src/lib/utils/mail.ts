@@ -141,16 +141,6 @@ export default class {
 
     // Creates a text channel by default and we move it to the mail category
     const channel = await message.member.guild.createChannel(channelName, 0, { parentID: category.id })
-
-    this.Gamer.amplitude.push({
-      authorID: mailUser.id,
-      channelID: channel.id,
-      guildID: message.member.guild.id,
-      messageID: message.id,
-      timestamp: message.timestamp,
-      type: 'MAIL_CREATE'
-    })
-
     const finalContent = content.substring(label ? content.indexOf(' ') + 1 : 0)
     const topic = finalContent.substring(0, finalContent.length > 50 ? 50 : finalContent.length)
 
@@ -161,6 +151,8 @@ export default class {
       topic
     })
 
+    // Add to cache manually as createChannel doesnt cache it
+    message.member.guild.channels.add(channel)
     await this.sendToMods(message, message.member.guild, guildSettings, content, mail)
     if (!user) deleteMessage(message)
     const response = await message.channel.createMessage(language(`mails/mail:CREATED`))
@@ -174,6 +166,7 @@ export default class {
     content: string,
     mail: GamerMail
   ) {
+    console.log('sendToMods')
     const prefix = guildSettings?.prefix || this.Gamer.prefix
     const language = this.Gamer.getLanguage(guild.id)
 
@@ -193,7 +186,10 @@ export default class {
       .setTimestamp()
 
     const channel = guild.channels.get(mail.channelID)
+    console.log('sendToMods', 0.5, channel?.type, mail.channelID)
+    if (!channel) console.log('channel not found')
     if (!channel || !(channel instanceof TextChannel)) return
+    console.log('sendToMods', 1)
 
     const hasPermission = this.Gamer.helpers.discord.checkPermissions(channel, this.Gamer.user.id, [
       'readMessages',
@@ -202,9 +198,11 @@ export default class {
       'attachFiles'
     ])
     if (!hasPermission) return
+    console.log('sendToMods', 2)
 
     const botMember = await this.Gamer.helpers.discord.fetchMember(guild, this.Gamer.user.id)
     if (!botMember?.permission.has('manageRoles')) return
+    console.log('sendToMods', 3)
 
     const alertRoleIDs = guildSettings?.mails.alertRoleIDs || []
     const modifiedRoleIDs: string[] = []
@@ -216,6 +214,7 @@ export default class {
       await role.edit({ mentionable: true })
       modifiedRoleIDs.push(roleID)
     }
+    console.log('sendToMods', 'sending')
 
     // Await so the message sends before we make roles unmentionable again
     await this.Gamer.createMessage(mail.channelID, {
