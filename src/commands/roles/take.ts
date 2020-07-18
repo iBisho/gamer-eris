@@ -18,12 +18,13 @@ export default new Command(`take`, async (message, args, context) => {
   if (!bot || !bot.permission.has('manageRoles'))
     return message.channel.createMessage(language(`roles/take:MISSING_MANAGE_ROLES`))
 
-  const [userID, roleNameOrID] = args
+  const [id, roleNameOrID] = args
   // If a user is mentioned use the mention else see if a user id was provided
   const [user] = message.mentions
-  const member = await Gamer.helpers.discord
-    .fetchMember(message.member.guild, user?.id || userID)
-    .catch(() => undefined)
+  const userID = user?.id || id
+  if (!userID) return message.channel.createMessage(language(`roles/take:NEED_USER`))
+
+  const member = await Gamer.helpers.discord.fetchMember(message.member.guild, user?.id || userID)
   if (!member) return message.channel.createMessage(language(`roles/take:NEED_USER`))
   // if a role is mentioned use the mentioned role else see if a role id or role name was provided
   const [roleID] = message.roleMentions

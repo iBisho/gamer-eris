@@ -47,17 +47,20 @@ export default new Command(`idea`, async (message, args, context) => {
   const splitContent = args.join(' ').split(` | `)
 
   for (const [index, question] of settings.feedback.idea.questions.entries()) {
-    if (splitContent.length && splitContent[index]) {
-      embed.addField(question, splitContent[index])
+    const value = splitContent[index]
+    if (splitContent.length && value) {
+      embed.addField(question, value)
       continue
     }
 
     if (message.attachments.length) {
       const [attachment] = message.attachments
-      const buffer = await fetch(attachment.url)
-        .then(res => res.buffer())
-        .catch(() => undefined)
-      if (buffer) embed.attachFile(buffer, 'imageattachment.png')
+      if (attachment) {
+        const buffer = await fetch(attachment.url)
+          .then(res => res.buffer())
+          .catch(() => undefined)
+        if (buffer) embed.attachFile(buffer, 'imageattachment.png')
+      }
     }
 
     await message.channel.createMessage(`${message.author.mention}, ${question}`)
@@ -86,8 +89,9 @@ export default new Command(`idea`, async (message, args, context) => {
         const data = collector.data as FeedbackCollectorData
         const questions = data.settings.feedback.idea.questions
 
-        if (msg.attachments.length) {
-          const imgbuffer = await fetch(msg.attachments[0].url)
+        const [attachment] = msg.attachments
+        if (attachment) {
+          const imgbuffer = await fetch(attachment.url)
             .then(res => res.buffer())
             .catch(() => undefined)
           if (imgbuffer) embed.attachFile(imgbuffer, 'imageattachment.png')
@@ -107,7 +111,7 @@ export default new Command(`idea`, async (message, args, context) => {
         // Something is very wrong quit out
         if (currentIndex < 0) return
 
-        const nextQuestion = questions[currentIndex + 1]
+        const nextQuestion = questions[currentIndex + 1]!
         // Send the message asking the user next question
         message.channel.createMessage(`${message.author.mention}, ${nextQuestion}`)
         // Update the collectors data

@@ -36,7 +36,7 @@ export default new Command(`setevents`, async (message, args, context) => {
       return message.channel.createMessage(language(`settings/setevents:RESET_ADCHANNEL`))
     case 'role':
       const role = message.roleMentions.length
-        ? message.member.guild.roles.get(message.roleMentions[0])
+        ? message.member.guild.roles.get(message.roleMentions[0]!)
         : message.member.guild.roles.get(roleIDOrName) ||
           message.member.guild.roles.find(r => r.name.toLowerCase() === roleIDOrName)
       if (!role) return message.channel.createMessage(language(`settings/setevents:NEED_ROLE`))

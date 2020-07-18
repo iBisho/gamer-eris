@@ -8,9 +8,11 @@ export default new Command([`leaderboard`, `lb`], async (message, args, context)
   const language = Gamer.getLanguage(message.guildID)
 
   const [id, type] = args
-  const memberID = message.mentions.length ? message.mentions[0].id : id
+  const memberID = message.mentions[0]?.id || id
 
-  const member = (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
+  const member = memberID
+    ? (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
+    : message.member
 
   const globalTypes = [`g`, `global`, ...language(`common:GLOBAL_OPTIONS`, { returnObjects: true })]
   const voiceTypes = [`v`, `voice`, ...language(`common:VOICE_OPTIONS`, { returnObjects: true })]

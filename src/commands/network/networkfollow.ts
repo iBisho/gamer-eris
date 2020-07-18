@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import { TextChannel } from 'eris'
+import { userTag } from 'helperis'
 
 export default new Command([`networkfollow`, `follow`], async (message, args, context) => {
   const Gamer = context.client as GamerClient
@@ -8,10 +9,10 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
 
   const [userID] = args
   const helpCommand = Gamer.commandForName(`help`)
-  if (!helpCommand) return
+  if (!userID) return helpCommand?.execute(message, [`networkfollow`], { ...context, commandName: 'help' })
 
-  const user = message.mentions.length ? message.mentions[0] : await Gamer.helpers.discord.fetchUser(userID)
-  if (!user) return helpCommand.execute(message, [`networkfollow`], { ...context, commandName: 'help' })
+  const user = message.mentions.length ? message.mentions[0]! : await Gamer.helpers.discord.fetchUser(userID)
+  if (!user) return helpCommand?.execute(message, [`networkfollow`], { ...context, commandName: 'help' })
 
   // The command users settings
   const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
@@ -68,7 +69,7 @@ export default new Command([`networkfollow`, `follow`], async (message, args, co
 
   return notificationChannel.createMessage(
     language(isAlreadyFollowing ? `network/networkfollow:ADD_FOLLOWER` : `network/networkfollow:LOSE_FOLLOWER`, {
-      username: `${user.username}#${user.discriminator}`,
+      username: userTag(user),
       id: user.id
     })
   )

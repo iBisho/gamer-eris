@@ -31,6 +31,8 @@ export default new Command([`nick`], async (message, args, context) => {
   }
 
   const [userID] = args
+  if (!userID) return
+
   const member = (await Gamer.helpers.discord.fetchMember(message.member.guild, userID)) || message.member
   if (!member) return
 

@@ -15,14 +15,11 @@ export default new Command([`warn`, `w`], async (message, args, context) => {
   const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
-  let [userID] = args
-  args.shift()
-  if (userID.startsWith('<@!')) userID = userID.substring(3, userID.length - 1)
-  else if (userID.startsWith('<@')) userID = userID.substring(2, userID.length - 1)
-
-  const user = (await Gamer.helpers.discord.fetchUser(userID)) || message.mentions[0]
+  const [userID] = args
+  const user = (await Gamer.helpers.discord.fetchUser(userID!)) || message.mentions[0]!
   if (!user) return message.channel.createMessage(language(`moderation/warn:NEED_USER`))
 
+  args.shift()
   const reason = args.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/warn:NEED_REASON`))
 

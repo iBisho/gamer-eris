@@ -9,11 +9,8 @@ export default new Command([`avatar`, `pfp`, `userimage`], async (message, args,
   const language = Gamer.getLanguage(message.guildID)
 
   const [userID] = args
-  const user = message.mentions.length
-    ? message.mentions[0]
-    : userID
-    ? (await Gamer.helpers.discord.fetchUser(userID)) || message.author
-    : message.author
+  const user =
+    message.mentions[0] || (userID ? (await Gamer.helpers.discord.fetchUser(userID)) || message.author : message.author)
 
   const imageURL = user.dynamicAvatarURL(undefined, 2048)
 

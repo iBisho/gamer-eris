@@ -351,6 +351,8 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
       // If this is the approval channel we need to move the feedback to the new channel
       if (message.channel.id === guildSettings.feedback.approvalChannelID) {
         const [embed] = message.embeds
+        if (!embed) return
+
         const channelID = feedback.isBugReport
           ? guildSettings.feedback.bugs.channelID
           : guildSettings.feedback.idea.channelID

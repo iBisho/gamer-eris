@@ -10,7 +10,7 @@ export default new Command([`eventadvertise`, `ead`], async (message, args, cont
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [number] = args
-  const eventID = parseInt(number, 10)
+  const eventID = number ? parseInt(number, 10) : undefined
 
   if (!eventID) return helpCommand?.execute(message, [`eventadvertise`], { ...context, commandName: 'help' })
   // Get the event from this server using the id provided

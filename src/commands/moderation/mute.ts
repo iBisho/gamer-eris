@@ -27,6 +27,8 @@ export default new Command(`mute`, async (message, args, context) => {
   if (!muteRole) return message.channel.createMessage(language(`moderation/mute:NEED_MUTE_ROLE`))
 
   const [userID] = args
+  if (!userID) return
+
   args.shift()
 
   const member = await Gamer.helpers.discord.fetchMember(message.member.guild, userID)

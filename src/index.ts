@@ -77,8 +77,8 @@ Gamer.globalCommandRequirements = {
     if (Gamer.slowmode.has(message.author.id)) {
       const prefix = Gamer.guildPrefixes.get(message.guildID)
       if (prefix) {
-        const [firstWord] = message.content
-        if (context.commandName === firstWord.substring(prefix.length)) {
+        const [firstWord] = message.content.split(' ')
+        if (firstWord && context.commandName === firstWord.substring(prefix.length)) {
           // Cleans up spam command messages from users
           deleteMessage(message)
           return false

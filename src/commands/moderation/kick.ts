@@ -14,8 +14,9 @@ export default new Command([`kick`, `k`], async (message, args, context) => {
     return message.channel.createMessage(language(`moderation/kick:NEED_KICK_PERMS`))
 
   const [userID, ...text] = args
+  if (!userID) return message.channel.createMessage(language(`moderation/kick:NEED_USER`))
 
-  const user = (await Gamer.helpers.discord.fetchUser(userID)) || message.mentions[0]
+  const user = await Gamer.helpers.discord.fetchUser(userID)
   if (!user) return message.channel.createMessage(language(`moderation/kick:NEED_USER`))
 
   const reason = text.join(` `)

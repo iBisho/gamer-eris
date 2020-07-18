@@ -343,8 +343,7 @@ export default class {
     this.Gamer.database.models.reactionRole.create({
       name: 'colors',
       reactions: roles.map((role, index) => ({
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        reaction: this.Gamer.helpers.discord.convertEmoji(reactionRoleData[index].emoji, `reaction`)!,
+        reaction: this.Gamer.helpers.discord.convertEmoji(reactionRoleData[index]!.emoji, `reaction`)!,
         roleIDs: [role.id]
       })),
       messageID: baseMessage.id,

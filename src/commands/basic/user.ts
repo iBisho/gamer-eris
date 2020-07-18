@@ -8,9 +8,8 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   const Gamer = context.client as GamerClient
 
   const [id] = args
-  const user = message.mentions.length
-    ? message.mentions[0]
-    : (await Gamer.helpers.discord.fetchUser(id)) || message.author
+  const user =
+    message.mentions[0] || (id ? (await Gamer.helpers.discord.fetchUser(id)) || message.author : message.author)
 
   const userSettings = await Gamer.database.models.user.findOne({ userID: user.id })
   const language = Gamer.getLanguage(message.guildID)
@@ -70,11 +69,11 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
     )
     .attachFile(buffer, fileName)
 
-  if (activity.length) {
+  const [action] = activity
+  if (action) {
     embed.setFooter(
       language('basic/user:LAST_ACTIVE', {
-        time:
-          Gamer.helpers.transform.humanizeMilliseconds(Date.now() - activity[0].timestamp) || language('basic/user:NOW')
+        time: Gamer.helpers.transform.humanizeMilliseconds(Date.now() - action.timestamp) || language('basic/user:NOW')
       })
     )
   }

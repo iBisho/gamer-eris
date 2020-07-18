@@ -7,7 +7,7 @@ export default new Command([`eventdeny`, `edeny`], async (message, args, context
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
   const [number] = args
-  const eventID = parseInt(number, 10)
+  const eventID = number ? parseInt(number, 10) : undefined
   const helpCommand = Gamer.commandForName(`help`)
   if (!helpCommand) return
 

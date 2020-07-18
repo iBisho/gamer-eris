@@ -29,7 +29,7 @@ export default new Command(
       )
     }
 
-    const startNow = Gamer.helpers.transform.stringToMilliseconds(time)
+    const startNow = time ? Gamer.helpers.transform.stringToMilliseconds(time) : undefined
     if (!startNow) return helpCommand?.execute(message, ['remind'], { ...context, commandName: 'help' })
 
     // Removes the time from the args leaving only the description
@@ -38,7 +38,7 @@ export default new Command(
 
     const [repeat] = args
     let recurring = false
-    const interval = Gamer.helpers.transform.stringToMilliseconds(repeat)
+    const interval = repeat ? Gamer.helpers.transform.stringToMilliseconds(repeat) : undefined
     if (interval) {
       recurring = true
       args.shift()

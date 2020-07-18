@@ -20,7 +20,7 @@ export default new Command(`embed`, async (message, args, context) => {
 
   const [firstWord] = args
   const [user] = message.mentions
-  if (user && firstWord.startsWith('<@')) args.shift()
+  if (user && firstWord?.startsWith('<@')) args.shift()
 
   const transformed = await Gamer.helpers.transform.variables(
     args.join(' '),

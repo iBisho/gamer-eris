@@ -20,8 +20,9 @@ export default class extends Monitor {
     // This is a mirror channel so we need to execute a webhook for it
 
     let buffer: Buffer | undefined
-    if (message.attachments.length) {
-      const [attachment] = message.attachments
+    const [attachment] = message.attachments
+
+    if (attachment) {
       buffer = await nodefetch(attachment.url)
         .then(res => res.buffer())
         .catch(() => undefined)
@@ -30,7 +31,7 @@ export default class extends Monitor {
     Gamer.executeWebhook(mirror.webhookID, mirror.webhookToken, {
       content: message.content,
       embeds: message.embeds,
-      file: message.attachments.length && buffer ? { name: message.attachments[0].filename, file: buffer } : undefined,
+      file: attachment && buffer ? { name: attachment.filename, file: buffer } : undefined,
       username: username.substring(0, 80) || 'Unknown User - Gamer Mirror',
       avatarURL: mirror.anonymous ? Gamer.user.avatarURL : message.author.avatarURL,
       allowedMentions: {
@@ -38,9 +39,7 @@ export default class extends Monitor {
         roles: false,
         users: false
       }
-    }).catch(() => {
-      return
-    })
+    }).catch(() => undefined)
 
     if (mirror.deleteSourceMessages) message.delete().catch(() => undefined)
   }

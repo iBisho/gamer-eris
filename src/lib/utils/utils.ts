@@ -11,6 +11,6 @@ export default class {
   }
 
   chooseRandom<T>(array: T[]) {
-    return array[Math.floor(Math.random() * array.length)]
+    return array[Math.floor(Math.random() * array.length)]!
   }
 }

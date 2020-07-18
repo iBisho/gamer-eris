@@ -24,7 +24,7 @@ export default new Command([`coinflip`, `cf`], async (message, args, context) =>
   )
     return message.channel.createMessage(language(`fun/coinflip:NEED_CHOICE`))
 
-  const amount = parseInt(amountStr)
+  const amount = amountStr ? parseInt(amountStr) : undefined
   if (!amount) return message.channel.createMessage(language(`fun/coinflip:NEED_AMOUNT`))
 
   const authorSettings = await upsertUser(message.author.id, [message.guildID])
@@ -46,19 +46,18 @@ export default new Command([`coinflip`, `cf`], async (message, args, context) =>
     authorSettings.save()
   }
 
+  const image = images[randomNumber]
   // Create output embed
-  const embed = new MessageEmbed()
-    .setAuthor(message.author.username, message.author.avatarURL)
-    .setImage(images[randomNumber])
-    .setDescription(
-      language(`fun/coinflip:RESULT`, {
-        mention: message.author.mention,
-        coinflip: coinflip,
-        amount: win ? amount * 2 : amount,
-        result: win ? language(`fun/coinflip:WIN`) : language(`fun/coinflip:LOSS`),
-        emoji: constants.emojis.coin
-      })
-    )
+  const embed = new MessageEmbed().setAuthor(message.author.username, message.author.avatarURL).setDescription(
+    language(`fun/coinflip:RESULT`, {
+      mention: message.author.mention,
+      coinflip: coinflip,
+      amount: win ? amount * 2 : amount,
+      result: win ? language(`fun/coinflip:WIN`) : language(`fun/coinflip:LOSS`),
+      emoji: constants.emojis.coin
+    })
+  )
+  if (image) embed.setImage(image)
 
   return message.channel.createMessage({ embed: embed.code })
 })

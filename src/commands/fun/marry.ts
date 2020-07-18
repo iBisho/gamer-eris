@@ -11,9 +11,10 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
-  if (!message.mentions.length) return message.channel.createMessage(language(`fun/marry:NEED_SPOUSE`))
 
   const [spouseUser] = message.mentions
+  if (!spouseUser) return message.channel.createMessage(language(`fun/marry:NEED_SPOUSE`))
+
   if (spouseUser.id === message.author.id) return message.channel.createMessage(language(`fun/marry:NOT_SELF`))
 
   if (spouseUser.bot) return message.channel.createMessage(language(`fun/marry:NOT_BOT`))
@@ -146,7 +147,8 @@ export default new Command([`marry`, `propose`], async (message, _args, context)
         const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
         const [media] = randomResult.media
 
-        embed.setImage(media.gif.url).setFooter(`Via Tenor`, spouseUser.avatarURL)
+        if (media) embed.setImage(media.gif.url)
+        embed.setFooter(`Via Tenor`, spouseUser.avatarURL)
       }
 
       // Send a message so the spouse is able to learn how to accept the marriage

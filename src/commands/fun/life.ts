@@ -88,7 +88,7 @@ export default new Command(`life`, async (message, _args, context) => {
 
   const shoppingList = SHOPPING_LIST.map(
     (i, index) =>
-      `${index <= marriage.lifeCounter ? `✅` : `📝`} ${index + 1}. ${i} ${searchCriteria[index].cost} ${
+      `${index <= marriage.lifeCounter ? `✅` : `📝`} ${index + 1}. ${i} ${searchCriteria[index]?.cost} ${
         constants.emojis.coin
       }`
   )
@@ -96,7 +96,7 @@ export default new Command(`life`, async (message, _args, context) => {
   while (shoppingList.length > 3) {
     const secondItem = shoppingList[1]
     // If the second item is done the first will also be done so remove the first
-    if (secondItem.startsWith('✅')) {
+    if (secondItem?.startsWith('✅')) {
       shoppingList.shift()
       continue
     }

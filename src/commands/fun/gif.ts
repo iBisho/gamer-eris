@@ -26,8 +26,9 @@ export default new Command(`gif`, async (message, args, context) => {
 
   const embed = new MessageEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
-    .setImage(media.gif.url)
     .setFooter(`Via Tenor`)
+
+  if (media) embed.setImage(media.gif.url)
 
   return message.channel.createMessage({ embed: embed.code })
 })

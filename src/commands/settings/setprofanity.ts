@@ -63,6 +63,8 @@ export default new Command([`setprofanity`, `setwords`], async (message, args, c
       return message.channel.createMessage(language(`settings/setprofanity:SETUP`))
     case `strict`:
       const [subtype] = args
+      if (!subtype) return
+
       args.shift()
       switch (subtype.toLowerCase()) {
         case `add`:

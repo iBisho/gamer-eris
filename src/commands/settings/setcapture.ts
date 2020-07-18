@@ -20,7 +20,7 @@ export default new Command(`setcapture`, async (message, args, context) => {
       language(`settings/setcapture:INVALID_GAME`, { validGames: validGames.join(', ') })
     )
 
-  const channelID = message.channelMentions.length ? message.channelMentions[0] : message.channel.id
+  const channelID = message.channelMentions.length ? message.channelMentions[0]! : message.channel.id
 
   let gameSettings = await Gamer.database.models.tradingCard.findOne({
     guildID: message.guildID,

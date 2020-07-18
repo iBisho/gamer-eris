@@ -38,8 +38,10 @@ export default new EventListener('messageDelete', async (message, context) => {
 
   if (message instanceof Message && message.channel instanceof TextChannel) {
     embed.setThumbnail(message.author.avatarURL)
-    if (message.attachments.length) {
-      const buffer = await nodefetch(message.attachments[0].url)
+
+    const [attachment] = message.attachments
+    if (attachment) {
+      const buffer = await nodefetch(attachment.url)
         .then(res => res.buffer())
         .catch(() => undefined)
       if (buffer) embed.attachFile(buffer, 'deletedimage.png')

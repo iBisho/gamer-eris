@@ -13,17 +13,19 @@ export default new Command(`xp`, async (message, args, context) => {
 
   const language = Gamer.getLanguage(message.guildID)
   const [type, number, ...idOrRoleName] = args
-  const isAdding = type.toLowerCase() === `add`
-  const amount = parseInt(number, 10)
+  const isAdding = type?.toLowerCase() === `add`
+  const amount = number ? parseInt(number, 10) : undefined
   if (!amount) return
 
   const idOrName = idOrRoleName.join(' ').toLowerCase()
-  const memberID = message.mentions.length ? message.mentions[0].id : idOrName
+  const memberID = message.mentions[0]?.id || idOrName
 
   // The user is trying to update just 1 member
-  const member = (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
+  const member = memberID
+    ? (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
+    : message.member
   if (isAdding) Gamer.helpers.levels.addLocalXP(member, amount, true)
-  else if (type.toLowerCase() === `remove`) Gamer.helpers.levels.removeXP(member, amount)
+  else if (type?.toLowerCase() === `remove`) Gamer.helpers.levels.removeXP(member, amount)
   // Cancel out if not add or remove
   else return
   // Respond telling the user how much they gained

@@ -18,9 +18,10 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
   if (firstIDGuild && !Gamer.vipGuildIDs.has(message.guildID))
     return message.channel.createMessage(language(`network/mirrorcreate:VIP_ONLY_GUILD`))
 
-  const mirrorChannel = firstIDGuild
-    ? firstIDGuild.channels.get(secondID)
-    : message.member.guild.channels.get(message.channelMentions[0] || firstID)
+  const mirrorChannel =
+    firstIDGuild && secondID
+      ? firstIDGuild.channels.get(secondID)
+      : message.member.guild.channels.get(message.channelMentions[0] || firstID)
   if (
     !mirrorChannel ||
     mirrorChannel.id === message.channel.id ||
@@ -68,9 +69,7 @@ export default new Command([`mirrorcreate`, `mc`], async (message, args, context
     mirrorChannelID: mirrorChannel.id,
     sourceGuildID: message.member.guild.id,
     mirrorGuildID: mirrorChannel.guild.id,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     webhookToken: webhookExists?.webhookToken || webhook!.token,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     webhookID: webhookExists?.webhookID || webhook!.id
   })
 

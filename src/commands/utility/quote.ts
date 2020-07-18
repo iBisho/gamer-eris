@@ -18,7 +18,7 @@ export default new Command(`quote`, async (message, args, context) => {
 
   const channel =
     channelID || message.channelMentions.length
-      ? message.member.guild.channels.get(channelID || message.channelMentions[0])
+      ? message.member.guild.channels.get(channelID || message.channelMentions[0]!)
       : message.channel
   if (!channel || !(channel instanceof TextChannel)) return
 
@@ -43,7 +43,8 @@ export default new Command(`quote`, async (message, args, context) => {
       ].join('\n')
     )
     .setFooter(channel ? `#${channel.name}` : ``)
-  if (quotedMessage.attachments.length) embed.setImage(quotedMessage.attachments[0].url)
+  const [attachment] = quotedMessage.attachments
+  if (attachment) embed.setImage(attachment.url)
 
   return message.channel.createMessage({ embed: embed.code })
 })

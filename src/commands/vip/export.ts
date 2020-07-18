@@ -23,7 +23,7 @@ export default new Command(`export`, async (message, args, context) => {
   if (!messageID) return helpCommand.execute(message, [`export`], { ...context, commandName: 'help' })
 
   const channel = message.channelMentions.length
-    ? message.member.guild.channels.get(message.channelMentions[0]) || message.channel
+    ? message.member.guild.channels.get(message.channelMentions[0]!) || message.channel
     : message.channel
 
   if (

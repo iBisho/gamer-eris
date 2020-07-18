@@ -113,10 +113,12 @@ export default class {
     if (!imageChannel || !(imageChannel instanceof TextChannel)) return
     const result = await imageChannel.createMessage('', { file: buffer, name: `gamer-event-card` })
 
+    const [attachment] = result.attachments
+
     const embed = new MessageEmbed()
       .setTitle(`Event Description:`)
       .setDescription(event.description)
-      .setImage(result.attachments[0].proxy_url)
+      .setImage(attachment!.proxy_url)
       .setTimestamp(event.start)
 
     // If this is being sent to a new channel and an old card exists we need to delete the old one

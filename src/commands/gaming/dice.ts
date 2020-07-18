@@ -17,8 +17,8 @@ export default new Command([`dice`, `diceroll`], async (message, args, context) 
   if (maxValue > 100) maxValue = 100
 
   // Roll the dice
-  const rolls = []
-  const modifiedRolls = []
+  const rolls: number[] = []
+  const modifiedRolls: number[] = []
 
   const result = leftovers.length ? evaluate(leftovers.join(' ')) : 0
 
@@ -51,7 +51,7 @@ export default new Command([`dice`, `diceroll`], async (message, args, context) 
         : side === 6
         ? constants.emojis.dice.six
         : '🎲'
-    return message.channel.createMessage(`${diceemoji} ${rolls[0].toString()}`)
+    return message.channel.createMessage(`${diceemoji} ${side}`)
   }
 
   const embed = new MessageEmbed()

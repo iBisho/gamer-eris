@@ -2,6 +2,7 @@ import Monitor from '../lib/structures/Monitor'
 import { Message, TextChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import constants from '../constants'
+import Gamer from '..'
 // The commented version is for testing on gamer server
 // const channelsToPostTweets = [{ name: 'news', id: '450355369475047426' }, { name: 'status', id: '277925597815242762' }, { name: 'esports', id: '447453377358725120' }];
 const channelsToPostTweets = [
@@ -24,11 +25,13 @@ export default class extends Monitor {
       if (fire) tweetReactions.push(fire)
     }
 
-    if (message.channel.id === `556932464946184222`) return this.sendTweet(message, Gamer, `547703856294002688`)
+    const [name, link] = message.content.split(` `)
+    if (!link) return
+
+    if (message.channel.id === `556932464946184222`) return this.sendTweet(link, `547703856294002688`)
 
     // Check if the channel is the vainglory ifttt channel
     if (message.channel.id === `550719233215037440`) {
-      const [name, link] = message.content.split(` `)
       // Check if the current shard has the channel based on which vg twitter posted
       const channelData = channelsToPostTweets.find(c => c.name === name)
       if (!channelData) return
@@ -51,14 +54,11 @@ export default class extends Monitor {
     }
   }
 
-  async sendTweet(message: Message, Gamer: GamerClient, channelID: string) {
-    const split = message.content.split(` `)
+  async sendTweet(link: string, channelID: string) {
     const channel = Gamer.getChannel(channelID)
-
     if (!channel || !(channel instanceof TextChannel)) return
 
-    const sentMessage = await channel.createMessage(split[1])
-    // Add reactions to it
+    const sentMessage = await channel.createMessage(link)
     for (const reaction of tweetReactions) await sentMessage.addReaction(reaction)
   }
 }

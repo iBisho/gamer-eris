@@ -27,7 +27,7 @@ export default new Command([`roletoall`, `oprahrole`], async (message, args, con
 
   const role = message.roleMentions.length
     ? // If a role was mentioned use it
-      message.member.guild.roles.get(message.roleMentions[0])
+      message.member.guild.roles.get(message.roleMentions[0]!)
     : // ELse if a role id or name was provided
     roleIDOrName
     ? // Check if its a valid role id

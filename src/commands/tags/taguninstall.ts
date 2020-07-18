@@ -19,15 +19,14 @@ export default new Command([`taguninstall`], async (message, args, context) => {
   if (!helpCommand) return
 
   const language = Gamer.getLanguage(message.guildID)
-  if (!args.length) return helpCommand.execute(message, [`taguninstall`], { ...context, commandName: 'help' })
+  const [module] = args
+  if (!module) return helpCommand.execute(message, [`taguninstall`], { ...context, commandName: 'help' })
 
   const guildSettings = await upsertGuild(message.guildID)
 
   // If the user is not an admin cancel out
   if (!Gamer.helpers.discord.isAdmin(message, guildSettings.staff.adminRoleID)) return
 
-  // Check the module and convert it to a server id
-  const [module] = args
   const serverID = modules[module] || module
 
   guildSettings.modules = guildSettings.modules.filter(mod => mod !== serverID)

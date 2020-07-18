@@ -176,7 +176,9 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   const CHECKWIKI = language(`basic/help:CHECK_WIKI`)
   const LINKSVALUE = language(`basic/help:LINKS_VALUE`)
 
-  if (!args.length) {
+  const [commandName] = args
+
+  if (!commandName) {
     // Create the main help embed
     const embed = new MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
@@ -188,8 +190,6 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
 
     return message.channel.createMessage({ embed: embed.code })
   }
-
-  const [commandName] = args
 
   // if (commandName.toLowerCase() === `details`) {
   //   const details = new MessageEmbed().setAuthor(message.author.username, message.author.avatarURL)
@@ -242,8 +242,8 @@ export default new Command([`help`, `h`, `commands`, `cmds`], async (message, ar
   if (!command)
     return Gamer.helpers.discord.embedResponse(message, language(`basic/help:UNKNOWN`, { name: commandName }))
 
-  const name = command.names[0].toLowerCase()
-  const category = categories.find(c => c.commands.includes(name)) || { name: `basic` }
+  const name = command.names[0]?.toLowerCase()
+  const category = categories.find(c => c.commands.includes(name!)) || { name: `basic` }
 
   // The 1 and 2 vars are for shortcutcreate help
   const EXTENDED = language(`${category.name}/${name}:EXTENDED`, { prefix, 1: `{{1}}`, 2: `{{2}}` })

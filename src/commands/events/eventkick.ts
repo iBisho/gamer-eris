@@ -13,14 +13,14 @@ export default new Command([`eventkick`, `ek`], async (message, args, context) =
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [number, id] = args
-  const eventID = parseInt(number, 10)
+  const eventID = number ? parseInt(number, 10) : undefined
   if (!eventID) return helpCommand.execute(message, [`eventkick`], { ...context, commandName: 'help' })
 
   const language = Gamer.getLanguage(message.guildID)
   const [user] = message.mentions
-  if (!user && !id) return message.channel.createMessage(language(`events/eventkick:NEED_USER`))
+  const userID = user?.id || id
+  if (!userID) return message.channel.createMessage(language(`events/eventkick:NEED_USER`))
 
-  const userID = user ? user.id : id
   // Get the event from this server using the id provided
   const event = await Gamer.database.models.event.findOne({
     eventID,

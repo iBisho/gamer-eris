@@ -11,7 +11,7 @@ export default new Command(`cuddle`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
-  const user = message.mentions.length ? message.mentions[0] : message.author
+  const user = message.mentions[0] || message.author
 
   const embed = new MessageEmbed()
     .setAuthor(message.member?.nick || message.author.username, message.author.avatarURL)
@@ -35,7 +35,8 @@ export default new Command(`cuddle`, async (message, _args, context) => {
     const randomResult = Gamer.helpers.utils.chooseRandom(data.results)
     const [media] = randomResult.media
 
-    embed.setImage(media.gif.url).setFooter(language(`common:TENOR`))
+    if (media) embed.setImage(media.gif.url)
+    embed.setFooter(language(`common:TENOR`))
   }
 
   message.channel.createMessage({ embed: embed.code })

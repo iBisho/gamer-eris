@@ -17,7 +17,7 @@ export default new Command(`setxp`, async (message, args, context) => {
 
   const [type, number] = args
   if (!type) return helpCommand?.execute(message, [`setxp`], { ...context, commandName: 'help' })
-  const amount = parseInt(number, 10)
+  const amount = parseInt(number!, 10)
 
   // First check the menus that would not need `idea` or `bug`
   switch (type.toLowerCase()) {

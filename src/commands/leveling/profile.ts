@@ -10,8 +10,12 @@ export default new Command([`profile`, `p`, `prof`], async (message, args, conte
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
   const [id] = args
-  const memberID = message.mentions.length ? message.mentions[0].id : id
-  const member = (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
+  const memberID = message.mentions[0]?.id || id
+  const member = memberID
+    ? memberID
+      ? (await Gamer.helpers.discord.fetchMember(message.member.guild, memberID)) || message.member
+      : message.member
+    : message.member
   const buffer = await Gamer.helpers.profiles.makeCanvas(message, member, Gamer)
   if (!buffer) return
 

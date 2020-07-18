@@ -37,7 +37,7 @@ export default class {
     }
 
     const memberLevel =
-      constants.levels.find(lvl => lvl.xpNeeded > (memberSettings.leveling.xp || 0)) || constants.levels[0]
+      constants.levels.find(lvl => lvl.xpNeeded > (memberSettings.leveling.xp || 0)) || constants.levels[0]!
 
     const totalXP = xpAmountToAdd * multiplier + memberSettings.leveling.xp
     const newLevel = constants.levels.find(level => level.xpNeeded > totalXP)

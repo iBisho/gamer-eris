@@ -473,7 +473,7 @@ export default class {
 
       const currentLevel =
         constants.levels.find(level => level.xpNeeded > userData.currentXP) ||
-        constants.levels[constants.levels.length - 1]
+        constants.levels[constants.levels.length - 1]!
       canvas
         .setColor(`#46a3ff`)
         .setTextFont(`18px SFTMedium`)

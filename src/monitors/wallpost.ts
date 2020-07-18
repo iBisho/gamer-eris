@@ -29,8 +29,10 @@ export default class extends Monitor {
     // Either the guild doesnt have custom settings or the wall channel wasnt setup or this isnt in the wall channel
     if (!guildSettings?.network.channelIDs.wall || guildSettings.network.channelIDs.wall !== message.channel.id) return
 
-    const buffer = message.attachments.length
-      ? await nodefetch(message.attachments[0].url)
+    const [attachment] = message.attachments
+
+    const buffer = attachment
+      ? await nodefetch(attachment.url)
           .then(res => res.buffer())
           .catch(() => undefined)
       : undefined
@@ -41,7 +43,7 @@ export default class extends Monitor {
       .setDescription(message.content)
       .setFooter(message.author.id)
       .setTimestamp()
-    if (buffer) embed.attachFile(buffer, `imagepost.${message.attachments[0].url.endsWith('.gif') ? 'gif' : 'png'}`)
+    if (buffer) embed.attachFile(buffer, `imagepost.${attachment?.url.endsWith('.gif') ? 'gif' : 'png'}`)
 
     try {
       // Send the message the user posted as an embed

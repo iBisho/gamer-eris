@@ -8,9 +8,11 @@ export default new Command([`reason`, `case`], async (message, args, context) =>
   const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
-  const [id, ...text] = args
-  const modlogID = parseInt(id, 10)
   const language = Gamer.getLanguage(message.guildID)
+  const [id, ...text] = args
+  if (!id) return message.channel.createMessage(language(`moderation/reason:NEED_ID`, { id }))
+
+  const modlogID = parseInt(id, 10)
   if (!modlogID) return message.channel.createMessage(language(`moderation/reason:NEED_ID`, { id }))
   if (!text.length) return message.channel.createMessage(language(`moderation/reason:NEED_REASON`))
 

@@ -42,10 +42,8 @@ export default new Command([`kitten`, `cat`], async (message, _args, context) =>
     .then(res => res.json())
     .catch(() => undefined)
 
-  // Randomising the gifs
-  const randomGif = gifs[Math.floor(Math.random() * (gifs.length - 1))]
-
   const Gamer = context.client as GamerClient
+  const randomGif = Gamer.helpers.utils.chooseRandom(gifs)
   const language = Gamer.getLanguage(message.guildID)
 
   const embed = new MessageEmbed()

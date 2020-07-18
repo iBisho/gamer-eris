@@ -70,7 +70,7 @@ export async function removeRoleFromMember(member: Member, id: string, reason?: 
 }
 
 async function fetchUsersFromReaction(message: Message, emoji: string, users: User[] = []): Promise<User[]> {
-  const latestUserID = users.length ? users[users.length - 1].id : undefined
+  const latestUserID = users.length ? users[users.length - 1]!.id : undefined
   const reactors = await message.getReaction(emoji, 100, undefined, latestUserID)
   users.push(...reactors)
   if (reactors.length === 100) return fetchUsersFromReaction(message, emoji, users)

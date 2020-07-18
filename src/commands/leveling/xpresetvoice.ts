@@ -15,10 +15,10 @@ export default new Command(`xpresetvoice`, async (message, args, context) => {
   // Now we need to reset the entire guilds information
   await message.channel.createMessage(language(`leveling/xpresetvoice:PATIENCE`))
   const [id] = args
-
   const [user] = message.mentions
-  const member =
-    user || id ? await Gamer.helpers.discord.fetchMember(message.member.guild, user ? user.id : id) : undefined
+  const userID = user?.id || id
+
+  const member = userID ? await Gamer.helpers.discord.fetchMember(message.member.guild, userID) : undefined
   const role = id
     ? message.member.guild.roles.get(id) ||
       // Incase the user provided a role name and not an id

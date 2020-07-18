@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import { MessageEmbed } from 'helperis'
+import Gamer from '../..'
 
 const gifs = [
   `https://media.giphy.com/media/MU3YUgsJONTzzIT9wd/giphy.gif`,
@@ -247,8 +248,8 @@ const quotes = [
 ]
 
 export default new Command([`supernatural`, `sn`], message => {
-  const randomGif = gifs[Math.floor(Math.random() * (gifs.length - 1))]
-  const randomQuote = quotes[Math.floor(Math.random() * (quotes.length - 1))]
+  const randomGif = Gamer.helpers.utils.chooseRandom(gifs)
+  const randomQuote = Gamer.helpers.utils.chooseRandom(quotes)
   const [user] = message.mentions
 
   const embed = new MessageEmbed()

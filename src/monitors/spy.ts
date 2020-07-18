@@ -33,7 +33,6 @@ export default class extends Monitor {
               message.channel.id
             }/${message.id})`
           )
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           .setThumbnail(message.member?.guild.iconURL!)
 
         records.forEach(async userID => {

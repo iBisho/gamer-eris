@@ -18,7 +18,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   }
 
   const [number, type, ...fullValue] = args
-  const eventID = parseInt(number, 10)
+  const eventID = number ? parseInt(number, 10) : undefined
   const helpCommand = Gamer.commandForName(`help`)
 
   if (!eventID || !type) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
@@ -36,7 +36,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
   if (!event) return message.channel.createMessage(language(`events/events:INVALID_EVENT`))
   if (checkCreator && event.authorID !== message.author.id) return
 
-  const roleID = message.roleMentions.length ? message.roleMentions[0] : value
+  const roleID = message.roleMentions[0] || value
 
   let response = `events/eventedit:TITLE_UPDATED`
   switch (type.toLowerCase()) {
@@ -71,6 +71,8 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     case `attendees`:
     case `5`:
+      if (!value) return
+
       const maxAttendees = parseInt(value, 10)
       if (!maxAttendees) return
 
@@ -99,7 +101,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     case `reminder`:
     case `4`:
-      const reminder = Gamer.helpers.transform.stringToMilliseconds(value)
+      const reminder = value ? Gamer.helpers.transform.stringToMilliseconds(value) : undefined
       if (!reminder) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       if (event.reminders.includes(reminder)) event.reminders = event.reminders.filter(r => r !== reminder)
@@ -107,7 +109,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       response = `events/eventedit:REMINDERS_UPDATED`
       break
     case `frequency`:
-      const frequency = Gamer.helpers.transform.stringToMilliseconds(value)
+      const frequency = value ? Gamer.helpers.transform.stringToMilliseconds(value) : undefined
       if (!frequency) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       event.frequency = frequency
@@ -115,7 +117,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     case `duration`:
     case `3`:
-      const duration = Gamer.helpers.transform.stringToMilliseconds(value)
+      const duration = value ? Gamer.helpers.transform.stringToMilliseconds(value) : undefined
       if (!duration) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       event.duration = duration
@@ -124,7 +126,7 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     case `start`:
     case `12`:
-      const start = Gamer.helpers.transform.stringToMilliseconds(value)
+      const start = value ? Gamer.helpers.transform.stringToMilliseconds(value) : undefined
       const startTime = new Date(fullValue.join(' ')).getTime()
 
       if (!start && !startTime) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
@@ -135,9 +137,9 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     case `allowedrole`:
     case `10`:
-      const allowedRole =
-        message.member.guild.roles.get(roleID) ||
-        message.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
+      const allowedRole = roleID
+        ? message.member.guild.roles.get(roleID)
+        : message.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
       if (!allowedRole) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       if (event.allowedRoleIDs.includes(allowedRole.id))
@@ -147,9 +149,9 @@ export default new Command([`eventedit`, `ee`], async (message, args, context) =
       break
     case `alertrole`:
     case `11`:
-      const roleToAlert =
-        message.member.guild.roles.get(roleID) ||
-        message.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
+      const roleToAlert = roleID
+        ? message.member.guild.roles.get(roleID)
+        : message.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
       if (!roleToAlert) return helpCommand?.execute(message, [`eventedit`], { ...context, commandName: 'help' })
 
       if (event.alertRoleIDs.includes(roleToAlert.id))

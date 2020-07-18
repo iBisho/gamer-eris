@@ -32,28 +32,32 @@ export default class {
 
     const mails = await this.Gamer.database.models.mail.find({ userID: message.author.id })
     // If the user has no mails and hes trying to create a mail it needs to error because mails must be created within a guild.
-    if (!mails.length) return message.channel.createMessage(language(`mails/mail:NEW_MAIL_IN_DM_ERROR`))
-
     let [mail] = mails
+    if (!mail) return message.channel.createMessage(language(`mails/mail:NEW_MAIL_IN_DM_ERROR`))
+
     // A user can have multiple mails open in difference servers
     if (mails.length > 1) {
       // The first arg should be mail id if multiple mails. Ex: .mail 2 mail content here
       const [mailID] = content
-      const id = parseInt(mailID, 10)
-      if ((!id && id !== 0) || id > mails.length) {
-        const mailData = mails
-          .map((mail, index) => {
-            const guild = this.Gamer.guilds.get(mail.guildID)
-            return `**[${index}]** ${guild ? guild.name : mail.guildID}`
-          })
-          .join('\n')
-        return message.channel.createMessage(language(`mails/mail:NEED_MAIL_ID`, { mails: mailData }))
+      if (mailID) {
+        const id = parseInt(mailID, 10)
+        if ((!id && id !== 0) || id > mails.length) {
+          const mailData = mails
+            .map((mail, index) => {
+              const guild = this.Gamer.guilds.get(mail.guildID)
+              return `**[${index}]** ${guild ? guild.name : mail.guildID}`
+            })
+            .join('\n')
+          return message.channel.createMessage(language(`mails/mail:NEED_MAIL_ID`, { mails: mailData }))
+        }
+        // User provided some id number
+        mail = mails[id]
+        // Remove the id from the content string
+        content = content.substring(2)
       }
-      // User provided some id number
-      mail = mails[id]
-      // Remove the id from the content string
-      content = content.substring(2)
     }
+
+    if (!mail) return
 
     const guild = this.Gamer.guilds.get(mail.guildID)
     if (!guild) return
@@ -99,10 +103,12 @@ export default class {
     const channelName = `${usernameToChannelName}${mailUser.discriminator}`
 
     const [firstWord] = content.split(' ')
-    const label = await this.Gamer.database.models.label.findOne({
-      guildID: message.member.guild.id,
-      name: firstWord.toLowerCase()
-    })
+    const label = firstWord
+      ? await this.Gamer.database.models.label.findOne({
+          guildID: message.member.guild.id,
+          name: firstWord.toLowerCase()
+        })
+      : undefined
 
     let category = label
       ? message.member.guild.channels.get(label.categoryID)
@@ -218,12 +224,12 @@ export default class {
       embed: embed.code
     })
 
-    if (message.attachments.length) {
+    const [attachment] = message.attachments
+    if (attachment) {
       if (message.channel instanceof PrivateChannel) {
-        embed.setImage(message.attachments[0].proxy_url)
+        embed.setImage(attachment.proxy_url)
       } else {
         try {
-          const [attachment] = message.attachments
           const buffer = await nodefetch(attachment.proxy_url).then(res => {
             return res.buffer()
           })
@@ -322,7 +328,9 @@ export default class {
       )
       .setFooter(mail.topic)
       .setTimestamp()
-    if (message.attachments.length) embed.setImage(message.attachments[0].url)
+
+    const [attachment] = message.attachments
+    if (attachment) embed.setImage(attachment.url)
 
     try {
       const dmChannel = await user.getDMChannel()

@@ -42,7 +42,7 @@ export default new EventListener('ready', async () => {
     // Find 3 new random missions to use for today
     Gamer.missions = []
     while (Gamer.missions.length < 5) {
-      const randomMission = constants.missions[Math.floor(Math.random() * (constants.missions.length - 1))]
+      const randomMission = Gamer.helpers.utils.chooseRandom(constants.missions)
       if (!Gamer.missions.find(m => m.title === randomMission.title)) {
         Gamer.missions.push(randomMission)
       }
@@ -115,7 +115,7 @@ export default new EventListener('ready', async () => {
       if (!botPerms.has(`readMessages`) || !botPerms.has(`sendMessages`) || !botPerms.has(`embedLinks`)) {
         continue
       }
-      const randomCard = cards[Math.floor(Math.random() * cards.length)]
+      const randomCard = Gamer.helpers.utils.chooseRandom(cards)
       const language = Gamer.getLanguage(guild.id)
       if (!language) continue
       setting.lastItemName = randomCard.name
@@ -162,10 +162,10 @@ export default new EventListener('ready', async () => {
   // Remove all missions first before creating any new missions
   await Gamer.database.models.mission.deleteMany({}).catch(error => console.log(error))
   // Always add the first mission on bootup to encourage users to add gamer to more servers
-  Gamer.missions.push(constants.missions[0])
+  Gamer.missions.push(constants.missions[0]!)
   // Add 2 more unique missions
   while (Gamer.missions.length < 5) {
-    const randomMission = constants.missions[Math.floor(Math.random() * constants.missions.length)]
+    const randomMission = Gamer.helpers.utils.chooseRandom(constants.missions)
     if (!Gamer.missions.find(m => m.title === randomMission.title)) {
       Gamer.missions.push(randomMission)
     }

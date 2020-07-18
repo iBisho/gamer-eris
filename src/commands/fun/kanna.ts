@@ -23,6 +23,8 @@ export default new Command(`kanna`, (message, _args, context) => {
 
   const randomNum = Math.floor(Math.random() * gifs.length)
   const randomGif = gifs[randomNum]
+  if (!randomGif) return
+
   const kannaReply = `fun/kanna:REPLY_NUMBER${randomNum}`
 
   const embed = new MessageEmbed()

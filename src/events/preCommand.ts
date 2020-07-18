@@ -34,7 +34,7 @@ export default new EventListener('preCommand', (command, message, _args, context
   })
 
   // Return a random number between 2 and 10 points for special commands
-  const xpForCommand = [`profile`, `background`].includes(name) ? Math.floor(Math.random() * (10 - 2 + 1) + 2) : 1
+  const xpForCommand = [`profile`, `background`].includes(name!) ? Math.floor(Math.random() * (10 - 2 + 1) + 2) : 1
 
   Gamer.helpers.levels.addLocalXP(message.member, xpForCommand)
   Gamer.helpers.levels.addGlobalXP(message.member, xpForCommand)

@@ -22,10 +22,10 @@ export default new Command([`rolemessagecreate`, `rmc`], async (message, args, c
 
   const roleAdded = ['add'].includes(type.toLowerCase())
   const channel =
-    message.member.guild.channels.get(channelID) || message.member.guild.channels.get(message.channelMentions[0])
+    message.member.guild.channels.get(channelID) || message.member.guild.channels.get(message.channelMentions[0]!)
   if (!channel) return message.channel.createMessage(language(`roles/rolemessagecreate:INVALID_CHANNEL`))
 
-  const role = message.member.guild.roles.get(roleID) || message.member.guild.roles.get(message.roleMentions[0])
+  const role = message.member.guild.roles.get(roleID) || message.member.guild.roles.get(message.roleMentions[0]!)
   if (!role) return message.channel.createMessage(language(`roles/rolemessagecreate:INVALID_ROLE`))
 
   const content = text.join(' ')

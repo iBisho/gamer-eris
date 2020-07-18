@@ -92,9 +92,11 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
       const args = msg.content.split(' ')
       const [type, ...fullValue] = args
       const [value] = fullValue
+      if (!type) return
+
       collector.createdAt = Date.now()
 
-      if (!options.includes(type.toLowerCase())) {
+      if (!options.includes(type?.toLowerCase())) {
         message.channel.createMessage(language(`events/eventcreate:INVALID_EDIT`, { mention: msg.author.mention }))
         return Gamer.collectors.set(message.author.id, collector)
       }
@@ -131,7 +133,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
           response = `events/eventedit:BACKGROUND_UPDATED`
           break
         case `attendees`:
-          const maxAttendees = parseInt(value, 10)
+          const maxAttendees = value ? parseInt(value, 10) : undefined
           if (!maxAttendees) return Gamer.collectors.set(message.author.id, collector)
           while (event.attendees.length < maxAttendees && event.waitingList.length)
             Gamer.helpers.events.transferFromWaitingList(event)
@@ -156,7 +158,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
           response = `events/eventedit:SHOWATTENDEES_UPDATED`
           break
         case `reminder`:
-          const reminder = Gamer.helpers.transform.stringToMilliseconds(value)
+          const reminder = value ? Gamer.helpers.transform.stringToMilliseconds(value) : undefined
           if (!reminder) {
             msg.channel.createMessage(language(`events/eventcreate:INVALID_TIME`, { mention: msg.author.mention }))
             return Gamer.collectors.set(message.author.id, collector)
@@ -167,7 +169,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
           response = `events/eventedit:REMINDERS_UPDATED`
           break
         case `frequency`:
-          const frequency = Gamer.helpers.transform.stringToMilliseconds(value)
+          const frequency = value ? Gamer.helpers.transform.stringToMilliseconds(value) : undefined
           if (!frequency) {
             msg.channel.createMessage(language(`events/eventcreate:INVALID_TIME`, { mention: msg.author.mention }))
             return Gamer.collectors.set(message.author.id, collector)
@@ -177,7 +179,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
           response = `events/eventedit:FREQUENCY_UPDATED`
           break
         case `duration`:
-          const duration = Gamer.helpers.transform.stringToMilliseconds(value)
+          const duration = value ? Gamer.helpers.transform.stringToMilliseconds(value) : undefined
           if (!duration) {
             msg.channel.createMessage(language(`events/eventcreate:INVALID_TIME`, { mention: msg.author.mention }))
             return Gamer.collectors.set(message.author.id, collector)
@@ -188,7 +190,7 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
           response = `events/eventedit:DURATION_UPDATED`
           break
         case `start`:
-          const start = Gamer.helpers.transform.stringToMilliseconds(value)
+          const start = value ? Gamer.helpers.transform.stringToMilliseconds(value) : undefined
           const startTime = new Date(fullValue.join(' ')).getTime()
 
           if (!start && !startTime) {
@@ -201,9 +203,9 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
           response = `events/eventedit:START_UPDATED`
           break
         case `allowedrole`:
-          const allowedRole =
-            msg.member.guild.roles.get(roleID) ||
-            msg.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
+          const allowedRole = roleID
+            ? msg.member.guild.roles.get(roleID)
+            : msg.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
           if (!allowedRole) {
             msg.channel.createMessage(language(`events/eventcreate:INVALID_TIME`, { mention: msg.author.mention }))
             return Gamer.collectors.set(message.author.id, collector)
@@ -215,9 +217,9 @@ export default new Command([`eventcreate`, `ec`], async (message, args, context)
           response = `events/eventedit:ALLOWEDROLE_UPDATED`
           break
         case `alertrole`:
-          const roleToAlert =
-            msg.member.guild.roles.get(roleID) ||
-            msg.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
+          const roleToAlert = roleID
+            ? msg.member.guild.roles.get(roleID)
+            : msg.member.guild.roles.find(r => r.name.toLowerCase() === fullValue.join(' ').toLowerCase())
           if (!roleToAlert) {
             msg.channel.createMessage(language(`events/eventcreate:INVALID_TIME`, { mention: msg.author.mention }))
             return Gamer.collectors.set(message.author.id, collector)

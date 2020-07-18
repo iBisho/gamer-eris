@@ -14,6 +14,8 @@ export default new Command(`setstrictwords`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isAdmin(message, settings ? settings.staff.adminRoleID : undefined)) return
 
   const [type] = args
+  if (!type) return
+
   // Remove the type and the leftover should be all words
   args.shift()
 

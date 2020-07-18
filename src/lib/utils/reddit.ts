@@ -45,7 +45,6 @@ export async function processRedditSubscriptions() {
   Gamer.helpers.logger.green('Processing Reddit Subscriptions')
   const redditSubs = await Gamer.database.models.subscription.find({ type: GamerSubscriptionType.REDDIT })
   const validReactions = [constants.emojis.voteup, constants.emojis.votedown]
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     .map(reaction => Gamer.helpers.discord.convertEmoji(reaction, `reaction`)!)
     .filter(reaction => reaction)
 

@@ -16,7 +16,7 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
 
   let deleteTrigger = false
   const [trigger] = args
-  if (trigger.toLowerCase() === 'deletetrigger') {
+  if (trigger?.toLowerCase() === 'deletetrigger') {
     args.shift()
     deleteTrigger = true
   }
@@ -37,9 +37,9 @@ export default new Command([`shortcutcreate`, `scc`], async (message, args, cont
 
   const actions = splitOptions.map(action => {
     // The first will always need to be a command name and the rest are the args
-    const [commandName, ...args] = action.trim().split(` `)
+    const [commandName, ...scargs] = action.trim().split(` `)
     // toString converts like #channel or @role mentions into the string version so we can save in db
-    return { command: commandName, args: args.map(a => a.toString()) }
+    return { command: commandName!, args: scargs }
   })
 
   const payload = {

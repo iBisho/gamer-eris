@@ -28,7 +28,7 @@ export default class {
 
     this.defaultProfile = new Canvas(852, 581)
       .setAntialiasing(`subpixel`)
-      .addBeveledImage(constants.profiles.backgrounds[0].buffer, 345, 50, 457, 481, 25, true)
+      .addBeveledImage(constants.profiles.backgrounds[0]!.buffer, 345, 50, 457, 481, 25, true)
       .setAntialiasing(`subpixel`)
       .addImage(this.Gamer.buffers.profiles.whiteRectangle, 2, rectangleStartHeight)
       .addImage(this.Gamer.buffers.profiles.blueCircle, 40, 80)

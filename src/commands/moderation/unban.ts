@@ -18,8 +18,9 @@ export default new Command(`unban`, async (message, args, context) => {
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [userID, ...text] = args
+  if (!userID) return message.channel.createMessage(language(`moderation/unban:NEED_USER`))
 
-  const user = (await Gamer.helpers.discord.fetchUser(userID)) || message.mentions[0]
+  const user = await Gamer.helpers.discord.fetchUser(userID)
   if (!user) return message.channel.createMessage(language(`moderation/unban:NEED_USER`))
 
   const reason = text.join(` `)

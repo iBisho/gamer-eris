@@ -31,7 +31,7 @@ export default new Command(`setmail`, async (message, args, context) => {
   // Remove the type and the leftover should be all words
   args.shift()
 
-  const channelID = message.channelMentions.length ? message.channelMentions[0] : message.channel.id
+  const channelID = message.channelMentions.length ? message.channelMentions[0]! : message.channel.id
 
   switch (type.toLowerCase()) {
     case `enable`:

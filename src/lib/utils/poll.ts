@@ -27,8 +27,10 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
   }
 
   poll.anonymousVotes.forEach(vote => {
-    const emojis = vote.options.map(opt => constants.emojis.letters[opt])
-    emojis.forEach(async emoji => {
+    vote.options.forEach(async opt => {
+      const emoji = constants.emojis.letters[opt]
+      if (!emoji) return
+
       const relevantVoters = voters.get(emoji)
       if (!relevantVoters) return
 

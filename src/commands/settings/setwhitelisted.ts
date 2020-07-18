@@ -31,9 +31,9 @@ export default new Command(`setwhitelisted`, async (message, args, context) => {
       settings.save()
       return message.channel.createMessage(language(`settings/setwhitelisted:DISABLED`))
     case `role`:
-      if (!message.roleMentions.length)
-        return message.channel.createMessage(language(`settings/setwhitelisted:NEED_ROLE`))
       const [roleID] = message.roleMentions
+      if (!roleID) return message.channel.createMessage(language(`settings/setwhitelisted:NEED_ROLE`))
+
       const roleExists = settings.moderation.filters.url.roleIDs.includes(roleID)
       if (!roleExists) settings.moderation.filters.url.roleIDs.push(roleID)
       else settings.moderation.filters.url.roleIDs = settings.moderation.filters.url.roleIDs.filter(id => id !== roleID)
@@ -43,9 +43,9 @@ export default new Command(`setwhitelisted`, async (message, args, context) => {
         language(roleExists ? `settings/setwhitelisted:ROLE_REMOVED` : `settings/setwhitelisted:ROLE_ADDED`)
       )
     case `channel`:
-      if (!message.channelMentions || !message.channelMentions.length)
-        return message.channel.createMessage(language(`settings/setwhitelisted:NEED_CHANNEL`))
       const [channelID] = message.channelMentions
+      if (!channelID) return message.channel.createMessage(language(`settings/setwhitelisted:NEED_CHANNEL`))
+
       const channelExists = settings.moderation.filters.url.channelIDs.includes(channelID)
       if (!channelExists) settings.moderation.filters.url.channelIDs.push(channelID)
       else
@@ -58,8 +58,9 @@ export default new Command(`setwhitelisted`, async (message, args, context) => {
         language(channelExists ? `settings/setwhitelisted:CHANNEL_REMOVED` : `settings/setwhitelisted:CHANNEL_ADDED`)
       )
     case `user`:
-      if (!message.mentions.length) return message.channel.createMessage(language(`settings/setwhitelisted:NEED_USER`))
-      const userID = message.mentions[0].id
+      const [mention] = message.mentions
+      if (!mention) return message.channel.createMessage(language(`settings/setwhitelisted:NEED_USER`))
+      const userID = mention.id
       const userExists = settings.moderation.filters.url.userIDs.includes(userID)
       if (!userExists) settings.moderation.filters.url.userIDs.push(userID)
       else settings.moderation.filters.url.userIDs = settings.moderation.filters.url.userIDs.filter(id => id !== userID)
@@ -71,9 +72,9 @@ export default new Command(`setwhitelisted`, async (message, args, context) => {
     case `url`:
       // Remove the type and the leftover should be the urls
       args.shift()
-      if (!args.length) return message.channel.createMessage(language(`settings/setwhitelisted:NEED_URL`))
-
       const [url] = args
+      if (!url) return message.channel.createMessage(language(`settings/setwhitelisted:NEED_URL`))
+
       const urlExists = settings.moderation.filters.url.urls.includes(url)
 
       if (!urlExists) settings.moderation.filters.url.urls.push(url)

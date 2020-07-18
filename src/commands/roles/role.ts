@@ -1,8 +1,8 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
-import { Role } from 'eris'
-import { MessageEmbed } from 'helperis'
+import { highestRole, MessageEmbed } from 'helperis'
 import { addRoleToMember, removeRoleFromMember } from '../../lib/utils/eris'
+import { parseRole } from '../../lib/utils/arguments'
 
 export default new Command([`role`, `rank`], async (message, args, context) => {
   if (!message.guildID || !message.member) return
@@ -20,10 +20,8 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
     return message.channel.createMessage(language(`roles/role:MISSING_MANAGE_ROLES`))
 
   const [roleNameOrID] = args
-  // if a role is mentioned use the mentioned role else see if a role id or role name was provided
-  const [roleID] = message.roleMentions
   // No args were provided so we just list the public roles
-  if (!args.length) {
+  if (!roleNameOrID) {
     // Send in an embed so the role @ do not go through
     const embed = new MessageEmbed()
       .setAuthor(message.author.username, message.author.avatarURL)
@@ -32,23 +30,17 @@ export default new Command([`role`, `rank`], async (message, args, context) => {
     return message.channel.createMessage({ embed: embed.code })
   }
 
-  const role = roleID
-    ? message.member.guild.roles.get(roleID)
-    : message.member.guild.roles.find(r => r.id === roleNameOrID || r.name.toLowerCase() === roleNameOrID.toLowerCase())
+  const role = parseRole(message, roleNameOrID)
   if (!role) return message.channel.createMessage(language(`roles/role:NEED_ROLE`))
+
   if (!settings.moderation.roleIDs.public.includes(role.id))
     return message.channel.createMessage(language(`roles/role:NOT_PUBLIC`))
-  // Check if the bots role is high enough to manage the role
-  const botsRoles = bot.roles.sort(
-    (a, b) => (bot.guild.roles.get(b) as Role).position - (bot.guild.roles.get(a) as Role).position
-  )
-  const [botsHighestRoleID] = botsRoles
-  const botsHighestRole = bot.guild.roles.get(botsHighestRoleID)
-  if (!botsHighestRole) return
-  if (botsHighestRole.position < role.position) return message.channel.createMessage(language(`roles/role:BOT_TOO_LOW`))
-  // Check if the authors role is high enough to grant this role
-  if (!message.member) return
 
+  // Check if the bots role is high enough to manage the role
+  const botsHighestRole = highestRole(bot)
+  if (botsHighestRole.position < role.position) return message.channel.createMessage(language(`roles/role:BOT_TOO_LOW`))
+
+  // Check if the authors role is high enough to grant this role
   const hasRole = message.member.roles.includes(role.id)
   const tag = `${message.author.username}-${message.author.discriminator}`
 

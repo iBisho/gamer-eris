@@ -44,6 +44,9 @@ export default new Command('setup', async (message, args, context) => {
     .setFooter(language('utility/setup:CONFIRM'), message.member.guild.iconURL)
     .setImage('https://i.imgur.com/y4hacfC.gif')
   const helperMessage = await message.channel.createMessage({ embed: featureListEmbed.code })
+  const [helperEmbed] = helperMessage.embeds
+  if (!helperEmbed) return
+
   const questionMessage = await message.channel.createMessage({ embed: questionEmbed.code })
 
   return Gamer.collectors.set(message.author.id, {
@@ -65,6 +68,8 @@ export default new Command('setup', async (message, args, context) => {
 
       const args = msg.content.split(' ')
       const [type] = args
+      if (!type) return
+
       collector.createdAt = Date.now()
 
       const YES_OPTIONS = language('common:YES_OPTIONS', { returnObjects: true })
@@ -158,7 +163,7 @@ export default new Command('setup', async (message, args, context) => {
           const role =
             msg.content.toLowerCase() === 'default'
               ? await msg.member.guild.createRole({ name: language('basic/verify:VERIFY_ROLENAME') })
-              : msg.member.guild.roles.get(msg.roleMentions.length ? msg.roleMentions[0] : msg.content) ||
+              : msg.member.guild.roles.get(msg.roleMentions.length ? msg.roleMentions[0]! : msg.content) ||
                 msg.member.guild.roles.find(r => r.name.toLowerCase() === msg.content.toLowerCase())
           if (!role) {
             msg.channel
@@ -288,7 +293,7 @@ export default new Command('setup', async (message, args, context) => {
           }
 
           const autorole =
-            msg.member.guild.roles.get(msg.roleMentions.length ? msg.roleMentions[0] : msg.content.toLowerCase()) ||
+            msg.member.guild.roles.get(msg.roleMentions.length ? msg.roleMentions[0]! : msg.content.toLowerCase()) ||
             msg.member.guild.roles.find(r => r.name.toLowerCase() === msg.content.toLowerCase())
           if (!autorole) {
             msg.channel
@@ -314,9 +319,8 @@ export default new Command('setup', async (message, args, context) => {
         case 2:
           await helperMessage.edit({
             embed: {
-              ...helperMessage.embeds[0],
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              fields: helperMessage.embeds[0].fields!.map((field, index) => {
+              ...helperEmbed,
+              fields: helperEmbed.fields!.map((field, index) => {
                 if (index < 1) return { name: field.name, value: language('utility/setup:DONE') }
                 return {
                   name: field.name,
@@ -347,9 +351,8 @@ export default new Command('setup', async (message, args, context) => {
         case 3:
           await helperMessage.edit({
             embed: {
-              ...helperMessage.embeds[0],
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              fields: helperMessage.embeds[0].fields!.map((field, index) => {
+              ...helperEmbed,
+              fields: helperEmbed.fields!.map((field, index) => {
                 if (index < 2) return { name: field.name, value: language('utility/setup:DONE') }
                 return {
                   name: field.name,
@@ -428,9 +431,8 @@ export default new Command('setup', async (message, args, context) => {
         case 4:
           await helperMessage.edit({
             embed: {
-              ...helperMessage.embeds[0],
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              fields: helperMessage.embeds[0].fields!.map((field, index) => {
+              ...helperEmbed,
+              fields: helperEmbed.fields!.map((field, index) => {
                 if (index < 3) return { name: field.name, value: language('utility/setup:DONE') }
                 return {
                   name: field.name,
@@ -457,9 +459,8 @@ export default new Command('setup', async (message, args, context) => {
         case 5:
           await helperMessage.edit({
             embed: {
-              ...helperMessage.embeds[0],
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              fields: helperMessage.embeds[0].fields!.map((field, index) => {
+              ...helperEmbed,
+              fields: helperEmbed.fields!.map((field, index) => {
                 if (index < 4) return { name: field.name, value: language('utility/setup:DONE') }
                 return {
                   name: field.name,
@@ -497,9 +498,8 @@ export default new Command('setup', async (message, args, context) => {
         case 6:
           await helperMessage.edit({
             embed: {
-              ...helperMessage.embeds[0],
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              fields: helperMessage.embeds[0].fields!.map((field, index) => {
+              ...helperEmbed,
+              fields: helperEmbed.fields!.map((field, index) => {
                 if (index < 5) return { name: field.name, value: language('utility/setup:DONE') }
                 return {
                   name: field.name,
@@ -527,9 +527,8 @@ export default new Command('setup', async (message, args, context) => {
         case 7:
           await helperMessage.edit({
             embed: {
-              ...helperMessage.embeds[0],
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              fields: helperMessage.embeds[0].fields!.map((field, index) => {
+              ...helperEmbed,
+              fields: helperEmbed.fields!.map((field, index) => {
                 if (index < 6) return { name: field.name, value: language('utility/setup:DONE') }
                 return {
                   name: field.name,
@@ -620,9 +619,8 @@ export default new Command('setup', async (message, args, context) => {
         case 8:
           await helperMessage.edit({
             embed: {
-              ...helperMessage.embeds[0],
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              fields: helperMessage.embeds[0].fields!.map((field, index) => {
+              ...helperEmbed,
+              fields: helperEmbed.fields!.map((field, index) => {
                 if (index < 7) return { name: field.name, value: language('utility/setup:DONE') }
                 return {
                   name: field.name,

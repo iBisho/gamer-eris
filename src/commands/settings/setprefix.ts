@@ -19,7 +19,8 @@ export default new Command(`setprefix`, async (message, args, context) => {
   guildSettings.prefix = prefix ? prefix.substring(0, 2) : Gamer.prefix
   guildSettings.save()
 
-  Gamer.guildPrefixes.set(message.guildID, prefix)
+  if (prefix) Gamer.guildPrefixes.set(message.guildID, prefix)
+  else Gamer.guildPrefixes.delete(message.guildID)
 
   return message.channel.createMessage(language(prefix ? `settings/setprefix:UPDATED` : `settings/setprefix:RESET`))
 })

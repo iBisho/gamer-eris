@@ -58,6 +58,8 @@ export default new Command(`embedset`, async (message, _args, context) => {
 
       const args = msg.content.split(' ')
       const [type, ...fullValue] = args
+      if (!type) return
+
       collector.createdAt = Date.now()
 
       if (!options.includes(type.toLowerCase())) {
@@ -145,7 +147,7 @@ export default new Command(`embedset`, async (message, _args, context) => {
           }
 
           const [fieldName, fieldValue, inline] = fullValue.join(' ').split('%%')
-          embed.addField(fieldName, fieldValue, Boolean(inline?.endsWith(' true')))
+          if (fieldName && fieldValue) embed.addField(fieldName, fieldValue, Boolean(inline?.endsWith(' true')))
           break
         default:
           // If they used the command wrong show them the help

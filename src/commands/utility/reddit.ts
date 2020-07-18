@@ -64,7 +64,6 @@ export default new Command(`reddit`, async (message, args, context) => {
   switch (type.toLowerCase()) {
     case `subscribe`:
       const validReactions = [constants.emojis.voteup, constants.emojis.votedown]
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         .map(reaction => Gamer.helpers.discord.convertEmoji(reaction, `reaction`)!)
         .filter(reaction => reaction)
       // If it does not exist create a new subscription for the user

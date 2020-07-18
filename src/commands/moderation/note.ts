@@ -10,17 +10,14 @@ export default new Command([`note`], async (message, args, context) => {
   if (!botMember) return
 
   const language = Gamer.getLanguage(message.guildID)
-  if (!args.length) return message.channel.createMessage(language(`moderation/note:NEED_USER`))
-
   const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
-  let [userID] = args
+  const [userID] = args
+  if (!userID) return message.channel.createMessage(language(`moderation/note:NEED_USER`))
   args.shift()
-  if (userID.startsWith('<@!')) userID = userID.substring(3, userID.length - 1)
-  else if (userID.startsWith('<@')) userID = userID.substring(2, userID.length - 1)
 
-  const user = (await Gamer.helpers.discord.fetchUser(userID)) || message.mentions[0]
+  const user = await Gamer.helpers.discord.fetchUser(userID)
   if (!user) return message.channel.createMessage(language(`moderation/note:NEED_USER`))
 
   const reason = args.join(` `)

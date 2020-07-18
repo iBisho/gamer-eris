@@ -21,6 +21,7 @@ export default new Command([`ban`, `b`], async (message, args, context) => {
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
 
   const [userID, ...text] = args
+  if (!userID) return message.channel.createMessage(language(`moderation/ban:NEED_USER`))
 
   const reason = text.join(` `)
   if (!reason) return message.channel.createMessage(language(`moderation/ban:NEED_REASON`))

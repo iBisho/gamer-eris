@@ -9,6 +9,7 @@ export default new Command(`move`, async (message, args, context) => {
   const language = Gamer.getLanguage(message.guildID)
 
   const [channelID, newChannelID] = args
+  if (!channelID) return message.channel.createMessage(language(`moderation/move:NEED_CHANNEL`))
 
   const channel = message.member.guild.channels.get(channelID)
   // If not a valid voice channel cancel
@@ -22,7 +23,7 @@ export default new Command(`move`, async (message, args, context) => {
   if (!hasPermission) return message.channel.createMessage(language(`moderation/move:NEED_MOVE_MEMBERS`))
   if (!userHasPermission) return message.channel.createMessage(language(`moderation/move:MISSING_PERM`))
 
-  const newChannel = message.member.guild.channels.get(newChannelID)
+  const newChannel = newChannelID ? message.member.guild.channels.get(newChannelID) : undefined
 
   const REASON = language(`moderation/move:REASON`, {
     user: `${message.author.username}#${message.author.discriminator}`

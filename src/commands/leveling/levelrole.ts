@@ -37,7 +37,7 @@ export default new Command(`levelrole`, async (message, args, context) => {
     return Gamer.helpers.discord.embedResponse(message, response)
   }
 
-  const levelID = parseInt(number, 10)
+  const levelID = number ? parseInt(number, 10) : undefined
   if (!levelID) return helpCommand.execute(message, [`levelrole`], { ...context, commandName: 'help' })
 
   const guild = message.member.guild

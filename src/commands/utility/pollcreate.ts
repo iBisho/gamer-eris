@@ -101,6 +101,7 @@ export default new Command(['pollcreate', 'pc'], async (message, args, context) 
           if (SKIP_OPTIONS.includes(msg.content.toLowerCase())) {
             data.step = 4
             questionMessage.edit(language('utility/pollcreate:NO_DURATION', { mention: msg.author.mention }))
+            break
           }
 
           const duration = Gamer.helpers.transform.stringToMilliseconds(msg.content)
@@ -141,7 +142,7 @@ export default new Command(['pollcreate', 'pc'], async (message, args, context) 
           }
 
           const role =
-            msg.member.guild.roles.get(msg.roleMentions.length ? msg.roleMentions[0] : msg.content) ||
+            msg.member.guild.roles.get(msg.roleMentions.length ? msg.roleMentions[0]! : msg.content) ||
             msg.member.guild.roles.find(r => r.name.toLowerCase() === msg.content.toLowerCase())
 
           if (!role) {
@@ -223,7 +224,8 @@ export default new Command(['pollcreate', 'pc'], async (message, args, context) 
           const pollMessage = await (channel as TextChannel).createMessage({ embed: embed.code })
 
           for (let i = 0; i < data.options.length; i++) {
-            pollMessage.addReaction(constants.emojis.letters[i])
+            const letter = constants.emojis.letters[i]
+            if (letter) pollMessage.addReaction(letter)
           }
 
           // Create the poll in the db

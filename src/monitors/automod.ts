@@ -134,7 +134,7 @@ export default class extends Monitor {
 
     embed.setDescription(content)
 
-    if (reasons.length === 1) embed.setFooter(reasons[0])
+    if (reasons.length === 1) embed.setFooter(reasons[0]!)
     else embed.setFooter(language(`common:TOO_MUCH_WRONG`))
     // Send back the cleaned message with the author information
     message.channel.createMessage({ embed: embed.code })
@@ -204,14 +204,14 @@ export default class extends Monitor {
 
       const result = []
       for (let i = 0; i < textArray.length; i++) {
-        const first = textArray[i]
+        const first = textArray[i] || ``
         const second = textArray[i + 1] || ``
 
         if (first + second === cleanedWord) {
           result.push(`$`.repeat(first.length), `$`.repeat(second.length))
           i += 1
         } else {
-          result.push(textArray[i])
+          result.push(first)
         }
       }
 

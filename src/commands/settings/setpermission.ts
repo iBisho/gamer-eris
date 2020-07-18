@@ -168,7 +168,7 @@ export default new Command([`setpermission`, `setignore`, `setperm`], async (mes
     message.channel.createMessage(language(`settings/setpermission:COMMAND_UPDATED`))
 
     const newPerms = await Gamer.database.models.command.create({
-      name: command.names[0],
+      name: command.names[0]!,
       guildID: message.guildID,
       enabled: enable,
       exceptionChannelIDs: targets.length ? [...channelIDs] : [],

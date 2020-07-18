@@ -34,7 +34,7 @@ export default class {
         const randomResult = this.Gamer.helpers.utils.chooseRandom((res as TenorGif).results || [])
         const [media] = randomResult.media
 
-        return media.gif.url
+        return media?.gif.url
       }
 
       // User wants to use an emoji
@@ -93,7 +93,7 @@ export default class {
   toTitleCase(text: string) {
     return text
       .split(` `)
-      .map(word => `${word[0].toUpperCase()}${word.substring(1)}`)
+      .map(word => `${word[0]!.toUpperCase()}${word.substring(1)}`)
       .join(` `)
   }
 
@@ -147,8 +147,8 @@ export default class {
           break
       }
 
-      const amount = parseInt(number, 10)
-      if (!parseInt) return
+      const amount = number ? parseInt(number, 10) : undefined
+      if (!amount) return
 
       total += amount * multiplier
     }

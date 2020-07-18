@@ -12,7 +12,7 @@ export default new Command([`analyzechannel`, `analyticschannel`], async (messag
   if (!args.length) return helpCommand?.execute(message, [`analyzechannel`], { ...context, commandName: 'help' })
 
   const [id, startNumber, endNumber] = args
-  const channel = message.member.guild.channels.get(message.channelMentions.length ? message.channelMentions[0] : id)
+  const channel = message.member.guild.channels.get(message.channelMentions.length ? message.channelMentions[0]! : id!)
   if (!channel) return helpCommand?.execute(message, [`analyzechannel`], { ...context, commandName: 'help' })
 
   const startDay = Number(startNumber) || 0
