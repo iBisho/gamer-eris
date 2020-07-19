@@ -2,6 +2,7 @@ import Monitor from '../lib/structures/Monitor'
 import { Message } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed, userTag } from 'helperis'
+import { deleteMessage } from '../lib/utils/eris'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -41,7 +42,7 @@ export default class extends Monitor {
           .setFooter(`${userTag(user)} AFK Message`)
 
         const response = await message.channel.createMessage({ embed: embed.code })
-        setTimeout(() => response.delete(REASON), 10000)
+        deleteMessage(response, 10, REASON)
         continue
       }
 
@@ -54,7 +55,7 @@ export default class extends Monitor {
 
       // Send the AFK message
       const response = await message.channel.createMessage({ embed: json })
-      setTimeout(() => response.delete(REASON), 10000)
+      deleteMessage(response, 10, REASON)
     }
   }
 }

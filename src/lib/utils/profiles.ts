@@ -125,7 +125,8 @@ export default class {
 
     // Marriage calculations
     const marriage = isMarried || (isSpouse && isSpouse.accepted ? isSpouse : undefined)
-    const mRatio = (marriage?.love || 0) / 100
+    const loveCount = marriage?.love ? (marriage.love > 100 ? 100 : marriage.love) : 0
+    const mRatio = loveCount / 100
     const mProgress = xpBarWidth * mRatio
 
     const sRatio =
@@ -345,7 +346,7 @@ export default class {
       // global xp bar text
       .addText(`${globalXP}/${globalLevelDetails.xpNeeded - previousGlobalLevelDetails?.xpNeeded}`, 190, 330)
       // global xp bar text
-      .addText(`${marriage?.love || 0}%`, 190, 410)
+      .addText(`${loveCount}%`, 190, 410)
 
     return canvas.toBufferAsync()
   }

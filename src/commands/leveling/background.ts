@@ -2,7 +2,6 @@ import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import constants from '../../constants'
 import config from '../../../config'
-import { upsertUser } from '../../database/mongoHandler'
 
 export default new Command([`background`, `bg`], async (message, args, context) => {
   if (!message.guildID) return
@@ -10,17 +9,14 @@ export default new Command([`background`, `bg`], async (message, args, context) 
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
-  const userSettings = await upsertUser(message.author.id, [message.guildID])
+  const userSettings = await Gamer.database.models.user.findOne({ userID: message.author.id })
+  if (!userSettings) return
 
   const [type, id, color] = args
-
   const helpCommand = Gamer.commandForName(`help`)
-  if (!helpCommand) return
-
   const profileCommand = Gamer.commandForName(`profile`)
-  if (!profileCommand) return
 
-  if (!type || !id) return helpCommand.execute(message, [`background`], { ...context, commandName: 'help' })
+  if (!type || !id) return helpCommand?.execute(message, [`background`], { ...context, commandName: 'help' })
 
   const lowerColor = color?.toLowerCase()
   const theme =
@@ -62,7 +58,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
         userSettings.backgroundID = backgroundID
         message.channel.createMessage(language(`leveling/background:SAVED`))
         await userSettings.save()
-        profileCommand.execute(message, [], { ...context, commandName: 'profile' })
+        profileCommand?.execute(message, [], { ...context, commandName: 'profile' })
         return message.member
           ? Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
           : undefined
@@ -73,7 +69,7 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       message.channel.createMessage(language(`leveling/background:SAVED`))
       await userSettings.save()
 
-      profileCommand.execute(message, [], { ...context, commandName: 'profile' })
+      profileCommand?.execute(message, [], { ...context, commandName: 'profile' })
       return message.member
         ? Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
         : undefined
@@ -89,5 +85,5 @@ export default new Command([`background`, `bg`], async (message, args, context) 
       return Gamer.helpers.levels.completeMission(message.member, `background`, message.guildID)
   }
 
-  return helpCommand.execute(message, [`background`], { ...context, commandName: 'help' })
+  return helpCommand?.execute(message, [`background`], { ...context, commandName: 'help' })
 })
