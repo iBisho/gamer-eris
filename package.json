@@ -2,7 +2,7 @@
   "name": "gamer-eris",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "production/src/index.js",
   "scripts": {
     "test": "tsc && eslint '*/**/*.ts'",
     "lint": "tsc && eslint '*/**/*.ts' --quiet --fix",

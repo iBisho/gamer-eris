@@ -19,13 +19,6 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
 
   const voters = await fetchAllReactors(pollMessage)
 
-  for (const [key, value] of voters.entries()) {
-    voters.set(
-      key,
-      value.filter(user => user.id !== Gamer.user.id)
-    )
-  }
-
   poll.anonymousVotes.forEach(vote => {
     vote.options.forEach(async opt => {
       const emoji = constants.emojis.letters[opt]
@@ -45,10 +38,14 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
 
   let totalVotes = 0
 
-  for (const vote of voters.values()) totalVotes += vote.length
+  for (const users of voters.values()) {
+    if (users.some(u => u.id === Gamer.user.id)) totalVotes += users.length - 1
+    else totalVotes += users.length
+  }
 
-  for (const [key, value] of voters.entries())
-    results.push(`${key} ${value.length} | ${(value.length / (totalVotes || 1)) * 100}%`)
+  for (const [key, users] of voters.entries()) {
+    results.push(`${key} ${users.length} | ${(users.length / (totalVotes || 1)) * 100}%`)
+  }
 
   // Delete the poll in the db
   Gamer.database.models.poll.deleteOne({ _id: poll._id }).exec()
