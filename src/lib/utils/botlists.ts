@@ -24,7 +24,7 @@ export const weeklyVoteReset = async () => {
 
   const lastPlusOneWeek = clientSettings.weeklyVoteTimestamp + milliseconds.WEEK
 
-  if (lastPlusOneWeek < now) return
+  if (lastPlusOneWeek > now) return
 
   clientSettings.weeklyVoteTimestamp = lastPlusOneWeek
   clientSettings.save()
