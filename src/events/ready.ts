@@ -193,7 +193,10 @@ export default new EventListener('ready', async () => {
       Gamer.vipGuildIDs.add(settings.guildID)
       // Since this is a vip guild lets fetch all members
       const guild = Gamer.guilds.get(settings.guildID)
-      if (guild) guild.fetchAllMembers()
+      if (guild) {
+        guild.fetchAllMembers()
+        Gamer.allMembersFetchedGuildIDs.add(settings.guildID)
+      }
     }
   })
 

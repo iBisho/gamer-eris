@@ -2,6 +2,7 @@ import { TextChannel } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
 import { MessageEmbed } from 'helperis'
 import { EventListener } from 'yuuko'
+import emojicreate from '../commands/emojis/emojicreate'
 
 export default new EventListener('guildEmojisUpdate', async (guild, emojis, oldEmojis) => {
   // Only need emoji create and emoji delete so if the same amount we can ignore
@@ -16,6 +17,10 @@ export default new EventListener('guildEmojisUpdate', async (guild, emojis, oldE
     ? emojis.find(e => !oldEmojis.some(em => em.id === e.id))
     : oldEmojis.find(e => !emojis.some(em => em.id === e.id))
   if (!emoji) return
+
+  if (!emojiCreated) {
+    Gamer.database.models.emoji.deleteMany({ emojiID: emoji.id }).exec()
+  }
 
   const emojiURL = `https://cdn.discordapp.com/emojis/${emoji.id}.${emoji.animated ? `gif` : `png`}`
 

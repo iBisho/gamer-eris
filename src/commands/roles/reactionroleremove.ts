@@ -30,8 +30,12 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
   const reaction = Gamer.helpers.discord.convertEmoji(validEmoji.fullCode, `reaction`)
   if (!reaction) return
 
-  reactionRole.reactions = reactionRole.reactions.filter(r => r.reaction !== reaction)
-  reactionRole.save()
+  Gamer.database.models.reactionRole
+    .updateOne(
+      { name: name.toLowerCase(), guildID: message.guildID },
+      { reactions: reactionRole.reactions.filter(r => r.reaction !== reaction) }
+    )
+    .exec()
 
   const channel = message.member?.guild.channels.get(reactionRole.channelID)
   if (
@@ -48,7 +52,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
       () => undefined
     )
     if (reactionRoleMessage) {
-      reactionRoleMessage.removeMessageReactionEmoji(`${validEmoji.name}:${validEmoji.id}`)
+      reactionRoleMessage.removeMessageReactionEmoji(`${validEmoji.name}:${validEmoji.emojiID}`)
     }
   }
 
