@@ -1,7 +1,7 @@
 import Monitor from '../lib/structures/Monitor'
 import { Message } from 'eris'
 import GamerClient from '../lib/structures/GamerClient'
-import { MessageEmbed } from 'helperis'
+import { MessageEmbed, userTag } from 'helperis'
 
 export default class extends Monitor {
   async execute(message: Message, Gamer: GamerClient) {
@@ -36,9 +36,9 @@ export default class extends Monitor {
       if (!userSettings?.afkMessage.startsWith(`{`)) {
         const embed = new MessageEmbed()
           .setAuthor(message.author.username, message.author.avatarURL)
-          .setTitle(`${user.username}${user.discriminator} is AFK:`)
+          .setTitle(`${userTag(user)} is AFK:`)
           .setDescription(userSettings?.afkMessage)
-          .setFooter(`${user.username}${user.discriminator} AFK Message`)
+          .setFooter(`${userTag(user)} AFK Message`)
 
         const response = await message.channel.createMessage({ embed: embed.code })
         setTimeout(() => response.delete(REASON), 10000)
@@ -47,8 +47,10 @@ export default class extends Monitor {
 
       const json = JSON.parse(userSettings?.afkMessage)
       // Override the title and footer to prevent abuse and users getting scared the bot is posting random things
-      json.title = `${user.username}${user.discriminator} is AFK:`
-      json.footer.text = `${user.username}${user.discriminator} AFK Message`
+      json.title = `${userTag(user)} is AFK:`
+      const footerText = `${userTag(user)} AFK Message`
+      if (json.footer) json.footer.text = footerText
+      else json.footer = { text: footerText }
 
       // Send the AFK message
       const response = await message.channel.createMessage({ embed: json })
