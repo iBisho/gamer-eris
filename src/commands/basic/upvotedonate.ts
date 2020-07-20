@@ -23,10 +23,11 @@ export default new Command([`upvotedonate`, `votedonate`], async (message, args,
     return message.channel.createMessage(language('basic/upvotedonate:VOTE_FIRST'))
 
   const subtotal = authorVotes.amount < amount ? authorVotes.amount : amount
-  userVotes.amount += subtotal
-  authorVotes.amount -= subtotal
-  userVotes.save()
-  authorVotes.save()
+
+  Gamer.database.models.upvote
+    .updateOne({ userID: message.author.id }, { amount: authorVotes.amount - subtotal })
+    .exec()
+  Gamer.database.models.upvote.updateOne({ userID: user.id }, { amount: userVotes.amount + subtotal }).exec()
 
   return message.channel.createMessage(language('basic/upvotedonate:DONATED'))
 })
