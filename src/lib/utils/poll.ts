@@ -19,22 +19,22 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
 
   const voters = await fetchAllReactors(pollMessage)
 
-  poll.anonymousVotes.forEach(vote => {
-    vote.options.forEach(async opt => {
+  for (const vote of poll.anonymousVotes) {
+    for (const opt of vote.options) {
       const emoji = constants.emojis.letters[opt]
-      if (!emoji) return
+      if (!emoji) continue
 
       const relevantVoters = voters.get(emoji)
-      if (!relevantVoters) return
+      if (!relevantVoters) continue
 
-      if (relevantVoters.some(user => user.id === vote.userID)) return
+      if (relevantVoters.some(user => user.id === vote.userID)) continue
 
       const user = await Gamer.helpers.discord.fetchUser(vote.userID)
-      if (!user) return
+      if (!user) continue
 
       relevantVoters.push(user)
-    })
-  })
+    }
+  }
 
   let totalVotes = 0
 
