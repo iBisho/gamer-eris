@@ -31,23 +31,31 @@ export default new Command(`spy`, async (message, args, context) => {
 
   if (!word) return helpCommand?.execute(message, ['spy'], { ...context, commandName: 'help' })
 
+  const lowercasedWord = word.toLowerCase()
+
   const isAdd = type === 'add'
 
-  const records = Gamer.spyRecords.get(word)
+  const records = Gamer.spyRecords.get(lowercasedWord)
+  const details = await Gamer.database.models.spy.findOne({ memberID: message.member.id })
+
   if (!records) {
     if (isAdd) {
-      Gamer.spyRecords.set(word, [message.author.id])
-      Gamer.database.models.spy.create({
-        memberID: message.member.id,
-        guildID: message.member.guild.id,
-        words: [word.toLowerCase()]
-      })
+      Gamer.spyRecords.set(lowercasedWord, [message.author.id])
+
+      if (details) {
+        Gamer.database.models.spy
+          .findOneAndUpdate({ memberID: message.author.id }, { $addToSet: { words: word.toLowerCase() } })
+          .exec()
+      } else {
+        Gamer.database.models.spy.create({
+          memberID: message.member.id,
+          words: [word.toLowerCase()]
+        })
+      }
     }
 
     return sendMessage(message.channel.id, language(isAdd ? 'vip/spy:WORD_ADDED' : 'vip/spy:DONT_EXIST', { word }))
   }
-
-  const details = await Gamer.database.models.spy.findOne({ memberID: message.member.id })
 
   if (isAdd) {
     if (records.includes(message.author.id))
@@ -56,12 +64,12 @@ export default new Command(`spy`, async (message, args, context) => {
     records.push(message.author.id)
 
     if (details) {
-      details.words.push(word.toLowerCase())
-      details.save()
+      Gamer.database.models.spy
+        .findOneAndUpdate({ memberID: message.author.id }, { $addToSet: { words: word.toLowerCase() } })
+        .exec()
     } else {
       Gamer.database.models.spy.create({
-        memberID: message.member.id,
-        guildID: message.member.guild.id,
+        memberID: message.author.id,
         words: [word.toLowerCase()]
       })
     }
@@ -69,16 +77,19 @@ export default new Command(`spy`, async (message, args, context) => {
     return sendMessage(message.channel.id, language('vip/spy:WORD_ADDED', { word }))
   }
 
+  // Removing the word
+
   if (!records.includes(message.author.id))
     return sendMessage(message.channel.id, language('vip/spy:DONT_EXIST', { word }))
 
   Gamer.spyRecords.set(
-    word,
+    lowercasedWord,
     records.filter(id => id !== message.author.id)
   )
   if (details) {
-    details.words = details.words.filter(w => w.toLowerCase() !== word.toLowerCase())
-    details.save()
+    Gamer.database.models.spy
+      .findOneAndUpdate({ memberID: message.author.id }, { $pull: { words: word.toLowerCase() } })
+      .exec()
   }
 
   return sendMessage(message.channel.id, language('vip/spy:WORD_REMOVED', { word }))
