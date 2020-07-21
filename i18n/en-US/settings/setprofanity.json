@@ -1,7 +1,7 @@
 {
   "DESCRIPTION": "Set the verification settings for your server.",
   "EXTENDED": "$t(settings/setprofanity:EXTENDED_LINE_1)\n$t(settings/setprofanity:EXTENDED_LINE_2)\n\n$t(settings/setprofanity:EXTENDED_LINE_3)\n$t(settings/setprofanity:EXTENDED_LINE_4)\n$t(settings/setprofanity:EXTENDED_LINE_5)\n$t(settings/setprofanity:EXTENDED_LINE_6)\n$t(settings/setprofanity:EXTENDED_LINE_7)\n$t(settings/setprofanity:EXTENDED_LINE_8)",
-  "EXTENDED_LINE_1": "**{{prefix}}setprofanity enable** ~ Enables the profaity filter on your server.",
+  "EXTENDED_LINE_1": "**{{prefix}}setprofanity enable** ~ Enables the profanity filter on your server.",
   "EXTENDED_LINE_2": "**{{prefix}}setprofanity disable** ~ Disables the profanity filter on your server.",
   "EXTENDED_LINE_3": "**{{prefix}}setprofanity add [word]** ~ Adds a word to be filtered.",
   "EXTENDED_LINE_4": "**{{prefix}}setprofanity remove [word]** ~ Removes a word from being filtered.",
