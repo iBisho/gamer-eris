@@ -1,8 +1,8 @@
 {
 	"DESCRIPTION": "Muerde al usuario o rol mencionado y envía una imagen al chat.",
-	"EXTENDED": "**{{prefix}}bite [Usuario]**  ~Muerde al usuario con un chai~ digo, envía un gif the mordida al usuario.",
+	"EXTENDED": "**{{prefix}}bite [usuario]** ~ Muerde al usuario con un chai~ Digo, envía un gif de mordida al usuario.",
 	"USAGE": "{{prefix}}bite [Usuario]",
-	"ALIASES": "Bite no tiene ningún alias.",
+	"ALIASES": "{{prefix}}chomp",
 	"REPLY": "***{{mention}} ha sido mordido por {{author}}***",
 	"SELF": "Morderte a ti mismo puede doler. pero tal vez tengas buen sabor."
 }
