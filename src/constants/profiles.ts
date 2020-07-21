@@ -242,7 +242,7 @@ export default {
       id: 21,
       name: `Animecat`,
       buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/animecat.png`)),
-      visVIP: true
+      visVIP: false
     }
   ],
   backgroundPackages: [],
