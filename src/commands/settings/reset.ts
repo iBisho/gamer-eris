@@ -28,7 +28,7 @@ export default new Command(`reset`, async (message, _args, context) => {
 
   // Let other things like xp and monitors complete before actually removing everything.
   await Gamer.helpers.utils.sleep(2)
-  Gamer.database.models.guild.deleteOne({ id: guildID }).exec()
+  Gamer.database.models.guild.deleteOne({ guildID }).exec()
   Gamer.database.models.analytics.deleteMany({ guildID }).exec()
   Gamer.database.models.command.deleteMany({ guildID }).exec()
   Gamer.database.models.event.deleteMany({ guildID }).exec()
