@@ -219,6 +219,30 @@ export default {
       name: `Overwatch - Submitted By GeheimerWolf#8008`,
       buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/Overwatch.png`)),
       vipNeeded: false
+    },
+    {
+      id: 18,
+      name: `ApexLegends`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/apex.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 19,
+      name: `Wolf`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/wolf.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 20,
+      name: `Fortnite`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/fortnite.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 21,
+      name: `Animecat`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/animecat.png`)),
+      visVIP: false
     }
   ],
   backgroundPackages: [],
