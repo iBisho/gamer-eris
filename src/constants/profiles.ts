@@ -120,8 +120,8 @@ export default {
   backgrounds: [
     {
       id: 1,
-      name: `SadAnimeGirly - Submitted By GeheimerWolf#8008`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/SadAnimeGirly.png`)),
+      name: `Animecat`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/animecat.png`)),
       vipNeeded: false
     },
     {
@@ -240,9 +240,9 @@ export default {
     },
     {
       id: 21,
-      name: `Animecat`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/animecat.png`)),
-      visVIP: false
+      name: `SadAnimeGirly - Submitted By GeheimerWolf#8008`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/SadAnimeGirly.png`)),
+      vipNeeded: false
     }
   ],
   backgroundPackages: [],
