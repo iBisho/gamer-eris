@@ -1,5 +1,6 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
+import { parseRole } from '../../lib/utils/arguments'
 
 export default new Command([`rolemessagecreate`, `rmc`], async (message, args, context) => {
   if (!message.member) return
@@ -25,7 +26,7 @@ export default new Command([`rolemessagecreate`, `rmc`], async (message, args, c
     message.member.guild.channels.get(channelID) || message.member.guild.channels.get(message.channelMentions[0]!)
   if (!channel) return message.channel.createMessage(language(`roles/rolemessagecreate:INVALID_CHANNEL`))
 
-  const role = message.member.guild.roles.get(roleID) || message.member.guild.roles.get(message.roleMentions[0]!)
+  const role = parseRole(message, roleID)
   if (!role) return message.channel.createMessage(language(`roles/rolemessagecreate:INVALID_ROLE`))
 
   const content = text.join(' ')
@@ -47,8 +48,6 @@ export default new Command([`rolemessagecreate`, `rmc`], async (message, args, c
     return message.channel.createMessage(language(`roles/rolemessagecreate:CREATED`))
   }
 
-  rolemessage.message = content
-  rolemessage.save()
-
+  Gamer.database.models.roleMessages.updateOne({ roleID: role.id, roleAdded }, { message: content }).exec()
   return message.channel.createMessage(language(`roles/rolemessagecreate:UPDATED`))
 })
