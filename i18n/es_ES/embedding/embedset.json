@@ -1,6 +1,8 @@
 {
   "DESCRIPTION": "Comience una interfaz de incrustación para crear una incrustación personalizada en vivo paso a paso.",
-  "EXTENDED": "**{{prefix}}embedset** ~ Comienza una interfaz de incrustación para crear una incrustación personalizada en vivo paso a paso.",
+  "EXTENDED": "$t(embedding/embedset:EXTENDED_LINE_1)\n$t(embedding/embedset:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "¡COMANDO SOLO PARA VIP!",
+  "EXTENDED_LINE_2": "**{{prefix}}embedset** ~ Comienza una interfaz de incrustación para crear una incrustación personalizada en vivo paso a paso.",
   "USAGE": "{{prefix}}embedset",
   "ALIASES": "Embedset no tiene ningún alias.",
   "INVALID_EDIT": "{{mention}}, El tipo que proporcionaste no es una opción valida, Por favor intente de nuevo. Para detener esta menú de  interfaz, escriba `quit`.",

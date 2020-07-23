@@ -1,0 +1,8 @@
+{
+	"DESCRIPTION": "Cuando realmente necesitas un buen abrazo.",
+	"EXTENDED": "**{{prefix}}cuddle [usuario]** ~ Envía un gif de abrazo en el canal.",
+	"USAGE": "{{prefix}}cuddle *[usuario]*",
+	"ALIASES": "Cuddle no tiene ningún alias.",
+	"REPLY": "***¡{{mention}} un buen abrazo cambia la vida! de parte de {{author}}***",
+	"SELF": "¿Cómo se siente abrazarte a ti mismo? Yo no estoy programado para abrazarme yo mismo ¿No considerarías darme un abrazo? :)"
+}

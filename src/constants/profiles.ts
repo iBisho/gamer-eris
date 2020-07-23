@@ -120,8 +120,8 @@ export default {
   backgrounds: [
     {
       id: 1,
-      name: `SadAnimeGirly - Submitted By GeheimerWolf#8008`,
-      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/SadAnimeGirly.png`)),
+      name: `Animecat`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/animecat.png`)),
       vipNeeded: false
     },
     {
@@ -218,6 +218,30 @@ export default {
       id: 17,
       name: `Overwatch - Submitted By GeheimerWolf#8008`,
       buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/Overwatch.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 18,
+      name: `ApexLegends`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/apex.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 19,
+      name: `Wolf`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/wolf.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 20,
+      name: `Fortnite`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/fortnite.png`)),
+      vipNeeded: false
+    },
+    {
+      id: 21,
+      name: `SadAnimeGirly - Submitted By GeheimerWolf#8008`,
+      buffer: fs.readFileSync(join(assetsFolder, `profile/Backgrounds/SadAnimeGirly.png`)),
       vipNeeded: false
     }
   ],
