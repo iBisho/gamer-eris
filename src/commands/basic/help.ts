@@ -33,6 +33,7 @@ const categories = [
       `poke`,
       `pony`,
       `puppy`,
+      `raphtalia`,
       `shopwedding`,
       `slap`,
       `slots`,
@@ -40,7 +41,8 @@ const categories = [
       `tickle`,
       `advice`,
       `wisdom`,
-      `urban`
+      `urban`,
+      `zerotwo`
     ]
   },
   {

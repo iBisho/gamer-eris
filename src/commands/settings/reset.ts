@@ -10,7 +10,6 @@ export default new Command(`reset`, async (message, _args, context) => {
     Gamer.database.models.upvote.deleteOne({ userID: message.author.id }).exec()
     Gamer.database.models.marriage.deleteOne({ authorID: message.author.id }).exec()
     Gamer.database.models.marriage.deleteOne({ spouseID: message.author.id }).exec()
-
     Gamer.database.models.reminder.deleteMany({ userID: message.author.id }).exec()
     Gamer.database.models.mission.deleteMany({ userID: message.author.id }).exec()
     Gamer.database.models.emoji.deleteMany({ authorID: message.author.id }).exec()
