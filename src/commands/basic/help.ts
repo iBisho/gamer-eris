@@ -33,6 +33,7 @@ const categories = [
       `poke`,
       `pony`,
       `puppy`,
+      `raphtalia`,
       `shopwedding`,
       `slap`,
       `slots`,
