@@ -1,0 +1,8 @@
+{
+    "DESCRIPTION": "Reset your analytics whenever u want!",
+    "EXTENDED": "$t(settings/resetanalyze:EXTENDED_LINE_1)\n",
+    "EXTENDED_LINE_1": "**{{prefix}}resetanalyze** ~ Reset your analytics.",
+    "USAGE": "{{prefix}}resetanalyze",
+    "ALIASES": "{{prefix}}resetanalytics {{prefix}}analyzereset {{prefix}}analyticsreset",
+    "ANALYZE_RESETTED": "Analytics gone. But your server still have VIP!"
+  }

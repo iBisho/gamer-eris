@@ -66,6 +66,7 @@ const categories = [
     commands: [
       `afk`,
       `reset`,
+      `resetanalyze`,
       `setcapital`,
       `setcapture`,
       `setevents`,
