@@ -4,6 +4,7 @@ import { TextChannel, NewsChannel, Guild } from 'eris'
 import { fetchAllReactors } from './eris'
 import { MessageEmbed } from 'helperis'
 import constants from '../../constants'
+import { round } from 'mathjs'
 
 export async function processPollResults(poll: GamerPoll, guild: Guild) {
   const results = []
@@ -39,12 +40,12 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
   let totalVotes = 0
 
   for (const users of voters.values()) {
-    if (users.some(u => u.id === Gamer.user.id)) totalVotes += users.length - 1
-    else totalVotes += users.length
+      if (users.some(user => user.id === Gamer.user.id)) totalVotes += users.length - 1
+      else totalVotes += users.length
   }
 
   for (const [key, users] of voters.entries()) {
-    results.push(`${key} ${users.length} | ${(users.length / (totalVotes || 1)) * 100}%`)
+      results.push(`${key} ${users.length - 1} | ${round(((users.length - 1) / (totalVotes)) * 100, 1)}%`)
   }
 
   // Delete the poll in the db
