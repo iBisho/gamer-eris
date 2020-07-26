@@ -66,7 +66,6 @@ const categories = [
     commands: [
       `afk`,
       `reset`,
-      `resetanalyze`,
       `setcapital`,
       `setcapture`,
       `setevents`,
@@ -149,6 +148,7 @@ const categories = [
       `analyzechannel`,
       `memberrole`,
       `vipregister`,
+      `resetanalyze`,
       `roletoall`,
       `rolefromall`,
       `spy`,

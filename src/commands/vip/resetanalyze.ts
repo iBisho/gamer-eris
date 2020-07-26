@@ -10,8 +10,12 @@ export default new Command([`resetanalyze`, `resetanalytics`, `analyzereset`, `a
 
 const guildID = message.member.guild.id
 const language = Gamer.getLanguage(guildID)
+
+
   {
     const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
+
+    if (!guildSettings?.vip.isVIP) return message.channel.createMessage(language(`vip/analyze:NEED_VIP`))
 
     // If the user is not an admin/mod cancel out
     if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings))
@@ -27,5 +31,5 @@ const language = Gamer.getLanguage(guildID)
   guildSettings.save()
 
 
-  return message.channel.createMessage(language(`settings/resetanalyze:ANALYZE_RESETTED`))
+  return message.channel.createMessage(language(`vip/resetanalyze:ANALYZE_RESETTED`))
 })
