@@ -148,6 +148,7 @@ const categories = [
       `analyzechannel`,
       `memberrole`,
       `vipregister`,
+      `resetanalyze`,
       `roletoall`,
       `rolefromall`,
       `spy`,
