@@ -11,17 +11,6 @@ export default new Command('schema', async message => {
     const settings = await Gamer.database.models.user.find({ xp: { $gt: xpLimit } })
     console.log('found settings amount:', settings.length, xpLimit)
 
-    if (!settings.length) {
-      if (xpLimit === 0) {
-        searching = false
-        break
-      }
-
-      xpLimit -= 50
-      console.log('lowering xplimit to:', xpLimit)
-      continue
-    }
-
     let counter = 0
 
     for (const setting of settings) {
@@ -38,6 +27,16 @@ export default new Command('schema', async message => {
       counter++
       mainCounter++
       console.log(`Completed ${counter} / ${settings.length} with limit ${xpLimit}`)
+      if (counter === settings.length) {
+        if (xpLimit === 0) {
+          searching = false
+          break
+        }
+
+        xpLimit -= 50
+        console.log('lowering xplimit to:', xpLimit)
+        continue
+      }
       console.log('Main Counter:', mainCounter)
     }
   }
