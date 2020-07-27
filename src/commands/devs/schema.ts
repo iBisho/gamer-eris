@@ -14,6 +14,18 @@ export default new Command('schema', async message => {
 
     let counter = 0
 
+    if (!settings.length) {
+      if (xpLimit === 0) {
+        searching = false
+        break
+      }
+
+      lastXPLimit = xpLimit
+      xpLimit -= 50
+      console.log('lowering xplimit to:', xpLimit)
+      continue
+    }
+
     for (const setting of settings) {
       const duplicates = await Gamer.database.models.user.find({ userID: setting.userID })
       if (duplicates.length > 1) {
