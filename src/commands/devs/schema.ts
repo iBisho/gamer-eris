@@ -5,10 +5,11 @@ export default new Command('schema', async message => {
   let mainCounter = 0
 
   let xpLimit = 10000
+  let lastXPLimit = 10000000
 
   let searching = true
   while (searching) {
-    const settings = await Gamer.database.models.user.find({ xp: { $gt: xpLimit } })
+    const settings = await Gamer.database.models.user.find({ xp: { $gt: xpLimit, $lt: lastXPLimit } })
     console.log('found settings amount:', settings.length, xpLimit)
 
     let counter = 0
@@ -33,6 +34,7 @@ export default new Command('schema', async message => {
           break
         }
 
+        lastXPLimit = xpLimit
         xpLimit -= 50
         console.log('lowering xplimit to:', xpLimit)
         continue
