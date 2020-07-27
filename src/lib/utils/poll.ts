@@ -4,7 +4,6 @@ import { TextChannel, NewsChannel, Guild } from 'eris'
 import { fetchAllReactors } from './eris'
 import { MessageEmbed } from 'helperis'
 import constants from '../../constants'
-import { round } from 'mathjs'
 
 export async function processPollResults(poll: GamerPoll, guild: Guild) {
   const results = []
@@ -19,6 +18,14 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
   if (!resultsChannel || !(resultsChannel instanceof TextChannel && !(resultsChannel instanceof NewsChannel))) return
 
   const voters = await fetchAllReactors(pollMessage)
+  const userVoteCount = new Map<string, number>()
+
+  for (const users of voters.values()) {
+    for (const user of users) {
+      const current = userVoteCount.get(user.id)
+      userVoteCount.set(user.id, current ? current + 1 : 1)
+    }
+  }
 
   for (const vote of poll.anonymousVotes) {
     for (const opt of vote.options) {
@@ -33,6 +40,10 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
       const user = await Gamer.helpers.discord.fetchUser(vote.userID)
       if (!user) continue
 
+      const currentVotes = userVoteCount.get(vote.userID)
+      if (currentVotes && currentVotes + 1 > poll.maxVotes) continue
+
+      userVoteCount.set(vote.userID, currentVotes ? currentVotes + 1 : 1)
       relevantVoters.push(user)
     }
   }
@@ -40,12 +51,13 @@ export async function processPollResults(poll: GamerPoll, guild: Guild) {
   let totalVotes = 0
 
   for (const users of voters.values()) {
-      if (users.some(user => user.id === Gamer.user.id)) totalVotes += users.length - 1
-      else totalVotes += users.length
+    if (users.some(user => user.id === Gamer.user.id)) totalVotes += users.length - 1
+    else totalVotes += users.length
   }
 
   for (const [key, users] of voters.entries()) {
-      results.push(`${key} ${users.length - 1} | ${round(((users.length - 1) / (totalVotes)) * 100, 1)}%`)
+    const nonBotUsers = users.filter(user => user.id !== Gamer.user.id)
+    results.push(`${key} ${nonBotUsers.length} | ${Math.round((nonBotUsers.length / (totalVotes || 1)) * 100)}%`)
   }
 
   // Delete the poll in the db
