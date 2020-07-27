@@ -10,6 +10,7 @@ import { milliseconds } from '../types/enums/time'
 const turndownService = new TurndownService()
 
 export async function fetchLatestRedditPosts(name: string) {
+  if (name.startsWith('r/')) name = name.substring(2)
   const data = await fetchRSSFeed(`https://reddit.com/r/${name}/new.rss`)
   if (!data?.items) return []
 
