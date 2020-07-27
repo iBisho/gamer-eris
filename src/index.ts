@@ -157,7 +157,6 @@ process.on('unhandledRejection', error => {
   if (!error) return
 
   const embed = new MessageEmbed()
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     .setDescription(['```js', error.stack, '```'].join(`\n`))
     .setTimestamp()

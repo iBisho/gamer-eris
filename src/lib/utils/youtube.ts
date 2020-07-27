@@ -46,7 +46,6 @@ async function fetchLatestVideos(id: string) {
   const parsed = parse5.parse(data.substring(data.indexOf('<body'), data.indexOf('</body>')))
   const videos: { link: string; title: string }[] = []
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   const processNode = node => {
     if (node.nodeName !== 'a') {
@@ -66,7 +65,6 @@ async function fetchLatestVideos(id: string) {
     if (link && title) videos.push({ link, title })
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   for (const node of parsed.childNodes) processNode(node)
   return videos

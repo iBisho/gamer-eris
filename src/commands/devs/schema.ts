@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { Command } from 'yuuko'
 import Gamer from '../..'
 

@@ -58,15 +58,11 @@ export default new EventListener('ready', async () => {
         method: `POST`,
         headers: { 'Content-Type': `application/json`, Accept: '*/*' },
         body: JSON.stringify({
-          // eslint-disable-next-line @typescript-eslint/camelcase
           api_key: config.apiKeys.amplitude.key,
           // Splice will return the deleted items from the array
           events: Gamer.amplitude.splice(0, 10).map(data => ({
-            // eslint-disable-next-line @typescript-eslint/camelcase
             event_properties: data,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             user_id: data.authorID,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             event_type: data.type
           }))
         })

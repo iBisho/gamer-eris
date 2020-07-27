@@ -249,7 +249,6 @@ export default class {
     // .addText(event.description.substring(0, 100), 35, 286)
 
     const platformWidth = canvas.setTextFont(`18px SFTHeavy`).measureText(event.platform)
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     canvas.setTextFont(`13px SFTHeavy`).addText(event.activity, 15 + 35 + platformWidth.width, 261)
 

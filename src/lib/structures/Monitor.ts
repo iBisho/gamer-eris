@@ -14,7 +14,6 @@ export default class Monitor {
     if (options.ignoreDM) this.ignoreDM = options.ignoreDM
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(_message: Message, _Gamer: GamerClient): Promise<unknown> {
     throw 'A monitor must be executable.'
   }

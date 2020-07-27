@@ -67,7 +67,6 @@ export default class extends Monitor {
     const naughtyWordCleanup = this.naughtyWordFilter(content, settings)
     if (naughtyWordCleanup) {
       const naughtyReason = language(`common:AUTOMOD_NAUGHTY`)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       for (const _word of naughtyWordCleanup.naughtyWords) {
         if (!reasons.includes(naughtyReason)) reasons.push(naughtyReason)
         // Remove 5 XP per word used
@@ -100,7 +99,6 @@ export default class extends Monitor {
     if (linkFilterCleanup) {
       content = linkFilterCleanup.content
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       for (const _url of linkFilterCleanup.filteredURLs) {
         Gamer.helpers.levels.removeXP(message.member, 5)
         Gamer.amplitude.push({

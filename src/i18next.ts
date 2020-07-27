@@ -15,7 +15,6 @@ async function walkDirectory(dir: string, namespaces: string[] = [], folderName 
 
       const folder = await walkDirectory(path.join(dir, file), namespaces, isLanguage ? '' : `${file}/`)
 
-      // eslint-disable-next-line no-param-reassign
       namespaces = folder.namespaces
     } else {
       namespaces.push(`${folderName}${file.substr(0, file.length - 5)}`)

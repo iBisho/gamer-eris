@@ -83,7 +83,6 @@ export default new Command(`embedset`, async (message, _args, context) => {
           break
         case `authoricon`:
           embed.code.author = {
-            // eslint-disable-next-line @typescript-eslint/camelcase
             icon_url: transformed,
             name: embed.code.author?.name || language(`embedding/embedset:UNKNOWN_AUTHOR`),
             url: embed.code.author?.url
@@ -91,7 +90,6 @@ export default new Command(`embedset`, async (message, _args, context) => {
           break
         case `authorname`:
           embed.code.author = {
-            // eslint-disable-next-line @typescript-eslint/camelcase
             icon_url: embed.code.author?.icon_url,
             name: transformed,
             url: embed.code.author?.url
@@ -99,7 +97,6 @@ export default new Command(`embedset`, async (message, _args, context) => {
           break
         case `authorurl`:
           embed.code.author = {
-            // eslint-disable-next-line @typescript-eslint/camelcase
             icon_url: embed.code.author?.icon_url,
             name: embed.code.author?.name || language(`embedding/embedset:UNKNOWN_AUTHOR`),
             url: fullValue.join(' ')
@@ -123,14 +120,12 @@ export default new Command(`embedset`, async (message, _args, context) => {
         case `footericon`:
           embed.code.footer = {
             text: embed.code.footer?.text || language(`embedding/embedset:UNKNOWN_FOOTER`),
-            // eslint-disable-next-line @typescript-eslint/camelcase
             icon_url: transformed
           }
           break
         case `footertext`:
           embed.code.footer = {
             text: transformed,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             icon_url: embed.code.footer?.icon_url
           }
           break

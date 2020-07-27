@@ -23,9 +23,7 @@ jobs:
       - name: Setup project
         run: cp config.example.ts config.ts
       - name: Run tests
-        run: npm run test
-      - name: Run Lint
-        run: npm run lint
+        run: npm run build
   deploy:
     if: github.ref == 'refs/heads/master'
     needs: lint

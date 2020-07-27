@@ -60,7 +60,6 @@ export const fetchLatestManga = async () => {
 
           return {
             url: `http://fanfox.net/${href.value}`,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore
             text: text.value
           }
@@ -79,7 +78,6 @@ export const fetchLatestManga = async () => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   const allNodes = parsed.childNodes as MangaChildNode[]
 

@@ -171,7 +171,6 @@ export default class GamerClient extends Client {
     const filenames = glob.sync(pattern)
     for (const filename of filenames) {
       delete require.cache[filename]
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       let file = require(filename)
       // Use object.assign to preserve other exports
       file = Object.assign(file.default, file)

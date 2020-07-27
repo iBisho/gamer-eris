@@ -73,7 +73,6 @@ export default class {
       ].join('\n'),
       author: {
         name: language('settings/setverify:AMAZING'),
-        // eslint-disable-next-line @typescript-eslint/camelcase
         icon_url: 'https://i.imgur.com/0LxU5Yy.jpg'
       },
       image: 'https://i.imgur.com/oN4YjaY.gif'

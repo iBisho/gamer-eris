@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import { MessageEmbed } from 'helperis'
