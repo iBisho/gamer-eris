@@ -2,24 +2,43 @@ import { Command } from 'yuuko'
 import Gamer from '../..'
 
 export default new Command('schema', async message => {
-  const records = await Gamer.database.models.spy.find()
+  let mainCounter = 0
 
-  await Gamer.database.models.spy.deleteMany({}).exec()
+  let xpLimit = 10000
 
-  for (const record of records) {
-    const exists = await Gamer.database.models.spy.findOne({ memberID: record.memberID })
+  let searching = true
+  while (searching) {
+    const settings = await Gamer.database.models.user.find({ xp: { $gt: xpLimit } })
+    console.log('found settings amount:', settings.length, xpLimit)
 
-    if (exists) {
-      for (const word of record.words) {
-        await Gamer.database.models.spy
-          .findOneAndUpdate({ memberID: record.memberID }, { $addToSet: { words: word.toLowerCase() } })
-          .exec()
+    if (!settings.length) {
+      if (xpLimit === 0) {
+        searching = false
+        break
       }
-    } else {
-      await Gamer.database.models.spy.create({
-        memberID: record.memberID,
-        words: record.words.map(w => w.toLowerCase())
-      })
+
+      xpLimit -= 50
+      console.log('lowering xplimit to:', xpLimit)
+      continue
+    }
+
+    let counter = 0
+
+    for (const setting of settings) {
+      const duplicates = await Gamer.database.models.user.find({ userID: setting.userID })
+      if (duplicates.length > 1) {
+        for (const dupe of duplicates) {
+          if (!dupe.guildIDs.length) {
+            console.log(`Deleting Dupe: ${dupe._id} [${dupe.userID}]`)
+            Gamer.database.models.user.deleteOne({ _id: dupe._id }).exec()
+          }
+        }
+      }
+
+      counter++
+      mainCounter++
+      console.log(`Completed ${counter} / ${settings.length} with limit ${xpLimit}`)
+      console.log('Main Counter:', mainCounter)
     }
   }
 
