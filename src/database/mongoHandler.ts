@@ -14,7 +14,10 @@ export function upsertMember(memberID: string, guildID: string) {
     })
 }
 
-export function upsertUser(userID: string, guildIDs: string[]) {
+export async function upsertUser(userID: string, guildIDs: string[]) {
+  const settings = await Gamer.database.models.user.findOne({ userID })
+  if (settings) return settings
+
   return Gamer.database.models.user
     .findOneAndUpdate({ userID }, { userID, guildIDs }, { upsert: true, new: true, setDefaultsOnInsert: true })
     .exec()

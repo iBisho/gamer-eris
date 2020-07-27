@@ -103,7 +103,7 @@ export default class {
   async addGlobalXP(member: Member, xpAmountToAdd = 1, overrideCooldown = false) {
     if (!overrideCooldown && this.checkCooldown(member, true)) return
 
-    const userSettings = await upsertUser(member.guild.id, [member.guild.id])
+    const userSettings = await upsertUser(member.id, [member.guild.id])
     let multiplier = 1
 
     for (const boost of userSettings.boosts) {
