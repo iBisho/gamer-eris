@@ -16,7 +16,7 @@ export default new Command([`analyze`, `analytics`], async (message, _args, cont
 
   // If the user does not have admin role quit out
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings))
-   return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
+    return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
 
   // Alert the user that this can take time
   message.channel.createMessage(language(`vip/analyze:PATIENCE`))
