@@ -17,5 +17,6 @@
   "NAME": "Name",
   "LEVEL": "Level",
   "EXP": "EXP",
-  "PRIZE": "Prize"
+  "PRIZE": "Prize",
+  "VIP_DETAILS": "To view the leaderboard in detailed mode, you need to be a VIP. To become a VIP, use the **.vipregister** command."
 }
