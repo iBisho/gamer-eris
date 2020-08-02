@@ -7,6 +7,6 @@
   "ALIASES": "Embededit does not have any aliases.",
   "NO_EMBED": "The message you provided does not contain any embed that I can show.",
   "SUCCESS": "Here is the embed code for the message with ID {{id}}, you can copy this code and paste it in the [Embed Builder](https://embedbuilder.nadekobot.me) to edit it.",
-  "NEED_JSON": "You did not provide any embed code to use for the new event. Best is to use the embed builder <https://embedbuilder.nadekobot.me/>!",
+  "NEED_JSON": "You did not provide any embed code to use. Best is to use the embed builder <https://embedbuilder.nadekobot.me/>!",
   "EDITED": "The message has been edited. To jump to the message: {{link}}"
 }
