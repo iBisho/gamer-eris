@@ -24,7 +24,7 @@ Watching far and wide!
 
 ### Technology Used
 
-For this project, I've decided to use the [TypeScript](https://typescriptlang.org) language. TypeScript is a type-safe superset of JavaScript, and has allowed me to ensure that there will be less bugs in this codebase.
+For this project, I've decided to use the [TypeScript](https://www.typescriptlang.org) language. TypeScript is a type-safe superset of JavaScript, and has allowed me to ensure that there will be less bugs in this codebase.
 To store data, I use [MongoDB](https://mongodb.com). This is used to store information critical to the functionality of the bot.
 
 ## Developers
