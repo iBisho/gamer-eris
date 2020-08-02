@@ -61,6 +61,8 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
   let finalAmount = 1
   if (upvote && winningSet.size !== 3) upvote.luckySlots -= 1
 
+  const isSupporter = Gamer.guilds.get(constants.general.gamerServerID)?.members.get(message.author.id)
+
   // If they lost all three are unique emojis
   if (winningSet.size === 3) {
     if (userSettings.currency > 0) {
@@ -78,7 +80,7 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
   else if (winningSet.size === 2) {
     response = 'fun/slots:WINNER_PARTIAL'
     finalAmount = multiplier * 10
-    userSettings.currency += finalAmount
+    userSettings.currency += finalAmount * (isSupporter ? 2 : 1)
     if (upvote && isLucky) upvote.luckySlots -= 1
   }
   // If all three emojis are the same. WINNER!
@@ -90,39 +92,38 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
       if (winningEmoji === [...topSet][0] && winningEmoji === [...bottomSet][0]) {
         response = 'fun/slots:WINNER_COMPLETE'
         finalAmount = multiplier * 5000
-        userSettings.currency += finalAmount
+        userSettings.currency += finalAmount * (isSupporter ? 2 : 1)
       }
       // The rows are different
       else {
         response = 'fun/slots:WINNER_LUCKY'
         finalAmount = multiplier * 1000
-        userSettings.currency += finalAmount
+        userSettings.currency += finalAmount * (isSupporter ? 2 : 1)
       }
     }
     // 2 rows were all the same emoji
     else if (bottomSet.size === 1 || topSet.size === 1) {
       response = 'fun/slots:WINNER_MULTIPLE'
       finalAmount = multiplier * 500
-      userSettings.currency += finalAmount
+      userSettings.currency += finalAmount * (isSupporter ? 2 : 1)
     }
     // Only one row was the same
     else {
       response = 'fun/slots:WINNER_FULL'
       finalAmount = multiplier * 100
-      userSettings.currency += finalAmount
+      userSettings.currency += finalAmount * (isSupporter ? 2 : 1)
     }
   }
 
   userSettings.save()
 
-  message.channel.createMessage(
-    [
-      language(response, { mention: message.author.mention, amount: finalAmount, emoji: constants.emojis.coin }),
-      row1.join(' | '),
-      row2.join(' | '),
-      row3.join(' | ')
-    ].join('\n')
-  )
+  const details = [
+    language(response, { mention: message.author.mention, amount: finalAmount, emoji: constants.emojis.coin })
+  ]
+  if (isSupporter && winningSet.size < 3) details.push(language('fun/slots:DOUBLE_REWARD', { amount: finalAmount * 2 }))
+  details.push(row1.join(' | '), row2.join(' | '), row3.join(' | '))
+
+  message.channel.createMessage(details.join('\n'))
 
   if (message.member && message.guildID) Gamer.helpers.levels.completeMission(message.member, 'slots', message.guildID)
 })

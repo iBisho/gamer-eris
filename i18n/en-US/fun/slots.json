@@ -11,5 +11,6 @@
   "WINNER_FULL": "🎉🎉🎉 WINNER! WINNER! WINNER! You just won {{amount}} {{emoji}}. 🎉🎉🎉",
   "WINNER_MULTIPLE": "🎉🎉🎉 O wow, you got 2 winning rows! You won {{amount}} {{emoji}}. 🎉🎉🎉",
   "WINNER_LUCKY": "🎉🎉🎉 O wow, you got 3 winning rows! You won {{amount}} {{emoji}}. 🎉🎉🎉",
-  "WINNER_COMPLETE": "🎉🎉🎉 OMG! You just hit the jackpot! All the slots are the same! You won {{amount}} {{emoji}}. 🎉🎉🎉"
+  "WINNER_COMPLETE": "🎉🎉🎉 OMG! You just hit the jackpot! All the slots are the same! You won {{amount}} {{emoji}}. 🎉🎉🎉",
+  "DOUBLE_REWARD": "Thank you for being a member of our Official Gamer Bot Discord Server. As a reward, we will give you **2x** the coins. You have received **{{amount}}** coins in totals."
 }
