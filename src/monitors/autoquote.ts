@@ -13,12 +13,16 @@ export default class extends Monitor {
       if (!word.startsWith('https://discordapp.com/channels/') && !word.startsWith('https://discord.com/channels/'))
         return
 
+      const test = word.substring(word.indexOf('channels/') + 9).split('/')
+      console.log(test)
       const [guildID, channelID, messageID] = word.substring(word.indexOf('channels/') + 9).split('/')
-
       // If link is from another server, do nothing
       if (!channelID || !messageID || !message.member || guildID !== message.member.guild.id) return
 
-      quoteCommand.execute(message, [messageID, channelID], {
+      // Clean up any unknown issues when 123123\n\nso
+      const id = messageID.includes('\n') ? messageID.split('\n')[0]! : messageID
+
+      quoteCommand.execute(message, [id, channelID], {
         prefix: Gamer.prefix,
         client: Gamer,
         commandName: 'quote'
