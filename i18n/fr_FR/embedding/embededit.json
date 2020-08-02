@@ -1,0 +1,12 @@
+{
+  "DESCRIPTION": "Editez un embed qui a été originellement envoyé par le bot Gamer.",
+  "EXTENDED": "$t(embedding/embededit:EXTENDED_LINE_1)\n$t(embedding/embededit:EXTENDED_LINE_2)",
+  "EXTENDED_LINE_1": "Pour récupérer l'ID d'un message, vérifiez que le mode développeur est activé sur votre client puis faites un clic droit sur le message que vous souhaitez copier et sélectionnez **Copier l'identifiant**.",
+  "EXTENDED_LINE_2": "**{{prefix}}embededit [ID du Message] [Code d'embed]** ~ Édite l'embed avec le nouveau code d'embed que vous avez défini.",
+  "USAGE": "{{prefix}}embededit [ID du Message] [Code d'embed]",
+  "ALIASES": "La commande Embededit ne possède pas d'alias.",
+  "NO_EMBED": "Le message que vous avez défini ne contient aucun embed que je puisse afficher.",
+  "SUCCESS": "Voici le code de l'embed pour l'ID de message {{id}}, vous pouvez copier ce code et le coller dans [L'éditeur d'embed](https://embedbuilder.nadekobot.me) pour l'éditer.",
+  "NEED_JSON": "Vous n'avez donné aucun code d'embed à utiliser pour le nouvel embed. Le plus simple est d'utiliser le constructeur d'embed : <https://embedbuilder.nadekobot.me/> !",
+  "EDITED": "Le message a bien été édité. Pour aller au message : {{link}}"
+}
