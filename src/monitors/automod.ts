@@ -58,8 +58,8 @@ export default class extends Monitor {
         type: 'CAPITAL_SPAM_DELETED'
       })
 
-      if (settings.moderation.logs.modlogsChannelID)
-        sendMessage(settings.moderation.logs.modlogsChannelID, { embed: logEmbed.code })
+      if (settings.moderation.logs.serverlogs.emojis.channelID)
+        sendMessage(settings.moderation.logs.serverlogs.emojis.channelID, { embed: logEmbed.code })
       reasons.push(language(`common:AUTOMOD_CAPITALS`))
     }
 
@@ -85,8 +85,8 @@ export default class extends Monitor {
         logEmbed
           .setFooter(language('moderation/logs:XP_LOST', { amount: 5 * naughtyWordCleanup.naughtyWords.length }))
           .setTitle(language('moderation/logs:PROFANITY', { words: naughtyWordCleanup.naughtyWords.join(', ') }))
-        if (settings.moderation.logs.modlogsChannelID)
-          sendMessage(settings.moderation.logs.modlogsChannelID, { embed: logEmbed.code })
+        if (settings.moderation.logs.serverlogs.emojis.channelID)
+          sendMessage(settings.moderation.logs.serverlogs.emojis.channelID, { embed: logEmbed.code })
       }
 
       // If a cleaned string is returned set the content to the string
@@ -115,8 +115,8 @@ export default class extends Monitor {
         logEmbed
           .setFooter(language('moderation/logs:XP_LOST', { amount: 5 * linkFilterCleanup.filteredURLs.length }))
           .setTitle(language('moderation/logs:LINK_POSTED', { links: linkFilterCleanup.filteredURLs.join(', ') }))
-        if (settings.moderation.logs.modlogsChannelID)
-          sendMessage(settings.moderation.logs.modlogsChannelID, { embed: logEmbed.code })
+        if (settings.moderation.logs.serverlogs.emojis.channelID)
+          sendMessage(settings.moderation.logs.serverlogs.emojis.channelID, { embed: logEmbed.code })
       }
 
       reasons.push(language(`common:AUTOMOD_URLS`))
