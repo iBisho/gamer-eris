@@ -58,7 +58,10 @@ export default {
           method: 'POST',
           body: JSON.stringify(params)
         })
-          .then(res => res.ok)
+          .then(res => {
+            console.log('made it', res)
+            return res.ok
+          })
           .catch(err => {
             console.warn(err)
             return false
