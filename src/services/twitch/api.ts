@@ -59,7 +59,10 @@ export default {
           body: JSON.stringify(params)
         })
           .then(res => res.ok)
-          .catch(() => false)
+          .catch(err => {
+            console.error(err)
+            return false
+          })
     }
   }
 }
