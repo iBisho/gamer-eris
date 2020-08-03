@@ -58,9 +58,9 @@ export default {
           method: 'POST',
           body: JSON.stringify(params)
         })
-          .then(res => {
+          .then(async res => {
             console.log('made it', res)
-            console.log(res.json())
+            console.log(await res.json())
             return res.ok
           })
           .catch(err => {
