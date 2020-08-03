@@ -60,7 +60,7 @@ export default {
         })
           .then(res => res.ok)
           .catch(err => {
-            console.error(err)
+            console.warn(err)
             return false
           })
     }
