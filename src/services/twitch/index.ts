@@ -31,11 +31,12 @@ export async function runCronSubscribe() {
     }
   })
 
+  console.log('subs', unfullfilledSubscriptions)
   for (const stream of unfullfilledSubscriptions) {
     try {
       // Let's find this userID first
       const result = await api.users.byLogin(stream.username)
-
+      console.log('twitch sub loop', stream.username, result)
       // Compare by checking user name lowercase.
       // Should we also check display names?
       // Not sure. Display names *might* not be unique.
@@ -53,7 +54,7 @@ export async function runCronSubscribe() {
         'hub.topic': subscriptionTopic,
         'hub.lease_seconds': MAX_SUBSCRIPTION_TIME_SECONDS
       })
-
+      console.log('twitch sub loop 2', stream.username, success)
       if (!success) throw new Error('Failed to create webhook')
 
       stream.meta.subscriptionTopic = subscriptionTopic
