@@ -60,6 +60,7 @@ export default {
         })
           .then(res => {
             console.log('made it', res)
+            console.log(res.json())
             return res.ok
           })
           .catch(err => {
