@@ -5,17 +5,8 @@ import { Canvas } from 'canvas-constructor'
 import { join } from 'path'
 import { MessageEmbed } from 'helperis'
 import constants from './constants'
-import HooksServices from './services/hooks'
-
-import TwitchService from './services/twitch/index'
 import TopGGAPI from 'dblapi.js'
 import { deleteMessage, sendMessage } from './lib/utils/eris'
-
-// Initiate hooks service
-HooksServices(config.hooks.port)
-
-// Initiate twitch service
-TwitchService()
 
 // Register the assets
 const rootFolder = join(__dirname, `..`, `..`)

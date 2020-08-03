@@ -13,6 +13,8 @@ import { EventListener } from 'yuuko'
 import { processPolls } from '../lib/utils/poll'
 import { processYoutubeSubscriptions } from '../lib/utils/youtube'
 import { processRedditSubscriptions } from '../lib/utils/reddit'
+import HooksServices from '../services/hooks'
+import TwitchService from '../services/twitch/index'
 
 export default new EventListener('ready', async () => {
   Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
@@ -234,6 +236,12 @@ export default new EventListener('ready', async () => {
       }
     })
   })
+
+  // Initiate hooks service
+  HooksServices(config.hooks.port)
+
+  // Initiate twitch service
+  TwitchService()
 
   Gamer.createMessage(`578624588552994840`, 'All shards completely ready now.')
   Gamer.helpers.logger.green(`[READY] All shards completely ready now.`)

@@ -1,7 +1,7 @@
 import api from './api'
-import database from '../../database/mongodb'
 import { GamerSubscriptionType } from '../../database/schemas/subscription'
 import config from '../../../config'
+import Gamer from '../..'
 
 // Twitch Webhooks subscriptions expires in 30 days.
 // https://dev.twitch.tv/docs/api/webhooks-reference#subscribe-tounsubscribe-from-events
@@ -12,7 +12,7 @@ const MAX_SUBSCRIPTION_TIME_SECONDS = 2000
 const CRON_INTERVAL_MS = 2 * 60 * 1000
 
 export async function runCronSubscribe() {
-  const unfullfilledSubscriptions = await database.models.subscription.find({
+  const unfullfilledSubscriptions = await Gamer.database.models.subscription.find({
     type: GamerSubscriptionType.TWITCH,
     $or: [
       {
