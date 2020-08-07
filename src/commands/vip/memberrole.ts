@@ -24,12 +24,21 @@ export default new Command(['memberrole', 'mr'], async (message, args, context) 
     Gamer.allMembersFetchedGuildIDs.add(message.member.guild.id)
   }
 
-  const members = message.member.guild.members.filter(member => member.roles.includes(role.id))
+  let bots = 0
+  let users = 0
+  
+  for (const member of message.member.guild.members.values()) {
+    if (!member.roles.includes(role.id)) continue;
+    if (member.user.bot) bots++
+    else users++
+  }
+
   const embed = new MessageEmbed()
     .setAuthor(role.name, message.author.avatarURL)
     .addField(language(`vip/memberrole:ROLE_NAME`), role.mention, true)
     .addField(language(`vip/memberrole:ROLE_ID`), role.id, true)
-    .addField(language(`vip/memberrole:ROLE_MEMBERS`), members.length.toString(), false)
+    .addField(language(`vip/memberrole:ROLE_USER`), users.toString(), false)
+    .addField(language(`vip/memberrole:ROLE_BOTS`), bots.toString(), false)
     .setFooter(language(`vip/memberrole:CREATED_AT`))
     .setTimestamp(role.createdAt)
 

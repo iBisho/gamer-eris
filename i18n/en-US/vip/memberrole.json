@@ -11,6 +11,7 @@
   "ROLE_SEPARATE": "Show Separately:",
   "ROLE_MENTIONABLE": "Mentionable:",
   "ROLE_POSITION": "Position:",
-  "ROLE_MEMBERS": "Members With Role:",
+  "ROLE_USER": "User with Role:",
+  "ROLE_BOTS": "Bots with Role:",
   "CREATED_AT": "Created At:"
 }
