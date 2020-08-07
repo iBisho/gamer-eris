@@ -8,11 +8,17 @@ export default new Command(['memberrole', 'mr'], async (message, args, context) 
   const Gamer = context.client as GamerClient
   const roleIDOrName = args.join(' ')
   const [roleID] = message.roleMentions
+  const helpCommand = Gamer.commandForName('help')
+  if (!helpCommand) return
+
   const language = Gamer.getLanguage(message.guildID)
+  const [name] = args
+  if (!name) return helpCommand.execute(message, [`memberrole`], { ...context, commandName: 'help' })
 
   // If they are using default settings, they won't be vip server
-  if (!Gamer.vipGuildIDs.has(message.member.guild.id)) return
-
+  if (!Gamer.vipGuildIDs.has(message.member.guild.id)) 
+    return message.channel.createMessage(language`vip/analyze:NEED_VIP`)
+    
   const role = roleID
     ? message.member.guild.roles.get(roleID)
     : message.member.guild.roles.find(r => r.id === roleIDOrName || r.name.toLowerCase() === roleIDOrName.toLowerCase())
@@ -41,5 +47,5 @@ export default new Command(['memberrole', 'mr'], async (message, args, context) 
     .setFooter(language(`vip/memberrole:CREATED_AT`))
     .setTimestamp(role.createdAt)
 
-  message.channel.createMessage({ embed: { ...embed.code, color: role.color } })
+  return message.channel.createMessage({ embed: { ...embed.code, color: role.color } })
 })
