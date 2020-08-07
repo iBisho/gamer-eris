@@ -1,0 +1,17 @@
+{
+    "DESCRIPTION": "List all Members with selected role.",
+    "EXTENDED": "$t(vip/members:EXTENDED_LINE_1)\n$t(vip/members:EXTENDED_LINE_2)",
+    "EXTENDED_LINE_1": "VIP ONLY COMMAND!",
+    "EXTENDED_LINE_2": "**{{prefix}}members [role]** ~ List all members with the selected role.",
+    "USAGE": "{{prefix}}members [Role]",
+    "ALIASES": "Members does not have any aliases",
+    "ROLE_NAME": "Role Name:",
+    "ROLE_ID": "Role ID:",
+    "ROLE_COLOR": "Role Color:",
+    "ROLE_SEPARATE": "Show Separately:",
+    "ROLE_MENTIONABLE": "Mentionable:",
+    "ROLE_POSITION": "Position:",
+    "ROLE_USER": "Users with Role:",
+    "ROLE_BOTS": "Bots with Role:",
+    "CREATED_AT": "Created At:"
+  }
