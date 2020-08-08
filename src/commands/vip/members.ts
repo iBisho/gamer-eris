@@ -31,7 +31,9 @@ const guildSettings = await Gamer.database.models.guild.findOne({ guildID: messa
   }
 
   const roles =
-    message.member.guild.members.filter(member => member.roles.includes(role.id))
+  message.member.guild.id === role.id
+  ? [...message.member.guild.members.values()]
+  : message.member.guild.members.filter(member => member.roles.includes(role.id))
 
   let response = ``
   for (const member of roles) {
