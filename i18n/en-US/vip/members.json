@@ -4,7 +4,7 @@
     "EXTENDED_LINE_1": "VIP ONLY COMMAND!",
     "EXTENDED_LINE_2": "**{{prefix}}members [role]** ~ List all members with the selected role.",
     "USAGE": "{{prefix}}members [Role]",
-    "ALIASES": "Members does not have any aliases",
+    "ALIASES": "{{prefix}}memberlist",
     "ROLE_NAME": "Role Name:",
     "ROLE_ID": "Role ID:",
     "ROLE_COLOR": "Role Color:",

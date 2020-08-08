@@ -22,7 +22,7 @@ export default new Command(['memberrole', 'mr'], async (message, args, context) 
   const role = roleID
     ? message.member.guild.roles.get(roleID)
     : message.member.guild.roles.find(r => r.id === roleIDOrName || r.name.toLowerCase() === roleIDOrName.toLowerCase())
-  if (!role) return
+  if (!role) return message.channel.createMessage(language(`roles/role:NEED_ROLE`))
 
   if (!Gamer.allMembersFetchedGuildIDs.has(message.member.guild.id)) {
     await message.member.guild.fetchAllMembers()
