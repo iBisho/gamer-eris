@@ -91,13 +91,13 @@ export default new EventListener('guildMemberRemove', async (guild, member) => {
 
       if (guildSettings.hibye.goodbye.dmEnabled) {
         const dmChannel = await member.user.getDMChannel()
-        if (embed) dmChannel.createMessage({ embed })
+        if (embed) dmChannel.createMessage({ content: embed.plaintext, embed })
         else dmChannel.createMessage(transformed)
       }
       if (guildSettings.hibye.goodbye.channelID) {
         const goodbyeChannel = guild.channels.get(guildSettings.hibye.goodbye.channelID)
         if (goodbyeChannel && goodbyeChannel instanceof TextChannel) {
-          if (embed) goodbyeChannel.createMessage({ embed })
+          if (embed) goodbyeChannel.createMessage({ content: embed.plaintext, embed })
           else goodbyeChannel.createMessage(transformed)
         }
       }

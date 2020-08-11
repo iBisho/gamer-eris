@@ -105,13 +105,13 @@ export default new EventListener('guildMemberAdd', async (guild, member) => {
 
       if (guildSettings.hibye.welcome.dmEnabled) {
         const dmChannel = await member.user.getDMChannel()
-        if (embed) await dmChannel.createMessage({ embed })
+        if (embed) await dmChannel.createMessage({ content: embed.plaintext, embed })
         else await dmChannel.createMessage(transformed)
       }
       if (guildSettings.hibye.welcome.channelID) {
         const welcomeChannel = guild.channels.get(guildSettings.hibye.welcome.channelID)
         if (welcomeChannel && welcomeChannel instanceof TextChannel) {
-          if (embed) await welcomeChannel.createMessage({ embed })
+          if (embed) await welcomeChannel.createMessage({ content: embed.plaintext, embed })
           else await welcomeChannel.createMessage(transformed)
         }
       }
