@@ -130,7 +130,7 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
 
   if (!Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, ['externalEmojis']))
     return sendMessage(message.channel.id, language('fun/slots:MISSING_PERM'))
-  message.channel.createMessage(details.join('\n'))
 
   if (message.member && message.guildID) Gamer.helpers.levels.completeMission(message.member, 'slots', message.guildID)
+  return message.channel.createMessage(details.join('\n'))
 })
