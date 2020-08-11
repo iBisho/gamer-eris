@@ -1,6 +1,7 @@
 import { Command } from 'yuuko'
 import GamerClient from '../../lib/structures/GamerClient'
 import constants from '../../constants'
+import { sendMessage } from '../../lib/utils/eris'
 
 const allEmojis = [
   constants.emojis.snap,
@@ -127,6 +128,8 @@ export default new Command([`slots`, `slotmachine`], async (message, _args, cont
   if (isSupporter && winningSet.size < 3) details.push(language('fun/slots:DOUBLE_REWARD', { amount: finalAmount * 2 }))
   details.push(row1.join(' | '), row2.join(' | '), row3.join(' | '))
 
+  if (!Gamer.helpers.discord.checkPermissions(message.channel, Gamer.user.id, ['externalEmojis']))
+    return sendMessage(message.channel.id, language('fun/slots:MISSING_PERM'))
   message.channel.createMessage(details.join('\n'))
 
   if (message.member && message.guildID) Gamer.helpers.levels.completeMission(message.member, 'slots', message.guildID)

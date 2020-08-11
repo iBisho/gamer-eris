@@ -3,6 +3,7 @@
   "EXTENDED": "**{{prefix}}slots** ~ Try your luck at winning some slots! Get the same emojis in a row to win. If you upvote the bot, you will get a much higher reward rate.",
   "USAGE": "{{prefix}}slots",
   "ALIASES": "{{prefix}}slotmachine",
+  "MISSING_PERM": "Missing **EXTERNAL EMOJIS** permission.",
   "NOT_ENOUGH_CURRENCY": "You do not have enough Gamer coins to make that large a bet.",
   "LOSER": "Aww, you did not win the slot machine. You have lost 1 {{emoji}} coin.",
   "LOSER_MULTI": "Aww, you did not win the slot machine. You have lost 2 {{emoji}} coins.",
