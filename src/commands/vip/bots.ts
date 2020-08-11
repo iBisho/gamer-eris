@@ -7,6 +7,10 @@ export default new Command(`bots`, async (message, _args, context) => {
   const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.guildID)
 
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) 
+  return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
+
   if (!Gamer.vipGuildIDs.has(message.member.guild.id))
     return message.channel.createMessage(language`vip/analyze:NEED_VIP`)
 
@@ -21,5 +25,5 @@ export default new Command(`bots`, async (message, _args, context) => {
     .join('\n')
     .substring(0, 2000)
 
-  return message.channel.createMessage(text)
+  return Gamer.helpers.discord.embedResponse(message, text)
 })

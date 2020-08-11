@@ -1,5 +1,5 @@
 export default {
-  angryping: `<a:angeryping:664865672630763551>`,
+  Aquaaah: `<a:Aquaaah:739488520409972737>`,
   bite: `<a:bite:669930972325871626>`,
   coin: `<:g4m3rwhite:443416083874054145>`,
   colors: {
@@ -81,13 +81,16 @@ export default {
   lmao: `<a:lmao:669930973118464050>`,
   mailbox: `<:mail:638772218192592906>`,
   members: `<:event_members:473797560587255810>`,
+  NezukoDance: `<a:NezukoDance:739488498310185060>`,
   online: `<:online:398045782390865920>`,
   pat: `<a:pat:669930972430467092>`,
   plus: `<:plusy:647528275538739200>`,
   poke: `<a:poke:669930972715810876>`,
   questionMark: `<:huh:638772219945943080>`,
   redX: `<:red_tick:448082952824422400>`,
+  RemDance: `<a:RemDance:739488488268759121>`,
   repeat: `<:repeaty:647528274020401162>`,
+  SadCatBongo: `<a:SadCatBongo:739498344937685063>`,
   slam: `<a:slam:664865672454471718>`,
   snap: `<a:snap:664859216506519562>`,
   starry: `<a:starry:669934800139714581>`,
@@ -95,6 +98,8 @@ export default {
   sunglasses: `🕶`,
   tantrum: `<a:tantrum:669930973214933005>`,
   thinking: `<:g4m3rthinking:510742679542431764>`,
+  toastspinning: `<a:toastspinning:739487787274993685>`,
+  twohundretIQ: `<a:200IQ:739488506551861310>`,
   usb: `<:usb:494050000741990400>`,
   votedown: `<:votedown:672630517207793732>`,
   voteup: `<:voteup:672630406700597289>`
