@@ -29,6 +29,7 @@ const categories = [
       `kitten`,
       `lmao`,
       `marry`,
+      `mavis`,
       `pat`,
       `poke`,
       `pony`,
