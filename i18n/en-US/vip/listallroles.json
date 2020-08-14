@@ -1,0 +1,8 @@
+{
+    "DESCRIPTION": "List all roles on your server.",
+    "EXTENDED": "$t(vip/listallroles:EXTENDED_LINE_1)\n$t(vip/listallroles:EXTENDED_LINE_2)",
+    "EXTENDED_LINE_1": "VIP ONLY COMMAND!",
+    "EXTENDED_LINE_2": "**{{prefix}}listallroles** ~ List all roles on your server.",
+    "USAGE": "{{prefix}}listallroles",
+    "ALIASES": "{{prefix}}listroles"
+}

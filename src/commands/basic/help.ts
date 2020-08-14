@@ -147,6 +147,7 @@ const categories = [
       `bots`,
       `analyze`,
       `analyzechannel`,
+      `listallroles`,
       `memberrole`,
       `members`,
       `vipregister`,
