@@ -52,7 +52,7 @@ export default new Command([`user`, `userinfo`, `ui`, `whois`], async (message, 
   const nickname = member?.nick ? language(`basic/user:NICKNAME`, { nickname: member.nick }) : ``
   const userID = language(`basic/user:ID`, { id: user.id, url: user.avatarURL })
 
-  const roles = member.roles
+  const roles = member.roles.filter(id => member.guild.roles.has(id)).sort()
     .sort((a, b) => (member.guild.roles.get(b)?.position || 0) - (member.guild.roles.get(a)?.position || 0))
     .map(id => `<@&${id}>`)
     .join(`, `)
