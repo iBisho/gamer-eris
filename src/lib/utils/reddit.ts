@@ -59,7 +59,7 @@ export async function processRedditSubscriptions() {
 
     redditSub.subs.forEach(sub => {
       const latestIndex = posts.findIndex(post => post.link === sub.latestLink)
-      const latestPosts = latestIndex > 0 ? posts.slice(0, latestIndex - 1) : latestIndex === 0 ? [] : posts
+      const latestPosts = latestIndex > 0 ? posts.slice(0, latestIndex) : latestIndex === 0 ? [] : posts
       console.log(sub.guildID, redditSub.username, latestIndex, latestPosts.length, posts.length, sub.latestLink)
       Gamer.helpers.logger.green(`[Reddit]: ${redditSub.username} ${latestPosts.length} latest posts found.`)
 
@@ -96,7 +96,12 @@ export async function processRedditSubscriptions() {
           content: text,
           allowedMentions: { everyone: true, roles: true, users: true },
           embed: embed.code
-        }).then(message => message && validReactions.forEach(reaction => message.addReaction(reaction)))
+        })
+          .then(message => message && validReactions.forEach(reaction => message.addReaction(reaction)))
+          .catch(error => {
+            console.log('Reddit Embed Sending Error:', error)
+            console.log('Reddit Embed Sending Error 2:', embed.code)
+          })
       }
     })
 
