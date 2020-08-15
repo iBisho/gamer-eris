@@ -152,6 +152,11 @@ export default new mongoose.Schema({
           createPublicEnabled: Boolean,
           deletePublicEnabled: Boolean,
           updatePublicEnabled: Boolean
+        },
+        voice: {
+          channelID: String,
+          joinPublicEnabled: Boolean,
+          leavePublicEnabled: Boolean
         }
       }
     }
