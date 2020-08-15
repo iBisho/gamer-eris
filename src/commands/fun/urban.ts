@@ -23,7 +23,7 @@ export default new Command(`urban`, async (message, args, context) => {
     .then(res => res.json())
     .catch(() => [])) as Urban
 
-  const [highestRated] = data.list.sort((a, b) => b.thumbs_up - a.thumbs_up)
+  const [highestRated] = data.list?.sort((a, b) => b.thumbs_up - a.thumbs_up) || []
   if (!highestRated) return
 
   const embed = new MessageEmbed()
