@@ -119,6 +119,11 @@ export interface GuildSettings extends mongoose.Document {
           deletePublicEnabled: boolean
           updatePublicEnabled: boolean
         }
+        voice: {
+          channelID?: string
+          joinPublicEnabled: boolean
+          leavePublicEnabled: boolean
+        }
       }
     }
   }

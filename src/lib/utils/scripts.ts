@@ -199,13 +199,14 @@ export default class {
       permissionOverwrites: overwrites
     })
 
-    const [roleLogsChannel, memberLogs, messageLogs, otherLogs, channelLogs, publicLogs] = await Promise.all([
+    const [roleLogsChannel, memberLogs, messageLogs, otherLogs, channelLogs, publicLogs, voiceLogs] = await Promise.all([
       guild.createChannel(language(`settings/setlogs:ROLE_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:MEMBER_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:MESSAGE_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:OTHER_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:CHANNEL_CHANNEL_NAME`), 0, { parentID: category.id }),
-      guild.createChannel(language(`settings/setlogs:PUBLIC_CHANNEL_NAME`), 0, { parentID: category.id })
+      guild.createChannel(language(`settings/setlogs:PUBLIC_CHANNEL_NAME`), 0, { parentID: category.id }),
+      guild.createChannel(language(`settings/setlogs:VOICE_CHANNEL_NAME`), 0, { parentID: category.id})
     ])
 
     guildSettings.moderation.logs.publiclogsChannelID = publicLogs.id
@@ -227,6 +228,9 @@ export default class {
     guildSettings.moderation.logs.serverlogs.roles.deletePublicEnabled = true
     guildSettings.moderation.logs.serverlogs.roles.updatePublicEnabled = true
     guildSettings.moderation.logs.serverlogs.roles.memberPublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.voice.channelID = voiceLogs.id
+    guildSettings.moderation.logs.serverlogs.voice.joinPublicEnabled = true
+    guildSettings.moderation.logs.serverlogs.voice.leavePublicEnabled = true
 
     if (!guildSettings.moderation.logs.modlogsChannelID) {
       const modlogChannel = await guild.createChannel(language(`settings/setlogs:MODLOG_CHANNEL_NAME`), 0, {

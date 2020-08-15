@@ -27,9 +27,9 @@ export async function voiceChannelJoinServerLog(member: Member, channel: VoiceCh
     .setTimestamp()
 
   const guildSettings = await Gamer.database.models.guild.findOne({ guildID: member.guild.id })
-  if (!guildSettings?.moderation.logs.serverlogs.members.channelID) return
+  if (!guildSettings?.moderation.logs.serverlogs.voice.channelID) return
 
-  sendMessage(guildSettings.moderation.logs.serverlogs.members.channelID, { embed: { ...embed.code } })
+  sendMessage(guildSettings.moderation.logs.serverlogs.voice.channelID, { embed: { ...embed.code } })
 }
 
 export default new EventListener('voiceChannelJoin', async (member, channel) => {
