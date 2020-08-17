@@ -84,6 +84,7 @@ const categories = [
       `settag`,
       `settenor`,
       `setverify`,
+      `setvoicelogs`,
       `setwhitelisted`,
       `setup`,
       `setxp`,
