@@ -1,0 +1,9 @@
+{
+    "DESCRIPTION": "Set the mod logs channel on your server.",
+    "EXTENDED": "$t(settings/setvoicelogs:EXTENDED_LINE_1)",
+    "EXTENDED_LINE_1": "**{{prefix}}setvoicelogs [#Channel]** ~ Sets a channel to be used for the voicelogs in your server.",
+    "USAGE": "{{prefix}}setvoicelogs [#channel]",
+    "ALIASES": "setvoicelogs does not have any aliases",
+    "NEED_CHANNEL": "You did not provide a channel to use for the voicelogs.",
+    "CHANNEL_SET": "The {{channel}} has been set for voicelogs on this server."
+  }

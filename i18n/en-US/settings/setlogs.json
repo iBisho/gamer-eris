@@ -13,5 +13,6 @@
   "OTHER_CHANNEL_NAME": "other-logs",
   "CHANNEL_CHANNEL_NAME": "channel-logs",
   "PUBLIC_CHANNEL_NAME": "public-logs",
-  "MODLOG_CHANNEL_NAME": "mod-logs"
+  "MODLOG_CHANNEL_NAME": "mod-logs",
+  "VOICE_CHANNEL_NAME": "voice-logs"
 }
