@@ -1,5 +1,4 @@
-import { Message, User, TextChannel, Guild, NewsChannel } from 'eris'
-import { ReactionEmoji } from '../lib/types/discord'
+import { Message, User, TextChannel, Guild, NewsChannel, Emoji } from 'eris'
 import constants from '../constants'
 import Gamer from '..'
 import { MessageEmbed } from 'helperis'
@@ -11,7 +10,8 @@ import {
   fetchAllReactors,
   deleteMessage,
   removeReaction,
-  removeRoleFromMember
+  removeRoleFromMember,
+  sendMessage
 } from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
@@ -30,7 +30,23 @@ const randomRepliesNetwork = [
   'network/reaction:THANKS_LIKED_2'
 ]
 
-async function handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string, guild: Guild) {
+async function handleGiveaway(message: Message, emoji: Emoji, userID: string, guild: Guild) {
+  const reactor = await Gamer.helpers.discord.fetchMember(guild, userID)
+  if (!reactor) return
+
+  const giveaway = await Gamer.database.models.giveaway.findOne({ guildID: guild.id, messageID: message.id })
+  if (!giveaway) return
+
+  const fullEmoji = `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>`
+  if (giveaway.emoji !== fullEmoji) return
+
+  Gamer.database.models.giveaway
+    .updateOne({ _id: giveaway._id }, { participants: [...giveaway.participants, { userID, timestamp: Date.now() }] })
+    .exec()
+  sendMessage(giveaway.notificationsChannelID, `<@${userID}>, you have been **ADDED** to the giveaway.`)
+}
+
+async function handleEventReaction(message: Message, emoji: Emoji, userID: string, guild: Guild) {
   if (!eventEmojis.length) {
     const emojis = [constants.emojis.greenTick, constants.emojis.redX]
 
@@ -83,7 +99,7 @@ async function handleEventReaction(message: Message, emoji: ReactionEmoji, userI
   }
 }
 
-async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string, guild: Guild) {
+async function handleReactionRole(message: Message, emoji: Emoji, userID: string, guild: Guild) {
   const member = await Gamer.helpers.discord.fetchMember(guild, userID)
   if (!member) return
 
@@ -109,7 +125,7 @@ async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID
   }
 }
 
-async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
+async function handleNetworkReaction(message: Message, emoji: Emoji, user: User, guild: Guild) {
   const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
   if (!networkReactions.includes(fullEmojiName) || !message.embeds.length) return
@@ -277,7 +293,7 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
   }
 }
 
-async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
+async function handleFeedbackReaction(message: Message, emoji: Emoji, user: User, guild: Guild) {
   const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
   if (!message.embeds.length || message.author.id !== Gamer.user.id) return
@@ -505,7 +521,7 @@ async function handleAutoRole(message: Message, guild: Guild, userID: string) {
   return addRoleToMember(member, guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
 }
 
-async function handlePollReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
+async function handlePollReaction(message: Message, emoji: Emoji, user: User, guild: Guild) {
   if (!constants.emojis.letters.includes(emoji.name)) return
 
   const poll = await Gamer.database.models.poll.findOne({ messageID: message.id })
@@ -567,6 +583,7 @@ export default new EventListener('messageReactionAdd', async (rawMessage, emoji,
   // Message might be from other users
   handleReactionRole(message, emoji, userID, guild)
   handleAutoRole(message, guild, userID)
+  handleGiveaway(message, emoji, userID, guild)
 
   // Messages must be from Gamer
   if (message.author.id !== Gamer.user.id) return

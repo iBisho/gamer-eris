@@ -1,15 +1,34 @@
 // Logs that a command run (even if it was inhibited)
-import { Message, Guild, TextChannel, NewsChannel } from 'eris'
+import { Message, Guild, TextChannel, NewsChannel, Emoji } from 'eris'
 import constants from '../constants'
 import Gamer from '..'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { ReactionEmoji } from '../lib/types/discord'
-import { addRoleToMember, removeRoleFromMember } from '../lib/utils/eris'
+import { addRoleToMember, removeRoleFromMember, sendMessage } from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
 
-async function handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
+async function handleGiveaway(message: Message, emoji: Emoji, userID: string, guild: Guild) {
+  const reactor = await Gamer.helpers.discord.fetchMember(guild, userID)
+  if (!reactor) return
+
+  const giveaway = await Gamer.database.models.giveaway.findOne({ guildID: guild.id, messageID: message.id })
+  if (!giveaway) return
+
+  const fullEmoji = `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>`
+  if (giveaway.emoji !== fullEmoji) return
+
+  Gamer.database.models.giveaway
+    .updateOne(
+      { _id: giveaway._id },
+      { participants: giveaway.participants.filter(participant => participant.userID !== userID) }
+    )
+    .exec()
+
+  sendMessage(giveaway.notificationsChannelID, `<@${userID}>, you have been **REMOVED** to the giveaway.`)
+}
+
+async function handleEventReaction(message: Message, emoji: Emoji, userID: string) {
   if (!message.author.bot || !message.member) return
   const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
   if (!event) return
@@ -27,7 +46,7 @@ async function handleEventReaction(message: Message, emoji: ReactionEmoji, userI
   setTimeout(() => response.delete(), 10000)
 }
 
-async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string, guild: Guild) {
+async function handleReactionRole(message: Message, emoji: Emoji, userID: string, guild: Guild) {
   const member = await Gamer.helpers.discord.fetchMember(guild, userID)
   if (!member) return
 
@@ -53,7 +72,7 @@ async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID
   }
 }
 
-async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, userID: string) {
+async function handleFeedbackReaction(message: Message, emoji: Emoji, userID: string) {
   if (!message.member) return
 
   const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
@@ -162,4 +181,5 @@ export default new EventListener('messageReactionRemove', async (rawMessage, emo
   handleReactionRole(message, emoji, userID, guild)
   handleFeedbackReaction(message, emoji, userID)
   handleAutoRole(message, guild, userID)
+  handleGiveaway(message, emoji, userID, guild)
 })
