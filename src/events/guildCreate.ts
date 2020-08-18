@@ -21,7 +21,7 @@ export default new EventListener('guildCreate', async guild => {
   // DONT NEED TRANSLATING BECAUSE BY DEFAULT ALL GUILDS START IN ENGLISH LANGUAGE
   // Create the embed that will be sent to all the server managers
   const embed = new MessageEmbed()
-    .setAuthor(`Alert: I was invited to ${guild.name}!`, guild.iconURL)
+    .setAuthor(`Alert: I was invited to ${guild.name}!`, guild.iconURL || undefined)
     .addField(
       `Why Was This Was Sent To You?`,
       `The bot was invited to ${guild.name} and you have the Manage Guild permission.`

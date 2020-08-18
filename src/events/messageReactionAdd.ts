@@ -395,7 +395,7 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
       // Send a DM to the user telling them it was solved
       const embed = new MessageEmbed()
         .setDescription(guildSettings.feedback.solvedMessage || language(`feedback/idea:SOLVED_DEFAULT`))
-        .setAuthor(`Feedback From ${guild.name}`, guild.iconURL)
+        .setAuthor(`Feedback From ${guild.name}`, guild.iconURL || undefined)
         .setTimestamp()
 
       if (feedbackMember) {
@@ -429,7 +429,7 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
       // Send a DM to the user telling them it was solved
       const rejectedEmbed = new MessageEmbed()
         .setDescription(guildSettings.feedback.rejectedMessage || language(`feedback/idea:REJECTED_DEFAULT`))
-        .setAuthor(`Feedback From ${guild.name}`, guild.iconURL)
+        .setAuthor(`Feedback From ${guild.name}`, guild.iconURL || undefined)
         .setTimestamp()
 
       if (feedbackMember) {

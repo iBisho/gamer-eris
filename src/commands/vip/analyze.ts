@@ -97,7 +97,7 @@ export default new Command([`analyze`, `analytics`], async (message, _args, cont
   const NONE = language(`common:NONE`)
 
   const embed = new MessageEmbed()
-    .setAuthor(message.member.guild.name, message.member.guild.iconURL)
+    .setAuthor(message.member.guild.name, message.member.guild.iconURL || undefined)
     .addField(language(`vip/analyze:TOTAL_MESSAGES`), totalMessages.toString(), true)
     .addField(
       language(`vip/analyze:MEMBERS_STATS`),

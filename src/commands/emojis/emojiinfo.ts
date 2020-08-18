@@ -18,7 +18,7 @@ export default new Command([`emojiinfo`, `emoji`], async (message, args, context
     return Gamer.helpers.discord.embedResponse(message, language(`emojis/emojiinfo:DOESNT_EXIST`, { nameOrID }))
 
   const embed = new MessageEmbed()
-    .setAuthor(message.member.guild.name, message.member.guild.iconURL)
+    .setAuthor(message.member.guild.name, message.member.guild.iconURL || undefined)
     .setThumbnail(`https://cdn.discord.com/emojis/${emoji.id}.${emoji.animated ? `gif` : `png`}`)
     .addField(language(`emojis/emojiinfo:NAME`), emoji.name, true)
     .addField(language(`emojis/emojiinfo:ID`), emoji.id, true)

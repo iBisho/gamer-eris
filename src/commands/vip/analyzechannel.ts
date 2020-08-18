@@ -63,7 +63,7 @@ export default new Command([`analyzechannel`, `analyticschannel`], async (messag
 
   const NONE = language(`common:NONE`)
   const embed = new MessageEmbed()
-    .setAuthor(message.member.guild.name, message.member.guild.iconURL)
+    .setAuthor(message.member.guild.name, message.member.guild.iconURL || undefined)
     .setTitle(language(`vip/analyzechannel:CHANNEL_STATS`, { name: channel.name }))
     .addField(language(`vip/analyze:TOTAL_MESSAGES`), totalMessages.toString(), true)
     .addField(

@@ -146,7 +146,7 @@ async function handleRoleUpdates(guild: Guild, member: Member, guildSettings?: G
     .setTitle(language(`moderation/logs:MEMBER_UPDATED`))
     .addField(language(`moderation/logs:NAME`), member.mention, true)
     .addField(language(`moderation/logs:USER_ID`), member.id, true)
-    .setFooter(`${member.username}#${member.discriminator}`, guild.iconURL)
+    .setFooter(`${member.username}#${member.discriminator}`, guild.iconURL || undefined)
     .setThumbnail(member.user.avatarURL)
     .setTimestamp()
     .addField(
@@ -184,7 +184,7 @@ export default new EventListener('guildMemberUpdate', async (guild, member, oldM
     .setTitle(language(`moderation/logs:MEMBER_UPDATED`))
     .addField(language(`moderation/logs:NAME`), member.mention, true)
     .addField(language(`moderation/logs:USER_ID`), member.id, true)
-    .setFooter(`${member.username}#${member.discriminator}`, guild.iconURL)
+    .setFooter(`${member.username}#${member.discriminator}`, guild.iconURL || undefined)
     .setThumbnail(member.user.avatarURL)
     .setTimestamp()
 

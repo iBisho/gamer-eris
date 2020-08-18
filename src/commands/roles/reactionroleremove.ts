@@ -52,7 +52,7 @@ export default new Command([`reactionroleremove`, `rrr`], async (message, args, 
       () => undefined
     )
     if (reactionRoleMessage) {
-      reactionRoleMessage.removeMessageReactionEmoji(`${validEmoji.name}:${validEmoji.emojiID}`)
+      reactionRoleMessage.removeReactionEmoji(`${validEmoji.name}:${validEmoji.emojiID}`)
     }
   }
 
