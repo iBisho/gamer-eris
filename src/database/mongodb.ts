@@ -6,6 +6,7 @@ import EmojiSchema from './schemas/emoji'
 import EventSchema, { GamerEvent } from './schemas/event'
 import FeedbackSchema, { GamerFeedback } from './schemas/feedback'
 import GuildSchema from './schemas/guild'
+import GiveawaySchema, { GamerGiveaway } from './schemas/giveaway'
 import LabelSchema from './schemas/label'
 import LevelSchema from './schemas/level'
 import MailSchema from './schemas/mail'
@@ -59,6 +60,7 @@ class Database {
     event: mongoose.model<GamerEvent>('Event', EventSchema),
     feedback: mongoose.model<GamerFeedback>('Feedback', FeedbackSchema),
     guild: mongoose.model<GuildSettings>('Guild', GuildSchema),
+    giveaway: mongoose.model<GamerGiveaway>('Giveaway', GiveawaySchema),
     label: mongoose.model<GamerMailLabel>('Label', LabelSchema),
     level: mongoose.model<GamerLevel>('Level', LevelSchema),
     mail: mongoose.model<GamerMail>('Mail', MailSchema),
