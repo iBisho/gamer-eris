@@ -9,7 +9,7 @@ export default new mongoose.Schema({
 	costToJoin: { type: Number, required: true, default: 0 },
 	requiredRoleIDsToJoin: { type: [String], required: true },
   participants: [{ userID: { type: String, required: true }, timestamp: { type: Number, required: true } }],
-  pickedUserIDs: { type: [String], required: true },
+  pickedParticipants: [{ userID: { type: String, required: true }, timestamp: { type: Number, required: true } }],
   createdAt: { type: Number, required: true },
   duration: { type: Number, required: true },
   amountOfWinners: { type: Number, required: true, default: 1 },
@@ -45,7 +45,7 @@ export interface GamerGiveaway extends mongoose.Document {
 	/** The user ids who have entered and the time at which they joined. */
   participants: { userID: string; timestamp: number }[]
 	/** The user ids that have been picked already. So we don't pick duplicates. */
-	pickedUserIDs: string[]
+	pickedParticipants: { userID: string; timestamp: number }[]
 	/** The time when the giveaway was created. */
 	createdAt: number
 	/** How long is this giveaway going to last for. */
