@@ -41,14 +41,101 @@ async function handleGiveaway(message: Message, emoji: Emoji, userID: string, gu
   const emojiID = Gamer.helpers.discord.convertEmoji(giveaway.emoji, 'id')
   if (giveaway.emoji !== fullEmoji && emojiID !== emoji.id) return
 
+  // This giveaway has ended.
+  if (giveaway.hasEnded)
+    return sendMessage(giveaway.notificationsChannelID, `<@${userID}>, this giveaway has already ended.`)
+
+  // This giveaway has not yet started
+  if (!giveaway.hasStarted)
+    return sendMessage(giveaway.notificationsChannelID, `<@${userID}>, this giveaway has not yet started.`)
+
+  // Check if the user has enough coins to enter
+  if (giveaway.costToJoin) {
+    const settings = await Gamer.database.models.user.findOne({ userID })
+    if (!settings) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you did not have enough coins to enter the giveaway. To get more coins, please use the **slots** or **daily** command. To check your balance, you can use the **balance** command.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    }
+
+    if (giveaway.costToJoin > settings.currency) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you did not have enough coins to enter the giveaway. To get more coins, please use the **slots** or **daily** command. To check your balance, you can use the **balance** command.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    } else {
+      // Remove the coins from the user
+      Gamer.database.models.user
+        .findOneAndUpdate({ _id: settings._id }, { currency: settings.currency - giveaway.costToJoin })
+        .exec()
+    }
+  }
+
+  // Check if the user has one of the required roles.
+  if (giveaway.requiredRoleIDsToJoin.length) {
+    const member = await Gamer.helpers.discord.fetchMember(guild, userID)
+    if (!member) return
+
+    const allowed = giveaway.requiredRoleIDsToJoin.some(id => member.roles.includes(id))
+    if (!allowed) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you did not have one of the required roles to enter this giveaway.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    }
+  }
+
+  // Handle duplicate entries
+  if (!giveaway.allowDuplicates) {
+    const isParticipant = giveaway.participants.some(participant => participant.userID === userID)
+    if (isParticipant) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you are already a participant in this giveaway. You have reached the maximum amount of entries in this giveaway.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    }
+  } else if (giveaway.duplicateCooldown) {
+    const relevantParticipants = giveaway.participants.filter(participant => participant.userID === userID)
+    const latestEntry = relevantParticipants.reduce((timestamp, participant) => {
+      if (timestamp > participant.timestamp) return timestamp
+      return participant.timestamp
+    }, 0)
+
+    const now = Date.now()
+    // The user is still on cooldown to enter again
+    if (giveaway.duplicateCooldown + latestEntry > now) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you are not allowed to enter this giveaway again yet. Please wait another **${Gamer.helpers.transform.humanizeMilliseconds(
+          giveaway.duplicateCooldown + latestEntry - now
+        )}**.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    }
+  }
+
   Gamer.database.models.giveaway
-    .findOneAndUpdate({ _id: giveaway._id }, { participants: [...giveaway.participants, { userID, timestamp: Date.now() }] })
+    .findOneAndUpdate(
+      { _id: giveaway._id },
+      { participants: [...giveaway.participants, { userID, timestamp: Date.now() }] }
+    )
     .exec()
   const alert = await sendMessage(
     giveaway.notificationsChannelID,
     `<@${userID}>, you have been **ADDED** to the giveaway.`
   )
   if (alert && giveaway.simple) deleteMessage(alert, 10)
+  return
 }
 
 async function handleEventReaction(message: Message, emoji: Emoji, userID: string, guild: Guild) {

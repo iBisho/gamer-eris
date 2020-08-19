@@ -74,7 +74,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
     })
     if (!giveawayMessage) return
 
-		const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.giveaway, 'reaction')
+    const reaction = Gamer.helpers.discord.convertEmoji(constants.emojis.giveaway, 'reaction')
     if (reaction) giveawayMessage?.addReaction(reaction)
 
     await Gamer.database.models.giveaway.create({
@@ -100,8 +100,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
       hasStarted: true,
       hasEnded: false,
       allowCommandEntry: true,
-			allowReactionEntry: true,
-			simple: true
+      allowReactionEntry: true,
+      simple: true,
+      setRoleIDs: []
     })
 
     return sendMessage(
@@ -114,7 +115,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings))
     return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
 
-  /** The channel id where this giveaway will occur. */
+  // The channel id where this giveaway will occur.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_GIVEAWAY_CHANNEL'))
   const channelResponse = await needMessage(message)
@@ -122,12 +123,12 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   const channel = message.member.guild.channels.get(channelID) as TextChannel
   if (!channel) return sendMessage(message.channel.id, language('utility/giveawaycreate:INVALID_CHANNEL'))
 
-  /** The message id attached to this giveaway. Will be "" if the only way to enter is command based. */
+  // The message id attached to this giveaway. Will be "" if the only way to enter is command based.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_GIVEAWAY_MESSAGE_ID'))
   const messageResponse = await needMessage(message)
   const requestedMessage =
-    messageResponse.content === 'skip'
+    messageResponse.content !== 'skip'
       ? channel.messages.get(messageResponse.content) ||
         (await channel.getMessage(messageResponse.content).catch(() => undefined))
       : undefined
@@ -136,14 +137,14 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   if (messageResponse.content === 'skip')
     sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_MESSAGE'))
 
-  /** The amount of gamer coins needed to enter. */
+  // The amount of gamer coins needed to enter.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_COST_TO_JOIN'))
   const costResponse = await needMessage(message)
   const costToJoin = Number(costResponse.content)
   if (costResponse.content === 'skip') sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_COST'))
 
-  /** The role ids that are required to join. User must have atleast 1. */
+  // The role ids that are required to join. User must have atleast 1.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_REQUIRED_ROLES_TO_JOIN'))
   const requiredRolesResponse = await needMessage(message)
@@ -151,14 +152,14 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
     sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_REQUIRED_ROLES'))
   const requiredRoles = requiredRolesResponse.content.split(' ').map(id => parseRole(message, id)?.id)
 
-  /** How long is this giveaway going to last for. */
+  // How long is this giveaway going to last for.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_DURATION'))
   const durationResponse = await needMessage(message)
   const duration = Gamer.helpers.transform.stringToMilliseconds(durationResponse.content)
   if (!duration) sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_DURATION'))
 
-  /** The amount of winners for this giveaway */
+  // The amount of winners for this giveaway
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_AMOUNT_WINNERS'))
   const amountResponse = await needMessage(message)
@@ -166,14 +167,14 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   if (amountResponse.content === 'skip' || !amount)
     sendMessage(message.channel.id, language('utility/giveawaycreate:INVALID_AMOUNT_WINNERS'))
 
-  /** Whether users are allowed to enter the giveaway multiple times. */
+  // Whether users are allowed to enter the giveaway multiple times.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_DUPLICATES'))
   const duplicatesResponse = await needMessage(message)
   const YES_OPTIONS = language('common:YES_OPTIONS', { returnObjects: true })
   const allowDuplicates = YES_OPTIONS.includes(duplicatesResponse.content)
 
-  /** How long does a user need to wait to enter the giveaway again. For example, one time per day. */
+  // How long does a user need to wait to enter the giveaway again. For example, one time per day.
   let duplicateCooldown = 0
 
   if (allowDuplicates) {
@@ -184,7 +185,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
       sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_DUPLICATE_DURATION'))
   }
 
-  /** The emoji <:name:id> of the emoji used in this giveaway, if reaction based otherwise "" */
+  // The emoji <:name:id> of the emoji used in this giveaway, if reaction based otherwise ""
 
   let validEmoji = Gamer.helpers.discord.convertEmoji(constants.emojis.giveaway, `data`)
 
@@ -199,20 +200,20 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
       )
   }
 
-  /** Whether users picked will be the winners or the losers. */
+  // Whether users picked will be the winners or the losers.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_PICK_WINNERS'))
   const pickWinnersResponse = await needMessage(message)
   const pickWinners = YES_OPTIONS.includes(pickWinnersResponse.content)
 
-  /** The amount of time to wait before picking the next user. */
+  // The amount of time to wait before picking the next user.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_PICK_INTERVAL'))
   const pickIntervalResponse = await needMessage(message)
   const pickInterval = Gamer.helpers.transform.stringToMilliseconds(pickIntervalResponse.content)
   if (!duplicateCooldown) sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_PICK_INTERVAL'))
 
-  /** The channel id where messages will be sent when reaction based like X has joined the giveaway. */
+  // The channel id where messages will be sent when reaction based like X has joined the giveaway.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_NOTIFICATIONS_CHANNEL'))
   const notificationsChannelResponse = await needMessage(message)
@@ -220,22 +221,31 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   const notificationsChannel = message.member.guild.channels.get(notificationsChannelID) as TextChannel
   if (!notificationsChannel) return sendMessage(message.channel.id, language('utility/giveawaycreate:INVALID_CHANNEL'))
 
-  /** The amount of milliseconds to wait before starting this giveaway. */
+  // The amount of milliseconds to wait before starting this giveaway.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_DELAY_TILL_START'))
   const delayTillStartResponse = await needMessage(message)
   const delayTillStart = Gamer.helpers.transform.stringToMilliseconds(delayTillStartResponse.content)
   if (!duplicateCooldown) sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_DELAY_TILL_START'))
 
-  /** Whether the giveaway allows entry using commands. */
+  // Whether the giveaway allows entry using commands.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_ALLOW_COMMANDS'))
   const allowCommandsResponse = await needMessage(message)
   let allowCommandEntry = YES_OPTIONS.includes(allowCommandsResponse.content)
+  let setRoleIDs: string[] = []
+
+  if (allowCommandEntry) {
+    // The role ids that are required to join when using the command. This role will be given to the user.
+
+    sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_SET_ROLES'))
+    const setRolesResponse = await needMessage(message)
+    setRoleIDs = setRolesResponse.content.split(' ').map(id => parseRole(message, id)?.id || "")
+  }
 
   let allowReactionEntry = false
   if (requestedMessage) {
-    /** Whether the giveaway allows entry using reaction entries. */
+    // Whether the giveaway allows entry using reaction entries.
     sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_ALLOW_REACTIONS'))
     const allowReactionsResponse = await needMessage(message)
     allowReactionEntry = YES_OPTIONS.includes(allowReactionsResponse.content)
@@ -257,7 +267,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
     creatorID: message.author.id,
     messageID: requestedMessage?.id || '',
     channelID: channel.id,
-    costToJoin: costToJoin,
+    costToJoin: costToJoin || 100,
     requiredRoleIDsToJoin: (requiredRoles?.filter(r => r) || []) as string[],
     participants: [],
     pickedParticipants: [],
@@ -274,9 +284,15 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
     hasStarted: Boolean(delayTillStart),
     hasEnded: false,
     allowCommandEntry,
-		allowReactionEntry,
-		simple: false
+    allowReactionEntry,
+    simple: false,
+    setRoleIDs: (setRoleIDs?.filter(r => r) || []) as string[]
   })
+
+  if (requestedMessage) {
+    const reaction = Gamer.helpers.discord.convertEmoji(validEmoji?.fullCode || constants.emojis.giveaway, 'reaction')
+    if (reaction) requestedMessage.addReaction(reaction)
+  }
 
   return sendMessage(
     message.channel.id,

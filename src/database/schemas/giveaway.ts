@@ -25,6 +25,7 @@ export default new mongoose.Schema({
 	hasStarted: { type: Boolean, required: true, default: false },
 	hasEnded: { type: Boolean, required: true, default: false },
 	simple: { type: Boolean, required: true, default: true },
+	setRoleIDs: { type: [String], required: true },
 }).index({ giveawayID: 1, guildID: 1 })
 
 export interface GamerGiveaway extends mongoose.Document {
@@ -76,4 +77,6 @@ export interface GamerGiveaway extends mongoose.Document {
 	allowReactionEntry: boolean
 	/** Whether this used the simple giveaway */
 	simple: boolean
+	/** The role ids for which roles are allowed to be used to enter the giveaway */
+	setRoleIDs: string[]
 }

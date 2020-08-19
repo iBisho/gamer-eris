@@ -54,10 +54,8 @@ export async function pickGiveawayWinners(giveaway: GamerGiveaway) {
       giveaway.notificationsChannelID,
       `<@${giveaway.creatorID}> The giveaway with ID **${giveaway.giveawayID}** has finished but no users participated in this giveaway so no winners have been selected.`
     )
-    {
-      Gamer.database.models.giveaway.deleteOne({ _id: giveaway._id }).exec()
-      return
-    }
+    Gamer.database.models.giveaway.deleteOne({ _id: giveaway._id }).exec()
+    return
   }
 
   const guild = Gamer.guilds.get(giveaway.guildID)
@@ -85,7 +83,7 @@ export async function pickGiveawayWinners(giveaway: GamerGiveaway) {
     }
 
     // Removes any users who are no longer members
-    filteredParticipants = filteredParticipants.filter(participant => !guild.members.has(participant.userID))
+    filteredParticipants = filteredParticipants.filter(participant => guild.members.has(participant.userID))
   }
 
   // All losers have been picked. Only ones left are winners.
@@ -133,12 +131,8 @@ export async function pickGiveawayWinners(giveaway: GamerGiveaway) {
   if (!member) return
 
   // Await this to make sure it is marked as a winner before alerting the user.
-  await Gamer.database.models.giveaway
-    .findOneAndUpdate(
-      { _id: giveaway._id },
-      { pickedParticipants: [...giveaway.pickedParticipants, randomParticipant] }
-    )
-    .exec()
+  giveaway.pickedParticipants.push(randomParticipant)
+  await giveaway.save()
 
   const embed = new MessageEmbed()
     .setAuthor(`Won the giveaway!`, guild?.dynamicIconURL())

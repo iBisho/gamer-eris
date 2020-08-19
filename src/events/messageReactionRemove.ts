@@ -19,6 +19,9 @@ async function handleGiveaway(message: Message, emoji: Emoji, userID: string, gu
   const emojiID = Gamer.helpers.discord.convertEmoji(giveaway.emoji, 'id')
   if (fullEmoji !== giveaway.emoji && emoji.id !== emojiID) return
 
+  // This giveaway has not yet started
+  if (!giveaway.hasStarted || giveaway.hasEnded) return
+
   Gamer.database.models.giveaway
     .findOneAndUpdate(
       { _id: giveaway._id },
