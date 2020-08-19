@@ -4,7 +4,7 @@ import constants from '../constants'
 import Gamer from '..'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { addRoleToMember, removeRoleFromMember, sendMessage } from '../lib/utils/eris'
+import { addRoleToMember, removeRoleFromMember, sendMessage, deleteMessage } from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
 
@@ -16,16 +16,21 @@ async function handleGiveaway(message: Message, emoji: Emoji, userID: string, gu
   if (!giveaway) return
 
   const fullEmoji = `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>`
-  if (giveaway.emoji !== fullEmoji) return
+  const emojiID = Gamer.helpers.discord.convertEmoji(giveaway.emoji, 'id')
+  if (fullEmoji !== giveaway.emoji && emoji.id !== emojiID) return
 
   Gamer.database.models.giveaway
-    .updateOne(
+    .findOneAndUpdate(
       { _id: giveaway._id },
       { participants: giveaway.participants.filter(participant => participant.userID !== userID) }
     )
     .exec()
 
-  sendMessage(giveaway.notificationsChannelID, `<@${userID}>, you have been **REMOVED** to the giveaway.`)
+  const alert = await sendMessage(
+    giveaway.notificationsChannelID,
+    `<@${userID}>, you have been **REMOVED** from the giveaway.`
+  )
+  if (alert && giveaway.simple) deleteMessage(alert, 10)
 }
 
 async function handleEventReaction(message: Message, emoji: Emoji, userID: string) {

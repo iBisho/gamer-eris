@@ -118,7 +118,9 @@ async function handleRoleUpdates(guild: Guild, member: Member, guildSettings?: G
     Gamer.database.models.roles.create({ memberID: member.id, guildID: guild.id, roleIDs: member.roles })
     return
   } else {
-    Gamer.database.models.roles.updateOne({ memberID: member.id, guildID: guild.id }, { roleIDs: member.roles }).exec()
+    Gamer.database.models.roles
+      .findOneAndUpdate({ memberID: member.id, guildID: guild.id }, { roleIDs: member.roles })
+      .exec()
   }
 
   const roleAdded = member.roles.length > memberRoles.roleIDs.length

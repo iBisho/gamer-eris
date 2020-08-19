@@ -119,7 +119,7 @@ export default class {
     const nextLevelInfo = constants.levels.find(lvl => lvl.level === (globalLevelDetails?.level || 0) + 1)
     // User did not level up
     if (nextLevelInfo && nextLevelInfo.xpNeeded > totalXP)
-      Gamer.database.models.user.updateOne({ userID: member.id }, { xp: totalXP }).exec()
+      Gamer.database.models.user.findOneAndUpdate({ userID: member.id }, { xp: totalXP }).exec()
 
     return
   }

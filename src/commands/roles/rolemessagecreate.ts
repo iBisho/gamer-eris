@@ -48,6 +48,6 @@ export default new Command([`rolemessagecreate`, `rmc`], async (message, args, c
     return message.channel.createMessage(language(`roles/rolemessagecreate:CREATED`))
   }
 
-  Gamer.database.models.roleMessages.updateOne({ roleID: role.id, roleAdded }, { message: content }).exec()
+  Gamer.database.models.roleMessages.findOneAndUpdate({ roleID: role.id, roleAdded }, { message: content }).exec()
   return message.channel.createMessage(language(`roles/rolemessagecreate:UPDATED`))
 })

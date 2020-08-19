@@ -38,12 +38,17 @@ async function handleGiveaway(message: Message, emoji: Emoji, userID: string, gu
   if (!giveaway) return
 
   const fullEmoji = `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>`
-  if (giveaway.emoji !== fullEmoji) return
+  const emojiID = Gamer.helpers.discord.convertEmoji(giveaway.emoji, 'id')
+  if (giveaway.emoji !== fullEmoji && emojiID !== emoji.id) return
 
   Gamer.database.models.giveaway
-    .updateOne({ _id: giveaway._id }, { participants: [...giveaway.participants, { userID, timestamp: Date.now() }] })
+    .findOneAndUpdate({ _id: giveaway._id }, { participants: [...giveaway.participants, { userID, timestamp: Date.now() }] })
     .exec()
-  sendMessage(giveaway.notificationsChannelID, `<@${userID}>, you have been **ADDED** to the giveaway.`)
+  const alert = await sendMessage(
+    giveaway.notificationsChannelID,
+    `<@${userID}>, you have been **ADDED** to the giveaway.`
+  )
+  if (alert && giveaway.simple) deleteMessage(alert, 10)
 }
 
 async function handleEventReaction(message: Message, emoji: Emoji, userID: string, guild: Guild) {

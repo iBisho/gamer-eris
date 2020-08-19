@@ -45,6 +45,7 @@ export default {
   gamerOnFire: `<:g4m3reyesonfire:459458919677427722>`,
   gamerSick: `<:g4m3rsick:459466326092546051>`,
   greenTick: `<:green_tick:448103896897028096>`,
+  giveaway: `<a:giveaway:745432282655097012>`,
   heart: `<:hearty:647528274137972737>`,
   heartthrob: `<a:heartthrob:669934800739631146>`,
   huh: `<a:huh:669934801335091240>`,

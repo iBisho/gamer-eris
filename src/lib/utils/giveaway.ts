@@ -17,7 +17,7 @@ export async function processGiveaways() {
     if (now > giveaway.createdAt + giveaway.delayTillStart) return
     // This giveaway needs to start.
     Gamer.database.models.giveaway
-      .updateOne({ giveawayID: giveaway.giveawayID, guildID: giveaway.guildID }, { hasStarted: true })
+      .findOneAndUpdate({ giveawayID: giveaway.giveawayID, guildID: giveaway.guildID }, { hasStarted: true })
       .exec()
   })
 
@@ -29,7 +29,7 @@ export async function processGiveaways() {
     // End the giveaway. This will stop user intercation
     if (!giveaway.hasEnded)
       Gamer.database.models.giveaway
-        .updateOne({ giveawayID: giveaway.giveawayID, guildID: giveaway.guildID }, { hasEnded: true })
+        .findOneAndUpdate({ giveawayID: giveaway.giveawayID, guildID: giveaway.guildID }, { hasEnded: true })
         .exec()
 
     // Winners selection might occur with a delay so we don't delete it from the database here. Once all winners are selected we will delete the db giveaway
@@ -103,12 +103,12 @@ export async function pickGiveawayWinners(giveaway: GamerGiveaway) {
 
       // If VIP guild enabled the interval option, delay it for that time period
       if (Gamer.vipGuildIDs.has(guild.id) && giveaway.pickInterval) {
-				await Gamer.helpers.utils.sleep(giveaway.pickInterval / 1000)
-				continue
+        await Gamer.helpers.utils.sleep(giveaway.pickInterval / 1000)
+        continue
       }
     }
-		
-		sendMessage(
+
+    sendMessage(
       giveaway.notificationsChannelID,
       `<@${giveaway.creatorID}> The giveaway with ID **${giveaway.giveawayID}** has finished and all winners have been selected.`
     )
@@ -134,7 +134,10 @@ export async function pickGiveawayWinners(giveaway: GamerGiveaway) {
 
   // Await this to make sure it is marked as a winner before alerting the user.
   await Gamer.database.models.giveaway
-    .updateOne({ _id: giveaway._id }, { pickedParticipants: [...giveaway.pickedParticipants, randomParticipant] })
+    .findOneAndUpdate(
+      { _id: giveaway._id },
+      { pickedParticipants: [...giveaway.pickedParticipants, randomParticipant] }
+    )
     .exec()
 
   const embed = new MessageEmbed()

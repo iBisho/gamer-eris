@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 export default new mongoose.Schema({
-  giveawayID: { type: String, required: true, index: true },
+  giveawayID: { type: Number, required: true, index: true },
   guildID: { type: String, required: true, index: true },
   creatorID: { type: String, required: true },
   messageID: { type: String, required: true },
@@ -18,18 +18,18 @@ export default new mongoose.Schema({
   emoji: { type: String, required: true },
   pickWinners: { type: Boolean, required: true, default: true },
   pickInterval: { type: Number, required: true, default: 0 },
-	resultsChannelID: { type: String, required: true },
 	notificationsChannelID: { type: String, required: true },
   delayTillStart: { type: Number, required: true, default: 0 },
   allowCommandEntry: { type: Boolean, required: true, default: true },
 	allowReactionEntry: { type: Boolean, required: true, default: true },
 	hasStarted: { type: Boolean, required: true, default: false },
 	hasEnded: { type: Boolean, required: true, default: false },
+	simple: { type: Boolean, required: true, default: true },
 }).index({ giveawayID: 1, guildID: 1 })
 
 export interface GamerGiveaway extends mongoose.Document {
   /** The unique id for this giveaway. Useful for commands like delete or edit the giveaway */
-  giveawayID: string
+  giveawayID: number
   /** Guild id where this giveaway was created */
   guildID: string
   /** The user who created this giveaway. */
@@ -62,8 +62,6 @@ export interface GamerGiveaway extends mongoose.Document {
 	pickWinners: boolean
 	/** The amount of time to wait before picking the next user. */
 	pickInterval: number
-	/** The channel id where the results will be sent. */
-	resultsChannelID: string
 	/** The channel id where messages will be sent when reaction based like X has joined the giveaway. */
 	notificationsChannelID: string
 	/** The amount of milliseconds to wait before starting this giveaway. */
@@ -76,4 +74,6 @@ export interface GamerGiveaway extends mongoose.Document {
 	allowCommandEntry: boolean
 	/** Whether the giveaway allows entry using reaction entries. */
 	allowReactionEntry: boolean
+	/** Whether this used the simple giveaway */
+	simple: boolean
 }
