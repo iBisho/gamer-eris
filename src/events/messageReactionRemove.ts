@@ -4,37 +4,10 @@ import constants from '../constants'
 import Gamer from '..'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { addRoleToMember, removeRoleFromMember, sendMessage, deleteMessage } from '../lib/utils/eris'
+import { addRoleToMember, removeRoleFromMember } from '../lib/utils/eris'
+import { handleGiveawayReaction } from './messageReactionAdd'
 
 const eventEmojis: string[] = []
-
-async function handleGiveaway(message: Message, emoji: Emoji, userID: string, guild: Guild) {
-  const reactor = await Gamer.helpers.discord.fetchMember(guild, userID)
-  if (!reactor) return
-
-  const giveaway = await Gamer.database.models.giveaway.findOne({ guildID: guild.id, messageID: message.id })
-  if (!giveaway) return
-
-  const fullEmoji = `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>`
-  const emojiID = Gamer.helpers.discord.convertEmoji(giveaway.emoji, 'id')
-  if (fullEmoji !== giveaway.emoji && emoji.id !== emojiID) return
-
-  // This giveaway has not yet started
-  if (!giveaway.hasStarted || giveaway.hasEnded) return
-
-  Gamer.database.models.giveaway
-    .findOneAndUpdate(
-      { _id: giveaway._id },
-      { participants: giveaway.participants.filter(participant => participant.userID !== userID) }
-    )
-    .exec()
-
-  const alert = await sendMessage(
-    giveaway.notificationsChannelID,
-    `<@${userID}>, you have been **REMOVED** from the giveaway.`
-  )
-  if (alert && giveaway.simple) deleteMessage(alert, 10)
-}
 
 async function handleEventReaction(message: Message, emoji: Emoji, userID: string) {
   if (!message.author.bot || !message.member) return
@@ -189,5 +162,5 @@ export default new EventListener('messageReactionRemove', async (rawMessage, emo
   handleReactionRole(message, emoji, userID, guild)
   handleFeedbackReaction(message, emoji, userID)
   handleAutoRole(message, guild, userID)
-  handleGiveaway(message, emoji, userID, guild)
+  handleGiveawayReaction(message, emoji, userID, guild)
 })

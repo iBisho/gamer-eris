@@ -4,7 +4,7 @@ export default new mongoose.Schema({
   giveawayID: { type: Number, required: true, index: true },
   guildID: { type: String, required: true, index: true },
   creatorID: { type: String, required: true },
-  messageID: { type: String, required: true },
+  messageID: { type: String },
   channelID: { type: String, required: true },
 	costToJoin: { type: Number, required: true, default: 0 },
 	requiredRoleIDsToJoin: { type: [String], required: true },

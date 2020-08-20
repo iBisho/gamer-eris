@@ -111,6 +111,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
     )
   }
 
+  if (!Gamer.vipGuildIDs.has(message.member.guild.id))
+    return sendMessage(message.channel.id, language('common:NEED_VIP'))
+
   const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings))
     return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
@@ -192,12 +195,14 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   if (messageResponse.content !== 'skip') {
     sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_EMOJI'))
     const emojiResponse = await needMessage(message)
-    validEmoji = Gamer.helpers.discord.convertEmoji(emojiResponse.content, `data`)
     if (emojiResponse.content === 'skip')
       sendMessage(
         message.channel.id,
         language('utility/giveawaycreate:DEFAULT_EMOJI', { emoji: constants.emojis.giveaway })
       )
+    else {
+      validEmoji = Gamer.helpers.discord.convertEmoji(emojiResponse.content, `data`)
+    }
   }
 
   // Whether users picked will be the winners or the losers.
@@ -240,7 +245,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
     sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_SET_ROLES'))
     const setRolesResponse = await needMessage(message)
-    setRoleIDs = setRolesResponse.content.split(' ').map(id => parseRole(message, id)?.id || "")
+    setRoleIDs = setRolesResponse.content.split(' ').map(id => parseRole(message, id)?.id || '')
   }
 
   let allowReactionEntry = false

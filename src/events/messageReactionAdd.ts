@@ -30,7 +30,7 @@ const randomRepliesNetwork = [
   'network/reaction:THANKS_LIKED_2'
 ]
 
-async function handleGiveaway(message: Message, emoji: Emoji, userID: string, guild: Guild) {
+export async function handleGiveawayReaction(message: Message, emoji: Emoji, userID: string, guild: Guild) {
   const reactor = await Gamer.helpers.discord.fetchMember(guild, userID)
   if (!reactor) return
 
@@ -651,13 +651,14 @@ async function handlePollReaction(message: Message, emoji: Emoji, user: User, gu
   message.removeReaction(emoji.name, user.id)
 }
 
-export default new EventListener('messageReactionAdd', async (rawMessage, emoji, userID) => {
+export default new EventListener('messageReactionAdd', async (rawMessage, emoji, reactor) => {
   if (!(rawMessage.channel instanceof TextChannel) && !(rawMessage.channel instanceof NewsChannel)) return
 
   const guild = rawMessage.channel.guild
   if (!guild) return
 
-  const user = await Gamer.helpers.discord.fetchUser(userID)
+  // @ts-ignore YUUKO NEEDS TO UPDATE
+  const user = await Gamer.helpers.discord.fetchUser(reactor.id)
   if (!user || user.bot) return
 
   // Need read message history perms to get the messages
@@ -673,14 +674,14 @@ export default new EventListener('messageReactionAdd', async (rawMessage, emoji,
   if (!message) return
 
   // Message might be from other users
-  handleReactionRole(message, emoji, userID, guild)
-  handleAutoRole(message, guild, userID)
-  handleGiveaway(message, emoji, userID, guild)
+  handleReactionRole(message, emoji, user.id, guild)
+  handleAutoRole(message, guild, user.id)
+  handleGiveawayReaction(message, emoji, user.id, guild)
 
   // Messages must be from Gamer
   if (message.author.id !== Gamer.user.id) return
 
-  handleEventReaction(message, emoji, userID, guild)
+  handleEventReaction(message, emoji, user.id, guild)
   handleNetworkReaction(message, emoji, user, guild)
   handleFeedbackReaction(message, emoji, user, guild)
   handlePollReaction(message, emoji, user, guild)
