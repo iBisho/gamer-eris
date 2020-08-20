@@ -1,18 +1,18 @@
 {
-    "DESCRIPTION": "The Mavis command sends a random gif in the chat to increase your daily good-vibes-intake.",
-    "EXTENDED": "Random mavis",
-    "ALIASES": "Mavis does not have any aliases.",
-    "REPLY_NUMBER0": "Gihi. :3",
-    "REPLY_NUMBER1": "Life is precious! To be treasured! I know this! I know exactly how much I value the life of my beloved friends.. I'm fully aware! Of that I'm certain!",
-    "REPLY_NUMBER2": "Yeeeeeey :3",
-    "REPLY_NUMBER3": "I'll always be by your side. You´ll never be alone.",
-    "REPLY_NUMBER4": "Comrade isn't siply a word. Comrades are about heart. It's the unconditional trust in your partners. Please, feel free to lean on me... And I, too, will lean on you as well.",
-    "REPLY_NUMBER5": "Mistakes are not shackles that halt one from stepping forward. Rather, they are that which sustain and grow one's heart.",
-    "REPLY_NUMBER6": "There are walls that can't be broken trough power alone. But if there is a power that can break through walls, it's the power of feelings.",
-    "REPLY_NUMBER7": "Such a wonderfull world! ",
-    "REPLY_NUMBER8": "Icecreaaam - Coooooooold T_T",
-    "REPLY_NUMBER9": "I-I'm not crying! I'm not crying at all...",
-    "REPLY_NUMBER10": "Mistakes aren't made by locking your feelings away and holding back... They're made while wearing your heart on your sleeve.",
-    "REPLY_NUMBER11": "I can't say Hello to you and risk another Goodbye."
-  
-  }
+  "DESCRIPTION": "The Mavis command sends a random gif in the chat to increase your daily good-vibes-intake.",
+  "EXTENDED": "Random mavis",
+  "ALIASES": "Mavis does not have any aliases.",
+  "USAGE": "{{prefix}}mavis",
+  "REPLY_NUMBER0": "Gihi. :3",
+  "REPLY_NUMBER1": "Life is precious! To be treasured! I know this! I know exactly how much I value the life of my beloved friends.. I'm fully aware! Of that I'm certain!",
+  "REPLY_NUMBER2": "Yeeeeeey :3",
+  "REPLY_NUMBER3": "I'll always be by your side. You´ll never be alone.",
+  "REPLY_NUMBER4": "Comrade isn't siply a word. Comrades are about heart. It's the unconditional trust in your partners. Please, feel free to lean on me... And I, too, will lean on you as well.",
+  "REPLY_NUMBER5": "Mistakes are not shackles that halt one from stepping forward. Rather, they are that which sustain and grow one's heart.",
+  "REPLY_NUMBER6": "There are walls that can't be broken trough power alone. But if there is a power that can break through walls, it's the power of feelings.",
+  "REPLY_NUMBER7": "Such a wonderfull world! ",
+  "REPLY_NUMBER8": "Icecreaaam - Coooooooold T_T",
+  "REPLY_NUMBER9": "I-I'm not crying! I'm not crying at all...",
+  "REPLY_NUMBER10": "Mistakes aren't made by locking your feelings away and holding back... They're made while wearing your heart on your sleeve.",
+  "REPLY_NUMBER11": "I can't say Hello to you and risk another Goodbye."
+}

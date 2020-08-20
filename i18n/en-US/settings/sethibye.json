@@ -10,7 +10,7 @@
 	"ALIASES": "{{prefix}}setwelcome {{prefix}}setgoodbye",
 	"WELCOME_CHANNEL_SET": "The welcome channel has been set.",
 	"GOODBYE_CHANNEL_SET": "The goodbye channel has been set.",
-	"WELCOME_CHANEL_RESET": "The welcome channel has been removed.",
+	"WELCOME_CHANNEL_RESET": "The welcome channel has been removed.",
 	"WELCOME_DM_ENABLED": "The welcome messages will be sent by DM.",
 	"WELCOME_DM_DISABLED": "The welcome message will no longer be sent by DM.",
 	"GOODBYE_DM_ENABLED": "The goodbye messages will be sent by DM if the user still shares another server.",
