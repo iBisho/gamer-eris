@@ -39,7 +39,7 @@ export default new Command(`quote`, async (message, args, context) => {
       [
         language('utility/quote:CLICK_HERE', { url: urlToMessage }),
         '',
-        quotedMessage.content + quotedMessageEmbed ? '\n*' + language(`utility/quote:EMBED`) + '*' : ''
+        quotedMessageEmbed ? `${quotedMessage.content.length ? `${quotedMessage.content}\n\n*` : ''}${language(`utility/quote:EMBED`)}*` : ''
       ].join('\n')
     )
     .setFooter(channel ? `#${channel.name}` : ``)
