@@ -216,7 +216,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_PICK_INTERVAL'))
   const pickIntervalResponse = await needMessage(message)
   const pickInterval = Gamer.helpers.transform.stringToMilliseconds(pickIntervalResponse.content)
-  if (!duplicateCooldown) sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_PICK_INTERVAL'))
+  if (!pickInterval) sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_PICK_INTERVAL'))
 
   // The channel id where messages will be sent when reaction based like X has joined the giveaway.
 
