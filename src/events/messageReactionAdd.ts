@@ -1,5 +1,4 @@
-import { Message, User, TextChannel, Guild, NewsChannel } from 'eris'
-import { ReactionEmoji } from '../lib/types/discord'
+import { Message, User, TextChannel, Guild, NewsChannel, Emoji } from 'eris'
 import constants from '../constants'
 import Gamer from '..'
 import { MessageEmbed } from 'helperis'
@@ -11,7 +10,8 @@ import {
   fetchAllReactors,
   deleteMessage,
   removeReaction,
-  removeRoleFromMember
+  removeRoleFromMember,
+  sendMessage
 } from '../lib/utils/eris'
 
 const eventEmojis: string[] = []
@@ -30,7 +30,115 @@ const randomRepliesNetwork = [
   'network/reaction:THANKS_LIKED_2'
 ]
 
-async function handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string, guild: Guild) {
+export async function handleGiveawayReaction(message: Message, emoji: Emoji, userID: string, guild: Guild) {
+  const reactor = await Gamer.helpers.discord.fetchMember(guild, userID)
+  if (!reactor) return
+
+  const giveaway = await Gamer.database.models.giveaway.findOne({ guildID: guild.id, messageID: message.id })
+  if (!giveaway) return
+
+  const fullEmoji = `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>`
+  const emojiID = Gamer.helpers.discord.convertEmoji(giveaway.emoji, 'id')
+  if (giveaway.emoji !== fullEmoji && emojiID !== emoji.id) return
+
+  // This giveaway has ended.
+  if (giveaway.hasEnded)
+    return sendMessage(giveaway.notificationsChannelID, `<@${userID}>, this giveaway has already ended.`)
+
+  // This giveaway has not yet started
+  if (!giveaway.hasStarted)
+    return sendMessage(giveaway.notificationsChannelID, `<@${userID}>, this giveaway has not yet started.`)
+
+  // Check if the user has enough coins to enter
+  if (giveaway.costToJoin) {
+    const settings = await Gamer.database.models.user.findOne({ userID })
+    if (!settings) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you did not have enough coins to enter the giveaway. To get more coins, please use the **slots** or **daily** command. To check your balance, you can use the **balance** command.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    }
+
+    if (giveaway.costToJoin > settings.currency) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you did not have enough coins to enter the giveaway. To get more coins, please use the **slots** or **daily** command. To check your balance, you can use the **balance** command.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    } else {
+      // Remove the coins from the user
+      Gamer.database.models.user
+        .findOneAndUpdate({ _id: settings._id }, { currency: settings.currency - giveaway.costToJoin })
+        .exec()
+    }
+  }
+
+  // Check if the user has one of the required roles.
+  if (giveaway.requiredRoleIDsToJoin.length) {
+    const member = await Gamer.helpers.discord.fetchMember(guild, userID)
+    if (!member) return
+
+    const allowed = giveaway.requiredRoleIDsToJoin.some(id => member.roles.includes(id))
+    if (!allowed) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you did not have one of the required roles to enter this giveaway.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    }
+  }
+
+  // Handle duplicate entries
+  if (!giveaway.allowDuplicates) {
+    const isParticipant = giveaway.participants.some(participant => participant.userID === userID)
+    if (isParticipant) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you are already a participant in this giveaway. You have reached the maximum amount of entries in this giveaway.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    }
+  } else if (giveaway.duplicateCooldown) {
+    const relevantParticipants = giveaway.participants.filter(participant => participant.userID === userID)
+    const latestEntry = relevantParticipants.reduce((timestamp, participant) => {
+      if (timestamp > participant.timestamp) return timestamp
+      return participant.timestamp
+    }, 0)
+
+    const now = Date.now()
+    // The user is still on cooldown to enter again
+    if (giveaway.duplicateCooldown + latestEntry > now) {
+      const alert = await sendMessage(
+        giveaway.notificationsChannelID,
+        `<@${userID}>, you are not allowed to enter this giveaway again yet. Please wait another **${Gamer.helpers.transform.humanizeMilliseconds(
+          giveaway.duplicateCooldown + latestEntry - now
+        )}**.`
+      )
+      if (alert && giveaway.simple) deleteMessage(alert, 10)
+      return
+    }
+  }
+
+  Gamer.database.models.giveaway
+    .findOneAndUpdate(
+      { _id: giveaway._id },
+      { participants: [...giveaway.participants, { userID, timestamp: Date.now() }] }
+    )
+    .exec()
+  const alert = await sendMessage(
+    giveaway.notificationsChannelID,
+    `<@${userID}>, you have been **ADDED** to the giveaway.`
+  )
+  if (alert && giveaway.simple) deleteMessage(alert, 10)
+  return
+}
+
+async function handleEventReaction(message: Message, emoji: Emoji, userID: string, guild: Guild) {
   if (!eventEmojis.length) {
     const emojis = [constants.emojis.greenTick, constants.emojis.redX]
 
@@ -83,7 +191,7 @@ async function handleEventReaction(message: Message, emoji: ReactionEmoji, userI
   }
 }
 
-async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string, guild: Guild) {
+async function handleReactionRole(message: Message, emoji: Emoji, userID: string, guild: Guild) {
   const member = await Gamer.helpers.discord.fetchMember(guild, userID)
   if (!member) return
 
@@ -109,7 +217,7 @@ async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID
   }
 }
 
-async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
+async function handleNetworkReaction(message: Message, emoji: Emoji, user: User, guild: Guild) {
   const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
   if (!networkReactions.includes(fullEmojiName) || !message.embeds.length) return
@@ -277,7 +385,7 @@ async function handleNetworkReaction(message: Message, emoji: ReactionEmoji, use
   }
 }
 
-async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
+async function handleFeedbackReaction(message: Message, emoji: Emoji, user: User, guild: Guild) {
   const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
 
   if (!message.embeds.length || message.author.id !== Gamer.user.id) return
@@ -395,7 +503,7 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
       // Send a DM to the user telling them it was solved
       const embed = new MessageEmbed()
         .setDescription(guildSettings.feedback.solvedMessage || language(`feedback/idea:SOLVED_DEFAULT`))
-        .setAuthor(`Feedback From ${guild.name}`, guild.iconURL)
+        .setAuthor(`Feedback From ${guild.name}`, guild.iconURL || undefined)
         .setTimestamp()
 
       if (feedbackMember) {
@@ -429,7 +537,7 @@ async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, us
       // Send a DM to the user telling them it was solved
       const rejectedEmbed = new MessageEmbed()
         .setDescription(guildSettings.feedback.rejectedMessage || language(`feedback/idea:REJECTED_DEFAULT`))
-        .setAuthor(`Feedback From ${guild.name}`, guild.iconURL)
+        .setAuthor(`Feedback From ${guild.name}`, guild.iconURL || undefined)
         .setTimestamp()
 
       if (feedbackMember) {
@@ -505,7 +613,7 @@ async function handleAutoRole(message: Message, guild: Guild, userID: string) {
   return addRoleToMember(member, guildSettings.moderation.roleIDs.autorole, language(`basic/verify:AUTOROLE_ASSIGNED`))
 }
 
-async function handlePollReaction(message: Message, emoji: ReactionEmoji, user: User, guild: Guild) {
+async function handlePollReaction(message: Message, emoji: Emoji, user: User, guild: Guild) {
   if (!constants.emojis.letters.includes(emoji.name)) return
 
   const poll = await Gamer.database.models.poll.findOne({ messageID: message.id })
@@ -543,13 +651,14 @@ async function handlePollReaction(message: Message, emoji: ReactionEmoji, user: 
   message.removeReaction(emoji.name, user.id)
 }
 
-export default new EventListener('messageReactionAdd', async (rawMessage, emoji, userID) => {
+export default new EventListener('messageReactionAdd', async (rawMessage, emoji, reactor) => {
   if (!(rawMessage.channel instanceof TextChannel) && !(rawMessage.channel instanceof NewsChannel)) return
 
   const guild = rawMessage.channel.guild
   if (!guild) return
 
-  const user = await Gamer.helpers.discord.fetchUser(userID)
+  // @ts-ignore YUUKO NEEDS TO UPDATE
+  const user = await Gamer.helpers.discord.fetchUser(reactor.id)
   if (!user || user.bot) return
 
   // Need read message history perms to get the messages
@@ -565,13 +674,14 @@ export default new EventListener('messageReactionAdd', async (rawMessage, emoji,
   if (!message) return
 
   // Message might be from other users
-  handleReactionRole(message, emoji, userID, guild)
-  handleAutoRole(message, guild, userID)
+  handleReactionRole(message, emoji, user.id, guild)
+  handleAutoRole(message, guild, user.id)
+  handleGiveawayReaction(message, emoji, user.id, guild)
 
   // Messages must be from Gamer
   if (message.author.id !== Gamer.user.id) return
 
-  handleEventReaction(message, emoji, userID, guild)
+  handleEventReaction(message, emoji, user.id, guild)
   handleNetworkReaction(message, emoji, user, guild)
   handleFeedbackReaction(message, emoji, user, guild)
   handlePollReaction(message, emoji, user, guild)

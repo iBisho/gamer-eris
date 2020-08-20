@@ -57,7 +57,7 @@ export default new EventListener('messageDelete', async (message, context) => {
       embed
         .setAuthor(auditLogEntry.user.username, auditLogEntry.user.avatarURL)
         .addField(language(`moderation/logs:REASON`), auditLogEntry.reason || language(`common:NONE`))
-        .setFooter(language(`moderation/logs:MESSAGE_WARNING`), message.channel.guild.iconURL)
+        .setFooter(language(`moderation/logs:MESSAGE_WARNING`), message.channel.guild.iconURL || undefined)
     }
   }
 

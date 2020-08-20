@@ -1,15 +1,15 @@
 // Logs that a command run (even if it was inhibited)
-import { Message, Guild, TextChannel, NewsChannel } from 'eris'
+import { Message, Guild, TextChannel, NewsChannel, Emoji } from 'eris'
 import constants from '../constants'
 import Gamer from '..'
 import { highestRole } from 'helperis'
 import { EventListener } from 'yuuko'
-import { ReactionEmoji } from '../lib/types/discord'
 import { addRoleToMember, removeRoleFromMember } from '../lib/utils/eris'
+import { handleGiveawayReaction } from './messageReactionAdd'
 
 const eventEmojis: string[] = []
 
-async function handleEventReaction(message: Message, emoji: ReactionEmoji, userID: string) {
+async function handleEventReaction(message: Message, emoji: Emoji, userID: string) {
   if (!message.author.bot || !message.member) return
   const event = await Gamer.database.models.event.findOne({ adMessageID: message.id })
   if (!event) return
@@ -27,7 +27,7 @@ async function handleEventReaction(message: Message, emoji: ReactionEmoji, userI
   setTimeout(() => response.delete(), 10000)
 }
 
-async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID: string, guild: Guild) {
+async function handleReactionRole(message: Message, emoji: Emoji, userID: string, guild: Guild) {
   const member = await Gamer.helpers.discord.fetchMember(guild, userID)
   if (!member) return
 
@@ -53,7 +53,7 @@ async function handleReactionRole(message: Message, emoji: ReactionEmoji, userID
   }
 }
 
-async function handleFeedbackReaction(message: Message, emoji: ReactionEmoji, userID: string) {
+async function handleFeedbackReaction(message: Message, emoji: Emoji, userID: string) {
   if (!message.member) return
 
   const fullEmojiName = `<:${emoji.name}:${emoji.id}>`
@@ -162,4 +162,5 @@ export default new EventListener('messageReactionRemove', async (rawMessage, emo
   handleReactionRole(message, emoji, userID, guild)
   handleFeedbackReaction(message, emoji, userID)
   handleAutoRole(message, guild, userID)
+  handleGiveawayReaction(message, emoji, userID, guild)
 })

@@ -93,7 +93,7 @@ async function handleServerlog(
       true
     )
     .addField(language(`moderation/logs:POSITION`), channel.position.toString(), true)
-    .setFooter(channel.name, channel.guild.iconURL)
+    .setFooter(channel.name, channel.guild.iconURL || undefined)
     .setThumbnail(`https://i.imgur.com/Ya0SXdI.png`)
     .setTimestamp()
 

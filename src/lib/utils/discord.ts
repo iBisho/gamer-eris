@@ -76,7 +76,7 @@ export default class {
       case `id`:
         return id ? id : undefined
       case `reaction`:
-        return name && id ? `${name}:${id}` : undefined
+        return name && id ? `${animated ? `a:` : ``}${name}:${id}` : undefined
       case `data`:
         return {
           animated,

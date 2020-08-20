@@ -41,7 +41,7 @@ export default new Command('setup', async (message, args, context) => {
   const questionEmbed = new MessageEmbed()
     .setTitle(language('utility/setup:VERIFY_TITLE'))
     .setDescription(language('utility/setup:VERIFY_DESC'))
-    .setFooter(language('utility/setup:CONFIRM'), message.member.guild.iconURL)
+    .setFooter(language('utility/setup:CONFIRM'), message.member.guild.iconURL || undefined)
     .setImage('https://i.imgur.com/y4hacfC.gif')
   const helperMessage = await message.channel.createMessage({ embed: featureListEmbed.code })
   const [helperEmbed] = helperMessage.embeds
@@ -113,7 +113,7 @@ export default new Command('setup', async (message, args, context) => {
             questionEmbed
               .setTitle(language('utility/setup:VERIFY_ROLE_TITLE'))
               .setDescription(language('utility/setup:VERIFY_ROLE_DESC'))
-              .setFooter(language('utility/setup:VERIFY_ROLE_FOOTER'), msg.member.guild.iconURL)
+              .setFooter(language('utility/setup:VERIFY_ROLE_FOOTER'), msg.member.guild.iconURL || undefined)
             questionMessage.edit({ embed: questionEmbed.code })
             data.step = 1.2
             break
@@ -222,7 +222,7 @@ export default new Command('setup', async (message, args, context) => {
           questionEmbed
             .setTitle(language('utility/setup:VERIFY_JSON_TITLE'))
             .setDescription(language('utility/setup:VERIFY_JSON_DESC'))
-            .setFooter(language('utility/setup:VERIFY_JSON_FOOTER'), msg.member.guild.iconURL)
+            .setFooter(language('utility/setup:VERIFY_JSON_FOOTER'), msg.member.guild.iconURL || undefined)
           questionMessage.edit({ embed: questionEmbed.code })
           settings.verify.enabled = true
           settings.verify.roleID = role.id
@@ -287,7 +287,7 @@ export default new Command('setup', async (message, args, context) => {
               .setTitle(language('utility/setup:NETWORK_TITLE'))
               .setDescription(language('utility/setup:NETWORK_DESC'))
               .setImage('')
-              .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
+              .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL || undefined)
             questionMessage.edit({ embed: questionEmbed.code })
           }
 
@@ -308,7 +308,7 @@ export default new Command('setup', async (message, args, context) => {
             .setTitle(language('utility/setup:NETWORK_TITLE'))
             .setDescription(language('utility/setup:NETWORK_DESC'))
             .setImage('')
-            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
+            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL || undefined)
           questionMessage.edit({ embed: questionEmbed.code })
           settings.moderation.roleIDs.autorole = autorole.id
           settings.verify.discordVerificationStrictnessEnabled = false
@@ -374,7 +374,7 @@ export default new Command('setup', async (message, args, context) => {
           questionEmbed
             .setTitle(language('utility/setup:COLOR_WHEEL_CHANNEL_TITLE'))
             .setDescription(language('utility/setup:COLOR_WHEEL_CHANNEL_DESC'))
-            .setFooter(language('utility/setup:COLOR_WHEEL_CHANNEL_FOOTER'), msg.member.guild.iconURL)
+            .setFooter(language('utility/setup:COLOR_WHEEL_CHANNEL_FOOTER'), msg.member.guild.iconURL || undefined)
           questionMessage.edit({ embed: questionEmbed.code })
           break
         case 3.1:
@@ -451,7 +451,7 @@ export default new Command('setup', async (message, args, context) => {
           questionEmbed
             .setTitle(language('utility/setup:PROFANITY_TITLE'))
             .setDescription(language('utility/setup:PROFANITY_DESC'))
-            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
+            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL || undefined)
           questionMessage.edit({ embed: questionEmbed.code })
           break
         // Profanity words autoadded
@@ -490,7 +490,7 @@ export default new Command('setup', async (message, args, context) => {
           questionEmbed
             .setTitle(language('utility/setup:LOGS_TITLE'))
             .setDescription(language('utility/setup:LOGS_DESC'))
-            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
+            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL || undefined)
           questionMessage.edit({ embed: questionEmbed.code })
           break
         // Server Logs
@@ -519,7 +519,7 @@ export default new Command('setup', async (message, args, context) => {
           questionEmbed
             .setTitle(language('utility/setup:MAIL_TITLE'))
             .setDescription(language('utility/setup:MAIL_DESC'))
-            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
+            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL || undefined)
           questionMessage.edit({ embed: questionEmbed.code })
           break
         // Mail Feature
@@ -542,7 +542,7 @@ export default new Command('setup', async (message, args, context) => {
             questionEmbed
               .setTitle(language('utility/setup:CROSSPOST_TITLE'))
               .setDescription(language('utility/setup:CROSSPOST_DESC'))
-              .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
+              .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL || undefined)
             questionMessage.edit({ embed: questionEmbed.code })
             break
           }
@@ -554,7 +554,7 @@ export default new Command('setup', async (message, args, context) => {
           // Set up the support channel
           const supportChannel = await msg.member.guild.createChannel(language('utility/setup:SUPPORT').toLowerCase())
           const supportEmbed = new MessageEmbed()
-            .setAuthor(language('utility/setup:NEED_HELP'), msg.member.guild.iconURL)
+            .setAuthor(language('utility/setup:NEED_HELP'), msg.member.guild.iconURL || undefined)
             .setDescription(language('utility/setup:ASK_HELP'))
           supportChannel.createMessage({ embed: supportEmbed.code })
           settings.mails.supportChannelID = supportChannel.id
@@ -564,7 +564,7 @@ export default new Command('setup', async (message, args, context) => {
           questionEmbed
             .setTitle(language('utility/setup:MAIL_LOG_CHANNEL_TITLE'))
             .setDescription(language('utility/setup:MAIL_LOG_CHANNEL_DESC'))
-            .setFooter(language('utility/setup:MAIL_LOG_CHANNEL_FOOTER'), msg.member.guild.iconURL)
+            .setFooter(language('utility/setup:MAIL_LOG_CHANNEL_FOOTER'), msg.member.guild.iconURL || undefined)
           questionMessage.edit({ embed: questionEmbed.code })
           break
         case 7.1:
@@ -610,7 +610,7 @@ export default new Command('setup', async (message, args, context) => {
           questionEmbed
             .setTitle(language('utility/setup:CROSSPOST_TITLE'))
             .setDescription(language('utility/setup:CROSSPOST_DESC'))
-            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL)
+            .setFooter(language('utility/setup:CONFIRM'), msg.member.guild.iconURL || undefined)
           questionMessage.edit({ embed: questionEmbed.code })
           data.step = 8
           break

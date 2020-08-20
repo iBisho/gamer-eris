@@ -199,15 +199,24 @@ export default class {
       permissionOverwrites: overwrites
     })
 
-    const [roleLogsChannel, memberLogs, messageLogs, otherLogs, channelLogs, publicLogs, voiceLogs, modLogs] = await Promise.all([
+    const [
+      roleLogsChannel,
+      memberLogs,
+      messageLogs,
+      otherLogs,
+      channelLogs,
+      publicLogs,
+      voiceLogs,
+      modLogs
+    ] = await Promise.all([
       guild.createChannel(language(`settings/setlogs:ROLE_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:MEMBER_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:MESSAGE_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:OTHER_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:CHANNEL_CHANNEL_NAME`), 0, { parentID: category.id }),
       guild.createChannel(language(`settings/setlogs:PUBLIC_CHANNEL_NAME`), 0, { parentID: category.id }),
-      guild.createChannel(language(`settings/setlogs:VOICE_CHANNEL_NAME`), 0, { parentID: category.id}),
-      guild.createChannel(language(`settings/setlogs:MODLOG_CHANNEL_NAME`), 0, {parentID: category.id})
+      guild.createChannel(language(`settings/setlogs:VOICE_CHANNEL_NAME`), 0, { parentID: category.id }),
+      guild.createChannel(language(`settings/setlogs:MODLOG_CHANNEL_NAME`), 0, { parentID: category.id })
     ])
 
     guildSettings.moderation.logs.publiclogsChannelID = publicLogs.id
@@ -333,7 +342,7 @@ export default class {
       .setAuthor(language('roles/reactionrolecreate:COLOR_WHEEL'), 'https://i.imgur.com/wIrhA5A.jpg')
       .setDescription(language('roles/reactionrolecreate:PICK_COLOR'))
       .addField(language('roles/reactionrolecreate:DONT_FORGET'), language('roles/reactionrolecreate:ONLY_ONE'))
-      .setFooter(language('roles/reactionrolecreate:CUSTOMIZE_PICKER'), member.guild.iconURL)
+      .setFooter(language('roles/reactionrolecreate:CUSTOMIZE_PICKER'), member.guild.iconURL || undefined)
     const baseMessage = await message.channel.createMessage({ embed: embed.code })
 
     // Create reaction role

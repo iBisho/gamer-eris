@@ -92,7 +92,7 @@ const categories = [
   },
   {
     name: `utility`,
-    commands: [`imgur`, `pollcreate`, `pollend`, `pollvote`, `quote`, `reddit`, `setup`, `youtube`]
+    commands: [`giveawaycreate`, `imgur`, `pollcreate`, `pollend`, `pollvote`, `quote`, `reddit`, `setup`, `youtube`]
   },
   { name: `feedback`, commands: [`bugs`, `idea`] },
   {

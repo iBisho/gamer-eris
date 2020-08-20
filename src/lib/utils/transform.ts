@@ -115,7 +115,7 @@ export default class {
   }
 
   stringToMilliseconds(text: string) {
-    const matches = text.match(/(\d+[w|d|h|m]{1})/g)
+    const matches = text.match(/(\d+[w|d|h|m|s]{1})/g)
     if (!matches) return
 
     let total = 0

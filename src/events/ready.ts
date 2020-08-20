@@ -15,6 +15,7 @@ import { processYoutubeSubscriptions } from '../lib/utils/youtube'
 import { processRedditSubscriptions } from '../lib/utils/reddit'
 import HooksServices from '../services/hooks'
 import TwitchService from '../services/twitch/index'
+import { processGiveaways } from '../lib/utils/giveaway'
 
 export default new EventListener('ready', async () => {
   Gamer.helpers.logger.green(`[READY] Event has been emitted. Now preparing bot cache and tasks.`)
@@ -78,6 +79,7 @@ export default new EventListener('ready', async () => {
     Gamer.helpers.events.processReminders()
     Gamer.helpers.moderation.processMutes()
     processPolls()
+    processGiveaways()
   }, milliseconds.MINUTE)
 
   // All processes that need to be run every day

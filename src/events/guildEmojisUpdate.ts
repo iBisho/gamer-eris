@@ -32,7 +32,7 @@ export default new EventListener('guildEmojisUpdate', async (guild, emojis, oldE
     .addField(language(`moderation/logs:EMOJI_ANIMATED`), emoji.animated.toString(), true)
     .addField(language(`moderation/logs:NAME`), emoji.name, true)
     .addField(language(`moderation/logs:TOTAL_EMOJIS`), emojis.length.toString(), true)
-    .setFooter(emoji.name, guild.iconURL)
+    .setFooter(emoji.name, guild.iconURL || undefined)
     .setThumbnail(emojiURL)
     .setTimestamp()
 
