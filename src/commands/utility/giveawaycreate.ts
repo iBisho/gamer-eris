@@ -22,7 +22,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args) => {
   if (!message.member) return
 
   const language = Gamer.getLanguage(message.member.guild.id)
-  const CANCEL_OPTIONS = language('common:CANCEL_OPTIONS')
+  const CANCEL_OPTIONS = language('common:CANCEL_OPTIONS', { returnObjects: true })
 
   // If args were provided they are opting for a simple solution
   if (args.length) {
