@@ -1,0 +1,9 @@
+{
+  "DESCRIPTION": "Deletes a giveaway on your server.",
+  "EXTENDED": "$t(utility/giveawaydelete:EXTENDED_LINE_1)\n\n$t(utility/giveawaydelete:EXTENDED_LINE_2)\n$t(utility/giveawaydelete:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}giveawaydelete** ~ Lists the giveaway for you to select one and delete.",
+  "EXTENDED_LINE_3": "**{{prefix}}giveawaydelete [ID]** ~ Deletes the giveaway with this id.",
+  "USAGE": "{{prefix}}giveawaydelete *[ID]*",
+  "ALIASES": "{{prefix}}gd",
+  "DELETED": "The giveaway has been deleted."
+}

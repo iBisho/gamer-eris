@@ -1,0 +1,8 @@
+{
+  "DESCRIPTION": "Register for the giveaway on this server.",
+  "EXTENDED": "$t(utility/giveaway:EXTENDED_LINE_1)\n\n$t(utility/giveaway:EXTENDED_LINE_2)\n$t(utility/giveaway:EXTENDED_LINE_3)",
+  "EXTENDED_LINE_1": "**{{prefix}}giveaway [Nickname]** ~ Sign up for the giveaway with your in game name.",
+  "EXTENDED_LINE_3": "**{{prefix}}giveaway [Nickname] [Role name]** ~ Sign up for the giveaway with your in game name and the name of the role that is required for entry.",
+  "USAGE": "{{prefix}}giveaway [Nickname] *[Role Name]*",
+  "ALIASES": "Giveaway has no aliases."
+}

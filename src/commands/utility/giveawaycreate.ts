@@ -24,6 +24,10 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args) => {
   const language = Gamer.getLanguage(message.member.guild.id)
   const CANCEL_OPTIONS = language('common:CANCEL_OPTIONS', { returnObjects: true })
 
+  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
+  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings))
+    return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
+
   // If args were provided they are opting for a simple solution
   if (args.length) {
     const [channelID, time, winners, ...title] = args
@@ -113,10 +117,6 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args) => {
 
   if (!Gamer.vipGuildIDs.has(message.member.guild.id))
     return sendMessage(message.channel.id, language('common:NEED_VIP'))
-
-  const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.member.guild.id })
-  if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings))
-    return message.channel.createMessage(language('common:NOT_MOD_OR_ADMIN'))
 
   // The channel id where this giveaway will occur.
 
