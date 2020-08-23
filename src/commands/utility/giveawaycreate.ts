@@ -332,7 +332,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args) => {
     pickInterval: pickInterval || 0,
     notificationsChannelID: notificationsChannel.id,
     delayTillStart: delayTillStart || 0,
-    hasStarted: Boolean(delayTillStart),
+    hasStarted: !Boolean(delayTillStart),
     hasEnded: false,
     allowCommandEntry,
     allowReactionEntry,
@@ -349,6 +349,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args) => {
     message.channel.id,
     language('utility/giveawaycreate:CREATED', {
       id: giveawayID,
+      channel: channel.mention,
       time: delayTillStart ? Gamer.helpers.transform.humanizeMilliseconds(delayTillStart) : '0s'
     })
   )

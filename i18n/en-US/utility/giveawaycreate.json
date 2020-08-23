@@ -102,6 +102,6 @@
   "NEED_ALLOW_REACTIONS_2": "🏁 Last Question! Do you want to allow users to enter by clicking the reaction? (Easy one!)",
   "NEED_ALLOW_REACTIONS_4": "yes, no, q, quit",
   "NO_ENTRY_ALLOWED": "You did not allow users to enter through reactions or commands. My mind has exploded.",
-  "CREATED": "A giveaway has been created in with the ID **{{id}}.** It will start in {{time}}.",
+  "CREATED": "A giveaway has been created in {{channel}} with the ID **{{id}}.** It will start in {{time}}.",
   "CANCELLED": "You have cancelled the giveaway creation."
 }
