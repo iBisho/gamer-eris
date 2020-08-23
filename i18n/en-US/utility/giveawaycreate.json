@@ -18,7 +18,7 @@
   "CREATED_SIMPLE": "A simple version of a giveaway has been created with the id **{{id}}** in {{channel}}.",
   "ACCEPTABLE_RESPONSES": "**Acceptable Responses**",
   "NEED_GIVEAWAY_CHANNEL": "$t(utility/giveawaycreate:NEED_GIVEAWAY_CHANNEL_1)\n\n$t(utility/giveawaycreate:NEED_GIVEAWAY_CHANNEL_2)\n\n$t(utility/giveawaycreate:NEED_GIVEAWAY_CHANNEL_3)\n\n$t(utility/giveawaycreate:ACCEPTABLE_RESPONSES)\n$t(utility/giveawaycreate:NEED_GIVEAWAY_CHANNEL_4)",
-  "NEED_GIVEAWAY_CHANNEL_1": "**Welcome to the best giveaway bot on Discord!**\n\n Let's get started. Which channel would you like to have the giveaway in?",
+  "NEED_GIVEAWAY_CHANNEL_1": "**Welcome to the best giveaway bot on Discord!**",
   "NEED_GIVEAWAY_CHANNEL_2": "🚦Let's get started: Enter the channel that will host the giveaway.",
   "NEED_GIVEAWAY_CHANNEL_3": "⚠️ This is the channel where people will see the giveaway message. Make sure it's not a high traffic channel, or that you pin the message. ",
   "NEED_GIVEAWAY_CHANNEL_4": "#channel, q, quit",
