@@ -17,7 +17,7 @@ export default new Command(['memberrole', 'mr'], async (message, args, context) 
 
   // If they are using default settings, they won't be vip server
   if (!Gamer.vipGuildIDs.has(message.member.guild.id)) 
-    return message.channel.createMessage(language`vip/analyze:NEED_VIP`)
+    return message.channel.createMessage(language`vip/memberrole:NEED_VIP`)
     
   const role = roleID
     ? message.member.guild.roles.get(roleID)

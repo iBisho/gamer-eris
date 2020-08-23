@@ -12,7 +12,8 @@ export default new Command(`embedset`, async (message, _args, context) => {
 
   // If the user does not have a modrole or admin role quit out
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) return
-  if (!guildSettings?.vip.isVIP) return
+  if (!guildSettings?.vip.isVIP) 
+   return message.channel.createMessage(language(`embedding/embedset:NEED_VIP`))
 
   const emojis = await Gamer.database.models.emoji.find()
 
