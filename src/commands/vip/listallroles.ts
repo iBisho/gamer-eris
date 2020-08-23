@@ -9,7 +9,7 @@ export default new Command([`listallroles`, `listroles`] , async (message, _args
 
   // If they are using default settings, they won't be vip server
   if (!Gamer.vipGuildIDs.has(message.member.guild.id))
-  return message.channel.createMessage(language`vip/analyze:NEED_VIP`)
+  return message.channel.createMessage(language`vip/listallroles:NEED_VIP`)
 
   const guildSettings = await Gamer.database.models.guild.findOne({ guildID: message.guildID })
   if (!Gamer.helpers.discord.isModOrAdmin(message, guildSettings)) 
