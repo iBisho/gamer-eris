@@ -1,4 +1,3 @@
-import GamerClient from '../../lib/structures/GamerClient'
 import { Command } from 'yuuko'
 import { GamerGiveaway } from '../../database/schemas/giveaway'
 import { needMessage, sendMessage } from '../../lib/utils/eris'
@@ -7,6 +6,7 @@ import { parseRole, parseChannel } from '../../lib/utils/arguments'
 import { milliseconds } from '../../lib/types/enums/time'
 import constants from '../../constants'
 import { MessageEmbed } from 'helperis'
+import Gamer from '../..'
 
 function createUniqueID(giveaways: GamerGiveaway[]) {
   if (giveaways.length < 1) return 1
@@ -18,11 +18,11 @@ function createUniqueID(giveaways: GamerGiveaway[]) {
   return giveawayID
 }
 
-export default new Command(['giveawaycreate', 'gc'], async (message, args, context) => {
+export default new Command(['giveawaycreate', 'gc'], async (message, args) => {
   if (!message.member) return
 
-  const Gamer = context.client as GamerClient
   const language = Gamer.getLanguage(message.member.guild.id)
+  const CANCEL_OPTIONS = language('common:CANCEL_OPTIONS')
 
   // If args were provided they are opting for a simple solution
   if (args.length) {
@@ -122,6 +122,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_GIVEAWAY_CHANNEL'))
   const channelResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const [channelID] = channelResponse.channelMentions
   const channel = message.member.guild.channels.get(channelID) as TextChannel
   if (!channel) return sendMessage(message.channel.id, language('utility/giveawaycreate:INVALID_CHANNEL'))
@@ -130,6 +133,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_GIVEAWAY_MESSAGE_ID'))
   const messageResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const requestedMessage =
     messageResponse.content !== 'skip'
       ? channel.messages.get(messageResponse.content) ||
@@ -144,6 +150,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_COST_TO_JOIN'))
   const costResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const costToJoin = Number(costResponse.content)
   if (costResponse.content === 'skip') sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_COST'))
 
@@ -151,6 +160,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_REQUIRED_ROLES_TO_JOIN'))
   const requiredRolesResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   if (requiredRolesResponse.content === 'skip')
     sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_REQUIRED_ROLES'))
   const requiredRoles = requiredRolesResponse.content.split(' ').map(id => parseRole(message, id)?.id)
@@ -159,6 +171,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_DURATION'))
   const durationResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const duration = Gamer.helpers.transform.stringToMilliseconds(durationResponse.content)
   if (!duration) sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_DURATION'))
 
@@ -166,6 +181,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_AMOUNT_WINNERS'))
   const amountResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const amount = Number(amountResponse.content)
   if (amountResponse.content === 'skip' || !amount)
     sendMessage(message.channel.id, language('utility/giveawaycreate:INVALID_AMOUNT_WINNERS'))
@@ -174,6 +192,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_DUPLICATES'))
   const duplicatesResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const YES_OPTIONS = language('common:YES_OPTIONS', { returnObjects: true })
   const allowDuplicates = YES_OPTIONS.includes(duplicatesResponse.content)
 
@@ -183,6 +204,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   if (allowDuplicates) {
     sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_DUPLICATE_DURATION'))
     const duplicateDurationResponse = await needMessage(message)
+    if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+      return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
     duplicateCooldown = Gamer.helpers.transform.stringToMilliseconds(duplicateDurationResponse.content)!
     if (!duplicateCooldown)
       sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_DUPLICATE_DURATION'))
@@ -195,6 +219,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
   if (messageResponse.content !== 'skip') {
     sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_EMOJI'))
     const emojiResponse = await needMessage(message)
+    if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+      return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
     if (emojiResponse.content === 'skip')
       sendMessage(
         message.channel.id,
@@ -209,12 +236,18 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_PICK_WINNERS'))
   const pickWinnersResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const pickWinners = YES_OPTIONS.includes(pickWinnersResponse.content)
 
   // The amount of time to wait before picking the next user.
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_PICK_INTERVAL'))
   const pickIntervalResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const pickInterval = Gamer.helpers.transform.stringToMilliseconds(pickIntervalResponse.content)
   if (!pickInterval) sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_PICK_INTERVAL'))
 
@@ -222,6 +255,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_NOTIFICATIONS_CHANNEL'))
   const notificationsChannelResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const [notificationsChannelID] = notificationsChannelResponse.channelMentions
   const notificationsChannel = message.member.guild.channels.get(notificationsChannelID) as TextChannel
   if (!notificationsChannel) return sendMessage(message.channel.id, language('utility/giveawaycreate:INVALID_CHANNEL'))
@@ -230,6 +266,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_DELAY_TILL_START'))
   const delayTillStartResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   const delayTillStart = Gamer.helpers.transform.stringToMilliseconds(delayTillStartResponse.content)
   if (!duplicateCooldown) sendMessage(message.channel.id, language('utility/giveawaycreate:DEFAULT_DELAY_TILL_START'))
 
@@ -237,6 +276,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
   sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_ALLOW_COMMANDS'))
   const allowCommandsResponse = await needMessage(message)
+  if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
   let allowCommandEntry = YES_OPTIONS.includes(allowCommandsResponse.content)
   let setRoleIDs: string[] = []
 
@@ -245,6 +287,9 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
 
     sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_SET_ROLES'))
     const setRolesResponse = await needMessage(message)
+    if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+      return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
     setRoleIDs = setRolesResponse.content.split(' ').map(id => parseRole(message, id)?.id || '')
   }
 
@@ -253,13 +298,14 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
     // Whether the giveaway allows entry using reaction entries.
     sendMessage(message.channel.id, language('utility/giveawaycreate:NEED_ALLOW_REACTIONS'))
     const allowReactionsResponse = await needMessage(message)
+    if (CANCEL_OPTIONS.includes(channelResponse.content.toLowerCase()))
+      return sendMessage(message.channel.id, language('utility/giveawaycreate:CANCELLED'))
+
     allowReactionEntry = YES_OPTIONS.includes(allowReactionsResponse.content)
   }
 
   if (!allowCommandEntry && !allowReactionEntry) {
-    sendMessage(message.channel.id, language('utility/giveawaycreate:NO_ENTRY_ALLOWED'))
-    allowCommandEntry = true
-    allowReactionEntry = true
+    return sendMessage(message.channel.id, language('utility/giveawaycreate:NO_ENTRY_ALLOWED'))
   }
 
   const giveaways = await Gamer.database.models.giveaway.find({ guildID: message.member.guild.id })
@@ -303,9 +349,7 @@ export default new Command(['giveawaycreate', 'gc'], async (message, args, conte
     message.channel.id,
     language('utility/giveawaycreate:CREATED', {
       id: giveawayID,
-      time: delayTillStart
-        ? Gamer.helpers.transform.humanizeMilliseconds(delayTillStart)
-        : language('utility/giveawaycreate:NOW')
+      time: delayTillStart ? Gamer.helpers.transform.humanizeMilliseconds(delayTillStart) : '0s'
     })
   )
 })
