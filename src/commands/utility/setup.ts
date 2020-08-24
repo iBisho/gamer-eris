@@ -20,7 +20,7 @@ export default new Command('setup', async (message, args, context) => {
   }
 
   const settings = await upsertGuild(message.member.guild.id)
-  if (Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID))
+  if (!Gamer.helpers.discord.isAdmin(message, settings.staff.adminRoleID))
     return message.channel.createMessage(language('utility/setup:NOT_OWNER'))
 
   // Placeholder for future options
