@@ -77,6 +77,7 @@ export async function processYoutubeSubscriptions() {
     const id = await fetchChannelIDWithName(youtubeSub.username)
     // if (!id) id = await searchByChannelName()
     const videos = await fetchLatestVideos(id || youtubeSub.username)
+    const recentPosts = Gamer.subscriptions.youtube.get(youtubeSub.username)
     if (!videos.length) continue
 
     youtubeSub.subs.forEach(sub => {
@@ -88,6 +89,7 @@ export async function processYoutubeSubscriptions() {
         // If there is a filter and the title does not have the filter
         if (sub.game && !video.title.toLowerCase().includes(sub.game)) return
 
+        if (recentPosts?.includes(video.link)) return
         const text = sub.text || `**${youtubeSub.username}** uploaded a new YouTube video! @everyone`
 
         sendMessage(sub.channelID, {
@@ -99,6 +101,10 @@ export async function processYoutubeSubscriptions() {
       })
     })
 
+    Gamer.subscriptions.reddit.set(
+      youtubeSub.username,
+      videos.map(video => video.link!).filter(link => link)
+    )
     youtubeSub.save()
   }
 

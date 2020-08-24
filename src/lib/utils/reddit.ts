@@ -54,14 +54,13 @@ export async function processRedditSubscriptions() {
     if (!redditSub.subs.length) continue
 
     const posts = await fetchLatestRedditPosts(redditSub.username)
+    const recentPosts = Gamer.subscriptions.reddit.get(redditSub.username)
     Gamer.helpers.logger.green(`[Reddit]: ${redditSub.username} ${posts.length} posts fetched.`)
     if (!posts.length) continue
 
     redditSub.subs.forEach(sub => {
       const latestIndex = posts.findIndex(post => post.link === sub.latestLink)
       const latestPosts = latestIndex > 0 ? posts.slice(0, latestIndex) : latestIndex === 0 ? [] : posts
-      console.log(sub.guildID, redditSub.username, latestIndex, latestPosts.length, posts.length, sub.latestLink)
-      Gamer.helpers.logger.green(`[Reddit]: ${redditSub.username} ${latestPosts.length} latest posts found.`)
 
       for (const post of latestPosts.reverse()) {
         if (!post.link || !post.title) continue
@@ -76,8 +75,9 @@ export async function processRedditSubscriptions() {
         )
           continue
 
-        const text = sub.text || `**${redditSub.username}** has a new post! @everyone`
+        if (recentPosts?.includes(post.link)) continue
 
+        const text = sub.text || `**${redditSub.username}** has a new post! @everyone`
         const language = Gamer.getLanguage(sub.guildID)
 
         const embed = new MessageEmbed()
@@ -105,6 +105,10 @@ export async function processRedditSubscriptions() {
       }
     })
 
+    Gamer.subscriptions.reddit.set(
+      redditSub.username,
+      posts.map(post => post.link!).filter(link => link)
+    )
     await redditSub.save()
   }
 

@@ -154,6 +154,11 @@ export default class GamerClient extends Client {
   debugModeEnabled = false
   /** Stores user ids for each word that has been subscribed for. */
   spyRecords = new Map<string, string[]>()
+  /** Latest subscriptions to help filter our alerts */
+  subscriptions = {
+    reddit: new Map<string, string[]>(),
+    youtube: new Map<string, string[]>()
+  }
 
   async connect() {
     // get i18n ready
