@@ -37,7 +37,7 @@ export async function deleteMessage(message: Message, delaySeconds = 0, reason?:
 }
 
 export async function addRoleToMember(member: Member, id: string, reason?: string) {
-	if (!member.guild.members.has(member.id)) return
+  if (!member.guild.members.has(member.id)) return
 
   const role = member.guild.roles.get(id);
   if (!role) return
@@ -56,7 +56,7 @@ export async function addRoleToMember(member: Member, id: string, reason?: strin
 }
 
 export async function removeRoleFromMember(member: Member, id: string, reason?: string) {
-	if (!member.guild.members.has(member.id)) return
+  if (!member.guild.members.has(member.id)) return
 
   const role = member.guild.roles.get(id)
   if (!role) return
