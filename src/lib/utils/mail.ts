@@ -12,7 +12,7 @@ import {
 import { GuildSettings } from '../types/settings'
 import GamerClient from '../structures/GamerClient'
 import { GamerMail } from '../types/gamer'
-import { MessageEmbed } from 'helperis'
+import { MessageEmbed, highestRole } from 'helperis';
 import nodefetch from 'node-fetch'
 import { deleteMessage, sendMessage } from './eris'
 
@@ -210,6 +210,7 @@ export default class {
       const role = guild.roles.get(roleID)
       // If role is already mentionable or cant find role skip
       if (!role || role.mentionable) continue
+      if (highestRole(botMember).position < role.position) continue;
       // Make the role mentionable. Need to await so it can be mentionable when sending the message
       await role.edit({ mentionable: true })
       modifiedRoleIDs.push(roleID)
